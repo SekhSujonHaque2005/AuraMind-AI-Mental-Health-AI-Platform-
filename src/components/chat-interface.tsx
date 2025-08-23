@@ -2,12 +2,11 @@
 
 import { useState, useRef, useEffect, useTransition } from 'react';
 import { Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatMessage from './chat-message';
 import { getAIResponse } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
+import { ChatInput, ChatInputSubmit, ChatInputTextArea } from "@/components/ui/chat-input";
 
 type Message = {
   sender: 'user' | 'bot';
@@ -40,12 +39,12 @@ export default function ChatInterface() {
     scrollToBottom();
   }, [messages]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     if (!input.trim() || isPending) return;
 
     const newUserMessage: Message = { sender: 'user', text: input };
     setMessages((prev) => [...prev, newUserMessage]);
+    const currentInput = input;
     setInput('');
 
     startTransition(async () => {
@@ -55,7 +54,7 @@ export default function ChatInterface() {
       }));
 
       const result = await getAIResponse({
-        message: input,
+        message: currentInput,
         conversationHistory: conversationHistory,
       });
 
@@ -95,25 +94,15 @@ export default function ChatInterface() {
       </ScrollArea>
 
       <div className="p-4 border-t border-border">
-        <form onSubmit={handleSubmit} className="flex items-center gap-4">
-          <Input
-            type="text"
-            placeholder="Tell me what's on your mind..."
+        <ChatInput
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            disabled={isPending}
-            className="flex-1 bg-input focus:ring-primary/50 text-base"
-            autoComplete="off"
-          />
-          <Button type="submit" size="icon" disabled={isPending || !input.trim()} className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground flex-shrink-0">
-            {isPending ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
-            ) : (
-              <Send className="h-5 w-5" />
-            )}
-            <span className="sr-only">Send</span>
-          </Button>
-        </form>
+            onSubmit={handleSubmit}
+            loading={isPending}
+        >
+            <ChatInputTextArea placeholder="Tell me what's on your mind..."/>
+            <ChatInputSubmit />
+        </ChatInput>
       </div>
     </div>
   );
