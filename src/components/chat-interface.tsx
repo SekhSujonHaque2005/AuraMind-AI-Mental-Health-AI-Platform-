@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useRef, useEffect, useTransition } from 'react';
-import { Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
+import { Loader2, Sparkles } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatMessage from './chat-message';
 import { getAIResponse } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
-import { ChatInput, ChatInputSubmit, ChatInputTextArea } from "@/components/ui/chat-input";
+import { PromptInputBox } from '@/components/ui/ai-prompt-box';
 
 type Message = {
   sender: 'user' | 'bot';
@@ -39,13 +39,11 @@ export default function ChatInterface() {
     scrollToBottom();
   }, [messages]);
 
-  const handleSubmit = async () => {
-    if (!input.trim() || isPending) return;
+  const handleSubmit = async (message: string, files?: File[]) => {
+    if (!message.trim() || isPending) return;
 
-    const newUserMessage: Message = { sender: 'user', text: input };
+    const newUserMessage: Message = { sender: 'user', text: message };
     setMessages((prev) => [...prev, newUserMessage]);
-    const currentInput = input;
-    setInput('');
 
     startTransition(async () => {
       const conversationHistory = messages.map(msg => ({
@@ -54,7 +52,7 @@ export default function ChatInterface() {
       }));
 
       const result = await getAIResponse({
-        message: currentInput,
+        message: message,
         conversationHistory: conversationHistory,
       });
 
@@ -94,15 +92,11 @@ export default function ChatInterface() {
       </ScrollArea>
 
       <div className="p-4 border-t border-border">
-        <ChatInput
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onSubmit={handleSubmit}
-            loading={isPending}
-        >
-            <ChatInputTextArea placeholder="Tell me what's on your mind..."/>
-            <ChatInputSubmit />
-        </ChatInput>
+        <PromptInputBox 
+          onSend={handleSubmit}
+          isLoading={isPending}
+          placeholder="Tell me what's on your mind..." 
+        />
       </div>
     </div>
   );
