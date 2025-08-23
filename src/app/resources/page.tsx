@@ -36,17 +36,21 @@ const resources = [
 
 export default function ResourcesPage() {
   return (
-    <div className="container mx-auto max-w-4xl py-8 px-4">
-      <h1 className="text-4xl font-bold font-headline mb-4 text-center">Mental Health Resources</h1>
-      <p className="text-muted-foreground text-center mb-12">
-        If you are in immediate danger, please call 911. For other support, these resources can help.
-      </p>
-      <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1">
+    <div className="container mx-auto max-w-4xl py-12 px-4">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-bold font-headline bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400 mb-4">
+          Mental Health Resources
+        </h1>
+        <p className="text-muted-foreground text-lg">
+          If you are in immediate danger, please call 911. For other support, these resources can help.
+        </p>
+      </div>
+      <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-1">
         {resources.map((resource) => (
-          <Card key={resource.name} className="flex flex-col">
+          <Card key={resource.name} className="flex flex-col bg-card/50 border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1">
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                <span className="font-headline">{resource.name}</span>
+                <span className="font-headline text-xl">{resource.name}</span>
                 {resource.website && (
                   <a
                     href={resource.website}

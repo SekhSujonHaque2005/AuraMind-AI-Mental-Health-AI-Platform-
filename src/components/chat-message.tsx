@@ -2,7 +2,7 @@
 
 import { Bot, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Avatar } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 type Message = {
   sender: 'user' | 'bot';
@@ -19,22 +19,22 @@ export default function ChatMessage({ message }: { message: Message }) {
         isUser ? 'flex-row-reverse' : 'flex-row'
       )}
     >
-      <Avatar className="h-8 w-8">
+      <Avatar className="h-10 w-10">
         <div className={cn("flex h-full w-full items-center justify-center rounded-full", 
-          isUser ? 'bg-primary' : 'bg-accent'
+          isUser ? 'bg-primary/20' : 'bg-gradient-to-br from-primary to-purple-500'
         )}>
           {isUser ? (
-            <User className="h-5 w-5 text-primary-foreground" />
+            <User className="h-6 w-6 text-primary-foreground" />
           ) : (
-            <Bot className="h-5 w-5 text-accent-foreground" />
+            <Bot className="h-6 w-6 text-primary-foreground" />
           )}
         </div>
       </Avatar>
       <div
         className={cn(
-          'max-w-[75%] rounded-lg p-3 text-sm shadow-sm transition-all duration-300 ease-in-out animate-in fade-in',
+          'max-w-[80%] rounded-xl p-4 text-base shadow-lg transition-all duration-300 ease-in-out animate-in fade-in',
           isUser
-            ? 'bg-primary text-primary-foreground rounded-br-none'
+            ? 'bg-primary/90 text-primary-foreground rounded-br-none'
             : 'bg-accent text-accent-foreground rounded-bl-none'
         )}
       >

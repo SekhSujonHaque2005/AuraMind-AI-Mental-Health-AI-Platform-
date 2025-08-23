@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useTransition } from 'react';
-import { Send, Bot, User, Loader2 } from 'lucide-react';
+import { Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -73,19 +73,19 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-full w-full max-w-4xl mx-auto bg-card rounded-lg shadow-lg border">
+    <div className="flex flex-col h-full w-full max-w-4xl mx-auto bg-card/50 rounded-2xl shadow-2xl border-primary/10 backdrop-blur-sm">
       <ScrollArea className="flex-1 p-6" ref={scrollAreaRef}>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6">
           {messages.map((message, index) => (
             <ChatMessage key={index} message={message} />
           ))}
           {isPending && (
              <div className="flex items-center space-x-4 p-4">
                 <div className="flex-shrink-0">
-                    <Bot className="h-8 w-8 text-primary" />
+                    <Sparkles className="h-8 w-8 text-primary animate-pulse" />
                 </div>
                 <div className="flex items-center space-x-2">
-                    <span className="text-muted-foreground">Aura is typing</span>
+                    <span className="text-muted-foreground">Aura is thinking</span>
                     <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
                 </div>
             </div>
@@ -93,22 +93,22 @@ export default function ChatInterface() {
         </div>
       </ScrollArea>
 
-      <div className="p-4 border-t bg-background rounded-b-lg">
+      <div className="p-4 border-t border-primary/10 bg-background/20 rounded-b-2xl">
         <form onSubmit={handleSubmit} className="flex items-center gap-4">
           <Input
             type="text"
-            placeholder="Type your message..."
+            placeholder="Tell me what's on your mind..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={isPending}
-            className="flex-1"
+            className="flex-1 bg-input border-primary/20 focus:ring-primary/50 text-base"
             autoComplete="off"
           />
-          <Button type="submit" size="icon" disabled={isPending || !input.trim()}>
+          <Button type="submit" size="icon" disabled={isPending || !input.trim()} className="rounded-full bg-primary hover:bg-primary/90">
             {isPending ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
-              <Send className="h-4 w-4" />
+              <Send className="h-5 w-5" />
             )}
             <span className="sr-only">Send</span>
           </Button>
