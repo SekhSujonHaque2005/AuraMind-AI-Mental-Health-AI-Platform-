@@ -25,11 +25,12 @@ export default function ChatInterface() {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({
-        top: scrollAreaRef.current.scrollHeight,
+    if (viewportRef.current) {
+      viewportRef.current.scrollTo({
+        top: viewportRef.current.scrollHeight,
         behavior: 'smooth',
       });
     }
@@ -73,8 +74,8 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-full w-full max-w-4xl mx-auto bg-card/50 rounded-2xl shadow-2xl border-primary/10 backdrop-blur-sm">
-      <ScrollArea className="flex-1 p-6" ref={scrollAreaRef}>
+    <div className="flex flex-col h-full w-full max-w-4xl mx-auto bg-card rounded-2xl shadow-lg border border-border">
+      <ScrollArea className="flex-1 p-4 sm:p-6" ref={scrollAreaRef} viewportRef={viewportRef}>
         <div className="flex flex-col gap-6">
           {messages.map((message, index) => (
             <ChatMessage key={index} message={message} />
@@ -82,7 +83,7 @@ export default function ChatInterface() {
           {isPending && (
              <div className="flex items-center space-x-4 p-4">
                 <div className="flex-shrink-0">
-                    <Sparkles className="h-8 w-8 text-primary animate-pulse" />
+                    <Sparkles className="h-8 w-8 text-primary/80 animate-pulse" />
                 </div>
                 <div className="flex items-center space-x-2">
                     <span className="text-muted-foreground">Aura is thinking</span>
@@ -93,7 +94,7 @@ export default function ChatInterface() {
         </div>
       </ScrollArea>
 
-      <div className="p-4 border-t border-primary/10 bg-background/20 rounded-b-2xl">
+      <div className="p-4 border-t border-border">
         <form onSubmit={handleSubmit} className="flex items-center gap-4">
           <Input
             type="text"
@@ -101,10 +102,10 @@ export default function ChatInterface() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={isPending}
-            className="flex-1 bg-input border-primary/20 focus:ring-primary/50 text-base"
+            className="flex-1 bg-input focus:ring-primary/50 text-base"
             autoComplete="off"
           />
-          <Button type="submit" size="icon" disabled={isPending || !input.trim()} className="rounded-full bg-primary hover:bg-primary/90">
+          <Button type="submit" size="icon" disabled={isPending || !input.trim()} className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground flex-shrink-0">
             {isPending ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
