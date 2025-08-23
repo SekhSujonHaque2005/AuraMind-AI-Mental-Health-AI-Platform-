@@ -24,7 +24,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [isSidebarExpanded, setSidebarExpanded] = useState(true);
+  const [isSidebarExpanded, setSidebarExpanded] = useState(false);
 
   // Set document title
   if (typeof window !== 'undefined') {
@@ -41,7 +41,12 @@ export default function RootLayout({
       <body className={cn('min-h-screen bg-background font-sans antialiased', inter.variable)}>
         <div className="relative flex min-h-screen flex-col">
           <div className="flex flex-1">
-            <Sidebar isExpanded={isSidebarExpanded} setIsExpanded={setSidebarExpanded} />
+            <div
+              onMouseEnter={() => setSidebarExpanded(true)}
+              onMouseLeave={() => setSidebarExpanded(false)}
+            >
+              <Sidebar isExpanded={isSidebarExpanded} />
+            </div>
             <motion.div
               initial={false}
               animate={isSidebarExpanded ? 'expanded' : 'collapsed'}

@@ -2,17 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MessageSquare, BookUser, ChevronLeft, ChevronRight } from 'lucide-react';
+import { MessageSquare, BookUser } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import React, { useState } from 'react';
+import React from 'react';
 
 const navItems = [
   { href: '/', label: 'Chat', icon: MessageSquare },
   { href: '/resources', label: 'Resources', icon: BookUser },
 ];
 
-const Sidebar = ({ isExpanded, setIsExpanded }: { isExpanded: boolean, setIsExpanded: (isExpanded: boolean) => void }) => {
+const Sidebar = ({ isExpanded }: { isExpanded: boolean }) => {
   const pathname = usePathname();
 
   const sidebarVariants = {
@@ -77,22 +77,6 @@ const Sidebar = ({ isExpanded, setIsExpanded }: { isExpanded: boolean, setIsExpa
           </Link>
         ))}
       </nav>
-      <div className="border-t border-blue-500/10 p-4">
-         <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-gray-400 transition-all hover:text-blue-300 hover:bg-blue-500/10"
-          >
-            {isExpanded ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5 mx-auto" />}
-            <AnimatePresence>
-            {isExpanded && <motion.span
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: 'auto' }}
-              exit={{ opacity: 0, width: 0 }}
-              transition={{ duration: 0.2 }}
-            >Collapse</motion.span>}
-            </AnimatePresence>
-          </button>
-      </div>
     </motion.aside>
   );
 };
