@@ -36,7 +36,7 @@ const resources = [
 
 export default function ResourcesPage() {
   return (
-    <div className="container mx-auto max-w-4xl py-12 px-4">
+    <div className="container mx-auto max-w-4xl py-12 px-4 pl-0">
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-primary to-slate-400 mb-4">
           Mental Health Resources
