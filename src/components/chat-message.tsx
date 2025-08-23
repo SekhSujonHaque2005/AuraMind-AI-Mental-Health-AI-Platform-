@@ -3,6 +3,7 @@
 import { Bot, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/avatar';
+import { format } from 'date-fns';
 
 type Message = {
   sender: 'user' | 'bot';
@@ -11,6 +12,7 @@ type Message = {
 
 export default function ChatMessage({ message }: { message: Message }) {
   const isUser = message.sender === 'user';
+  const timestamp = new Date();
 
   return (
     <div
@@ -21,24 +23,29 @@ export default function ChatMessage({ message }: { message: Message }) {
     >
       <Avatar className="h-9 w-9">
         <div className={cn("flex h-full w-full items-center justify-center rounded-full", 
-          isUser ? 'bg-primary/80' : 'bg-secondary'
+          isUser ? 'bg-blue-600' : 'bg-gray-700'
         )}>
           {isUser ? (
-            <User className="h-5 w-5 text-primary-foreground" />
+            <User className="h-5 w-5 text-white" />
           ) : (
-            <Bot className="h-5 w-5 text-secondary-foreground" />
+            <Bot className="h-5 w-5 text-white" />
           )}
         </div>
       </Avatar>
-      <div
-        className={cn(
-          'max-w-[80%] rounded-xl p-3.5 text-base shadow-md transition-all duration-300 ease-in-out animate-in fade-in',
-          isUser
-            ? 'bg-primary/90 text-primary-foreground rounded-br-none'
-            : 'bg-secondary text-secondary-foreground rounded-bl-none'
-        )}
-      >
-        <p className="whitespace-pre-wrap">{message.text}</p>
+      <div className="flex flex-col gap-1">
+        <div
+          className={cn(
+            'max-w-md rounded-xl p-3.5 text-base shadow-lg transition-all duration-300 ease-in-out animate-in fade-in',
+            isUser
+              ? 'bg-blue-600 text-white rounded-br-none'
+              : 'bg-gray-800 text-gray-200 rounded-bl-none'
+          )}
+        >
+          <p className="whitespace-pre-wrap">{message.text}</p>
+        </div>
+        <p className={cn("text-xs text-gray-500", isUser ? "text-right" : "text-left")}>
+          {format(timestamp, 'p')}
+        </p>
       </div>
     </div>
   );

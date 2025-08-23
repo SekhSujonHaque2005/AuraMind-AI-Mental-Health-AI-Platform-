@@ -14,10 +14,10 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed left-0 top-0 z-50 flex h-full w-60 flex-col border-r border-border/40 bg-background">
-      <div className="flex h-16 items-center border-b border-border/40 px-6">
-        <Link href="/" className="flex items-center gap-2 font-semibold">
-          <MessageSquare className="h-6 w-6 text-primary" />
+    <aside className="fixed left-0 top-0 z-50 flex h-full w-60 flex-col border-r border-blue-500/10 bg-black">
+      <div className="flex h-16 items-center border-b border-blue-500/10 px-6">
+        <Link href="/" className="flex items-center gap-2 font-semibold text-lg text-white">
+          <MessageSquare className="h-6 w-6 text-blue-400" />
           <span>AuraMind</span>
         </Link>
       </div>
@@ -27,8 +27,8 @@ export default function Sidebar() {
             key={item.href}
             href={item.href}
             className={cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted',
-              pathname === item.href && 'bg-muted text-primary'
+              'flex items-center gap-3 rounded-lg px-3 py-2 text-gray-400 transition-all hover:text-blue-300 hover:bg-blue-500/10',
+              pathname === item.href && 'bg-blue-500/10 text-blue-300'
             )}
           >
             <item.icon className="h-5 w-5" />

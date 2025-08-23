@@ -22,12 +22,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className="dark">
       <body className={cn('min-h-screen bg-background font-sans antialiased', inter.variable)}>
         <div className="relative flex min-h-screen flex-col">
-          <Header />
           <div className="flex flex-1">
             <Sidebar />
-            <main className="flex-1 pl-60">
-              {children}
-            </main>
+            <div className="flex flex-col flex-1 pl-60">
+              <Header />
+              <main className="flex-1">
+                {children}
+              </main>
+            </div>
           </div>
         </div>
         <Toaster />

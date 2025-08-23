@@ -38,35 +38,35 @@ export default function ResourcesPage() {
   return (
     <div className="container mx-auto max-w-4xl py-12 px-4">
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-primary to-slate-400 mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-4">
           Mental Health Resources
         </h1>
-        <p className="text-muted-foreground text-lg">
+        <p className="text-gray-400 text-lg">
           If you are in immediate danger, please call 911. For other support, these resources can help.
         </p>
       </div>
       <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1">
         {resources.map((resource) => (
-          <Card key={resource.name} className="flex flex-col bg-secondary/50 border-border hover:border-primary/40 transition-all duration-300 transform hover:-translate-y-1 shadow-md">
+          <Card key={resource.name} className="flex flex-col bg-gray-900/50 border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300 transform hover:-translate-y-1 shadow-[0_0_15px_rgba(72,149,239,0.15)]">
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                <span className="text-xl">{resource.name}</span>
+                <span className="text-xl text-blue-300">{resource.name}</span>
                 {resource.website && (
                   <a
                     href={resource.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary/80 hover:text-primary"
+                    className="text-blue-400 hover:text-blue-300"
                     aria-label={`Visit ${resource.name} website`}
                   >
                     <ExternalLink className="h-5 w-5" />
                   </a>
                 )}
               </CardTitle>
-              <CardDescription>{resource.description}</CardDescription>
+              <CardDescription className="text-gray-400">{resource.description}</CardDescription>
             </CardHeader>
             <CardContent className="mt-auto">
-              <p className="font-semibold text-primary/90">{resource.phone}</p>
+              <p className="font-semibold text-blue-300">{resource.phone}</p>
             </CardContent>
           </Card>
         ))}
