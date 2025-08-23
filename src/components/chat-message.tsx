@@ -4,6 +4,7 @@ import { Bot, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/avatar';
 import { format } from 'date-fns';
+import { useState, useEffect } from 'react';
 
 type Message = {
   sender: 'user' | 'bot';
@@ -12,7 +13,14 @@ type Message = {
 
 export default function ChatMessage({ message }: { message: Message }) {
   const isUser = message.sender === 'user';
-  const timestamp = new Date();
+  const [timestamp, setTimestamp] = useState<string | null>(null);
+
+  useEffect(() => {
+    // This code runs only on the client, after the component has mounted.
+    // This prevents a hydration mismatch between server and client.
+    setTimestamp(format(new Date(), 'p'));
+  }, []);
+
 
   return (
     <div
@@ -43,9 +51,11 @@ export default function ChatMessage({ message }: { message: Message }) {
         >
           <p className="whitespace-pre-wrap">{message.text}</p>
         </div>
-        <p className={cn("text-xs text-gray-500", isUser ? "text-right" : "text-left")}>
-          {format(timestamp, 'p')}
-        </p>
+        {timestamp && (
+          <p className={cn("text-xs text-gray-500", isUser ? "text-right" : "text-left")}>
+            {timestamp}
+          </p>
+        )}
       </div>
     </div>
   );
