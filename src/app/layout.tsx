@@ -1,35 +1,58 @@
-import type {Metadata} from 'next';
+'use client';
+
+import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/header';
 import Sidebar from '@/components/layout/sidebar';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
-export const metadata: Metadata = {
-  title: 'AuraMind - Your Mental Wellness Companion',
-  description: 'A safe space to explore your thoughts and feelings.',
-};
+// Since we're using 'use client', we can't export metadata directly.
+// We'll set the title in the document head.
+// export const metadata: Metadata = {
+//   title: 'AuraMind - Your Mental Wellness Companion',
+//   description: 'A safe space to explore your thoughts and feelings.',
+// };
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [isSidebarExpanded, setSidebarExpanded] = useState(true);
+
+  // Set document title
+  if (typeof window !== 'undefined') {
+    document.title = 'AuraMind - Your Mental Wellness Companion';
+  }
+
+  const mainContentVariants = {
+    expanded: { paddingLeft: '240px', transition: { duration: 0.3, ease: 'easeInOut' } },
+    collapsed: { paddingLeft: '80px', transition: { duration: 0.3, ease: 'easeInOut' } },
+  };
+
   return (
     <html lang="en" suppressHydrationWarning className="dark">
       <body className={cn('min-h-screen bg-background font-sans antialiased', inter.variable)}>
         <div className="relative flex min-h-screen flex-col">
           <div className="flex flex-1">
-            <Sidebar />
-            <div className="flex flex-col flex-1 pl-60">
-              <Header />
+            <Sidebar isExpanded={isSidebarExpanded} setIsExpanded={setSidebarExpanded} />
+            <motion.div
+              initial={false}
+              animate={isSidebarExpanded ? 'expanded' : 'collapsed'}
+              variants={mainContentVariants}
+              className="flex flex-col flex-1"
+            >
+              <Header isSidebarExpanded={isSidebarExpanded} />
               <main className="flex-1">
                 {children}
               </main>
-            </div>
+            </motion.div>
           </div>
         </div>
         <Toaster />
