@@ -40,7 +40,7 @@ export default function ChatMessage({ message }: { message: Message }) {
           )}
         </div>
       </Avatar>
-      <div className="flex flex-col gap-1">
+      <div className={cn("flex flex-col gap-1", isUser ? 'items-end' : 'items-start')}>
         <div
           className={cn(
             'max-w-md rounded-xl p-3.5 text-base shadow-lg transition-all duration-300 ease-in-out animate-in fade-in',
@@ -52,7 +52,7 @@ export default function ChatMessage({ message }: { message: Message }) {
           <p className="whitespace-pre-wrap">{message.text}</p>
         </div>
         {timestamp && (
-          <p className={cn("text-xs text-gray-500", isUser ? "text-right" : "text-left")}>
+          <p className="text-xs text-gray-500">
             {timestamp}
           </p>
         )}
