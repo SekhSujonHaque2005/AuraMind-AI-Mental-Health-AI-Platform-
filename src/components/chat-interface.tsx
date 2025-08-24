@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useTransition } from 'react';
+import { motion } from 'framer-motion';
 import { Loader2, Sparkles } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatMessage from './chat-message';
@@ -70,7 +71,7 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="relative flex flex-col h-full w-full max-w-4xl mx-auto">
+    <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
       <ScrollArea className="flex-1 p-4 sm:p-6" ref={scrollAreaRef} viewportRef={viewportRef}>
         <div className="flex flex-col gap-6">
           {messages.map((message, index) => (
@@ -92,11 +93,21 @@ export default function ChatInterface() {
 
       <div className="p-4 bg-transparent">
         <div className="relative max-w-4xl mx-auto">
-          <PromptInputBox 
-            onSend={handleSubmit} 
-            isLoading={isPending}
-            placeholder="Ask Aura anything..."
-          />
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            whileHover={{
+              scale: 1.02,
+              transition: { duration: 0.2 },
+            }}
+          >
+            <PromptInputBox 
+              onSend={handleSubmit} 
+              isLoading={isPending}
+              placeholder="Ask Aura anything..."
+            />
+          </motion.div>
         </div>
       </div>
     </div>

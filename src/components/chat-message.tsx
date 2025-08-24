@@ -13,12 +13,12 @@ type Message = {
 
 export default function ChatMessage({ message }: { message: Message }) {
   const isUser = message.sender === 'user';
-  const [timestamp, setTimestamp] = useState<string | null>(null);
+  const [timestamp, setTimestamp] = useState<Date | null>(null);
 
   useEffect(() => {
     // This code runs only on the client, after the component has mounted.
     // This prevents a hydration mismatch between server and client.
-    setTimestamp(format(new Date(), 'p'));
+    setTimestamp(new Date());
   }, []);
 
 
@@ -52,8 +52,8 @@ export default function ChatMessage({ message }: { message: Message }) {
           <p className="whitespace-pre-wrap">{message.text}</p>
         </div>
         {timestamp && (
-          <p className="text-xs text-gray-500">
-            {timestamp}
+           <p className={cn("text-xs text-gray-500", isUser ? "text-right" : "text-left")}>
+            {format(timestamp, 'p')}
           </p>
         )}
       </div>
