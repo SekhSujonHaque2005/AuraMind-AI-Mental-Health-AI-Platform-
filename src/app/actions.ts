@@ -1,3 +1,4 @@
+
 'use server';
 
 import { checkSafetyAndRespond, SafetyCheckInput } from '@/ai/flows/critical-safety-protocol';
