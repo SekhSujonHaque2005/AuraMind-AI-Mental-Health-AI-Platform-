@@ -71,9 +71,9 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
+    <div className="flex flex-col h-full w-full">
       <ScrollArea className="flex-1 p-4 sm:p-6" ref={scrollAreaRef} viewportRef={viewportRef}>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full">
           {messages.map((message, index) => (
             <ChatMessage key={index} message={message} />
           ))}
