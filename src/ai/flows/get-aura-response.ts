@@ -65,6 +65,13 @@ const getAuraResponseFlow = ai.defineFlow(
   },
   async input => {
     const {output} = await prompt(input);
+    if (output) {
+      // The model may return null for gifUrl, which violates the schema.
+      // Convert null to undefined.
+      if (output.gifUrl === null) {
+        output.gifUrl = undefined;
+      }
+    }
     return output!;
   }
 );
