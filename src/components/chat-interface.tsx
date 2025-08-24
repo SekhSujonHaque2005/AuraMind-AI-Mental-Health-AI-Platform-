@@ -97,10 +97,6 @@ export default function ChatInterface() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            whileHover={{
-              scale: 1.02,
-              transition: { duration: 0.2 },
-            }}
           >
             <PromptInputBox 
               onSend={handleSubmit} 
