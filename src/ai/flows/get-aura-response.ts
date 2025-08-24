@@ -35,7 +35,7 @@ export async function getAuraResponse(input: GetAuraResponseInput): Promise<GetA
 const auraPrompt = ai.definePrompt({
     name: 'auraPrompt',
     input: { schema: GetAuraResponseInputSchema },
-    output: { schema: z.string() },
+    output: { schema: z.string().nullable() },
     model: 'googleai/gemini-1.5-flash',
     prompt: `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
 
@@ -82,7 +82,7 @@ const getAuraResponseFlow = ai.defineFlow(
         Query:`,
     });
 
-    const searchQuery = searchQueryResponse.text.trim();
+    const searchQuery = searchQueryResponse.text?.trim();
 
     // Step 3: Search for the GIF using the extracted query.
     let gifUrl: string | undefined | null = null;
