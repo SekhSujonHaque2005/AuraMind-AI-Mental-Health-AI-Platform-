@@ -53,23 +53,9 @@ export default function ChatMessage({ message, onOptionClick }: { message: Messa
           {isUser ? (
             <p className="whitespace-pre-wrap">{message.text}</p>
           ) : (
-            <>
-              <TextType text={message.text} typingSpeed={20} loop={false} />
-              {message.gifUrl && (
-                <div className="mt-2">
-                  <Image 
-                    src={message.gifUrl} 
-                    alt="Relevant GIF" 
-                    className="rounded-lg max-w-full h-auto" 
-                    width={200} 
-                    height={150} 
-                    unoptimized
-                  />
-                </div>
-              )}
-            </>
+            <TextType text={message.text} typingSpeed={20} loop={false} />
           )}
-          {isUser && message.gifUrl && (
+          {message.gifUrl && (
             <div className="mt-2">
               <Image 
                 src={message.gifUrl} 
