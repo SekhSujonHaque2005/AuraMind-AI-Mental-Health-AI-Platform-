@@ -38,13 +38,18 @@ const emotionToGifMap: Record<string, string> = {
     'Anxious': 'https://media.giphy.com/media/fu2NNkJVuULPBWexiJ/giphy.gif',
     'Love': 'https://media.giphy.com/media/bMLGNRoAy0Yko/giphy.gif',
     'Tough': 'https://media.giphy.com/media/3ohuPypXryWkDeeFby/giphy.gif',
+    'Overwhelmed': 'https://media.giphy.com/media/ALZ1PPM20REZ2/giphy.gif',
+    'Celebrating': 'https://media.giphy.com/media/4wHmqg9C94vYc/giphy.gif',
+    'Lonely': 'https://media.giphy.com/media/TSQh1M1cbR9XiufPxb/giphy.gif',
+    'Stressed': 'https://media.giphy.com/media/1jl173guBKkbvC03rQ/giphy.gif',
+    'Venting': 'https://media.giphy.com/media/9Qd1eBO8Mi7xW8jFS7/giphy.gif',
     'Support': 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     'Greeting': 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
 };
 
 const SingleCallOutputSchema = z.object({
   response: z.string().describe("The AI's empathetic and supportive text response."),
-  emotion: z.enum(['Happy', 'Sad', 'Angry', 'Anxious', 'Love', 'Tough', 'Support', 'Greeting'])
+  emotion: z.enum(['Happy', 'Sad', 'Angry', 'Anxious', 'Love', 'Tough', 'Overwhelmed', 'Celebrating', 'Lonely', 'Stressed', 'Venting', 'Support', 'Greeting'])
     .describe('The core emotion of the conversation from the provided list.'),
 });
 
@@ -65,7 +70,7 @@ const auraPrompt = ai.definePrompt({
     7.  **Disclaimer:** ALWAYS include a disclaimer at the end of your response, such as: "Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional."
 
     First, write your response to the user.
-    Then, analyze the user's message and your response to determine the core emotion. Choose one emotion from this list: Happy, Sad, Angry, Anxious, Love, Tough, Support, Greeting.
+    Then, analyze the user's message and your response to determine the core emotion. Choose one emotion from this list: Happy, Sad, Angry, Anxious, Love, Tough, Overwhelmed, Celebrating, Lonely, Stressed, Venting, Support, Greeting.
 
     Conversation History:
     {{#each conversationHistory}}
