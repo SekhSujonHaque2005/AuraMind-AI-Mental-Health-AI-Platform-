@@ -20,7 +20,7 @@ const initialMessage: Message = {
     id: 0,
     sender: 'bot',
     text: "Hello! I'm Aura, your empathetic AI companion. I'm here to listen without judgment. To start, what's on your mind today? ☀️",
-    gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    gifUrl: 'https://media.giphy.com/media/dzaUX7CAG0Ihi/giphy.gif',
     options: [
         { label: "I'm feeling happy! 😊", value: "I'm feeling happy today!" },
         { label: "I'm feeling sad 😔", value: "I'm feeling a bit sad" },
