@@ -35,6 +35,8 @@ export async function getAuraResponse(input: GetAuraResponseInput): Promise<GetA
 const auraPrompt = ai.definePrompt({
     name: 'auraPrompt',
     input: { schema: GetAuraResponseInputSchema },
+    output: { schema: z.string() },
+    model: 'googleai/gemini-1.5-flash',
     prompt: `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
 
     Your core principles are:
