@@ -10,6 +10,7 @@ import React,
 { useState } from 'react';
 import { motion } from 'framer-motion';
 import Prism from '@/components/prism';
+import { ChatProvider } from '@/contexts/ChatContext';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -40,40 +41,42 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="dark">
       <body className={cn('min-h-screen bg-background font-sans antialiased', inter.variable)}>
-        <div className="absolute inset-0 z-0">
-            <Prism
-            animationType="rotate"
-            timeScale={0.25}
-            height={3.5}
-            baseWidth={5.5}
-            scale={3.6}
-            hueShift={0.7}
-            colorFrequency={0.6}
-            noise={0.3}
-            glow={1}
-            />
-        </div>
-        <div className="relative z-10 flex min-h-screen flex-col">
-          <div className="flex flex-1">
-            <div
-              onMouseEnter={() => setSidebarExpanded(true)}
-              onMouseLeave={() => setSidebarExpanded(false)}
-            >
-              <Sidebar isExpanded={isSidebarExpanded} />
-            </div>
-            <motion.div
-              initial={false}
-              animate={isSidebarExpanded ? 'expanded' : 'collapsed'}
-              variants={mainContentVariants}
-              className="flex flex-col flex-1"
-            >
-              <main className="flex-1">
-                {children}
-              </main>
-            </motion.div>
+        <ChatProvider>
+          <div className="absolute inset-0 z-0">
+              <Prism
+              animationType="rotate"
+              timeScale={0.25}
+              height={3.5}
+              baseWidth={5.5}
+              scale={3.6}
+              hueShift={0.7}
+              colorFrequency={0.6}
+              noise={0.3}
+              glow={1}
+              />
           </div>
-        </div>
-        <Toaster />
+          <div className="relative z-10 flex min-h-screen flex-col">
+            <div className="flex flex-1">
+              <div
+                onMouseEnter={() => setSidebarExpanded(true)}
+                onMouseLeave={() => setSidebarExpanded(false)}
+              >
+                <Sidebar isExpanded={isSidebarExpanded} />
+              </div>
+              <motion.div
+                initial={false}
+                animate={isSidebarExpanded ? 'expanded' : 'collapsed'}
+                variants={mainContentVariants}
+                className="flex flex-col flex-1"
+              >
+                <main className="flex-1">
+                  {children}
+                </main>
+              </motion.div>
+            </div>
+          </div>
+          <Toaster />
+        </ChatProvider>
       </body>
     </html>
   );

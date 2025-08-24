@@ -16,15 +16,7 @@ const navItems = [
 
 const Sidebar = ({ isExpanded }: { isExpanded: boolean }) => {
   const pathname = usePathname();
-  // The useChat hook will only be used if the provider is in the tree.
-  // We can conditionally call it.
-  let chatContext;
-  try {
-    chatContext = useChat();
-  } catch (e) {
-    chatContext = null;
-  }
-  const { startNewChat } = chatContext || { startNewChat: () => {} };
+  const { startNewChat } = useChat();
 
   const sidebarVariants = {
     expanded: { width: '240px', transition: { duration: 0.3, ease: 'easeInOut' } },
