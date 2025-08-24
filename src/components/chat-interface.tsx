@@ -48,31 +48,36 @@ export default function ChatInterface() {
     }
   }, [messages, isAtBottom]);
 
-  const fetchAIResponse = (message: string, currentHistory: Message[]) => {
-    startTransition(async () => {
-      const conversationHistory = currentHistory.map(msg => ({
+  useEffect(() => {
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage && lastMessage.sender === 'user') {
+      const conversationHistory = messages.slice(0, -1).map(msg => ({
         sender: msg.sender,
         text: msg.text,
       }));
 
-      const result = await getAIResponse({
-        message: message,
-        conversationHistory: conversationHistory,
-      });
-
-      if (result.error) {
-        toast({
-          variant: "destructive",
-          title: "An error occurred",
-          description: result.error,
+      startTransition(async () => {
+        const result = await getAIResponse({
+          message: lastMessage.text,
+          conversationHistory: conversationHistory,
         });
-        setMessages(prev => prev.slice(0, -1)); // Remove user message on error
-      } else if (result.response) {
-        const newBotMessage: Message = { id: getNextMessageId(), sender: 'bot', text: result.response };
-        setMessages((prev) => [...prev, newBotMessage]);
-      }
-    });
-  }
+
+        if (result.error) {
+          toast({
+            variant: "destructive",
+            title: "An error occurred",
+            description: result.error,
+          });
+          // Optionally remove the user's message that caused the error
+          // setMessages(prev => prev.slice(0, -1));
+        } else if (result.response) {
+          const newBotMessage: Message = { id: getNextMessageId(), sender: 'bot', text: result.response };
+          setMessages((prev) => [...prev, newBotMessage]);
+        }
+      });
+    }
+  }, [messages]);
+
 
   const handleOptionClick = (value: string) => {
     const newUserMessage: Message = { id: getNextMessageId(), sender: 'user', text: value };
@@ -80,10 +85,7 @@ export default function ChatInterface() {
     setMessages((prev) => {
       // Remove options from the message that was clicked
       const newHistory = prev.map(m => ({ ...m, options: undefined }));
-      const updatedMessages = [...newHistory, newUserMessage];
-      // Fetch AI response inside the callback to ensure updatedMessages is set
-      fetchAIResponse(value, updatedMessages);
-      return updatedMessages;
+      return [...newHistory, newUserMessage];
     });
   };
 
@@ -91,10 +93,7 @@ export default function ChatInterface() {
     if (!message || message.trim() === '' || isPending) return;
 
     const newUserMessage: Message = { id: getNextMessageId(), sender: 'user', text: message };
-    const updatedMessages = [...messages, newUserMessage];
-    setMessages(updatedMessages);
-
-    fetchAIResponse(message, updatedMessages);
+    setMessages((prev) => [...prev, newUserMessage]);
   };
 
   return (
