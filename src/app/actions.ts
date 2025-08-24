@@ -19,7 +19,9 @@ export async function getAIResponse(input: ChatActionInput) {
     const parsedInput = chatActionInputSchema.safeParse(input);
 
     if (!parsedInput.success) {
-      return { error: 'Invalid input. ' + parsedInput.error.format()._errors.join(' ') };
+      const errorMessage = "Invalid input: " + parsedInput.error.format()._errors.join(' ');
+      console.error(errorMessage);
+      return { error: 'There was an issue with the data sent to the server. Please try again.' };
     }
 
     const { message, conversationHistory } = parsedInput.data;
@@ -28,21 +30,24 @@ export async function getAIResponse(input: ChatActionInput) {
     const safetyInput: SafetyCheckInput = { message };
     const safetyResult = await checkSafetyAndRespond(safetyInput);
 
-    if (!safetyResult.isSafe && safetyResult.response) {
-      return { response: safetyResult.response };
+    if (safetyResult && !safetyResult.isSafe && safetyResult.response) {
+      return { response: safetyResult.response, gifUrl: undefined };
     }
 
     // 2. Get Aura's regular response
     const auraInput: GetAuraResponseInput = { message, conversationHistory };
     const auraResult = await getAuraResponse(auraInput);
 
-    if (!auraResult.response) {
+    if (!auraResult || !auraResult.response) {
+      console.error("Aura response was empty or undefined.");
       return { error: 'Aura could not generate a response at this time. Please try again later.' };
     }
 
     return { response: auraResult.response, gifUrl: auraResult.gifUrl };
   } catch (error) {
     console.error("Error in getAIResponse:", error);
-    return { error: 'An unexpected error occurred. Please try again.' };
+    // Provide a more specific error in development if possible
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
+    return { error: `An unexpected error occurred: ${errorMessage}. Please try again.` };
   }
 }
