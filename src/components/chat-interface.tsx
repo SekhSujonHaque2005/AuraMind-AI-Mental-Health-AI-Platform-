@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useRef, useEffect, useTransition } from 'react';
+import { useRef, useEffect, useTransition, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, Sparkles } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -10,18 +10,16 @@ import { getAIResponse } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { PromptInputBox } from '@/components/ui/ai-prompt-box';
 import { useChat } from '@/contexts/ChatContext';
+import type { Message } from '@/contexts/ChatContext';
 
-type Message = {
-  sender: 'user' | 'bot';
-  text: string;
-};
 
 export default function ChatInterface() {
-  const { messages, setMessages } = useChat();
+  const { messages, setMessages, getNextMessageId } = useChat();
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
+  const [isAtBottom, setIsAtBottom] = useState(true);
 
   const scrollToBottom = () => {
     if (viewportRef.current) {
@@ -32,22 +30,27 @@ export default function ChatInterface() {
             behavior: 'smooth',
             });
         }
-      }, 100); // Small delay to allow the new message to render
+      }, 100); 
+    }
+  };
+
+  const handleScroll = () => {
+    if (viewportRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = viewportRef.current;
+        const atBottom = scrollHeight - scrollTop <= clientHeight + 5; // 5px tolerance
+        setIsAtBottom(atBottom);
     }
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (isAtBottom) {
+      scrollToBottom();
+    }
+  }, [messages, isAtBottom]);
 
-  const handleSubmit = async (message: string, files?: File[]) => {
-    if ((!message || message.trim() === '') && (!files || files.length === 0) || isPending) return;
-
-    const newUserMessage: Message = { sender: 'user', text: message };
-    setMessages((prev) => [...prev, newUserMessage]);
-
+  const fetchAIResponse = (message: string, currentHistory: Message[]) => {
     startTransition(async () => {
-      const conversationHistory = messages.map(msg => ({
+      const conversationHistory = currentHistory.map(msg => ({
         sender: msg.sender,
         text: msg.text,
       }));
@@ -65,18 +68,47 @@ export default function ChatInterface() {
         });
         setMessages(prev => prev.slice(0, -1)); // Remove user message on error
       } else if (result.response) {
-        const newBotMessage: Message = { sender: 'bot', text: result.response };
+        const newBotMessage: Message = { id: getNextMessageId(), sender: 'bot', text: result.response };
         setMessages((prev) => [...prev, newBotMessage]);
       }
     });
+  }
+
+  const handleOptionClick = (value: string) => {
+    const newUserMessage: Message = { id: getNextMessageId(), sender: 'user', text: value };
+    let updatedMessages: Message[];
+
+    setMessages((prev) => {
+      // Remove options from the message that was clicked
+      const newHistory = prev.map(m => ({ ...m, options: undefined }));
+      updatedMessages = [...newHistory, newUserMessage];
+      return updatedMessages;
+    });
+
+    fetchAIResponse(value, updatedMessages);
+  };
+
+  const handleSubmit = async (message: string) => {
+    if (!message || message.trim() === '' || isPending) return;
+
+    const newUserMessage: Message = { id: getNextMessageId(), sender: 'user', text: message };
+    const updatedMessages = [...messages, newUserMessage];
+    setMessages(updatedMessages);
+
+    fetchAIResponse(message, updatedMessages);
   };
 
   return (
     <div className="flex flex-col h-full w-full">
-      <ScrollArea className="flex-1 p-4 sm:p-6" ref={scrollAreaRef} viewportRef={viewportRef}>
+      <ScrollArea 
+        className="flex-1 p-4 sm:p-6" 
+        ref={scrollAreaRef} 
+        viewportRef={viewportRef}
+        onScroll={handleScroll}
+      >
         <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full">
-          {messages.map((message, index) => (
-            <ChatMessage key={index} message={message} />
+          {messages.map((message) => (
+            <ChatMessage key={message.id} message={message} onOptionClick={handleOptionClick} />
           ))}
           {isPending && (
              <div className="flex items-center space-x-4 p-4">

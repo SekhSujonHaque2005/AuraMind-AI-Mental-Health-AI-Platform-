@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Bot, User } from 'lucide-react';
@@ -6,22 +7,20 @@ import { Avatar } from '@/components/ui/avatar';
 import { format } from 'date-fns';
 import { useState, useEffect } from 'react';
 import TextType from '@/components/ui/text-type';
+import type { Message } from '@/contexts/ChatContext';
+import { Button } from './ui/button';
 
-type Message = {
-  sender: 'user' | 'bot';
-  text: string;
-};
-
-export default function ChatMessage({ message }: { message: Message }) {
+export default function ChatMessage({ message, onOptionClick }: { message: Message, onOptionClick: (value: string) => void }) {
   const isUser = message.sender === 'user';
   const [timestamp, setTimestamp] = useState<string | null>(null);
 
   useEffect(() => {
-    // This code runs only on the client, after the component has mounted.
-    // This prevents a hydration mismatch between server and client.
     setTimestamp(format(new Date(), 'p'));
   }, []);
 
+  const handleOptionClick = (value: string) => {
+    onOptionClick(value);
+  };
 
   return (
     <div
@@ -41,7 +40,7 @@ export default function ChatMessage({ message }: { message: Message }) {
           )}
         </div>
       </Avatar>
-      <div className={cn("flex flex-col gap-1", isUser ? 'items-end' : 'items-start')}>
+      <div className={cn("flex flex-col gap-2", isUser ? 'items-end' : 'items-start')}>
         <div
           className={cn(
             'max-w-md rounded-xl p-3.5 text-base shadow-lg transition-all duration-300 ease-in-out animate-in fade-in',
@@ -56,8 +55,23 @@ export default function ChatMessage({ message }: { message: Message }) {
             <TextType text={message.text} typingSpeed={20} loop={false} />
           )}
         </div>
+        {!isUser && message.options && (
+            <div className="flex flex-wrap gap-2">
+                {message.options.map((option, index) => (
+                    <Button 
+                        key={index} 
+                        variant="outline" 
+                        size="sm"
+                        className="bg-gray-800/80 border-blue-500/20 hover:bg-blue-500/10 hover:text-blue-300 text-gray-300"
+                        onClick={() => handleOptionClick(option.value)}
+                    >
+                        {option.label}
+                    </Button>
+                ))}
+            </div>
+        )}
         {timestamp && (
-           <p className="text-xs text-gray-500">
+           <p className="text-xs text-gray-500 mt-1">
             {timestamp}
           </p>
         )}
