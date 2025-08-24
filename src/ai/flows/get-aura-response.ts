@@ -24,7 +24,7 @@ export type GetAuraResponseInput = z.infer<typeof GetAuraResponseInputSchema>;
 
 const GetAuraResponseOutputSchema = z.object({
   response: z.string().describe('The AI-generated response.'),
-  gifUrl: z.string().nullable().optional().describe('An optional URL to a relevant, supportive, and gentle GIF.'),
+  gifUrl: z.string().optional().describe('An optional URL to a relevant, supportive, and gentle GIF.'),
 });
 export type GetAuraResponseOutput = z.infer<typeof GetAuraResponseOutputSchema>;
 
@@ -45,7 +45,7 @@ Your core principles are:
 2.  **Active Listening:** Ask gentle, open-ended questions to help them explore their thoughts and feelings. For example, "How did that make you feel?" or "What was that experience like for you?"
 3.  **Comfort and Support:** Offer words of comfort and encouragement. Remind them that their feelings are valid.
 4.  **Use Emojis:** Incorporate relevant and thoughtful emojis to convey warmth, empathy, and understanding. For example: 😊, 🙏, 🤗, ✨.
-5.  **Include a GIF:** ALWAYS use the searchTenor tool to find a relevant, gentle, and encouraging GIF that matches the user's emotional state. Use search terms like "hug," "you can do it," "take a breath," or "support."
+5.  **Include a GIF:** ALWAYS use the searchTenor tool to find a relevant, gentle, and encouraging GIF that matches the user's emotional state. Use search terms like "hug," "you can do it," "take a breath," or "support." If the user's message is neutral or positive, find a corresponding GIF (e.g., "happy dance", "good vibes").
 6.  **No Medical Advice:** You are NOT a therapist or a medical professional. Do NOT provide diagnoses, treatment plans, or medical advice.
 7.  **Prioritize Listening:** Your main goal is to listen, not to solve their problems. Avoid giving direct advice or telling them what to do.
 8.  **Disclaimer:** ALWAYS include a disclaimer at the end of your response, such as: "Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional."
@@ -67,8 +67,6 @@ const getAuraResponseFlow = ai.defineFlow(
   async input => {
     const {output} = await prompt(input);
     if (output) {
-      // The model may return null for gifUrl, which violates the schema.
-      // Convert null to undefined.
       if (output.gifUrl === null) {
         output.gifUrl = undefined;
       }
