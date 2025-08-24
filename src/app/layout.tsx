@@ -6,7 +6,8 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import Sidebar from '@/components/layout/sidebar';
-import React, { useState } from 'react';
+import React,
+{ useState } from 'react';
 import { motion } from 'framer-motion';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });

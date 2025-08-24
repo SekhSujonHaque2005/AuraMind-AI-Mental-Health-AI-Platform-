@@ -30,7 +30,7 @@ export default function ChatMessage({ message }: { message: Message }) {
       )}
     >
       <Avatar className="h-9 w-9">
-        <div className={cn("flex h-full w-full items-center justify-center rounded-full", 
+        <div className={cn("flex h-full w-full items-center justify-center rounded-full",
           isUser ? 'bg-blue-600' : 'bg-gray-700'
         )}>
           {isUser ? (
