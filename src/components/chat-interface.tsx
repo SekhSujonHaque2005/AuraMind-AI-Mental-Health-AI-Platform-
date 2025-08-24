@@ -90,7 +90,7 @@ export default function ChatInterface() {
         </div>
       </ScrollArea>
 
-      <div className="sticky bottom-0 left-0 right-0 p-4 bg-black/50 backdrop-blur-md">
+      <div className="p-4 bg-transparent">
         <div className="relative max-w-4xl mx-auto">
           <PromptInputBox 
             onSend={handleSubmit} 
