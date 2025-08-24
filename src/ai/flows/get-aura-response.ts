@@ -23,7 +23,7 @@ export type GetAuraResponseInput = z.infer<typeof GetAuraResponseInputSchema>;
 
 const GetAuraResponseOutputSchema = z.object({
   response: z.string().describe('The AI-generated response.'),
-  gifUrl: z.string().optional().describe('An optional URL to a relevant, supportive, and gentle GIF.'),
+  gifUrl: z.string().nullable().optional().describe('An optional URL to a relevant, supportive, and gentle GIF.'),
 });
 export type GetAuraResponseOutput = z.infer<typeof GetAuraResponseOutputSchema>;
 
