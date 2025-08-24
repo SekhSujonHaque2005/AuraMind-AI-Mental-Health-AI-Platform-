@@ -11,13 +11,13 @@ export const searchTenor = ai.defineTool(
     inputSchema: z.object({
       query: z.string().describe('The search query for the GIF.'),
     }),
-    outputSchema: z.string().describe('The URL of the GIF.'),
+    outputSchema: z.string().optional(),
   },
   async input => {
     const apiKey = process.env.TENOR_API_KEY;
     if (!apiKey) {
       console.error('Tenor API key not found in environment variables.');
-      return ''; // Return empty string if key is not found
+      return undefined;
     }
     const url = `https://tenor.googleapis.com/v2/search?q=${encodeURIComponent(input.query)}&key=${apiKey}&client_key=auramind&limit=1&media_filter=tinygif`;
 
@@ -26,20 +26,20 @@ export const searchTenor = ai.defineTool(
       if (!response.ok) {
         const errorBody = await response.text();
         console.error(`Tenor API request failed: ${response.statusText}`, errorBody);
-        return '';
+        return undefined;
       }
       const data = await response.json();
       const gifUrl = data?.results?.[0]?.media_formats?.tinygif?.url;
       
       if (!gifUrl) {
         console.log("No GIF found for query:", input.query);
-        return '';
+        return undefined;
       }
 
       return gifUrl;
     } catch (error) {
       console.error('Error fetching GIF from Tenor:', error);
-      return ''; // Return empty string on error
+      return undefined;
     }
   }
 );
