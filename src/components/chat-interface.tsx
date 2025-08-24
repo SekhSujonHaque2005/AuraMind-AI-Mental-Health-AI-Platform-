@@ -28,10 +28,14 @@ export default function ChatInterface() {
 
   const scrollToBottom = () => {
     if (viewportRef.current) {
-      viewportRef.current.scrollTo({
-        top: viewportRef.current.scrollHeight,
-        behavior: 'smooth',
-      });
+      setTimeout(() => {
+        if (viewportRef.current) {
+            viewportRef.current.scrollTo({
+            top: viewportRef.current.scrollHeight,
+            behavior: 'smooth',
+            });
+        }
+      }, 100); // Small delay to allow the new message to render
     }
   };
 
