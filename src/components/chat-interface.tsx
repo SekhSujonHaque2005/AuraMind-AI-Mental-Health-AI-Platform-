@@ -76,16 +76,15 @@ export default function ChatInterface() {
 
   const handleOptionClick = (value: string) => {
     const newUserMessage: Message = { id: getNextMessageId(), sender: 'user', text: value };
-    let updatedMessages: Message[];
-
+    
     setMessages((prev) => {
       // Remove options from the message that was clicked
       const newHistory = prev.map(m => ({ ...m, options: undefined }));
-      updatedMessages = [...newHistory, newUserMessage];
+      const updatedMessages = [...newHistory, newUserMessage];
+      // Fetch AI response inside the callback to ensure updatedMessages is set
+      fetchAIResponse(value, updatedMessages);
       return updatedMessages;
     });
-
-    fetchAIResponse(value, updatedMessages);
   };
 
   const handleSubmit = async (message: string) => {
