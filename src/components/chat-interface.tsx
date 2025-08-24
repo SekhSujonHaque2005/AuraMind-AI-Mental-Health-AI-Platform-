@@ -1,6 +1,7 @@
+
 'use client';
 
-import { useState, useRef, useEffect, useTransition } from 'react';
+import { useRef, useEffect, useTransition } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, Sparkles } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -8,19 +9,15 @@ import ChatMessage from './chat-message';
 import { getAIResponse } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { PromptInputBox } from '@/components/ui/ai-prompt-box';
+import { useChat } from '@/contexts/ChatContext';
 
 type Message = {
   sender: 'user' | 'bot';
   text: string;
 };
 
-const initialMessage: Message = {
-  sender: 'bot',
-  text: "Hello! I'm Aura, your empathetic AI companion. I'm here to listen without judgment. How are you feeling today?",
-};
-
 export default function ChatInterface() {
-  const [messages, setMessages] = useState<Message[]>([initialMessage]);
+  const { messages, setMessages } = useChat();
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const scrollAreaRef = useRef<HTMLDivElement>(null);

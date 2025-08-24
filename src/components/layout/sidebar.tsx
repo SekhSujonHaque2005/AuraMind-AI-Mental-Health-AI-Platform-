@@ -1,11 +1,13 @@
+
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MessageSquare, BookUser } from 'lucide-react';
+import { MessageSquare, BookUser, PlusSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import React from 'react';
+import { useChat } from '@/contexts/ChatContext';
 
 const navItems = [
   { href: '/', label: 'Chat', icon: MessageSquare },
@@ -14,6 +16,15 @@ const navItems = [
 
 const Sidebar = ({ isExpanded }: { isExpanded: boolean }) => {
   const pathname = usePathname();
+  // The useChat hook will only be used if the provider is in the tree.
+  // We can conditionally call it.
+  let chatContext;
+  try {
+    chatContext = useChat();
+  } catch (e) {
+    chatContext = null;
+  }
+  const { startNewChat } = chatContext || { startNewChat: () => {} };
 
   const sidebarVariants = {
     expanded: { width: '240px', transition: { duration: 0.3, ease: 'easeInOut' } },
@@ -77,6 +88,30 @@ const Sidebar = ({ isExpanded }: { isExpanded: boolean }) => {
           </Link>
         ))}
       </nav>
+      <div className="mt-auto p-4">
+        <button
+            onClick={startNewChat}
+            className={cn(
+                'flex w-full items-center gap-3 rounded-lg px-3 py-2 text-gray-400 transition-all hover:text-blue-300 hover:bg-blue-500/10',
+                !isExpanded && 'justify-center'
+            )}
+            >
+            <PlusSquare className="h-5 w-5 shrink-0" />
+            <AnimatePresence>
+                {isExpanded && (
+                <motion.span
+                    variants={navItemVariants}
+                    initial="collapsed"
+                    animate="expanded"
+                    exit="collapsed"
+                    className="whitespace-nowrap"
+                >
+                    New Chat
+                </motion.span>
+                )}
+            </AnimatePresence>
+        </button>
+      </div>
     </motion.aside>
   );
 };
