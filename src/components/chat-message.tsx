@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 import TextType from '@/components/ui/text-type';
 import type { Message } from '@/contexts/ChatContext';
 import { Button } from './ui/button';
+import Image from 'next/image';
 
 export default function ChatMessage({ message, onOptionClick }: { message: Message, onOptionClick: (value: string) => void }) {
   const isUser = message.sender === 'user';
@@ -55,7 +56,16 @@ export default function ChatMessage({ message, onOptionClick }: { message: Messa
             <TextType text={message.text} typingSpeed={20} loop={false} />
           )}
           {message.gifUrl && (
-            <img src={message.gifUrl} alt="Relevant GIF" className="mt-2 rounded-lg max-w-full h-auto" />
+            <div className="mt-2">
+              <Image 
+                src={message.gifUrl} 
+                alt="Relevant GIF" 
+                className="rounded-lg max-w-full h-auto" 
+                width={200} 
+                height={150} 
+                unoptimized
+              />
+            </div>
           )}
         </div>
         {!isUser && message.options && (
