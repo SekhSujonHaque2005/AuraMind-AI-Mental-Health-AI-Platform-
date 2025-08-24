@@ -17,7 +17,7 @@ export const searchTenor = ai.defineTool(
     if (!apiKey) {
       throw new Error('Tenor API key not found.');
     }
-    const url = `https://tenor.googleapis.com/v2/search?q=${input.query}&key=${apiKey}&client_key=auramind&limit=1&media_filter=tinygif`;
+    const url = `https://tenor.googleapis.com/v2/search?q=${encodeURIComponent(input.query)}&key=${apiKey}&client_key=auramind&limit=1&media_filter=tinygif`;
 
     try {
       const response = await fetch(url);
