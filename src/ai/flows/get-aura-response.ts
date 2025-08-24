@@ -31,10 +31,27 @@ export async function getAuraResponse(input: GetAuraResponseInput): Promise<GetA
   return getAuraResponseFlow(input);
 }
 
+const emotionToGifMap: Record<string, string> = {
+    'Happy': 'https://media.giphy.com/media/dzaUX7CAG0Ihi/giphy.gif',
+    'Sad': 'https://media.giphy.com/media/l22ysLe54hZP0wubek/giphy.gif',
+    'Angry': 'https://media.giphy.com/media/aNFT7eG2rIKK715uLk/giphy.gif',
+    'Anxious': 'https://media.giphy.com/media/fu2NNkJVuULPBWexiJ/giphy.gif',
+    'Love': 'https://media.giphy.com/media/bMLGNRoAy0Yko/giphy.gif',
+    'Tough': 'https://media.giphy.com/media/3ohuPypXryWkDeeFby/giphy.gif',
+    'Support': 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    'Greeting': 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+};
+
+const SingleCallOutputSchema = z.object({
+  response: z.string().describe("The AI's empathetic and supportive text response."),
+  emotion: z.enum(['Happy', 'Sad', 'Angry', 'Anxious', 'Love', 'Tough', 'Support', 'Greeting'])
+    .describe('The core emotion of the conversation from the provided list.'),
+});
+
 const auraPrompt = ai.definePrompt({
     name: 'auraPrompt',
     input: { schema: GetAuraResponseInputSchema },
-    output: { schema: z.string().nullable() },
+    output: { schema: SingleCallOutputSchema },
     model: 'googleai/gemini-1.5-flash',
     prompt: `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
 
@@ -47,6 +64,9 @@ const auraPrompt = ai.definePrompt({
     6.  **Prioritize Listening:** Your main goal is to listen, not to solve their problems. Avoid giving direct advice or telling them what to do.
     7.  **Disclaimer:** ALWAYS include a disclaimer at the end of your response, such as: "Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional."
 
+    First, write your response to the user.
+    Then, analyze the user's message and your response to determine the core emotion. Choose one emotion from this list: Happy, Sad, Angry, Anxious, Love, Tough, Support, Greeting.
+
     Conversation History:
     {{#each conversationHistory}}
     {{sender}}: {{text}}
@@ -56,17 +76,6 @@ const auraPrompt = ai.definePrompt({
     Aura:`,
 });
 
-const emotionToGifMap: Record<string, string> = {
-    'Happy': 'https://media.giphy.com/media/dzaUX7CAG0Ihi/giphy.gif',
-    'Sad': 'https://media.giphy.com/media/l22ysLe54hZP0wubek/giphy.gif',
-    'Angry': 'https://media.giphy.com/media/aNFT7eG2rIKK715uLk/giphy.gif',
-    'Anxious': 'https://media.giphy.com/media/fu2NNkJVuULPBWexiJ/giphy.gif',
-    'Love': 'https://media.giphy.com/media/bMLGNRoAy0Yko/giphy.gif',
-    'Tough': 'https://media.giphy.com/media/3ohuPypXryWkDeeFby/giphy.gif',
-    'Support': 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif', // Default/support
-    'Greeting': 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
-};
-
 const getAuraResponseFlow = ai.defineFlow(
   {
     name: 'getAuraResponseFlow',
@@ -74,37 +83,20 @@ const getAuraResponseFlow = ai.defineFlow(
     outputSchema: GetAuraResponseOutputSchema,
   },
   async (input) => {
-    // Step 1: Generate the text response from Aura.
-    const textResponse = await auraPrompt(input);
-    const auraText = textResponse.text;
+    // Step 1: Generate the text response and emotion in a single call.
+    const structuredResponse = await auraPrompt(input);
+    const { output } = structuredResponse;
 
-    if (!auraText) {
+    if (!output) {
         return { response: "I'm not sure how to respond to that. Could you say it in a different way?", gifUrl: null };
     }
 
-    // Step 2: Extract the core emotion from the generated text.
-    const emotionResponse = await ai.generate({
-        model: 'googleai/gemini-1.5-flash',
-        prompt: `Analyze the user's message and Aura's response to determine the core emotion. Respond with a single word from this list: Happy, Sad, Angry, Anxious, Love, Tough, Support, Greeting.
-        
-        Examples:
-        - User: "I got a new job!" Aura: "That's amazing news! Congratulations!" -> Happy
-        - User: "I'm feeling so down today." Aura: "I'm sorry to hear that. It's okay to not be okay." -> Sad
-        - User: "I just want to talk" Aura: "Of course, I'm here to listen." -> Support
-        - User: "Hello there" Aura: "Hello! How are you?" -> Greeting
+    const { response: auraText, emotion } = output;
 
-        User's Message: "${input.message}"
-        Aura's Response: "${auraText}"
-        
-        Emotion:`,
-    });
-
-    const emotion = emotionResponse.text?.trim().replace(/"/g, '') || 'Support';
-
-    // Step 3: Get the GIF URL from the map.
+    // Step 2: Get the GIF URL from the map based on the returned emotion.
     const gifUrl = emotionToGifMap[emotion] || emotionToGifMap['Support'];
 
-    // Step 4: Return the final response.
+    // Step 3: Return the final response.
     return {
       response: auraText,
       gifUrl: gifUrl,
