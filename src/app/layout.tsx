@@ -5,7 +5,6 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
-import Header from '@/components/layout/header';
 import Sidebar from '@/components/layout/sidebar';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -53,7 +52,6 @@ export default function RootLayout({
               variants={mainContentVariants}
               className="flex flex-col flex-1"
             >
-              <Header isSidebarExpanded={isSidebarExpanded} />
               <main className="flex-1">
                 {children}
               </main>
