@@ -54,6 +54,9 @@ export default function ChatMessage({ message, onOptionClick }: { message: Messa
           ) : (
             <TextType text={message.text} typingSpeed={20} loop={false} />
           )}
+          {message.gifUrl && (
+            <img src={message.gifUrl} alt="Relevant GIF" className="mt-2 rounded-lg max-w-full h-auto" />
+          )}
         </div>
         {!isUser && message.options && (
             <div className="flex flex-wrap gap-2">

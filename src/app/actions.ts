@@ -40,7 +40,7 @@ export async function getAIResponse(input: ChatActionInput) {
       return { error: 'Aura could not generate a response at this time. Please try again later.' };
     }
 
-    return { response: auraResult.response };
+    return { response: auraResult.response, gifUrl: auraResult.gifUrl };
   } catch (error) {
     console.error("Error in getAIResponse:", error);
     return { error: 'An unexpected error occurred. Please try again.' };

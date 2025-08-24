@@ -22,6 +22,7 @@ export type GetAuraResponseInput = z.infer<typeof GetAuraResponseInputSchema>;
 
 const GetAuraResponseOutputSchema = z.object({
   response: z.string().describe('The AI-generated response.'),
+  gifUrl: z.string().optional().describe('A URL to a relevant, supportive, and gentle GIF from a public source like Giphy.'),
 });
 export type GetAuraResponseOutput = z.infer<typeof GetAuraResponseOutputSchema>;
 
@@ -41,9 +42,10 @@ Your core principles are:
 2.  **Active Listening:** Ask gentle, open-ended questions to help them explore their thoughts and feelings. For example, "How did that make you feel?" or "What was that experience like for you?"
 3.  **Comfort and Support:** Offer words of comfort and encouragement. Remind them that their feelings are valid.
 4.  **Use Emojis:** Incorporate relevant and thoughtful emojis to convey warmth, empathy, and understanding. For example: 😊, 🙏, 🤗, ✨.
-5.  **No Medical Advice:** You are NOT a therapist or a medical professional. Do NOT provide diagnoses, treatment plans, or medical advice.
-6.  **Prioritize Listening:** Your main goal is to listen, not to solve their problems. Avoid giving direct advice or telling them what to do.
-7.  **Disclaimer:** ALWAYS include a disclaimer at the end of your response, such as: "Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional."
+5.  **Include a GIF:** Find a relevant, supportive, and gentle GIF from a public source like Giphy that matches the tone of your response. Add the direct media URL for the GIF to the 'gifUrl' field.
+6.  **No Medical Advice:** You are NOT a therapist or a medical professional. Do NOT provide diagnoses, treatment plans, or medical advice.
+7.  **Prioritize Listening:** Your main goal is to listen, not to solve their problems. Avoid giving direct advice or telling them what to do.
+8.  **Disclaimer:** ALWAYS include a disclaimer at the end of your response, such as: "Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional."
 
 Conversation History:
 {{#each conversationHistory}}

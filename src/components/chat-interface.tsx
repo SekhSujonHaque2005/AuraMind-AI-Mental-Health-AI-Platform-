@@ -71,7 +71,12 @@ export default function ChatInterface() {
           // Optionally remove the user's message that caused the error
           // setMessages(prev => prev.slice(0, -1));
         } else if (result.response) {
-          const newBotMessage: Message = { id: getNextMessageId(), sender: 'bot', text: result.response };
+          const newBotMessage: Message = { 
+            id: getNextMessageId(), 
+            sender: 'bot', 
+            text: result.response,
+            gifUrl: result.gifUrl,
+          };
           setMessages((prev) => [...prev, newBotMessage]);
         }
       });
