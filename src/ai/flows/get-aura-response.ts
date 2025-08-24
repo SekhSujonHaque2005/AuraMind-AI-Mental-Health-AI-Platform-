@@ -72,17 +72,24 @@ const getAuraResponseFlow = ai.defineFlow(
         return { response: "I'm not sure how to respond to that. Could you say it in a different way?", gifUrl: null };
     }
 
-    // Step 2: Extract a search query from the generated text.
+    // Step 2: Extract a search query from the generated text and user message.
     const searchQueryResponse = await ai.generate({
         model: 'googleai/gemini-1.5-flash',
-        prompt: `Based on the following text, provide a one or two-word search query for a supportive and gentle GIF. Examples: "hug", "you can do it", "take a breath", "support", "happy dance", "good vibes".
+        prompt: `Analyze the user's message and Aura's response to determine the core emotion. Provide a one or two-word search query for a supportive and gentle GIF that matches this emotion. 
+        
+        Examples:
+        - User: "I got a new job!" Aura: "That's amazing news!" -> Query: "happy dance"
+        - User: "I'm feeling so down today." Aura: "I'm sorry to hear that. It's okay to not be okay." -> Query: "virtual hug"
+        - User: "Hello there" Aura: "Hello! How are you?" -> Query: "hello"
+        - User: "I'm having a tough day" Aura: "I'm here for you." -> Query: "support"
 
-        Text: "${auraText}"
+        User's Message: "${input.message}"
+        Aura's Response: "${auraText}"
         
         Query:`,
     });
 
-    const searchQuery = searchQueryResponse.text?.trim();
+    const searchQuery = searchQueryResponse.text?.trim().replace(/"/g, ''); // Clean up potential quotes
 
     // Step 3: Search for the GIF using the extracted query.
     let gifUrl: string | undefined | null = null;
