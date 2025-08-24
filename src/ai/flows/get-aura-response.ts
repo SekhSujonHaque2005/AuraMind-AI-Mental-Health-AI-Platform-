@@ -10,7 +10,6 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {searchTenor} from '@/ai/tools/tenor';
 import {z} from 'genkit';
 
 const GetAuraResponseInputSchema = z.object({
@@ -57,6 +56,17 @@ const auraPrompt = ai.definePrompt({
     Aura:`,
 });
 
+const emotionToGifMap: Record<string, string> = {
+    'Happy': 'https://media.giphy.com/media/dzaUX7CAG0Ihi/giphy.gif',
+    'Sad': 'https://media.giphy.com/media/l22ysLe54hZP0wubek/giphy.gif',
+    'Angry': 'https://media.giphy.com/media/aNFT7eG2rIKK715uLk/giphy.gif',
+    'Anxious': 'https://media.giphy.com/media/fu2NNkJVuULPBWexiJ/giphy.gif',
+    'Love': 'https://media.giphy.com/media/bMLGNRoAy0Yko/giphy.gif',
+    'Tough': 'https://media.giphy.com/media/3ohuPypXryWkDeeFby/giphy.gif',
+    'Support': 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif', // Default/support
+    'Greeting': 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+};
+
 const getAuraResponseFlow = ai.defineFlow(
   {
     name: 'getAuraResponseFlow',
@@ -72,30 +82,27 @@ const getAuraResponseFlow = ai.defineFlow(
         return { response: "I'm not sure how to respond to that. Could you say it in a different way?", gifUrl: null };
     }
 
-    // Step 2: Extract a search query from the generated text and user message.
-    const searchQueryResponse = await ai.generate({
+    // Step 2: Extract the core emotion from the generated text.
+    const emotionResponse = await ai.generate({
         model: 'googleai/gemini-1.5-flash',
-        prompt: `Analyze the user's message and Aura's response to determine the core emotion. Provide a one or two-word search query for a supportive and gentle GIF that matches this emotion. 
+        prompt: `Analyze the user's message and Aura's response to determine the core emotion. Respond with a single word from this list: Happy, Sad, Angry, Anxious, Love, Tough, Support, Greeting.
         
         Examples:
-        - User: "I got a new job!" Aura: "That's amazing news!" -> Query: "happy dance"
-        - User: "I'm feeling so down today." Aura: "I'm sorry to hear that. It's okay to not be okay." -> Query: "virtual hug"
-        - User: "Hello there" Aura: "Hello! How are you?" -> Query: "hello"
-        - User: "I'm having a tough day" Aura: "I'm here for you." -> Query: "support"
+        - User: "I got a new job!" Aura: "That's amazing news! Congratulations!" -> Happy
+        - User: "I'm feeling so down today." Aura: "I'm sorry to hear that. It's okay to not be okay." -> Sad
+        - User: "I just want to talk" Aura: "Of course, I'm here to listen." -> Support
+        - User: "Hello there" Aura: "Hello! How are you?" -> Greeting
 
         User's Message: "${input.message}"
         Aura's Response: "${auraText}"
         
-        Query:`,
+        Emotion:`,
     });
 
-    const searchQuery = searchQueryResponse.text?.trim().replace(/"/g, ''); // Clean up potential quotes
+    const emotion = emotionResponse.text?.trim().replace(/"/g, '') || 'Support';
 
-    // Step 3: Search for the GIF using the extracted query.
-    let gifUrl: string | undefined | null = null;
-    if (searchQuery) {
-        gifUrl = await searchTenor({ query: searchQuery });
-    }
+    // Step 3: Get the GIF URL from the map.
+    const gifUrl = emotionToGifMap[emotion] || emotionToGifMap['Support'];
 
     // Step 4: Return the final response.
     return {

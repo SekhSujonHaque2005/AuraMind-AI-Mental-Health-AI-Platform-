@@ -3,4 +3,5 @@ config();
 
 import '@/ai/flows/critical-safety-protocol.ts';
 import '@/ai/flows/get-aura-response.ts';
-import '@/ai/tools/tenor.ts';
+// Tenor tool is no longer used.
+// import '@/ai/tools/tenor.ts';
