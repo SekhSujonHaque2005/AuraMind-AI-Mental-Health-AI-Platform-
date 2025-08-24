@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/avatar';
 import { format } from 'date-fns';
 import { useState, useEffect } from 'react';
+import TextType from '@/components/ui/text-type';
 
 type Message = {
   sender: 'user' | 'bot';
@@ -49,7 +50,11 @@ export default function ChatMessage({ message }: { message: Message }) {
               : 'bg-gray-800 text-gray-200 rounded-bl-none'
           )}
         >
-          <p className="whitespace-pre-wrap">{message.text}</p>
+          {isUser ? (
+            <p className="whitespace-pre-wrap">{message.text}</p>
+          ) : (
+            <TextType text={message.text} typingSpeed={20} loop={false} />
+          )}
         </div>
         {timestamp && (
            <p className="text-xs text-gray-500">
