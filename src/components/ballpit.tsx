@@ -25,7 +25,7 @@ import {
   Raycaster,
   Plane,
 } from "three";
-import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+import { RoomEnvironment }from "three/examples/jsm/environments/RoomEnvironment.js";
 import { Observer } from "gsap/Observer";
 import { gsap } from "gsap";
 
@@ -348,7 +348,7 @@ class W {
     for (let i = 1; i < config.count; i++) {
       const idx = 3 * i;
       positionData[idx] = MathUtils.randFloatSpread(2 * config.maxX);
-      positionData[idx + 1] = MathUtils.randFloatSpread(2 * config.maxY);
+      positionData[idx + 1] = config.maxY + Math.random() * config.maxY; // Start from top
       positionData[idx + 2] = MathUtils.randFloatSpread(2 * config.maxZ);
     }
   }
@@ -508,7 +508,7 @@ class Y extends MeshPhysicalMaterial {
 
 const XConfig = {
   count: 200,
-  colors: [0, 0, 0],
+  colors: [0xffffff, 0x9370DB], // white and purple
   ambientColor: 0xffffff,
   ambientIntensity: 1,
   lightIntensity: 200,
