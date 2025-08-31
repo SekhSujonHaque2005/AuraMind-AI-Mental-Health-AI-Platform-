@@ -346,10 +346,11 @@ class W {
     const { config, positionData } = this;
     this.center.toArray(positionData, 0);
     for (let i = 1; i < config.count; i++) {
-      const idx = 3 * i;
-      positionData[idx] = MathUtils.randFloatSpread(0.1);
-      positionData[idx + 1] = MathUtils.randFloatSpread(0.1);
-      positionData[idx + 2] = MathUtils.randFloatSpread(0.1);
+        const idx = 3 * i;
+        const side = i % 2 === 0 ? 1 : -1; 
+        positionData[idx] = (config.maxX * 0.8) * side + MathUtils.randFloatSpread(config.maxX * 0.2); 
+        positionData[idx + 1] = config.maxY + Math.random() * 5; 
+        positionData[idx + 2] = MathUtils.randFloatSpread(config.maxZ * 2);
     }
   }
 
@@ -943,5 +944,3 @@ const Ballpit: React.FC<BallpitProps> = ({
 };
 
 export default Ballpit;
-
-    

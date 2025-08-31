@@ -45,7 +45,7 @@ export default function RootLayout({
         <ChatProvider>
           <div className="absolute inset-0 z-0">
             <Ballpit
-                count={200}
+                count={150}
                 gravity={0.7}
                 friction={0.8}
                 wallBounce={0.95}
@@ -78,5 +78,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-    
