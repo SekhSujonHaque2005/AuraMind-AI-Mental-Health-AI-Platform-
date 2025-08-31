@@ -48,25 +48,9 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
       {
-        protocol: 'https',
-        hostname: 'media3.giphy.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'media4.giphy.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'media.tenor.com',
-        port: '',
-        pathname: '/**',
-      },
-    ],
-  },
-};
-
+        protocol: 'https'
+      }
+    ]
+  }
+}
 export default nextConfig;

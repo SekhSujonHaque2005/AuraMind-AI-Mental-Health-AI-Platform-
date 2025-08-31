@@ -9,7 +9,7 @@ import Sidebar from '@/components/layout/sidebar';
 import React,
 { useState } from 'react';
 import { motion } from 'framer-motion';
-import Prism from '@/components/prism';
+import Ballpit from '@/components/ballpit';
 import { ChatProvider } from '@/contexts/ChatContext';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
@@ -43,16 +43,12 @@ export default function RootLayout({
       <body className={cn('min-h-screen bg-background font-sans antialiased', inter.variable)}>
         <ChatProvider>
           <div className="absolute inset-0 z-0">
-              <Prism
-              animationType="rotate"
-              timeScale={0.25}
-              height={3.5}
-              baseWidth={5.5}
-              scale={3.6}
-              hueShift={0.7}
-              colorFrequency={0.6}
-              noise={0.3}
-              glow={1}
+            <Ballpit
+                count={200}
+                gravity={0.7}
+                friction={0.8}
+                wallBounce={0.95}
+                followCursor={true}
               />
           </div>
           <div className="relative z-10 flex min-h-screen flex-col">
