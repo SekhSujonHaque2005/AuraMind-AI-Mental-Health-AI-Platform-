@@ -10,7 +10,7 @@ import Sidebar from '@/components/layout/sidebar';
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Ballpit from '@/components/ballpit';
-import { ChatProvider, useChat } from '@/contexts/ChatContext';
+import { ChatProvider } from '@/contexts/ChatContext';
 import { usePathname } from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
