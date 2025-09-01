@@ -26,6 +26,12 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 function AppContent({ children }: { children: React.ReactNode }) {
     const [isSidebarExpanded, setSidebarExpanded] = useState(false);
     const pathname = usePathname();
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     const showBallpit = pathname !== '/resources';
   
     const mainContentVariants = {
@@ -35,7 +41,7 @@ function AppContent({ children }: { children: React.ReactNode }) {
 
     return (
         <>
-            {showBallpit && (
+            {isMounted && showBallpit && (
                 <div className="absolute inset-0 z-0">
                 <Ballpit
                     count={150}
