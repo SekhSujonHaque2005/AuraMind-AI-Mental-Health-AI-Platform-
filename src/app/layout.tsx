@@ -7,21 +7,13 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import Sidebar from '@/components/layout/sidebar';
-import React,
-{ useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Ballpit from '@/components/ballpit';
-import { ChatProvider } from '@/contexts/ChatContext';
+import { ChatProvider, useChat } from '@/contexts/ChatContext';
 import { usePathname } from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
-
-// Since we're using 'use client', we can't export metadata directly.
-// We'll set the title in the document head.
-// export const metadata: Metadata = {
-//   title: 'AuraMind - Your Mental Wellness Companion',
-//   description: 'A safe space to explore your thoughts and feelings.',
-// };
 
 function AppContent({ children }: { children: React.ReactNode }) {
     const [isSidebarExpanded, setSidebarExpanded] = useState(false);
@@ -39,9 +31,14 @@ function AppContent({ children }: { children: React.ReactNode }) {
       collapsed: { paddingLeft: '80px', transition: { duration: 0.3, ease: 'easeInOut' } },
     };
 
+    if (!isMounted) {
+        // Render a placeholder or null on the server to avoid hydration mismatch
+        return <div style={{ paddingLeft: '80px' }} className="flex flex-col flex-1 min-h-screen">{children}</div>;
+    }
+
     return (
         <>
-            {isMounted && showBallpit && (
+            {showBallpit && (
                 <div className="absolute inset-0 z-0">
                 <Ballpit
                     count={150}
@@ -54,27 +51,27 @@ function AppContent({ children }: { children: React.ReactNode }) {
             )}
             <div className="relative z-10 flex min-h-screen flex-col">
                 <div className="flex flex-1">
-                <div
-                    onMouseEnter={() => setSidebarExpanded(true)}
-                    onMouseLeave={() => setSidebarExpanded(false)}
-                >
-                    <Sidebar isExpanded={isSidebarExpanded} />
-                </div>
-                <motion.div
-                    initial={false}
-                    animate={isSidebarExpanded ? 'expanded' : 'collapsed'}
-                    variants={mainContentVariants}
-                    className="flex flex-col flex-1"
-                >
-                    <main className="flex-1">
-                    {children}
-                    </main>
-                </motion.div>
+                    <div
+                        onMouseEnter={() => setSidebarExpanded(true)}
+                        onMouseLeave={() => setSidebarExpanded(false)}
+                    >
+                        <Sidebar isExpanded={isSidebarExpanded} />
+                    </div>
+                    <motion.div
+                        initial={false}
+                        animate={isSidebarExpanded ? 'expanded' : 'collapsed'}
+                        variants={mainContentVariants}
+                        className="flex flex-col flex-1"
+                    >
+                        <main className="flex-1">
+                        {children}
+                        </main>
+                    </motion.div>
                 </div>
             </div>
             <Toaster />
         </>
-    )
+    );
 }
 
 export default function RootLayout({
