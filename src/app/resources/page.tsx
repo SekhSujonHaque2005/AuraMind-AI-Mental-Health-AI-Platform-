@@ -2,12 +2,13 @@
 'use client';
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { ExternalLink, Clapperboard, PlayCircle } from "lucide-react";
+import { ExternalLink, Clapperboard, PlayCircle, VideoIcon } from "lucide-react";
 import { getVideos, YouTubeVideo } from "./actions";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import VideoPlayerModal from "@/components/video-player-modal";
 import { Skeleton } from "@/components/ui/skeleton";
+import VideoCard from "@/components/video-card";
 
 const staticResources = [
   {
@@ -40,9 +41,11 @@ interface VideoSectionProps {
   title: string;
   videos: YouTubeVideo[];
   onVideoClick: (video: YouTubeVideo) => void;
+  hoveredVideoId: string | null;
+  setHoveredVideoId: (id: string | null) => void;
 }
 
-const VideoSection = ({ title, videos, onVideoClick }: VideoSectionProps) => {
+const VideoSection = ({ title, videos, onVideoClick, hoveredVideoId, setHoveredVideoId }: VideoSectionProps) => {
     if (videos.length === 0) return null;
 
     return (
@@ -52,34 +55,14 @@ const VideoSection = ({ title, videos, onVideoClick }: VideoSectionProps) => {
             </h2>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {videos.map((video) => (
-                    <div
+                    <VideoCard
                         key={video.id.videoId}
-                        className="group cursor-pointer"
+                        video={video}
+                        isHovered={hoveredVideoId === video.id.videoId}
+                        onMouseEnter={() => setHoveredVideoId(video.id.videoId)}
+                        onMouseLeave={() => setHoveredVideoId(null)}
                         onClick={() => onVideoClick(video)}
-                    >
-                        <Card className="flex flex-col h-full bg-gray-900/50 border border-blue-500/20 hover:border-blue-500/60 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(72,149,239,0.25)] overflow-hidden rounded-lg">
-                            <div className="relative w-full aspect-video">
-                                <Image
-                                    src={video.snippet.thumbnails.high.url}
-                                    alt={video.snippet.title}
-                                    fill
-                                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                                    data-ai-hint="video thumbnail"
-                                />
-                                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <PlayCircle className="h-16 w-16 text-white/80" />
-                                </div>
-                            </div>
-                            <CardHeader>
-                                <CardTitle className="text-lg text-blue-300 group-hover:text-blue-200 transition-colors duration-300">
-                                    {video.snippet.title}
-                                </CardTitle>
-                                <CardDescription className="text-gray-400 text-sm mt-1">
-                                    by {video.snippet.channelTitle}
-                                </CardDescription>
-                            </CardHeader>
-                        </Card>
-                    </div>
+                    />
                 ))}
             </div>
         </div>
@@ -101,11 +84,23 @@ const LoadingSkeleton = () => (
     </div>
 );
 
+const NoVideosFound = () => (
+    <div className="text-center py-10 px-4 rounded-lg bg-gray-900/50 border border-blue-500/20">
+        <VideoIcon className="mx-auto h-12 w-12 text-blue-400" />
+        <h3 className="mt-4 text-xl font-semibold text-white">No Videos Found</h3>
+        <p className="mt-2 text-gray-400">
+            There may be an issue with loading videos. Please ensure the YouTube API key is correctly configured.
+        </p>
+    </div>
+)
+
 
 export default function ResourcesPage() {
   const [videoData, setVideoData] = useState<{ title: string; videos: YouTubeVideo[] }[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedVideo, setSelectedVideo] = useState<YouTubeVideo | null>(null);
+  const [hoveredVideoId, setHoveredVideoId] = useState<string | null>(null);
+  const [hasVideos, setHasVideos] = useState(false);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -116,7 +111,9 @@ export default function ResourcesPage() {
           return { title, videos };
         })
       );
-      setVideoData(data.filter(section => section.videos.length > 0));
+      const filteredData = data.filter(section => section.videos.length > 0);
+      setVideoData(filteredData);
+      setHasVideos(filteredData.length > 0);
       setIsLoading(false);
     };
 
@@ -155,15 +152,19 @@ export default function ResourcesPage() {
                 </div>
             ))}
          </div>
-      ) : (
+      ) : hasVideos ? (
         videoData.map(({ title, videos }) => (
             <VideoSection 
               key={title} 
               title={title} 
               videos={videos} 
               onVideoClick={handleVideoClick}
+              hoveredVideoId={hoveredVideoId}
+              setHoveredVideoId={setHoveredVideoId}
             />
         ))
+      ) : (
+        <NoVideosFound />
       )}
 
       <div className="mt-20">
