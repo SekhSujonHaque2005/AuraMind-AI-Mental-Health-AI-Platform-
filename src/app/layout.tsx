@@ -7,7 +7,7 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import Sidebar from '@/components/layout/sidebar';
-import React, { useState, useEffect } from 'react';
+import React, from 'react';
 import { motion } from 'framer-motion';
 import Ballpit from '@/components/ballpit';
 import { ChatProvider } from '@/contexts/ChatContext';
@@ -16,11 +16,11 @@ import { usePathname } from 'next/navigation';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 function AppContent({ children }: { children: React.ReactNode }) {
-    const [isSidebarExpanded, setSidebarExpanded] = useState(false);
+    const [isSidebarExpanded, setSidebarExpanded] = React.useState(false);
     const pathname = usePathname();
-    const [isMounted, setIsMounted] = useState(false);
+    const [isMounted, setIsMounted] = React.useState(false);
 
-    useEffect(() => {
+    React.useEffect(() => {
         setIsMounted(true);
     }, []);
 
@@ -32,40 +32,38 @@ function AppContent({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <>
-            <div className="absolute inset-0 z-0">
-                {isMounted && showBallpit && (
-                    <Ballpit
-                        count={150}
-                        gravity={0.7}
-                        friction={0.8}
-                        wallBounce={0.95}
-                        followCursor={true}
-                    />
-                )}
+        <div className="flex min-h-screen">
+             <div
+                onMouseEnter={() => setSidebarExpanded(true)}
+                onMouseLeave={() => setSidebarExpanded(false)}
+            >
+                <Sidebar isExpanded={isSidebarExpanded} />
             </div>
-            <div className="relative z-10 flex min-h-screen flex-col">
-                <div className="flex flex-1">
-                    <div
-                        onMouseEnter={() => setSidebarExpanded(true)}
-                        onMouseLeave={() => setSidebarExpanded(false)}
-                    >
-                        <Sidebar isExpanded={isSidebarExpanded} />
-                    </div>
-                    <motion.div
-                        initial={false}
-                        animate={isSidebarExpanded ? 'expanded' : 'collapsed'}
-                        variants={mainContentVariants}
-                        className="flex-1 flex flex-col"
-                    >
-                        <main className="flex-1">
-                            {children}
-                        </main>
-                    </motion.div>
+            
+            <div className="flex-1 flex flex-col relative">
+                <div className="absolute inset-0 z-0">
+                    {isMounted && showBallpit && (
+                        <Ballpit
+                            count={150}
+                            gravity={0.7}
+                            friction={0.8}
+                            wallBounce={0.95}
+                            followCursor={true}
+                        />
+                    )}
                 </div>
+
+                <motion.main
+                    initial={false}
+                    animate={isSidebarExpanded ? 'expanded' : 'collapsed'}
+                    variants={mainContentVariants}
+                    className="flex-1 relative z-10"
+                >
+                    {children}
+                </motion.main>
             </div>
             <Toaster />
-        </>
+        </div>
     );
 }
 
@@ -75,8 +73,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  // Set document title
-  useEffect(() => {
+  React.useEffect(() => {
     document.title = 'AuraMind - Your Mental Wellness Companion';
   }, []);
 
