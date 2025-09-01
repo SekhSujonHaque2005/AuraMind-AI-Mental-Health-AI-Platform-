@@ -60,7 +60,7 @@ const VideoSection = ({ title, videos }: VideoSectionProps) => {
                     <div className="relative w-full aspect-video">
                         {hoveredVideoId === video.id.videoId ? (
                             <iframe
-                                src={`https://www.youtube.com/embed/${video.id.videoId}?autoplay=1&mute=1&rel=0&controls=0&showinfo=0`}
+                                src={`https://www.youtube.com/embed/${video.id.videoId}?autoplay=1&mute=0&rel=0&controls=0&showinfo=0`}
                                 title={video.snippet.title}
                                 frameBorder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
