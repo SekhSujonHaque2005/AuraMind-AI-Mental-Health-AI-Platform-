@@ -7,7 +7,7 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import Sidebar from '@/components/layout/sidebar';
-import React, from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Ballpit from '@/components/ballpit';
 import { ChatProvider } from '@/contexts/ChatContext';
@@ -16,16 +16,16 @@ import { usePathname } from 'next/navigation';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 function AppContent({ children }: { children: React.ReactNode }) {
-    const [isSidebarExpanded, setSidebarExpanded] = React.useState(false);
+    const [isSidebarExpanded, setSidebarExpanded] = useState(false);
     const pathname = usePathname();
-    const [isMounted, setIsMounted] = React.useState(false);
+    const [isMounted, setIsMounted] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setIsMounted(true);
     }, []);
 
     const showBallpit = pathname !== '/resources';
-  
+
     const mainContentVariants = {
       expanded: { paddingLeft: '240px', transition: { duration: 0.3, ease: 'easeInOut' } },
       collapsed: { paddingLeft: '80px', transition: { duration: 0.3, ease: 'easeInOut' } },
@@ -35,12 +35,12 @@ function AppContent({ children }: { children: React.ReactNode }) {
         <>
             {isMounted && showBallpit && (
                 <div className="absolute inset-0 z-0">
-                <Ballpit
-                    count={150}
-                    gravity={0.7}
-                    friction={0.8}
-                    wallBounce={0.95}
-                    followCursor={true}
+                    <Ballpit
+                        count={150}
+                        gravity={0.7}
+                        friction={0.8}
+                        wallBounce={0.95}
+                        followCursor={true}
                     />
                 </div>
             )}
@@ -56,10 +56,10 @@ function AppContent({ children }: { children: React.ReactNode }) {
                         initial={false}
                         animate={isSidebarExpanded ? 'expanded' : 'collapsed'}
                         variants={mainContentVariants}
-                        className="flex flex-col flex-1"
+                        className="flex-1 flex flex-col"
                     >
                         <main className="flex-1">
-                        {children}
+                            {children}
                         </main>
                     </motion.div>
                 </div>
@@ -76,7 +76,7 @@ export default function RootLayout({
 }>) {
 
   // Set document title
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = 'AuraMind - Your Mental Wellness Companion';
   }, []);
 
