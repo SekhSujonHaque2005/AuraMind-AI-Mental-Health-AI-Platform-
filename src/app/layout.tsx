@@ -33,8 +33,8 @@ function AppContent({ children }: { children: React.ReactNode }) {
 
     return (
         <>
-            {isMounted && showBallpit && (
-                <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 z-0">
+                {isMounted && showBallpit && (
                     <Ballpit
                         count={150}
                         gravity={0.7}
@@ -42,8 +42,8 @@ function AppContent({ children }: { children: React.ReactNode }) {
                         wallBounce={0.95}
                         followCursor={true}
                     />
-                </div>
-            )}
+                )}
+            </div>
             <div className="relative z-10 flex min-h-screen flex-col">
                 <div className="flex flex-1">
                     <div
