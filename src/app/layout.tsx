@@ -12,6 +12,7 @@ import React,
 import { motion } from 'framer-motion';
 import Ballpit from '@/components/ballpit';
 import { ChatProvider } from '@/contexts/ChatContext';
+import { usePathname } from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -28,6 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [isSidebarExpanded, setSidebarExpanded] = useState(false);
+  const pathname = usePathname();
+  const showBallpit = pathname !== '/resources';
 
   // Set document title
   if (typeof window !== 'undefined') {
@@ -43,15 +46,17 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className="dark">
       <body className={cn('min-h-screen bg-background font-sans antialiased', inter.variable)}>
         <ChatProvider>
-          <div className="absolute inset-0 z-0">
-            <Ballpit
-                count={150}
-                gravity={0.7}
-                friction={0.8}
-                wallBounce={0.95}
-                followCursor={true}
-              />
-          </div>
+          {showBallpit && (
+            <div className="absolute inset-0 z-0">
+              <Ballpit
+                  count={150}
+                  gravity={0.7}
+                  friction={0.8}
+                  wallBounce={0.95}
+                  followCursor={true}
+                />
+            </div>
+          )}
           <div className="relative z-10 flex min-h-screen flex-col">
             <div className="flex flex-1">
               <div
