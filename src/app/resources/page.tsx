@@ -1,8 +1,11 @@
 
+'use client';
+
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { ExternalLink, Clapperboard } from "lucide-react";
 import { getVideos, YouTubeVideo } from "./actions";
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
 const staticResources = [
   {
@@ -36,56 +39,83 @@ interface VideoSectionProps {
   videos: YouTubeVideo[];
 }
 
-const VideoSection = ({ title, videos }: VideoSectionProps) => (
-  <div className="mb-12">
-    <h2 className="text-3xl font-bold text-blue-300 mb-6 flex items-center">
-      <Clapperboard className="mr-3 h-8 w-8" /> {title}
-    </h2>
-    {videos.length > 0 ? (
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {videos.map((video) => (
-          <a
-            key={video.id.videoId}
-            href={`https://www.youtube.com/watch?v=${video.id.videoId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group"
-          >
-            <Card className="flex flex-col h-full bg-gray-900/50 border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300 transform hover:-translate-y-1 shadow-[0_0_15px_rgba(72,149,239,0.15)] overflow-hidden">
-              <div className="relative w-full aspect-video">
-                <Image
-                  src={video.snippet.thumbnails.high.url}
-                  alt={video.snippet.title}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  data-ai-hint="video thumbnail"
-                />
-              </div>
-              <CardHeader>
-                <CardTitle className="text-lg text-blue-300 group-hover:text-blue-200 transition-colors">
-                  {video.snippet.title}
-                </CardTitle>
-                <CardDescription className="text-gray-400 text-sm mt-1">
-                  by {video.snippet.channelTitle}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </a>
-        ))}
-      </div>
-    ) : (
-      <p className="text-gray-500">Could not load videos at this time. Please check back later.</p>
-    )}
-  </div>
-);
+const VideoSection = ({ title, videos }: VideoSectionProps) => {
+    const [hoveredVideoId, setHoveredVideoId] = useState<string | null>(null);
 
-export default async function ResourcesPage() {
-  const videoData = await Promise.all(
-    videoQueries.map(async ({ title, query }) => {
-      const videos = await getVideos(query);
-      return { title, videos };
-    })
-  );
+    return (
+        <div className="mb-12">
+            <h2 className="text-3xl font-bold text-blue-300 mb-6 flex items-center">
+            <Clapperboard className="mr-3 h-8 w-8" /> {title}
+            </h2>
+            {videos.length > 0 ? (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {videos.map((video) => (
+                <div
+                    key={video.id.videoId}
+                    className="group"
+                    onMouseEnter={() => setHoveredVideoId(video.id.videoId)}
+                    onMouseLeave={() => setHoveredVideoId(null)}
+                >
+                    <Card className="flex flex-col h-full bg-gray-900/50 border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300 transform hover:-translate-y-1 shadow-[0_0_15px_rgba(72,149,239,0.15)] overflow-hidden">
+                    <div className="relative w-full aspect-video">
+                        {hoveredVideoId === video.id.videoId ? (
+                            <iframe
+                                src={`https://www.youtube.com/embed/${video.id.videoId}?autoplay=1&mute=1&rel=0&controls=0&showinfo=0`}
+                                title={video.snippet.title}
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                className="w-full h-full"
+                            ></iframe>
+                        ) : (
+                            <Image
+                                src={video.snippet.thumbnails.high.url}
+                                alt={video.snippet.title}
+                                fill
+                                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                data-ai-hint="video thumbnail"
+                            />
+                        )}
+                    </div>
+                    <CardHeader>
+                        <CardTitle className="text-lg text-blue-300 group-hover:text-blue-200 transition-colors">
+                        {video.snippet.title}
+                        </CardTitle>
+                        <CardDescription className="text-gray-400 text-sm mt-1">
+                        by {video.snippet.channelTitle}
+                        </CardDescription>
+                    </CardHeader>
+                    </Card>
+                </div>
+                ))}
+            </div>
+            ) : (
+            <p className="text-gray-500">Could not load videos at this time. Please check back later.</p>
+            )}
+        </div>
+    );
+};
+
+
+export default function ResourcesPage() {
+  const [videoData, setVideoData] = useState<{ title: string; videos: YouTubeVideo[] }[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      setIsLoading(true);
+      const data = await Promise.all(
+        videoQueries.map(async ({ title, query }) => {
+          const videos = await getVideos(query);
+          return { title, videos };
+        })
+      );
+      setVideoData(data);
+      setIsLoading(false);
+    };
+
+    fetchVideos();
+  }, []);
 
   return (
     <div className="container mx-auto max-w-7xl py-12 px-4">
@@ -98,9 +128,13 @@ export default async function ResourcesPage() {
         </p>
       </div>
 
-      {videoData.map(({ title, videos }) => (
-        <VideoSection key={title} title={title} videos={videos} />
-      ))}
+      {isLoading ? (
+         <div className="text-center text-gray-400">Loading videos...</div>
+      ) : (
+        videoData.map(({ title, videos }) => (
+            <VideoSection key={title} title={title} videos={videos} />
+        ))
+      )}
 
       <div className="mt-20">
         <h2 className="text-3xl font-bold text-blue-300 mb-6 text-center">Immediate Support Hotlines</h2>
