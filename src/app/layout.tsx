@@ -7,7 +7,7 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import Sidebar from '@/components/layout/sidebar';
-import React, { useState, useEffect } from 'react';
+import React, from 'react';
 import { motion } from 'framer-motion';
 import Ballpit from '@/components/ballpit';
 import { ChatProvider } from '@/contexts/ChatContext';
@@ -16,11 +16,11 @@ import { usePathname } from 'next/navigation';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 function AppContent({ children }: { children: React.ReactNode }) {
-    const [isSidebarExpanded, setSidebarExpanded] = useState(false);
+    const [isSidebarExpanded, setSidebarExpanded] = React.useState(false);
     const pathname = usePathname();
-    const [isMounted, setIsMounted] = useState(false);
+    const [isMounted, setIsMounted] = React.useState(false);
 
-    useEffect(() => {
+    React.useEffect(() => {
         setIsMounted(true);
     }, []);
 
@@ -31,14 +31,9 @@ function AppContent({ children }: { children: React.ReactNode }) {
       collapsed: { paddingLeft: '80px', transition: { duration: 0.3, ease: 'easeInOut' } },
     };
 
-    if (!isMounted) {
-        // Render a placeholder or null on the server to avoid hydration mismatch
-        return <div style={{ paddingLeft: '80px' }} className="flex flex-col flex-1 min-h-screen">{children}</div>;
-    }
-
     return (
         <>
-            {showBallpit && (
+            {isMounted && showBallpit && (
                 <div className="absolute inset-0 z-0">
                 <Ballpit
                     count={150}
@@ -81,7 +76,7 @@ export default function RootLayout({
 }>) {
 
   // Set document title
-  useEffect(() => {
+  React.useEffect(() => {
     document.title = 'AuraMind - Your Mental Wellness Companion';
   }, []);
 
