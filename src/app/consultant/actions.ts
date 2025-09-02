@@ -32,26 +32,31 @@ async function toWav(
   });
 }
 
+const TextToSpeechInputSchema = z.object({
+    text: z.string(),
+    voice: z.string().default('Algenib'),
+});
+
 const textToSpeechFlow = ai.defineFlow(
   {
     name: 'textToSpeechFlow',
-    inputSchema: z.string(),
+    inputSchema: TextToSpeechInputSchema,
     outputSchema: z.object({
         media: z.string().optional()
     }),
   },
-  async (query) => {
+  async ({ text, voice }) => {
     const { media } = await ai.generate({
       model: 'googleai/gemini-2.5-flash-preview-tts',
       config: {
         responseModalities: ['AUDIO'],
         speechConfig: {
           voiceConfig: {
-            prebuiltVoiceConfig: { voiceName: 'Algenib' },
+            prebuiltVoiceConfig: { voiceName: voice },
           },
         },
       },
-      prompt: query,
+      prompt: text,
     });
 
     if (!media) {
@@ -72,6 +77,6 @@ const textToSpeechFlow = ai.defineFlow(
 );
 
 
-export async function textToSpeech(text: string) {
-    return textToSpeechFlow(text);
+export async function textToSpeech(text: string, voice: string) {
+    return textToSpeechFlow({text, voice});
 }

@@ -79,10 +79,11 @@ export default function CallPage() {
       if (hasPermission && isGreeting && selectedPersona) {
         setIsSpeaking(true);
         const greetingText = selectedPersona.greeting;
+        const voice = selectedPersona.voice;
         
         conversationHistory.current.push({ id: Date.now(), sender: 'bot', text: greetingText });
 
-        const audioResult = await textToSpeech(greetingText);
+        const audioResult = await textToSpeech(greetingText, voice);
         if (audioResult.media) {
           const audio = new Audio(audioResult.media);
           audio.play();
@@ -106,7 +107,7 @@ export default function CallPage() {
   }, [hasPermission, isGreeting, selectedPersona]);
 
   useEffect(() => {
-    if (!hasPermission || isSpeaking || isGreeting) return;
+    if (!hasPermission || isSpeaking || isGreeting || !selectedPersona) return;
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -145,7 +146,7 @@ export default function CallPage() {
                 setIsSpeaking(false);
             } else if (aiResult.response) {
                 conversationHistory.current.push({ id: Date.now() + 1, sender: 'bot', text: aiResult.response });
-                const audioResult = await textToSpeech(aiResult.response);
+                const audioResult = await textToSpeech(aiResult.response, selectedPersona.voice);
                 if (audioResult.media) {
                     const audio = new Audio(audioResult.media);
                     audio.play();
@@ -188,7 +189,7 @@ export default function CallPage() {
       recognition.stop();
     };
 
-  }, [hasPermission, isSpeaking, isGreeting, toast]);
+  }, [hasPermission, isSpeaking, isGreeting, toast, selectedPersona]);
 
   const toggleMute = () => {
     if (streamRef.current) {
