@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { textToSpeech } from '@/app/consultant/actions';
 import { getAIResponse } from '@/app/actions';
 import type { Message } from '@/contexts/ChatContext';
+import { personas } from '@/app/consultant/personas';
 
 // Add SpeechRecognition types for browsers that support it
 declare global {
@@ -38,6 +39,8 @@ export default function CallPage() {
   const recognitionRef = useRef<any>(null);
   const conversationHistory = useRef<Message[]>([]);
   
+  const selectedPersona = personas.find(p => p.id === personaId);
+
   useEffect(() => {
     const getPermissionsAndStream = async () => {
       try {
@@ -73,9 +76,9 @@ export default function CallPage() {
   
   useEffect(() => {
     const startGreeting = async () => {
-      if (hasPermission && isGreeting) {
+      if (hasPermission && isGreeting && selectedPersona) {
         setIsSpeaking(true);
-        const greetingText = "Hello! Welcome to your AI wellness session. I'm here to listen. How are you feeling today?";
+        const greetingText = selectedPersona.greeting;
         
         conversationHistory.current.push({ id: Date.now(), sender: 'bot', text: greetingText });
 
@@ -94,8 +97,13 @@ export default function CallPage() {
       }
     };
 
-    startGreeting();
-  }, [hasPermission, isGreeting]);
+    // If there's no selected persona, wait a bit for it to be available
+    if (!selectedPersona) {
+      setTimeout(startGreeting, 100);
+    } else {
+      startGreeting();
+    }
+  }, [hasPermission, isGreeting, selectedPersona]);
 
   useEffect(() => {
     if (!hasPermission || isSpeaking || isGreeting) return;
@@ -224,7 +232,7 @@ export default function CallPage() {
         <Card className="w-full max-w-4xl bg-gray-900/50 border border-blue-500/20 shadow-[0_0_25px_rgba(72,149,239,0.15)]">
             <CardHeader>
                 <CardTitle className="text-center text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-2">
-                    AI Wellness Session
+                    {selectedPersona?.name || 'AI Wellness Session'}
                 </CardTitle>
                  <div className="text-center text-gray-400 text-lg animate-pulse h-6">
                     {isListening && "Listening..."}
@@ -246,7 +254,7 @@ export default function CallPage() {
                             className="w-full h-full object-cover"
                         ></video>
                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                         <p className="absolute bottom-3 left-3 text-sm font-semibold bg-black/50 px-2 py-1 rounded-md">AI Consultant</p>
+                         <p className="absolute bottom-3 left-3 text-sm font-semibold bg-black/50 px-2 py-1 rounded-md">{selectedPersona?.name || 'AI Consultant'}</p>
                     </div>
 
                     {/* Local Video (User) */}
@@ -274,5 +282,3 @@ export default function CallPage() {
     </div>
   );
 }
-
-    

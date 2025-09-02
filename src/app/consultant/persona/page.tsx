@@ -1,30 +1,10 @@
+
 'use client';
 
 import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { User, Zap, Heart } from 'lucide-react';
-
-const personas = [
-  {
-    id: '1',
-    name: 'Dr. Anya Sharma',
-    description: 'A compassionate guide focusing on mindfulness and cognitive behavioral techniques.',
-    icon: Heart,
-  },
-  {
-    id: '2',
-    name: 'Coach Alex',
-    description: 'A motivational partner for building resilience and achieving personal goals.',
-    icon: Zap,
-  },
-  {
-    id: '3',
-    name: 'Sam',
-    description: 'A non-judgmental friend who is here to simply listen and provide support.',
-    icon: User,
-  },
-];
+import { personas } from '@/app/consultant/personas';
 
 export default function PersonaSelectionPage() {
   const router = useRouter();
