@@ -31,6 +31,7 @@ export default function CallPage() {
   const [hasPermission, setHasPermission] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isGreeting, setIsGreeting] = useState(true);
 
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -69,9 +70,35 @@ export default function CallPage() {
       }
     };
   }, [toast]);
+  
+  useEffect(() => {
+    const startGreeting = async () => {
+      if (hasPermission && isGreeting) {
+        setIsSpeaking(true);
+        const greetingText = "Hello! Welcome to your AI wellness session. I'm here to listen. How are you feeling today?";
+        
+        conversationHistory.current.push({ id: Date.now(), sender: 'bot', text: greetingText });
+
+        const audioResult = await textToSpeech(greetingText);
+        if (audioResult.media) {
+          const audio = new Audio(audioResult.media);
+          audio.play();
+          audio.onended = () => {
+            setIsSpeaking(false);
+            setIsGreeting(false);
+          };
+        } else {
+          setIsSpeaking(false);
+          setIsGreeting(false);
+        }
+      }
+    };
+
+    startGreeting();
+  }, [hasPermission, isGreeting]);
 
   useEffect(() => {
-    if (!hasPermission || isSpeaking) return;
+    if (!hasPermission || isSpeaking || isGreeting) return;
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -153,7 +180,7 @@ export default function CallPage() {
       recognition.stop();
     };
 
-  }, [hasPermission, isSpeaking, toast]);
+  }, [hasPermission, isSpeaking, isGreeting, toast]);
 
   const toggleMute = () => {
     if (streamRef.current) {
@@ -201,8 +228,9 @@ export default function CallPage() {
                 </CardTitle>
                  <div className="text-center text-gray-400 text-lg animate-pulse h-6">
                     {isListening && "Listening..."}
-                    {isSpeaking && "AI is speaking..."}
-                    {!isListening && !isSpeaking && hasPermission && "Ready to talk"}
+                    {isSpeaking && !isGreeting && "AI is speaking..."}
+                    {isGreeting && "Connecting..."}
+                    {!isListening && !isSpeaking && hasPermission && !isGreeting && "Ready to talk"}
                 </div>
             </CardHeader>
             <CardContent>
@@ -246,3 +274,5 @@ export default function CallPage() {
     </div>
   );
 }
+
+    
