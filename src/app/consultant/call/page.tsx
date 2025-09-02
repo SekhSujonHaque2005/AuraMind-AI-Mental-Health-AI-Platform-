@@ -95,8 +95,17 @@ export default function CallPage() {
             <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Remote Video (AI) */}
-                    <div className="relative aspect-video bg-gray-800 rounded-lg flex items-center justify-center">
-                        <p className="text-gray-400">AI Consultant's Video</p>
+                    <div className="relative aspect-video bg-gray-800 rounded-lg flex items-center justify-center overflow-hidden">
+                        <video 
+                            src="https://cdn.pixabay.com/video/2024/04/11/206925_large.mp4" 
+                            autoPlay 
+                            loop 
+                            muted 
+                            playsInline
+                            className="w-full h-full object-cover"
+                        ></video>
+                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                         <p className="absolute bottom-3 left-3 text-sm font-semibold bg-black/50 px-2 py-1 rounded-md">AI Consultant</p>
                     </div>
 
                     {/* Local Video (User) */}
@@ -104,6 +113,7 @@ export default function CallPage() {
                          <video ref={localVideoRef} autoPlay playsInline muted className="w-full h-full object-cover rounded-lg" />
                          {!hasPermission && <p className="text-gray-400 absolute">Waiting for camera...</p>}
                          {isCameraOff && <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-lg"><VideoOff className="h-12 w-12 text-white" /></div>}
+                         <p className="absolute bottom-3 left-3 text-sm font-semibold bg-black/50 px-2 py-1 rounded-md">You</p>
                     </div>
                 </div>
 
