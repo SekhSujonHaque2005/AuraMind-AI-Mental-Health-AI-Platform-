@@ -169,8 +169,12 @@ export default function CallPage() {
     recognition.onend = () => {
         setIsListening(false);
         // Automatically restart listening if not interrupted by AI speaking or call ended
-        if (!isSpeaking && streamRef.current) {
-            setTimeout(() => recognitionRef.current?.start(), 300);
+        if (!isSpeaking && streamRef.current && !isListening) {
+             try {
+                recognitionRef.current?.start();
+            } catch (e) {
+                console.error("Could not restart recognition: ", e);
+            }
         }
     };
 
@@ -183,13 +187,19 @@ export default function CallPage() {
     };
 
     // Start listening
-    recognition.start();
+    if (!isListening) {
+        try {
+            recognition.start();
+        } catch(e) {
+            console.log('Recognition already started');
+        }
+    }
 
     return () => {
       recognition.stop();
     };
 
-  }, [hasPermission, isSpeaking, isGreeting, toast, selectedPersona]);
+  }, [hasPermission, isSpeaking, isGreeting, toast, selectedPersona, isListening]);
 
   const toggleMute = () => {
     if (streamRef.current) {
