@@ -71,7 +71,7 @@ export default function CallPage() {
   }, [toast]);
 
   useEffect(() => {
-    if (!hasPermission) return;
+    if (!hasPermission || isSpeaking) return;
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -95,6 +95,7 @@ export default function CallPage() {
 
         if (transcript) {
             setIsListening(false);
+            recognitionRef.current.stop(); // Stop listening while processing
             setIsSpeaking(true);
 
             conversationHistory.current.push({ id: Date.now(), sender: 'user', text: transcript });
@@ -106,6 +107,7 @@ export default function CallPage() {
 
             if (aiResult.error) {
                 toast({ variant: 'destructive', title: 'Error', description: aiResult.error });
+                setIsSpeaking(false);
             } else if (aiResult.response) {
                 conversationHistory.current.push({ id: Date.now() + 1, sender: 'bot', text: aiResult.response });
                 const audioResult = await textToSpeech(aiResult.response);
@@ -130,15 +132,18 @@ export default function CallPage() {
 
     recognition.onend = () => {
         setIsListening(false);
-        if(!isSpeaking){
-            // Automatically restart listening if not interrupted by AI speaking
-            setTimeout(() => recognitionRef.current?.start(), 500);
+        // Automatically restart listening if not interrupted by AI speaking or call ended
+        if (!isSpeaking && streamRef.current) {
+            setTimeout(() => recognitionRef.current?.start(), 300);
         }
     };
 
     recognition.onerror = (event: any) => {
-        console.error('Speech recognition error', event.error);
         setIsListening(false);
+        // Ignore 'no-speech' errors which happen when the user is silent.
+        if (event.error !== 'no-speech') {
+          console.error('Speech recognition error', event.error);
+        }
     };
 
     // Start listening
@@ -171,6 +176,7 @@ export default function CallPage() {
   const endCall = () => {
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
     }
      if (recognitionRef.current) {
       recognitionRef.current.stop();
@@ -193,10 +199,10 @@ export default function CallPage() {
                 <CardTitle className="text-center text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-2">
                     AI Wellness Session
                 </CardTitle>
-                 <div className="text-center text-gray-400 text-lg animate-pulse">
+                 <div className="text-center text-gray-400 text-lg animate-pulse h-6">
                     {isListening && "Listening..."}
                     {isSpeaking && "AI is speaking..."}
-                    {!isListening && !isSpeaking && "Ready to talk"}
+                    {!isListening && !isSpeaking && hasPermission && "Ready to talk"}
                 </div>
             </CardHeader>
             <CardContent>
