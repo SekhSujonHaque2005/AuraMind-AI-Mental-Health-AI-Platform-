@@ -140,8 +140,8 @@ export default function CallPage() {
 
     recognition.onerror = (event: any) => {
         setIsListening(false);
-        // Ignore 'no-speech' errors which happen when the user is silent.
-        if (event.error !== 'no-speech') {
+        // Ignore 'no-speech' and 'aborted' errors
+        if (event.error !== 'no-speech' && event.error !== 'aborted') {
           console.error('Speech recognition error', event.error);
         }
     };
