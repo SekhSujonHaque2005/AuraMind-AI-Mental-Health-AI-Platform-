@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useSearchParams } from 'next/navigation';
@@ -31,7 +32,7 @@ export default function CallPage() {
                         <p className="text-gray-400">AI Consultant's Video</p>
                     </div>
 
-                    {/* Local Video (User) */}
+                    {/* Local Video (User)
                     <div className="relative aspect-video bg-gray-800 rounded-lg flex items-center justify-center">
                          <p className="text-gray-400">Your Video</p>
                     </div>
