@@ -69,7 +69,7 @@ export default function CallPage() {
         streamRef.current.getTracks().forEach(track => track.stop());
       }
       if (recognitionRef.current) {
-        recognitionRef.current.stop();
+        recognitionRef.current.abort();
       }
     };
   }, [toast]);
@@ -107,7 +107,12 @@ export default function CallPage() {
   }, [hasPermission, isGreeting, selectedPersona]);
 
   useEffect(() => {
-    if (!hasPermission || isSpeaking || isGreeting || !selectedPersona) return;
+    if (!hasPermission || isSpeaking || isGreeting || !selectedPersona) {
+        if(recognitionRef.current && isListening) {
+            recognitionRef.current.stop();
+        }
+        return;
+    };
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -118,88 +123,75 @@ export default function CallPage() {
       });
       return;
     }
-
-    const recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = false;
-    recognition.lang = 'en-US';
-    recognitionRef.current = recognition;
-
-    recognition.onresult = async (event: any) => {
-        const last = event.results.length - 1;
-        const transcript = event.results[last][0].transcript.trim();
-
-        if (transcript) {
-            setIsListening(false);
-            recognitionRef.current.stop(); // Stop listening while processing
-            setIsSpeaking(true);
-
-            conversationHistory.current.push({ id: Date.now(), sender: 'user', text: transcript });
-            
-            const aiResult = await getAIResponse({
-                message: transcript,
-                conversationHistory: conversationHistory.current.slice(0, -1),
-            });
-
-            if (aiResult.error) {
-                toast({ variant: 'destructive', title: 'Error', description: aiResult.error });
-                setIsSpeaking(false);
-            } else if (aiResult.response) {
-                conversationHistory.current.push({ id: Date.now() + 1, sender: 'bot', text: aiResult.response });
-                const audioResult = await textToSpeech(aiResult.response, selectedPersona.voice);
-                if (audioResult.media) {
-                    const audio = new Audio(audioResult.media);
-                    audio.play();
-                    audio.onended = () => {
-                       setIsSpeaking(false);
-                    };
-                } else {
-                    setIsSpeaking(false);
-                }
-            } else {
-                 setIsSpeaking(false);
-            }
-        }
-    };
     
-    recognition.onstart = () => {
-        setIsListening(true);
-    };
+    if (!recognitionRef.current) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+        recognitionRef.current = recognition;
 
-    recognition.onend = () => {
-        setIsListening(false);
-        // Automatically restart listening if not interrupted by AI speaking or call ended
-        if (!isSpeaking && streamRef.current && !isListening) {
-             try {
-                recognitionRef.current?.start();
-            } catch (e) {
-                console.error("Could not restart recognition: ", e);
+        recognition.onresult = async (event: any) => {
+            const last = event.results.length - 1;
+            const transcript = event.results[last][0].transcript.trim();
+
+            if (transcript) {
+                recognitionRef.current.stop(); // Stop listening while processing
+
+                conversationHistory.current.push({ id: Date.now(), sender: 'user', text: transcript });
+                
+                const aiResult = await getAIResponse({
+                    message: transcript,
+                    conversationHistory: conversationHistory.current.slice(0, -1),
+                });
+
+                if (aiResult.error) {
+                    toast({ variant: 'destructive', title: 'Error', description: aiResult.error });
+                    setIsSpeaking(false);
+                } else if (aiResult.response) {
+                    conversationHistory.current.push({ id: Date.now() + 1, sender: 'bot', text: aiResult.response });
+                    setIsSpeaking(true);
+                    const audioResult = await textToSpeech(aiResult.response, selectedPersona.voice);
+                    if (audioResult.media) {
+                        const audio = new Audio(audioResult.media);
+                        audio.play();
+                        audio.onended = () => {
+                           setIsSpeaking(false);
+                        };
+                    } else {
+                        setIsSpeaking(false);
+                    }
+                } else {
+                     setIsSpeaking(false);
+                }
             }
-        }
-    };
+        };
+        
+        recognition.onstart = () => {
+            setIsListening(true);
+        };
 
-    recognition.onerror = (event: any) => {
-        setIsListening(false);
-        // Ignore 'no-speech' and 'aborted' errors
-        if (event.error !== 'no-speech' && event.error !== 'aborted') {
-          console.error('Speech recognition error', event.error);
-        }
-    };
+        recognition.onend = () => {
+            setIsListening(false);
+        };
 
-    // Start listening
+        recognition.onerror = (event: any) => {
+            setIsListening(false);
+            if (event.error !== 'no-speech' && event.error !== 'aborted') {
+              console.error('Speech recognition error:', event.error);
+            }
+        };
+    }
+
     if (!isListening) {
         try {
-            recognition.start();
+            recognitionRef.current.start();
         } catch(e) {
-            console.log('Recognition already started');
+            console.warn('Speech recognition could not be started: ', e);
         }
     }
 
-    return () => {
-      recognition.stop();
-    };
-
-  }, [hasPermission, isSpeaking, isGreeting, toast, selectedPersona, isListening]);
+  }, [hasPermission, isSpeaking, isGreeting, isListening, toast, selectedPersona]);
 
   const toggleMute = () => {
     if (streamRef.current) {
@@ -225,7 +217,8 @@ export default function CallPage() {
       streamRef.current = null;
     }
      if (recognitionRef.current) {
-      recognitionRef.current.stop();
+      recognitionRef.current.abort();
+      recognitionRef.current = null;
     }
     if (localVideoRef.current) {
       localVideoRef.current.srcObject = null;
