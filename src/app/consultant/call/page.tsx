@@ -77,23 +77,33 @@ export default function CallPage() {
   useEffect(() => {
     const startGreeting = async () => {
       if (hasPermission && isGreeting && selectedPersona) {
-        setIsSpeaking(true);
-        const greetingText = selectedPersona.greeting;
-        const voice = selectedPersona.voice;
-        
-        conversationHistory.current.push({ id: Date.now(), sender: 'bot', text: greetingText });
+        try {
+            setIsSpeaking(true);
+            const greetingText = selectedPersona.greeting;
+            const voice = selectedPersona.voice;
+            
+            conversationHistory.current.push({ id: Date.now(), sender: 'bot', text: greetingText });
 
-        const audioResult = await textToSpeech(greetingText, voice);
-        if (audioResult.media) {
-          const audio = new Audio(audioResult.media);
-          audio.play();
-          audio.onended = () => {
+            const audioResult = await textToSpeech(greetingText, voice);
+            if (audioResult?.media) {
+              const audio = new Audio(audioResult.media);
+              audio.play();
+              audio.onended = () => {
+                setIsSpeaking(false);
+                setIsGreeting(false);
+              };
+            } else {
+              throw new Error("TTS greeting failed to generate audio.");
+            }
+        } catch (error) {
+            console.error("Error during greeting TTS:", error);
+            toast({
+                variant: 'destructive',
+                title: 'Text-to-Speech Error',
+                description: 'Could not play the welcome message. The conversation can still continue.',
+            });
             setIsSpeaking(false);
             setIsGreeting(false);
-          };
-        } else {
-          setIsSpeaking(false);
-          setIsGreeting(false);
         }
       }
     };
@@ -104,7 +114,7 @@ export default function CallPage() {
     } else {
       startGreeting();
     }
-  }, [hasPermission, isGreeting, selectedPersona]);
+  }, [hasPermission, isGreeting, selectedPersona, toast]);
 
   useEffect(() => {
     if (!hasPermission || isSpeaking || isGreeting || !selectedPersona) {
@@ -136,38 +146,42 @@ export default function CallPage() {
             const transcript = event.results[last][0].transcript.trim();
 
             if (transcript) {
-                // Stop listening while processing
                 recognitionRef.current.stop();
-
-                conversationHistory.current.push({ id: Date.now(), sender: 'user', text: transcript });
-                
-                // Set speaking to true immediately to give feedback and prevent listening from restarting
                 setIsSpeaking(true);
+                
+                conversationHistory.current.push({ id: Date.now(), sender: 'user', text: transcript });
                 
                 const aiResult = await getAIResponse({
                     message: transcript,
-                    // Send the full history up to the user's latest message
                     conversationHistory: conversationHistory.current.slice(0, -1).map(m => ({sender: m.sender, text: m.text})),
                 });
 
                 if (aiResult.error) {
                     toast({ variant: 'destructive', title: 'Error', description: aiResult.error });
-                    setIsSpeaking(false); // Reset on error
+                    setIsSpeaking(false); 
                 } else if (aiResult.response) {
                     conversationHistory.current.push({ id: Date.now() + 1, sender: 'bot', text: aiResult.response });
-                    const audioResult = await textToSpeech(aiResult.response, selectedPersona.voice);
-                    if (audioResult.media) {
-                        const audio = new Audio(audioResult.media);
-                        audio.play();
-                        audio.onended = () => {
-                           setIsSpeaking(false);
-                        };
-                    } else {
-                        // If TTS fails, still reset speaking state
+                    try {
+                        const audioResult = await textToSpeech(aiResult.response, selectedPersona.voice);
+                        if (audioResult?.media) {
+                            const audio = new Audio(audioResult.media);
+                            audio.play();
+                            audio.onended = () => {
+                               setIsSpeaking(false);
+                            };
+                        } else {
+                           throw new Error("TTS response failed to generate audio.");
+                        }
+                    } catch(error) {
+                        console.error("Error during response TTS:", error);
+                        toast({
+                            variant: 'destructive',
+                            title: 'Text-to-Speech Error',
+                            description: 'Could not play AI response. Check API limits.',
+                        });
                         setIsSpeaking(false);
                     }
                 } else {
-                     // If AI gives no response, reset speaking state
                      setIsSpeaking(false);
                 }
             }
@@ -193,8 +207,6 @@ export default function CallPage() {
         try {
             recognitionRef.current.start();
         } catch(e) {
-            // This can happen if start() is called while it's already starting.
-            // It's generally safe to ignore.
             if (!(e instanceof DOMException && e.name === 'InvalidStateError')) {
               console.warn('Speech recognition could not be started: ', e);
             }
@@ -296,5 +308,3 @@ export default function CallPage() {
     </div>
   );
 }
-
-    
