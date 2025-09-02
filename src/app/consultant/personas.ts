@@ -16,7 +16,7 @@ export const personas = [
     description: 'A motivational partner for building resilience and achieving personal goals.',
     icon: Zap,
     greeting: "Hey there, I'm Coach Alex! Ready to build some resilience and work towards your goals? Let's get started. What's our focus for today?",
-    voice: 'Algenib', // A male-sounding voice
+    voice: 'Rasalgethi', // A male-sounding voice
   },
   {
     id: '3',
@@ -24,6 +24,6 @@ export const personas = [
     description: 'A non-judgmental friend who is here to simply listen and provide support.',
     icon: User,
     greeting: "Hi, I'm Sam. I'm here to be a listening ear, without any judgment. Feel free to share whatever is on your mind. I'm here for you.",
-    voice: 'Pegasus', // A friendly male-sounding voice
+    voice: 'Algenib', // A friendly male-sounding voice
   },
 ];
