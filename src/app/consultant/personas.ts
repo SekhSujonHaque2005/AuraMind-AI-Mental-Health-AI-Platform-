@@ -8,7 +8,7 @@ export const personas = [
     description: 'A compassionate guide focusing on mindfulness and cognitive behavioral techniques.',
     icon: Heart,
     greeting: "Hello, I'm Dr. Anya Sharma. I'm here to help you explore your thoughts and feelings with compassion and mindfulness. What's on your mind today?",
-    voice: 'Orion', // A female-sounding voice
+    voice: 'SadalSuud', // A female-sounding voice
   },
   {
     id: '2',
