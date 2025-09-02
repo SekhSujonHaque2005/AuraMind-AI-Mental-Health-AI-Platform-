@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -12,8 +13,15 @@ export default function ConsentPage() {
   const [consent1, setConsent1] = useState(false);
   const [consent2, setConsent2] = useState(false);
   const [consent3, setConsent3] = useState(false);
+  const router = useRouter();
 
   const allConsentsGiven = consent1 && consent2 && consent3;
+
+  const handleContinue = () => {
+    if (allConsentsGiven) {
+      router.push('/consultant/persona');
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-950 p-4">
@@ -59,14 +67,7 @@ export default function ConsentPage() {
           <Button
             disabled={!allConsentsGiven}
             className="w-full mt-8 text-lg py-6 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed transition-all"
-            onClick={() => {
-              if (allConsentsGiven) {
-                // For now, we don't have the persona page, so we can just log a message
-                console.log("Consents given, redirecting to persona selection...");
-                // In the next step, we will implement the redirection:
-                // window.location.href = '/consultant/persona';
-              }
-            }}
+            onClick={handleContinue}
           >
             Accept and Continue
           </Button>
