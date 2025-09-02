@@ -46,33 +46,39 @@ const textToSpeechFlow = ai.defineFlow(
     }),
   },
   async ({ text, voice }) => {
-    const { media } = await ai.generate({
-      model: 'googleai/gemini-2.5-flash-preview-tts',
-      config: {
-        responseModalities: ['AUDIO'],
-        speechConfig: {
-          voiceConfig: {
-            prebuiltVoiceConfig: { voiceName: voice },
+    try {
+        const { media } = await ai.generate({
+          model: 'googleai/gemini-2.5-flash-preview-tts',
+          config: {
+            responseModalities: ['AUDIO'],
+            speechConfig: {
+              voiceConfig: {
+                prebuiltVoiceConfig: { voiceName: voice },
+              },
+            },
           },
-        },
-      },
-      prompt: text,
-    });
+          prompt: text,
+        });
 
-    if (!media) {
-      return { media: undefined };
+        if (!media) {
+          return { media: undefined };
+        }
+        
+        const audioBuffer = Buffer.from(
+          media.url.substring(media.url.indexOf(',') + 1),
+          'base64'
+        );
+        
+        const wavBase64 = await toWav(audioBuffer);
+
+        return {
+          media: 'data:audio/wav;base64,' + wavBase64,
+        };
+    } catch (error) {
+        console.error(`[TTS Flow Error] Failed to generate audio for voice '${voice}':`, error);
+        // Return a response that indicates failure without crashing.
+        return { media: undefined };
     }
-    
-    const audioBuffer = Buffer.from(
-      media.url.substring(media.url.indexOf(',') + 1),
-      'base64'
-    );
-    
-    const wavBase64 = await toWav(audioBuffer);
-
-    return {
-      media: 'data:audio/wav;base64,' + wavBase64,
-    };
   }
 );
 
