@@ -136,21 +136,25 @@ export default function CallPage() {
             const transcript = event.results[last][0].transcript.trim();
 
             if (transcript) {
-                recognitionRef.current.stop(); // Stop listening while processing
+                // Stop listening while processing
+                recognitionRef.current.stop();
 
                 conversationHistory.current.push({ id: Date.now(), sender: 'user', text: transcript });
                 
+                // Set speaking to true immediately to give feedback and prevent listening from restarting
+                setIsSpeaking(true);
+                
                 const aiResult = await getAIResponse({
                     message: transcript,
-                    conversationHistory: conversationHistory.current.slice(0, -1),
+                    // Send the full history up to the user's latest message
+                    conversationHistory: conversationHistory.current.slice(0, -1).map(m => ({sender: m.sender, text: m.text})),
                 });
 
                 if (aiResult.error) {
                     toast({ variant: 'destructive', title: 'Error', description: aiResult.error });
-                    setIsSpeaking(false);
+                    setIsSpeaking(false); // Reset on error
                 } else if (aiResult.response) {
                     conversationHistory.current.push({ id: Date.now() + 1, sender: 'bot', text: aiResult.response });
-                    setIsSpeaking(true);
                     const audioResult = await textToSpeech(aiResult.response, selectedPersona.voice);
                     if (audioResult.media) {
                         const audio = new Audio(audioResult.media);
@@ -159,9 +163,11 @@ export default function CallPage() {
                            setIsSpeaking(false);
                         };
                     } else {
+                        // If TTS fails, still reset speaking state
                         setIsSpeaking(false);
                     }
                 } else {
+                     // If AI gives no response, reset speaking state
                      setIsSpeaking(false);
                 }
             }
@@ -187,7 +193,11 @@ export default function CallPage() {
         try {
             recognitionRef.current.start();
         } catch(e) {
-            console.warn('Speech recognition could not be started: ', e);
+            // This can happen if start() is called while it's already starting.
+            // It's generally safe to ignore.
+            if (!(e instanceof DOMException && e.name === 'InvalidStateError')) {
+              console.warn('Speech recognition could not be started: ', e);
+            }
         }
     }
 
@@ -286,3 +296,5 @@ export default function CallPage() {
     </div>
   );
 }
+
+    
