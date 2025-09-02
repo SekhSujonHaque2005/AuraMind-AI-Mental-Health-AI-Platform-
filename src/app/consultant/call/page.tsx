@@ -8,6 +8,17 @@ import { Mic, MicOff, Video, VideoOff, PhoneOff } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { textToSpeech } from '@/app/consultant/actions';
+import { getAIResponse } from '@/app/actions';
+import type { Message } from '@/contexts/ChatContext';
+
+// Add SpeechRecognition types for browsers that support it
+declare global {
+    interface Window {
+        SpeechRecognition: any;
+        webkitSpeechRecognition: any;
+    }
+}
 
 export default function CallPage() {
   const searchParams = useSearchParams();
@@ -18,9 +29,14 @@ export default function CallPage() {
   const [isMuted, setIsMuted] = useState(false);
   const [isCameraOff, setIsCameraOff] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-
+  const recognitionRef = useRef<any>(null);
+  const conversationHistory = useRef<Message[]>([]);
+  
   useEffect(() => {
     const getPermissionsAndStream = async () => {
       try {
@@ -48,8 +64,91 @@ export default function CallPage() {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
       }
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
     };
   }, [toast]);
+
+  useEffect(() => {
+    if (!hasPermission) return;
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      toast({
+        variant: 'destructive',
+        title: 'Browser Not Supported',
+        description: 'Your browser does not support Speech Recognition. Please try Chrome or Safari.',
+      });
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+    recognitionRef.current = recognition;
+
+    recognition.onresult = async (event: any) => {
+        const last = event.results.length - 1;
+        const transcript = event.results[last][0].transcript.trim();
+
+        if (transcript) {
+            setIsListening(false);
+            setIsSpeaking(true);
+
+            conversationHistory.current.push({ id: Date.now(), sender: 'user', text: transcript });
+            
+            const aiResult = await getAIResponse({
+                message: transcript,
+                conversationHistory: conversationHistory.current.slice(0, -1),
+            });
+
+            if (aiResult.error) {
+                toast({ variant: 'destructive', title: 'Error', description: aiResult.error });
+            } else if (aiResult.response) {
+                conversationHistory.current.push({ id: Date.now() + 1, sender: 'bot', text: aiResult.response });
+                const audioResult = await textToSpeech(aiResult.response);
+                if (audioResult.media) {
+                    const audio = new Audio(audioResult.media);
+                    audio.play();
+                    audio.onended = () => {
+                       setIsSpeaking(false);
+                    };
+                } else {
+                    setIsSpeaking(false);
+                }
+            } else {
+                 setIsSpeaking(false);
+            }
+        }
+    };
+    
+    recognition.onstart = () => {
+        setIsListening(true);
+    };
+
+    recognition.onend = () => {
+        setIsListening(false);
+        if(!isSpeaking){
+            // Automatically restart listening if not interrupted by AI speaking
+            setTimeout(() => recognitionRef.current?.start(), 500);
+        }
+    };
+
+    recognition.onerror = (event: any) => {
+        console.error('Speech recognition error', event.error);
+        setIsListening(false);
+    };
+
+    // Start listening
+    recognition.start();
+
+    return () => {
+      recognition.stop();
+    };
+
+  }, [hasPermission, isSpeaking, toast]);
 
   const toggleMute = () => {
     if (streamRef.current) {
@@ -73,6 +172,9 @@ export default function CallPage() {
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
     }
+     if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
     if (localVideoRef.current) {
       localVideoRef.current.srcObject = null;
     }
@@ -91,6 +193,11 @@ export default function CallPage() {
                 <CardTitle className="text-center text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-2">
                     AI Wellness Session
                 </CardTitle>
+                 <div className="text-center text-gray-400 text-lg animate-pulse">
+                    {isListening && "Listening..."}
+                    {isSpeaking && "AI is speaking..."}
+                    {!isListening && !isSpeaking && "Ready to talk"}
+                </div>
             </CardHeader>
             <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
