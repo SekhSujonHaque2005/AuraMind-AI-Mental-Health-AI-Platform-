@@ -36,6 +36,7 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
       {
+        protocol: 'https
         protocol: 'https',
         hostname: 'media2.giphy.com',
         port: '',
@@ -44,6 +45,12 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'i.ytimg.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
         port: '',
         pathname: '/**',
       },
