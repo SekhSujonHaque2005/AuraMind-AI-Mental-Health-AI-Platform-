@@ -290,8 +290,8 @@ export default function CallPage() {
       localVideoRef.current.srcObject = null;
     }
     setHasPermission(false);
-    toast({ title: 'Call Ended', description: 'Your session has ended.' });
-    router.push('/consultant');
+    toast({ title: 'Call Ended', description: 'Thank you for talking. Please provide your feedback.' });
+    router.push('/consultant/feedback');
   };
 
   const avatarVariants = {
