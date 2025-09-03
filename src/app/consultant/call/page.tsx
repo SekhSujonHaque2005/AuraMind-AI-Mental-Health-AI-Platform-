@@ -301,10 +301,9 @@ export default function CallPage() {
                             animate={isSpeaking ? 'speaking' : 'silent'}
                         >
                             <Image 
-                                src="https://picsum.photos/1280/720"
+                                src="https://placehold.co/1280x720/1A1A2E/FFFFFF.png?text=Dr.+Anya+Sharma&font=lora"
                                 alt="AI Persona"
-                                width={1280}
-                                height={720}
+                                fill
                                 className="object-cover w-full h-full"
                                 data-ai-hint="anime woman"
                             />
@@ -338,5 +337,3 @@ export default function CallPage() {
     </div>
   );
 }
-
-    
