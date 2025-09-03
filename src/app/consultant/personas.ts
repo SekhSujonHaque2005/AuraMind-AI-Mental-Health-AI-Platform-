@@ -9,6 +9,7 @@ export const personas = [
     icon: Heart,
     greeting: "Hello, I'm Dr. Anya Sharma. I'm here to help you explore your thoughts and feelings with compassion and mindfulness. What's on your mind today?",
     voice: 'Umbriel', // A female-sounding voice
+    imageUrl: 'https://placehold.co/1280x720/1A1A2E/FFFFFF.png?text=Dr.+Anya+Sharma&font=lora',
   },
   {
     id: '2',
@@ -17,6 +18,7 @@ export const personas = [
     icon: Zap,
     greeting: "Hey there, I'm Coach Alex! Ready to build some resilience and work towards your goals? Let's get started. What's our focus for today?",
     voice: 'Rasalgethi', // A male-sounding voice
+    imageUrl: 'https://placehold.co/1280x720/1A1A2E/FFFFFF.png?text=Coach+Alex&font=lora',
   },
   {
     id: '3',
@@ -25,5 +27,6 @@ export const personas = [
     icon: User,
     greeting: "Hi, I'm Sam. I'm here to be a listening ear, without any judgment. Feel free to share whatever is on your mind. I'm here for you.",
     voice: 'Algenib', // A friendly male-sounding voice
+    imageUrl: 'https://placehold.co/1280x720/1A1A2E/FFFFFF.png?text=Sam&font=lora',
   },
 ];

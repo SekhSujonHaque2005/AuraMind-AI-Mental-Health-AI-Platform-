@@ -295,19 +295,21 @@ export default function CallPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Remote Video (AI) */}
                     <div className="relative aspect-video bg-gray-800 rounded-lg flex items-center justify-center overflow-hidden">
-                        <motion.div
-                            className="w-full h-full"
-                            variants={avatarVariants}
-                            animate={isSpeaking ? 'speaking' : 'silent'}
-                        >
-                            <Image 
-                                src="https://placehold.co/1280x720/1A1A2E/FFFFFF.png?text=Dr.+Anya+Sharma&font=lora"
-                                alt="AI Persona"
-                                fill
-                                className="object-cover w-full h-full"
-                                data-ai-hint="anime woman"
-                            />
-                        </motion.div>
+                        {selectedPersona?.imageUrl && (
+                            <motion.div
+                                className="w-full h-full"
+                                variants={avatarVariants}
+                                animate={isSpeaking ? 'speaking' : 'silent'}
+                            >
+                                <Image 
+                                    src={selectedPersona.imageUrl}
+                                    alt={selectedPersona.name}
+                                    fill
+                                    className="object-cover w-full h-full"
+                                    data-ai-hint="anime woman"
+                                />
+                            </motion.div>
+                        )}
                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                          <p className="absolute bottom-3 left-3 text-sm font-semibold bg-black/50 px-2 py-1 rounded-md">{selectedPersona?.name || 'AI Consultant'}</p>
                     </div>
