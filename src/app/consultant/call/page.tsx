@@ -75,8 +75,9 @@ export default function CallPage() {
   }, [toast]);
   
   useEffect(() => {
+    if (!hasPermission || !selectedPersona || !isGreeting) return;
+
     const startGreeting = async () => {
-      if (hasPermission && isGreeting && selectedPersona) {
         try {
             setIsSpeaking(true);
             const greetingText = selectedPersona.greeting;
@@ -93,7 +94,13 @@ export default function CallPage() {
                 setIsGreeting(false);
               };
             } else {
-              throw new Error("TTS greeting failed to generate audio.");
+               toast({
+                    variant: 'destructive',
+                    title: 'Text-to-Speech Error',
+                    description: 'Could not play the welcome message.',
+                });
+                setIsSpeaking(false);
+                setIsGreeting(false);
             }
         } catch (error) {
             console.error("Error during greeting TTS:", error);
@@ -105,38 +112,28 @@ export default function CallPage() {
             setIsSpeaking(false);
             setIsGreeting(false);
         }
-      }
     };
-
-    // If there's no selected persona, wait a bit for it to be available
-    if (!selectedPersona) {
-      setTimeout(startGreeting, 100);
-    } else {
-      startGreeting();
-    }
-  }, [hasPermission, isGreeting, selectedPersona, toast]);
+    
+    startGreeting();
+    
+  }, [hasPermission, selectedPersona, isGreeting, toast]);
 
   useEffect(() => {
-    if (!hasPermission || isSpeaking || isGreeting || !selectedPersona) {
-        if(recognitionRef.current && isListening) {
-            recognitionRef.current.stop();
-        }
-        return;
-    };
-
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      toast({
-        variant: 'destructive',
-        title: 'Browser Not Supported',
-        description: 'Your browser does not support Speech Recognition. Please try Chrome or Safari.',
-      });
+      if(hasPermission) { // only show toast if permissions are granted but recognition is not supported
+        toast({
+            variant: 'destructive',
+            title: 'Browser Not Supported',
+            description: 'Your browser does not support Speech Recognition. Please try Chrome or Safari.',
+        });
+      }
       return;
     }
     
     if (!recognitionRef.current) {
         const recognition = new SpeechRecognition();
-        recognition.continuous = true;
+        recognition.continuous = false; // Process single utterances
         recognition.interimResults = false;
         recognition.lang = 'en-US';
         recognitionRef.current = recognition;
@@ -146,43 +143,43 @@ export default function CallPage() {
             const transcript = event.results[last][0].transcript.trim();
 
             if (transcript) {
-                recognitionRef.current.stop();
-                setIsSpeaking(true);
+                setIsSpeaking(true); // AI is about to speak
                 
                 conversationHistory.current.push({ id: Date.now(), sender: 'user', text: transcript });
                 
-                const aiResult = await getAIResponse({
-                    message: transcript,
-                    conversationHistory: conversationHistory.current.slice(0, -1).map(m => ({sender: m.sender, text: m.text})),
-                });
+                try {
+                    const aiResult = await getAIResponse({
+                        message: transcript,
+                        conversationHistory: conversationHistory.current.slice(0, -1).map(m => ({sender: m.sender, text: m.text})),
+                    });
 
-                if (aiResult.error) {
-                    toast({ variant: 'destructive', title: 'Error', description: aiResult.error });
-                    setIsSpeaking(false); 
-                } else if (aiResult.response) {
-                    conversationHistory.current.push({ id: Date.now() + 1, sender: 'bot', text: aiResult.response });
-                    try {
-                        const audioResult = await textToSpeech(aiResult.response, selectedPersona.voice);
+                    if (aiResult.error) {
+                        toast({ variant: 'destructive', title: 'Error', description: aiResult.error });
+                        setIsSpeaking(false); // Reset if AI fails
+                    } else if (aiResult.response) {
+                        conversationHistory.current.push({ id: Date.now() + 1, sender: 'bot', text: aiResult.response });
+                        const audioResult = await textToSpeech(aiResult.response, selectedPersona!.voice);
                         if (audioResult?.media) {
                             const audio = new Audio(audioResult.media);
                             audio.play();
                             audio.onended = () => {
-                               setIsSpeaking(false);
+                               setIsSpeaking(false); // AI finished speaking
                             };
                         } else {
-                           throw new Error("TTS response failed to generate audio.");
+                           toast({
+                                variant: 'destructive',
+                                title: 'Text-to-Speech Error',
+                                description: 'Could not play AI response. Check API limits.',
+                            });
+                           setIsSpeaking(false); // Reset on TTS failure
                         }
-                    } catch(error) {
-                        console.error("Error during response TTS:", error);
-                        toast({
-                            variant: 'destructive',
-                            title: 'Text-to-Speech Error',
-                            description: 'Could not play AI response. Check API limits.',
-                        });
-                        setIsSpeaking(false);
+                    } else {
+                         setIsSpeaking(false); // Reset if no response
                     }
-                } else {
-                     setIsSpeaking(false);
+                } catch (error) {
+                    console.error("Error getting AI response or playing audio:", error);
+                    toast({ variant: 'destructive', title: 'Conversation Error', description: 'Could not process the response.' });
+                    setIsSpeaking(false); // Reset on any other error
                 }
             }
         };
@@ -196,17 +193,19 @@ export default function CallPage() {
         };
 
         recognition.onerror = (event: any) => {
-            setIsListening(false);
             if (event.error !== 'no-speech' && event.error !== 'aborted') {
               console.error('Speech recognition error:', event.error);
             }
+            setIsListening(false);
         };
     }
-
-    if (!isListening) {
+    
+    // Start listening only if all conditions are met
+    if (hasPermission && !isSpeaking && !isGreeting && !isListening) {
         try {
             recognitionRef.current.start();
         } catch(e) {
+            // This handles cases where start() is called on an already active recognition object.
             if (!(e instanceof DOMException && e.name === 'InvalidStateError')) {
               console.warn('Speech recognition could not be started: ', e);
             }
@@ -214,6 +213,7 @@ export default function CallPage() {
     }
 
   }, [hasPermission, isSpeaking, isGreeting, isListening, toast, selectedPersona]);
+
 
   const toggleMute = () => {
     if (streamRef.current) {
@@ -308,3 +308,5 @@ export default function CallPage() {
     </div>
   );
 }
+
+    
