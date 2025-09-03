@@ -12,7 +12,8 @@ import { textToSpeech } from '@/app/consultant/actions';
 import { getAIResponse } from '@/app/actions';
 import type { Message } from '@/contexts/ChatContext';
 import { personas } from '@/app/consultant/personas';
-import HumanModel from '@/components/human-model';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 // Add SpeechRecognition types for browsers that support it
 declare global {
@@ -120,9 +121,11 @@ export default function CallPage() {
   }, [hasPermission, selectedPersona, isGreeting, toast]);
 
   useEffect(() => {
+    if (!hasPermission) return;
+    
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      if(hasPermission) { // only show toast if permissions are granted but recognition is not supported
+      if(hasPermission) {
         toast({
             variant: 'destructive',
             title: 'Browser Not Supported',
@@ -134,7 +137,7 @@ export default function CallPage() {
     
     if (!recognitionRef.current) {
         const recognition = new SpeechRecognition();
-        recognition.continuous = false; // Process single utterances
+        recognition.continuous = false;
         recognition.interimResults = false;
         recognition.lang = 'en-US';
         recognitionRef.current = recognition;
@@ -144,7 +147,7 @@ export default function CallPage() {
             const transcript = event.results[last][0].transcript.trim();
 
             if (transcript) {
-                setIsSpeaking(true); // AI is about to speak
+                setIsSpeaking(true);
                 
                 conversationHistory.current.push({ id: Date.now(), sender: 'user', text: transcript });
                 
@@ -156,7 +159,7 @@ export default function CallPage() {
 
                     if (aiResult.error) {
                         toast({ variant: 'destructive', title: 'Error', description: aiResult.error });
-                        setIsSpeaking(false); // Reset if AI fails
+                        setIsSpeaking(false);
                     } else if (aiResult.response) {
                         conversationHistory.current.push({ id: Date.now() + 1, sender: 'bot', text: aiResult.response });
                         const audioResult = await textToSpeech(aiResult.response, selectedPersona!.voice);
@@ -164,7 +167,7 @@ export default function CallPage() {
                             const audio = new Audio(audioResult.media);
                             audio.play();
                             audio.onended = () => {
-                               setIsSpeaking(false); // AI finished speaking
+                               setIsSpeaking(false);
                             };
                         } else {
                            toast({
@@ -172,15 +175,15 @@ export default function CallPage() {
                                 title: 'Text-to-Speech Error',
                                 description: 'Could not play AI response. Check API limits.',
                             });
-                           setIsSpeaking(false); // Reset on TTS failure
+                           setIsSpeaking(false);
                         }
                     } else {
-                         setIsSpeaking(false); // Reset if no response
+                         setIsSpeaking(false);
                     }
                 } catch (error) {
                     console.error("Error getting AI response or playing audio:", error);
                     toast({ variant: 'destructive', title: 'Conversation Error', description: 'Could not process the response.' });
-                    setIsSpeaking(false); // Reset on any other error
+                    setIsSpeaking(false);
                 }
             }
         };
@@ -201,7 +204,7 @@ export default function CallPage() {
         };
     }
     
-    // Start listening only if all conditions are met
+    // This effect now controls the recognition start/stop logic based on state
     if (hasPermission && !isSpeaking && !isGreeting && !isListening) {
         try {
             recognitionRef.current.start();
@@ -254,6 +257,26 @@ export default function CallPage() {
     router.push('/consultant');
   };
 
+  const avatarVariants = {
+    speaking: {
+      scale: 1.03,
+      transition: {
+        duration: 0.8,
+        repeat: Infinity,
+        repeatType: 'reverse' as const,
+        ease: 'easeInOut',
+      },
+    },
+    silent: {
+      scale: 1,
+      transition: {
+        duration: 1.5,
+        ease: 'easeInOut',
+      },
+    },
+  };
+
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-950 p-4 text-white">
         <Card className="w-full max-w-4xl bg-gray-900/50 border border-blue-500/20 shadow-[0_0_25px_rgba(72,149,239,0.15)]">
@@ -272,7 +295,20 @@ export default function CallPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Remote Video (AI) */}
                     <div className="relative aspect-video bg-gray-800 rounded-lg flex items-center justify-center overflow-hidden">
-                        <HumanModel isSpeaking={isSpeaking} />
+                        <motion.div
+                            className="w-full h-full"
+                            variants={avatarVariants}
+                            animate={isSpeaking ? 'speaking' : 'silent'}
+                        >
+                            <Image 
+                                src="https://picsum.photos/1280/720"
+                                alt="AI Persona"
+                                width={1280}
+                                height={720}
+                                className="object-cover w-full h-full"
+                                data-ai-hint="anime woman"
+                            />
+                        </motion.div>
                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                          <p className="absolute bottom-3 left-3 text-sm font-semibold bg-black/50 px-2 py-1 rounded-md">{selectedPersona?.name || 'AI Consultant'}</p>
                     </div>
@@ -302,3 +338,5 @@ export default function CallPage() {
     </div>
   );
 }
+
+    
