@@ -12,6 +12,7 @@ import { textToSpeech } from '@/app/consultant/actions';
 import { getAIResponse } from '@/app/actions';
 import type { Message } from '@/contexts/ChatContext';
 import { personas } from '@/app/consultant/personas';
+import HumanModel from '@/components/human-model';
 
 // Add SpeechRecognition types for browsers that support it
 declare global {
@@ -271,14 +272,7 @@ export default function CallPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Remote Video (AI) */}
                     <div className="relative aspect-video bg-gray-800 rounded-lg flex items-center justify-center overflow-hidden">
-                        <video 
-                            src="https://cdn.pixabay.com/video/2024/04/11/206925_large.mp4" 
-                            autoPlay 
-                            loop 
-                            muted 
-                            playsInline
-                            className="w-full h-full object-cover"
-                        ></video>
+                        <HumanModel isSpeaking={isSpeaking} />
                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                          <p className="absolute bottom-3 left-3 text-sm font-semibold bg-black/50 px-2 py-1 rounded-md">{selectedPersona?.name || 'AI Consultant'}</p>
                     </div>
@@ -308,5 +302,3 @@ export default function CallPage() {
     </div>
   );
 }
-
-    
