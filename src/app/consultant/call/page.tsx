@@ -126,7 +126,11 @@ export default function CallPage() {
             const greetingText = selectedPersona.greeting;
             const voice = selectedPersona.voice;
             
-            conversationHistory.current.push({ id: Date.now(), sender: 'bot', text: greetingText });
+            // Initialize conversation history with system prompt and greeting
+            conversationHistory.current = [
+                { id: Date.now() -1, sender: 'bot', text: selectedPersona.systemPrompt },
+                { id: Date.now(), sender: 'bot', text: greetingText }
+            ];
 
             const audioResult = await textToSpeech(greetingText, voice);
             if (audioResult?.media) {
@@ -193,6 +197,7 @@ export default function CallPage() {
             try {
                 const aiResult = await getAIResponse({
                     message: transcript,
+                    // Send the entire history including the system prompt
                     conversationHistory: conversationHistory.current.slice(0, -1).map(m => ({sender: m.sender, text: m.text})),
                 });
 
@@ -252,6 +257,7 @@ export default function CallPage() {
             }
         }
     } else if (isSpeaking || isListening) {
+        // Use abort() to safely stop recognition if it's running
         recognitionInstance.abort();
     }
   }, [hasPermission, isSpeaking, isGreeting, isListening]);

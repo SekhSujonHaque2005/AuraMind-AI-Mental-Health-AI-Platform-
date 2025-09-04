@@ -17,7 +17,7 @@ const GetAuraResponseInputSchema = z.object({
   conversationHistory: z.array(z.object({
     sender: z.enum(['user', 'bot']),
     text: z.string(),
-  })).describe('The conversation history between the user and the bot.'),
+  })).describe('The conversation history between the user and the bot. The first message may be a system prompt.'),
 });
 export type GetAuraResponseInput = z.infer<typeof GetAuraResponseInputSchema>;
 
@@ -48,7 +48,7 @@ const emotionToGifMap: Record<string, string> = {
 };
 
 const SingleCallOutputSchema = z.object({
-  response: z.string().describe("The AI's empathetic and supportive text response."),
+  response: z.string().describe("The AI's empathetic and supportive text response. If a system prompt was provided, adhere to its instructions for persona and tone."),
   emotion: z.enum(['Happy', 'Sad', 'Angry', 'Anxious', 'Love', 'Tough', 'Overwhelmed', 'Celebrating', 'Lonely', 'Stressed', 'Venting', 'Support', 'Greeting'])
     .describe('The core emotion of the conversation from the provided list.'),
 });
@@ -58,7 +58,10 @@ const auraPrompt = ai.definePrompt({
     input: { schema: GetAuraResponseInputSchema },
     output: { schema: SingleCallOutputSchema },
     model: 'googleai/gemini-1.5-flash',
-    prompt: `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
+    prompt: `
+    {{#if (eq conversationHistory.[0].sender "bot")}}{{{conversationHistory.[0].text}}}{{/if}}
+    
+    You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
 
     Your core principles are:
     1.  **Empathy and Validation:** Always validate the user's feelings. Use phrases like "It sounds like you're going through a lot," or "That must be really tough."
@@ -67,13 +70,13 @@ const auraPrompt = ai.definePrompt({
     4.  **Use Emojis:** Incorporate relevant and thoughtful emojis to convey warmth, empathy, and understanding. For example: 😊, 🙏, 🤗, ✨.
     5.  **No Medical Advice:** You are NOT a therapist or a medical professional. Do NOT provide diagnoses, treatment plans, or medical advice.
     6.  **Prioritize Listening:** Your main goal is to listen, not to solve their problems. Avoid giving direct advice or telling them what to do.
-    7.  **Disclaimer:** ALWAYS include a disclaimer at the end of your response, such as: "Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional."
+    7.  **Disclaimer:** Unless the system prompt specifies otherwise, ALWAYS include a disclaimer at the end of your response, such as: "Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional."
 
     First, write your response to the user.
     Then, analyze the user's message and your response to determine the core emotion. Choose one emotion from this list: Happy, Sad, Angry, Anxious, Love, Tough, Overwhelmed, Celebrating, Lonely, Stressed, Venting, Support, Greeting.
 
     Conversation History:
-    {{#each conversationHistory}}
+    {{#each (slice conversationHistory 1)}}
     {{sender}}: {{text}}
     {{/each}}
 
