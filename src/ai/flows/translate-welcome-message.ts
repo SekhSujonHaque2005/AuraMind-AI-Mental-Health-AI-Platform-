@@ -16,14 +16,22 @@ import {
 import { translations } from '@/lib/translations';
 
 export async function translateWelcomeMessage(input: TranslateWelcomeMessageInput): Promise<TranslateWelcomeMessageOutput> {
-    const targetLanguage = input.language;
-    const langCode = targetLanguage.split('-')[0]; // e.g., 'en-US' -> 'en'
+    const targetLanguage = input.language.toLowerCase();
 
-    // Find a translation that matches the language code (e.g., 'hi' for 'hi-IN')
-    const matchingTranslationKey = Object.keys(translations).find(key => key.startsWith(langCode));
-    
-    if (matchingTranslationKey && translations[matchingTranslationKey]) {
-        return translations[matchingTranslationKey];
+    // Find a key in translations that matches the beginning of the target language.
+    // e.g., 'hi' in 'hi-IN'
+    const matchingKey = Object.keys(translations).find(key => {
+        const keyLangCode = key.split('-')[0];
+        const targetLangCode = targetLanguage.split('-')[0];
+        // Handle cases where the UI sends a full name like "hindi"
+        if (translations[key].languageName.toLowerCase() === targetLangCode) {
+            return true;
+        }
+        return keyLangCode === targetLangCode;
+    });
+
+    if (matchingKey && translations[matchingKey]) {
+        return translations[matchingKey];
     }
     
     // Fallback to English content if no specific translation is found.

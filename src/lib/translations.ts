@@ -1,8 +1,14 @@
 
 import type { TranslateWelcomeMessageOutput } from '@/contexts/ChatContext';
 
-export const translations: Record<string, TranslateWelcomeMessageOutput> = {
+// Add a languageName property for more reliable matching
+interface Translation extends TranslateWelcomeMessageOutput {
+    languageName: string;
+}
+
+export const translations: Record<string, Translation> = {
   'en-US': {
+    languageName: 'English',
     welcomeMessage: "Hello! I'm Aura, your empathetic AI companion. I'm here to listen without judgment. To start, what's on your mind today? ☀️",
     suggestedQuestions: [
         { label: "I'm feeling happy! 😊", value: "I'm feeling happy today!" },
@@ -17,6 +23,7 @@ export const translations: Record<string, TranslateWelcomeMessageOutput> = {
     ]
   },
   'hi-IN': {
+    languageName: 'Hindi',
     welcomeMessage: "नमस्ते! मैं ऑरा हूं, आपकी सहानुभूतिपूर्ण एआई साथी। मैं यहां बिना किसी निर्णय के सुनने के लिए हूं। शुरू करने के लिए, आज आपके मन में क्या है? ☀️",
     suggestedQuestions: [
         { label: "मैं खुश महसूस कर रहा हूँ! 😊", value: "I'm feeling happy today!" },
