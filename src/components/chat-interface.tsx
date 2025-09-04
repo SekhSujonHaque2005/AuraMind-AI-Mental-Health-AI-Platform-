@@ -3,7 +3,7 @@
 
 import { useRef, useEffect, useTransition, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Sparkles, Languages, PlusSquare } from 'lucide-react';
+import { Loader2, Sparkles, Languages, PlusSquare, Check } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatMessage from './chat-message';
 import { getAIResponse } from '@/app/actions';
@@ -55,6 +55,22 @@ export default function ChatInterface() {
       setShowOtherLanguageInput(false);
     }
   };
+
+  const handleConfirmLanguage = () => {
+    if (otherLanguage.trim() !== '') {
+        toast({
+            title: "Language Set",
+            description: `Your conversation will now be in ${otherLanguage}.`,
+        });
+    }
+  };
+
+  const handleOtherLanguageKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        handleConfirmLanguage();
+    }
+  }
 
   const scrollToBottom = () => {
     if (viewportRef.current) {
@@ -109,8 +125,6 @@ export default function ChatInterface() {
             title: "An error occurred",
             description: result.error,
           });
-          // Optionally remove the user's message that caused the error
-          // setMessages(prev => prev.slice(0, -1));
         } else if (result.response) {
           const newBotMessage: Message = { 
             id: getNextMessageId(), 
@@ -209,14 +223,25 @@ export default function ChatInterface() {
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="flex items-center gap-2"
                     >
                         <Input 
                             type="text"
                             placeholder="Type language..."
                             value={otherLanguage}
                             onChange={(e) => setOtherLanguage(e.target.value)}
-                            className="bg-[#1F2023] border-[#444444] text-white focus:ring-0 mt-2"
+                            onKeyDown={handleOtherLanguageKeyDown}
+                            className="bg-[#1F2023] border-[#444444] text-white focus:ring-0"
                         />
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={handleConfirmLanguage}
+                            className="text-white hover:bg-white/10 rounded-full w-8 h-8"
+                            aria-label="Confirm language"
+                        >
+                            <Check className="h-4 w-4" />
+                        </Button>
                     </motion.div>
                 )}
                 </AnimatePresence>
@@ -227,7 +252,7 @@ export default function ChatInterface() {
               isLoading={isPending}
               placeholder="Ask Aura anything..."
               className="flex-1"
-              selectedLanguage={selectedLanguage}
+              selectedLanguage={selectedLanguage === 'other' ? otherLanguage : selectedLanguage}
             />
           </motion.div>
         </div>
