@@ -12,7 +12,8 @@ import {
     type TranslateWelcomeMessageInput, 
     type TranslateWelcomeMessageOutput,
     englishContent,
-    MessageOptionSchema
+    MessageOptionSchema,
+    TranslateWelcomeMessageOutputSchema
 } from '@/contexts/ChatContext';
 import { translateText } from '@/services/translation';
 import { z } from 'zod';
@@ -20,40 +21,41 @@ import { z } from 'zod';
 export async function translateWelcomeMessage(input: TranslateWelcomeMessageInput): Promise<TranslateWelcomeMessageOutput> {
     const targetLanguage = input.language;
 
-    // Bypass for English to avoid unnecessary API calls.
+    // Bypass for English to avoid unnecessary API calls and potential errors.
     if (targetLanguage.toLowerCase() === 'english' || targetLanguage.toLowerCase().startsWith('en')) {
         return englishContent;
     }
 
     try {
-        const translatedWelcomeMessage = await translateText(englishContent.welcomeMessage, targetLanguage);
-        
-        const questionTexts = englishContent.suggestedQuestions.map(q => q.label);
-        const translatedQuestionTexts = await translateText(questionTexts, targetLanguage);
+        // 1. Translate the welcome message string.
+        const translatedWelcomeMessageResult = await translateText(englishContent.welcomeMessage, targetLanguage);
+        const translatedWelcomeMessage = Array.isArray(translatedWelcomeMessageResult) ? translatedWelcomeMessageResult[0] : translatedWelcomeMessageResult;
 
-        if (typeof translatedWelcomeMessage !== 'string' || !Array.isArray(translatedQuestionTexts)) {
-            throw new Error("Translation did not return the expected types.");
-        }
+        // 2. Extract just the labels from the suggested questions for translation.
+        const questionLabelsToTranslate = englishContent.suggestedQuestions.map(q => q.label);
+        const translatedQuestionLabelsResult = await translateText(questionLabelsToTranslate, targetLanguage);
+        const translatedQuestionLabels = Array.isArray(translatedQuestionLabelsResult) ? translatedQuestionLabelsResult : [translatedQuestionLabelsResult];
 
+        // 3. Reconstruct the suggestedQuestions array with translated labels and original values.
         const translatedQuestions = englishContent.suggestedQuestions.map((question, index) => ({
-            label: translatedQuestionTexts[index],
-            value: question.value, // Keep the original English value for logic
+            label: translatedQuestionLabels[index] || question.label, // Fallback to original label if translation is missing
+            value: question.value, // IMPORTANT: Keep the original English value for application logic
         }));
 
-        // Validate the final structure
-        const validatedOutput = z.object({
-            welcomeMessage: z.string(),
-            suggestedQuestions: z.array(MessageOptionSchema)
-        }).parse({
+        // 4. Create the final output object.
+        const finalOutput: TranslateWelcomeMessageOutput = {
             welcomeMessage: translatedWelcomeMessage,
-            suggestedQuestions: translatedQuestions
-        });
+            suggestedQuestions: translatedQuestions,
+        };
 
+        // 5. Validate the final structure with Zod to ensure type safety.
+        const validatedOutput = TranslateWelcomeMessageOutputSchema.parse(finalOutput);
+        
         return validatedOutput;
         
     } catch (error) {
         console.error(`[Translation Flow Error] Failed to translate content for language: ${targetLanguage}`, error);
-        // Fallback to English content on any error.
+        // Fallback to English content on any error to prevent app from crashing.
         return englishContent;
     }
 }
