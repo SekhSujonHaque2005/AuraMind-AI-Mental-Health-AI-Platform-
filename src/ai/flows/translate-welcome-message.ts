@@ -15,36 +15,56 @@ import {
 } from '@/contexts/ChatContext';
 
 export async function translateWelcomeMessage(input: TranslateWelcomeMessageInput): Promise<TranslateWelcomeMessageOutput> {
-    if (input.language.toLowerCase() === 'english') {
+    const targetLanguage = input.language;
+    if (targetLanguage.toLowerCase() === 'english') {
         return englishContent;
     }
 
+    // This prompt is more explicit, telling the model exactly what to do and how to format the output.
+    // It is less prone to errors than asking the model to translate an existing JSON structure.
     const translationPrompt = ai.definePrompt({
         name: 'translationPrompt',
         model: 'googleai/gemini-1.5-flash',
-        // By not defining an input schema, we simplify the call and avoid the 'typeName' error.
-        prompt: `Translate the following JSON content into the target language: {{language}}.
+        prompt: `You are an expert translator. Translate the following English text into {{language}}.
 
-You MUST translate all fields: 'welcomeMessage' and every 'label' and 'value' within the 'suggestedQuestions' array. Do not change the JSON structure or keys. Your output must be a valid JSON object string.
+You MUST produce a valid JSON object string as your output. Do not add any text before or after the JSON object.
 
-Input Content:
-${JSON.stringify(englishContent, null, 2)}
+Translate the "welcomeMessage" and each "label" and "value" in the "suggestedQuestions" array.
+
+English Welcome Message: "${englishContent.welcomeMessage}"
+English Suggested Questions:
+${englishContent.suggestedQuestions.map(q => `- Label: "${q.label}", Value: "${q.value}"`).join('\n')}
+
+Your JSON output should follow this exact structure:
+{
+  "welcomeMessage": "...",
+  "suggestedQuestions": [
+    { "label": "...", "value": "..." },
+    { "label": "...", "value": "..." },
+    // ...and so on for all questions
+  ]
+}
 `,
     });
 
-    const llmResponse = await translationPrompt({ language: input.language });
+    const llmResponse = await translationPrompt({ language: targetLanguage });
     const translatedText = llmResponse.text;
 
     try {
-        // The output from the LLM can sometimes be wrapped in ```json ... ```, so we need to strip that.
-        const jsonString = translatedText.replace(/^```json\n|```$/g, '');
+        // The output from the LLM can sometimes be wrapped in ```json ... ``` or have leading/trailing text.
+        // This regex is more robust at extracting the JSON block.
+        const jsonMatch = translatedText.match(/```json\n([\s\S]*?)\n```|({[\s\S]*})/);
+        if (!jsonMatch) {
+            throw new Error("No JSON object found in the LLM response.");
+        }
+        
+        const jsonString = jsonMatch[1] || jsonMatch[2];
         const parsedJson = JSON.parse(jsonString);
         
-        // Manually validate the parsed object against the Zod schema
         const validatedOutput = TranslateWelcomeMessageOutputSchema.parse(parsedJson);
         return validatedOutput;
     } catch (error) {
-        console.error("Failed to parse or validate translated JSON:", error);
+        console.error(`Failed to parse or validate translated JSON for language: ${targetLanguage}`, error);
         console.error("Raw LLM output:", translatedText);
         // Fallback to English content on failure to prevent app crash
         return englishContent;
