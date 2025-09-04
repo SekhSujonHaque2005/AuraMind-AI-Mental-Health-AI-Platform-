@@ -126,7 +126,7 @@ export default function ChatInterface() {
   return (
     <div className="relative flex flex-col h-full w-full">
         <div className="absolute top-4 right-4 z-10">
-            <Button variant="ghost" onClick={startNewChat} className="text-gray-400 hover:text-blue-300 hover:bg-blue-500/10">
+            <Button variant="outline" onClick={startNewChat} className="text-gray-300 hover:text-white hover:bg-black/50 bg-black/30 backdrop-blur-md border-blue-500/20">
                 <PlusSquare className="h-5 w-5 mr-2" />
                 New Chat
             </Button>
