@@ -12,7 +12,6 @@ import {
     type TranslateWelcomeMessageInput, 
     type TranslateWelcomeMessageOutput,
     englishContent,
-    MessageOptionSchema,
     TranslateWelcomeMessageOutputSchema
 } from '@/contexts/ChatContext';
 import { translateText } from '@/services/translation';
