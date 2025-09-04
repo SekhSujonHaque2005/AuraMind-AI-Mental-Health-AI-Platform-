@@ -3,7 +3,7 @@
 
 import { useRef, useEffect, useTransition, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Loader2, Sparkles } from 'lucide-react';
+import { Loader2, Sparkles, Languages } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatMessage from './chat-message';
 import { getAIResponse } from '@/app/actions';
@@ -11,7 +11,24 @@ import { useToast } from '@/hooks/use-toast';
 import { PromptInputBox } from '@/components/ui/ai-prompt-box';
 import { useChat } from '@/contexts/ChatContext';
 import type { Message } from '@/contexts/ChatContext';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
+
+const languages = [
+    { value: 'en-US', label: 'English' },
+    { value: 'hi-IN', label: 'Hindi' },
+    { value: 'bn-IN', label: 'Bengali' },
+    { value: 'te-IN', label: 'Telugu' },
+    { value: 'mr-IN', label: 'Marathi' },
+    { value: 'ta-IN', label: 'Tamil' },
+    { value: 'gu-IN', label: 'Gujarati' },
+];
 
 export default function ChatInterface() {
   const { messages, setMessages, getNextMessageId } = useChat();
@@ -20,6 +37,7 @@ export default function ChatInterface() {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
+  const [selectedLanguage, setSelectedLanguage] = useState('en-US');
 
   const scrollToBottom = () => {
     if (viewportRef.current) {
@@ -60,7 +78,8 @@ export default function ChatInterface() {
         const result = await getAIResponse({
           message: lastMessage.text,
           conversationHistory: conversationHistory,
-          region: "India", // For now, we hardcode this.
+          region: selectedLanguage.split('-')[1], // 'IN'
+          language: languages.find(l => l.value === selectedLanguage)?.label,
         });
 
         if (result.error) {
@@ -135,11 +154,25 @@ export default function ChatInterface() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
+             className="flex items-center gap-4"
           >
+            <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+                <SelectTrigger className="w-auto bg-[#1F2023] border-[#444444] text-white focus:ring-0">
+                    <SelectValue placeholder="Language" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#1F2023] border-[#444444] text-white">
+                    {languages.map(lang => (
+                        <SelectItem key={lang.value} value={lang.value}>{lang.label}</SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+
             <PromptInputBox 
               onSend={handleSubmit} 
               isLoading={isPending}
               placeholder="Ask Aura anything..."
+              className="flex-1"
+              selectedLanguage={selectedLanguage}
             />
           </motion.div>
         </div>

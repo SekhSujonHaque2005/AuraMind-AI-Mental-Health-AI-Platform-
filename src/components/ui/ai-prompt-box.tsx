@@ -354,10 +354,53 @@ interface PromptInputBoxProps {
   isLoading?: boolean;
   placeholder?: string;
   className?: string;
+  onLanguageChange?: (language: string) => void;
+  selectedLanguage?: string;
 }
 export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref: React.Ref<HTMLDivElement>) => {
-  const { onSend = () => {}, isLoading = false, placeholder = "Type your message here...", className } = props;
+  const { onSend = () => {}, isLoading = false, placeholder = "Type your message here...", className, onLanguageChange, selectedLanguage } = props;
   const [input, setInput] = React.useState("");
+  const [isListening, setIsListening] = React.useState(false);
+  const recognitionRef = React.useRef<any>(null);
+
+  const handleMicClick = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Your browser does not support Speech Recognition. Please try Chrome or Safari.");
+      return;
+    }
+
+    if (!recognitionRef.current) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = selectedLanguage || 'en-US';
+
+        recognition.onresult = (event: any) => {
+            const transcript = event.results[0][0].transcript;
+            setInput(transcript);
+        };
+        recognition.onend = () => {
+            setIsListening(false);
+        };
+        recognition.onerror = (event: any) => {
+            console.error("Speech recognition error:", event.error);
+            setIsListening(false);
+        };
+        recognitionRef.current = recognition;
+    }
+    
+    recognitionRef.current.lang = selectedLanguage || 'en-US';
+    recognitionRef.current.start();
+    setIsListening(true);
+  };
+
 
   const handleSubmit = () => {
     if (input.trim()) {
@@ -382,6 +425,20 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
         disabled={isLoading}
         ref={ref}
       >
+        <div className="flex items-center gap-2 p-1">
+             <PromptInputAction tooltip={isListening ? "Stop listening" : "Use microphone"}>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleMicClick}
+                    className={cn("text-gray-400 hover:text-white", isListening && "text-red-500 animate-pulse")}
+                >
+                    {isListening ? <StopCircle className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+                </Button>
+            </PromptInputAction>
+            {/* We will add language selection here in a moment */}
+        </div>
+
         <div className="flex items-start justify-between w-full">
             <PromptInputTextarea
                 placeholder={placeholder}
