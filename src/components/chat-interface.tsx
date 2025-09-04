@@ -167,7 +167,7 @@ export default function ChatInterface() {
              className="flex items-center gap-4"
           >
             <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-                <SelectTrigger className="w-auto bg-[#1F2023] border-[#444444] text-white focus:ring-0">
+                <SelectTrigger className="w-auto bg-[#1F2023] border-[#444444] text-white focus:ring-0 cursor-pointer">
                     <SelectValue placeholder="Language" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#1F2023] border-[#444444] text-white">
