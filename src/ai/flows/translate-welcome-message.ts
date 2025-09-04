@@ -16,18 +16,25 @@ import {
 } from '@/contexts/ChatContext';
 import { z } from 'zod';
 
+/**
+ * Extracts a JSON object from a string.
+ * It can handle JSON wrapped in markdown code blocks (```json ... ```) or raw JSON strings.
+ * @param str The string to extract JSON from.
+ * @returns The parsed JSON object or null if parsing fails.
+ */
 function extractJson(str: string): any | null {
-  // Regex to find JSON wrapped in ```json ... ```
-  const match = str.match(/```json\s*([\s\S]*?)\s*```/);
-  if (match && match[1]) {
+  // Regex to find JSON wrapped in ```json ... ``` or as a raw object.
+  const match = str.match(/```json\s*([\s\S]*?)\s*```|({[\s\S]*})/);
+  if (match && (match[1] || match[2])) {
+    const jsonString = match[1] || match[2];
     try {
-      return JSON.parse(match[1]);
+      return JSON.parse(jsonString);
     } catch (e) {
-      console.error("Failed to parse JSON from code block:", e);
+      console.error("Failed to parse JSON from extracted string:", e, "\nOriginal string part:", jsonString);
       return null;
     }
   }
-  // Fallback for raw JSON string
+   // Fallback for strings that might just be the JSON object without fences
   try {
       return JSON.parse(str);
   } catch(e) {
@@ -39,7 +46,7 @@ function extractJson(str: string): any | null {
 export async function translateWelcomeMessage(input: TranslateWelcomeMessageInput): Promise<TranslateWelcomeMessageOutput> {
     const targetLanguage = input.language;
 
-    // Bypass for English to avoid unnecessary API calls.
+    // Bypass for English to avoid unnecessary API calls and potential errors.
     if (targetLanguage.toLowerCase() === 'english') {
         return englishContent;
     }
@@ -69,8 +76,8 @@ ${JSON.stringify(englishContent, null, 2)}
         const parsedJson = extractJson(rawOutput);
 
         if (!parsedJson) {
-            console.error(`[Translation Flow Error] Failed to extract JSON for language: ${targetLanguage}. Raw output:`, rawOutput);
-            throw new Error("Failed to extract JSON from LLM response.");
+            console.error(`[Translation Flow Error] Failed to extract JSON for language: ${targetLanguage}. Raw output was:`, rawOutput);
+            throw new Error("Failed to extract valid JSON from the AI's response.");
         }
 
         const validatedOutput = TranslateWelcomeMessageOutputSchema.parse(parsedJson);
