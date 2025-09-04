@@ -42,9 +42,9 @@ const scenes = {
 const BreathingGuide = () => (
     <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center z-50">
         <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', repeatDelay: 11 }}
-            className="w-24 h-24 bg-white/20 backdrop-blur-md rounded-full"
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', repeatDelay: 10 }}
+            className="w-24 h-24 bg-white/20 backdrop-blur-md rounded-full border border-white/20 shadow-lg"
         />
         <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-center pointer-events-none">
             <AnimatePresence>
@@ -54,8 +54,8 @@ const BreathingGuide = () => (
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1, delay: 0 }}
-                    style={{ animation: 'text-fade 19s infinite 0s' }}
-                    className="absolute"
+                    style={{ animation: 'text-fade-in-out 18s infinite 0s' }}
+                    className="absolute text-shadow-md"
                 >
                     Inhale
                 </motion.p>
@@ -65,8 +65,8 @@ const BreathingGuide = () => (
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1, delay: 4.5 }}
-                     style={{ animation: 'text-fade 19s infinite 4.5s' }}
-                    className="absolute"
+                     style={{ animation: 'text-fade-in-out 18s infinite 4.5s' }}
+                    className="absolute text-shadow-md"
                 >
                     Hold
                 </motion.p>
@@ -75,21 +75,24 @@ const BreathingGuide = () => (
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 1, delay: 11.5 }}
-                     style={{ animation: 'text-fade 19s infinite 11.5s' }}
-                    className="absolute"
+                    transition={{ duration: 1, delay: 10.5 }}
+                     style={{ animation: 'text-fade-in-out 18s infinite 10.5s' }}
+                    className="absolute text-shadow-md"
                 >
                     Exhale
                 </motion.p>
             </AnimatePresence>
         </div>
          <style jsx>{`
-            @keyframes text-fade {
+            @keyframes text-fade-in-out {
                 0% { opacity: 0; }
                 5% { opacity: 1; }
-                21% { opacity: 1; } /* Visible for ~4s */
-                26% { opacity: 0; }
+                22% { opacity: 1; } /* Visible for ~4s */
+                27% { opacity: 0; }
                 100% { opacity: 0; }
+            }
+            .text-shadow-md {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.5);
             }
         `}</style>
     </div>
@@ -113,8 +116,6 @@ export default function CalmRoomPage() {
         setCurrentScene(scene);
     };
     
-    // A-Frame's components are not standard HTML, so we need to suppress hydration warnings.
-    // We also use a key on the a-scene to force a re-render when the scene changes.
     return (
         <div className="relative w-full h-screen bg-gray-950 overflow-hidden" suppressHydrationWarning>
             {/* Animated Gradient Background */}
@@ -170,9 +171,7 @@ export default function CalmRoomPage() {
 
             <BreathingGuide />
             
-            {/* We manage the audio with a standard HTML audio tag for better control */}
             <audio ref={audioRef} preload="auto" />
         </div>
     );
 }
-
