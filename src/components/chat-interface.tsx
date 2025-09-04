@@ -2,7 +2,7 @@
 'use client';
 
 import { useRef, useEffect, useTransition, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Sparkles, Languages, PlusSquare } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatMessage from './chat-message';
@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 
 const languages = [
@@ -32,6 +33,7 @@ const languages = [
     { value: 'pa-IN', label: 'Punjabi' },
     { value: 'bho-IN', label: 'Bhojpuri' },
     { value: 'sat-IN', label: 'Santhali (Jharkhandi)' },
+    { value: 'other', label: 'Other' },
 ];
 
 export default function ChatInterface() {
@@ -42,6 +44,17 @@ export default function ChatInterface() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [selectedLanguage, setSelectedLanguage] = useState('en-US');
+  const [otherLanguage, setOtherLanguage] = useState('');
+  const [showOtherLanguageInput, setShowOtherLanguageInput] = useState(false);
+
+  const handleLanguageChange = (value: string) => {
+    setSelectedLanguage(value);
+    if (value === 'other') {
+      setShowOtherLanguageInput(true);
+    } else {
+      setShowOtherLanguageInput(false);
+    }
+  };
 
   const scrollToBottom = () => {
     if (viewportRef.current) {
@@ -79,11 +92,15 @@ export default function ChatInterface() {
       }));
 
       startTransition(async () => {
+        const languageLabel = selectedLanguage === 'other' 
+            ? otherLanguage 
+            : languages.find(l => l.value === selectedLanguage)?.label;
+
         const result = await getAIResponse({
           message: lastMessage.text,
           conversationHistory: conversationHistory,
           region: selectedLanguage.split('-')[1], // 'IN'
-          language: languages.find(l => l.value === selectedLanguage)?.label,
+          language: languageLabel,
         });
 
         if (result.error) {
@@ -121,6 +138,14 @@ export default function ChatInterface() {
 
   const handleSubmit = async (message: string) => {
     if (!message || message.trim() === '' || isPending) return;
+    if (selectedLanguage === 'other' && otherLanguage.trim() === '') {
+        toast({
+            variant: "destructive",
+            title: "Language not specified",
+            description: "Please enter the language you want to use.",
+        });
+        return;
+    }
 
     const newUserMessage: Message = { id: getNextMessageId(), sender: 'user', text: message };
     setMessages((prev) => [...prev, newUserMessage]);
@@ -166,16 +191,36 @@ export default function ChatInterface() {
             transition={{ duration: 0.5, ease: "easeOut" }}
              className="flex items-center gap-4"
           >
-            <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-                <SelectTrigger className="w-auto bg-[#1F2023] border-[#444444] text-white focus:ring-0 cursor-pointer">
-                    <SelectValue placeholder="Language" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#1F2023] border-[#444444] text-white">
-                    {languages.map(lang => (
-                        <SelectItem key={lang.value} value={lang.value}>{lang.label}</SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
+            <div className="flex flex-col gap-2">
+                <Select value={selectedLanguage} onValueChange={handleLanguageChange}>
+                    <SelectTrigger className="w-auto bg-[#1F2023] border-[#444444] text-white focus:ring-0 cursor-pointer">
+                        <SelectValue placeholder="Language" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#1F2023] border-[#444444] text-white">
+                        {languages.map(lang => (
+                            <SelectItem key={lang.value} value={lang.value} className="cursor-pointer">{lang.label}</SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+                <AnimatePresence>
+                {showOtherLanguageInput && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    >
+                        <Input 
+                            type="text"
+                            placeholder="Type language..."
+                            value={otherLanguage}
+                            onChange={(e) => setOtherLanguage(e.target.value)}
+                            className="bg-[#1F2023] border-[#444444] text-white focus:ring-0 mt-2"
+                        />
+                    </motion.div>
+                )}
+                </AnimatePresence>
+            </div>
 
             <PromptInputBox 
               onSend={handleSubmit} 
