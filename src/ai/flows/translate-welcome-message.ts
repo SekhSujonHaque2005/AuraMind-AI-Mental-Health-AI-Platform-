@@ -37,7 +37,7 @@ export async function translateWelcomeMessage(input: TranslateWelcomeMessageInpu
 
         const translatedQuestions = englishContent.suggestedQuestions.map((question, index) => ({
             label: translatedQuestionTexts[index],
-            value: translatedQuestionTexts[index], // Use the translated label as the value
+            value: question.value, // Keep the original English value for logic
         }));
 
         // Validate the final structure
