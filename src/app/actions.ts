@@ -11,6 +11,7 @@ const chatActionInputSchema = z.object({
     sender: z.enum(['user', 'bot']),
     text: z.string(),
   })),
+  region: z.string().optional(),
 });
 
 type ChatActionInput = z.infer<typeof chatActionInputSchema>;
@@ -25,7 +26,7 @@ export async function getAIResponse(input: ChatActionInput) {
       return { error: 'There was an issue with the data sent to the server. Please try again.' };
     }
 
-    const { message, conversationHistory } = parsedInput.data;
+    const { message, conversationHistory, region } = parsedInput.data;
 
     // 1. Critical Safety Protocol
     const safetyInput: SafetyCheckInput = { message };
@@ -36,7 +37,7 @@ export async function getAIResponse(input: ChatActionInput) {
     }
 
     // 2. Get Aura's regular response
-    const auraInput: GetAuraResponseInput = { message, conversationHistory };
+    const auraInput: GetAuraResponseInput = { message, conversationHistory, region };
     const auraResult = await getAuraResponse(auraInput);
 
     if (!auraResult || !auraResult.response) {

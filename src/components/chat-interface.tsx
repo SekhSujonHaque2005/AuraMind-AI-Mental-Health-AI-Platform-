@@ -60,6 +60,7 @@ export default function ChatInterface() {
         const result = await getAIResponse({
           message: lastMessage.text,
           conversationHistory: conversationHistory,
+          region: "India", // For now, we hardcode this.
         });
 
         if (result.error) {
@@ -81,6 +82,7 @@ export default function ChatInterface() {
         }
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
 
