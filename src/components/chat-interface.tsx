@@ -1,12 +1,12 @@
 
 'use client';
 
-import { useRef, useEffect, useTransition, useState } from 'react';
+import { useRef, useEffect, useTransition, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Sparkles, Languages, PlusSquare, Check } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatMessage from './chat-message';
-import { getAIResponse } from '@/app/actions';
+import { getAIResponse, getTranslatedWelcome } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { PromptInputBox } from '@/components/ui/ai-prompt-box';
 import { useChat } from '@/contexts/ChatContext';
@@ -37,8 +37,9 @@ const languages = [
 ];
 
 export default function ChatInterface() {
-  const { messages, setMessages, getNextMessageId, startNewChat } = useChat();
+  const { messages, setMessages, getNextMessageId, startNewChat: resetChat, initialMessage } = useChat();
   const [isPending, startTransition] = useTransition();
+  const [isTranslating, setIsTranslating] = useState(false);
   const { toast } = useToast();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -47,12 +48,45 @@ export default function ChatInterface() {
   const [otherLanguage, setOtherLanguage] = useState('');
   const [showOtherLanguageInput, setShowOtherLanguageInput] = useState(false);
 
+  const getLanguageLabel = useCallback((value: string) => {
+    if (value === 'other') return otherLanguage;
+    return languages.find(l => l.value === value)?.label || 'English';
+  }, [otherLanguage]);
+
+
+  const translateAndSetWelcomeMessage = useCallback(async (language: string) => {
+      if (!language) return;
+      setIsTranslating(true);
+      const result = await getTranslatedWelcome({ language });
+
+      if (result.error) {
+          toast({
+              variant: "destructive",
+              title: "Translation Error",
+              description: result.error,
+          });
+          setMessages([initialMessage]); // Fallback to default
+      } else if (result.welcomeMessage && result.suggestedQuestions) {
+          const translatedMessage: Message = {
+              id: 0,
+              sender: 'bot',
+              text: result.welcomeMessage,
+              gifUrl: initialMessage.gifUrl,
+              options: result.suggestedQuestions,
+          };
+          setMessages([translatedMessage]);
+      }
+      setIsTranslating(false);
+  }, [setMessages, initialMessage, toast]);
+
+
   const handleLanguageChange = (value: string) => {
     setSelectedLanguage(value);
     if (value === 'other') {
       setShowOtherLanguageInput(true);
     } else {
       setShowOtherLanguageInput(false);
+      translateAndSetWelcomeMessage(getLanguageLabel(value));
     }
   };
 
@@ -62,8 +96,18 @@ export default function ChatInterface() {
             title: "Language Set",
             description: `Your conversation will now be in ${otherLanguage}.`,
         });
+        translateAndSetWelcomeMessage(otherLanguage);
     }
   };
+  
+  const startNewChat = () => {
+    resetChat();
+    const currentLang = getLanguageLabel(selectedLanguage);
+    if (currentLang !== 'English') {
+      translateAndSetWelcomeMessage(currentLang);
+    }
+  }
+
 
   const handleOtherLanguageKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -108,9 +152,7 @@ export default function ChatInterface() {
       }));
 
       startTransition(async () => {
-        const languageLabel = selectedLanguage === 'other' 
-            ? otherLanguage 
-            : languages.find(l => l.value === selectedLanguage)?.label;
+        const languageLabel = getLanguageLabel(selectedLanguage);
 
         const result = await getAIResponse({
           message: lastMessage.text,
@@ -151,7 +193,7 @@ export default function ChatInterface() {
   };
 
   const handleSubmit = async (message: string) => {
-    if (!message || message.trim() === '' || isPending) return;
+    if (!message || message.trim() === '' || isPending || isTranslating) return;
     if (selectedLanguage === 'other' && otherLanguage.trim() === '') {
         toast({
             variant: "destructive",
@@ -180,9 +222,21 @@ export default function ChatInterface() {
         onScroll={handleScroll}
       >
         <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full">
-          {messages.map((message) => (
-            <ChatMessage key={message.id} message={message} onOptionClick={handleOptionClick} />
-          ))}
+          {isTranslating ? (
+              <div className="flex items-center space-x-4 p-4">
+                  <div className="flex-shrink-0">
+                      <Languages className="h-8 w-8 text-blue-400/80 animate-pulse" />
+                  </div>
+                  <div className="flex items-center space-x-2">
+                      <span className="text-gray-400">Switching language...</span>
+                      <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                  </div>
+              </div>
+          ) : (
+            messages.map((message) => (
+              <ChatMessage key={message.id} message={message} onOptionClick={handleOptionClick} />
+            ))
+          )}
           {isPending && (
              <div className="flex items-center space-x-4 p-4">
                 <div className="flex-shrink-0">
@@ -249,7 +303,7 @@ export default function ChatInterface() {
 
             <PromptInputBox 
               onSend={handleSubmit} 
-              isLoading={isPending}
+              isLoading={isPending || isTranslating}
               placeholder="Ask Aura anything..."
               className="flex-1"
               selectedLanguage={selectedLanguage === 'other' ? otherLanguage : selectedLanguage}

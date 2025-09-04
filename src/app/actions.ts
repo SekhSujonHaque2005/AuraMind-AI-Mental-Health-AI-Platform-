@@ -3,6 +3,7 @@
 
 import { checkSafetyAndRespond, SafetyCheckInput } from '@/ai/flows/critical-safety-protocol';
 import { getAuraResponse, GetAuraResponseInput } from '@/ai/flows/get-aura-response';
+import { translateWelcomeMessage, TranslateWelcomeMessageInput, TranslateWelcomeMessageOutput } from '@/ai/flows/translate-welcome-message';
 import { z } from 'zod';
 
 const chatActionInputSchema = z.object({
@@ -53,4 +54,22 @@ export async function getAIResponse(input: ChatActionInput) {
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
     return { error: `An unexpected error occurred: ${errorMessage}. Please try again.` };
   }
+}
+
+export async function getTranslatedWelcome(input: TranslateWelcomeMessageInput): Promise<TranslateWelcomeMessageOutput | {error: string}> {
+    try {
+        const result = await translateWelcomeMessage(input);
+        if (!result || !result.welcomeMessage) {
+            console.error("Translation response was empty or undefined.");
+            return { error: 'Could not generate a translated welcome message.' };
+        }
+        return {
+            welcomeMessage: result.welcomeMessage,
+            suggestedQuestions: result.suggestedQuestions,
+        };
+    } catch (error) {
+        console.error("Error in getTranslatedWelcome:", error);
+        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
+        return { error: `An unexpected error occurred: ${errorMessage}. Please try again.` };
+    }
 }

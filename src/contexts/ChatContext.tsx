@@ -39,6 +39,7 @@ interface ChatContextType {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   startNewChat: () => void;
   getNextMessageId: () => number;
+  initialMessage: Message;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -59,7 +60,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ChatContext.Provider value={{ messages, setMessages, startNewChat, getNextMessageId }}>
+    <ChatContext.Provider value={{ messages, setMessages, startNewChat, getNextMessageId, initialMessage }}>
       {children}
     </ChatContext.Provider>
   );
