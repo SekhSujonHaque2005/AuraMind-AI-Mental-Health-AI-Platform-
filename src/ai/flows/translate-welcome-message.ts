@@ -21,39 +21,38 @@ export async function translateWelcomeMessage(input: TranslateWelcomeMessageInpu
         return englishContent;
     }
 
+    // Define the prompt without an output schema.
     const translationPrompt = ai.definePrompt({
         name: 'translationPrompt',
         model: 'googleai/gemini-1.5-flash',
         input: { schema: z.object({ language: z.string() }) },
-        output: { schema: TranslateWelcomeMessageOutputSchema },
-        prompt: `You are an expert translator. Your task is to translate the user-facing text in the provided JSON object into {{language}}.
+        prompt: `You are an expert translator. Your task is to translate the user-facing text in the provided English JSON object into {{language}}.
 
-You MUST produce a valid JSON object as your output. Do not add any text or markdown formatting before or after the JSON object.
-
-- Translate the "welcomeMessage".
-- For each object in the "suggestedQuestions" array, translate both the "label" and the "value".
+You MUST produce a valid JSON object as your output. Do not add any text or markdown formatting (like \`\`\`json) before or after the JSON object itself.
 
 Here is the English JSON object to translate:
-\`\`\`json
 ${JSON.stringify(englishContent, null, 2)}
-\`\`\`
 `,
     });
 
     try {
         const llmResponse = await translationPrompt({ language: targetLanguage });
-        const output = llmResponse.output();
-        
-        if (!output) {
-             throw new Error("LLM response did not contain valid output.");
-        }
+        // Get the raw text output from the LLM.
+        const rawOutput = llmResponse.text;
 
-        // The output from definePrompt with an output schema is already validated JSON.
-        return output;
+        if (!rawOutput) {
+             throw new Error("LLM response was empty.");
+        }
+        
+        // Manually parse and validate the JSON.
+        const parsedJson = JSON.parse(rawOutput);
+        const validatedOutput = TranslateWelcomeMessageOutputSchema.parse(parsedJson);
+        
+        return validatedOutput;
         
     } catch (error) {
-        console.error(`Failed to parse or validate translated JSON for language: ${targetLanguage}`, error);
-        // Fallback to English content on failure to prevent app crash
+        console.error(`[Translation Flow Error] Failed to translate content for language: ${targetLanguage}`, error);
+        // Fallback to English content on any failure to prevent app crash.
         return englishContent;
     }
 }
