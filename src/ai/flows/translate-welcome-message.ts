@@ -1,4 +1,3 @@
-
 'use server';
 
 /**
@@ -22,6 +21,7 @@ export async function translateWelcomeMessage(input: TranslateWelcomeMessageInpu
 
     const translationPrompt = ai.definePrompt({
         name: 'translationPrompt',
+        model: 'googleai/gemini-1.5-flash',
         // By not defining an input schema, we simplify the call and avoid the 'typeName' error.
         prompt: `Translate the following JSON content into the target language: {{language}}.
 
