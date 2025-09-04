@@ -61,7 +61,11 @@ const auraPrompt = ai.definePrompt({
     output: { schema: SingleCallOutputSchema },
     model: 'googleai/gemini-1.5-flash',
     prompt: `
-    {{#if (eq conversationHistory.[0].sender "bot")}}{{{conversationHistory.[0].text}}}{{/if}}
+    {{#if conversationHistory}}
+        {{#with conversationHistory.[0]}}
+            {{#if (eq sender "bot")}}{{{text}}}{{/if}}
+        {{/with}}
+    {{/if}}
     
     You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
 
@@ -79,8 +83,10 @@ const auraPrompt = ai.definePrompt({
     Then, analyze the user's message and your response to determine the core emotion. Choose one emotion from this list: Happy, Sad, Angry, Anxious, Love, Tough, Overwhelmed, Celebrating, Lonely, Stressed, Venting, Support, Greeting.
 
     Conversation History:
-    {{#each (slice conversationHistory 1)}}
-    {{sender}}: {{text}}
+    {{#each conversationHistory}}
+        {{#if (eq sender "bot")}}{{else}}
+            {{sender}}: {{text}}
+        {{/if}}
     {{/each}}
 
     User: {{message}}
