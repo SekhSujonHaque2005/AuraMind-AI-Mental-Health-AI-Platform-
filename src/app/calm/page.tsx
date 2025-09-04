@@ -32,7 +32,7 @@ const scenes = {
         emoji: '🏖️'
     },
     waterfall: {
-        image: 'https://cdn.glitch.com/20600112-c54b-492c-986b-342d7bf4a04d%2Fwaterfall.jpg?v=161652448 waterfall.jpg',
+        image: 'https://cdn.glitch.global/20600112-c54b-492c-986b-342d7bf4a04d/waterfall.jpg?v=161652448 waterfall.jpg',
         sound: '/sounds/waterfall.mp3',
         label: 'Waterfall',
         emoji: '💧'
@@ -40,53 +40,56 @@ const scenes = {
 };
 
 const BreathingGuide = () => (
-    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center z-20">
+    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center z-50">
         <motion.div
             animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 19, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', repeatDelay: 11 }}
             className="w-24 h-24 bg-white/20 backdrop-blur-md rounded-full"
         />
-        <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-center">
+        <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-center pointer-events-none">
             <AnimatePresence>
-                <motion.div
-                    key="inhale"
+                 <motion.p
+                    key="inhale-text"
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1, transition: { delay: 0.5, duration: 1 } }}
-                    exit={{ opacity: 0, transition: { duration: 1 } }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1, delay: 0 }}
+                    style={{ animation: 'text-fade 19s infinite 0s' }}
                     className="absolute"
-                    style={{ animation: 'fade 19s infinite' }}
                 >
-                    Inhale (4s)
-                </motion.div>
-                <motion.div
-                    key="hold"
+                    Inhale
+                </motion.p>
+                <motion.p
+                    key="hold-text"
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1, transition: { delay: 5.5, duration: 1 } }}
-                    exit={{ opacity: 0, transition: { duration: 1 } }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1, delay: 4.5 }}
+                     style={{ animation: 'text-fade 19s infinite 4.5s' }}
                     className="absolute"
-                    style={{ animation: 'fade 19s infinite', animationDelay: '5s' }}
                 >
-                    Hold (7s)
-                </motion.div>
-                <motion.div
-                    key="exhale"
+                    Hold
+                </motion.p>
+                <motion.p
+                    key="exhale-text"
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1, transition: { delay: 13.5, duration: 1 } }}
-                    exit={{ opacity: 0, transition: { duration: 1 } }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1, delay: 11.5 }}
+                     style={{ animation: 'text-fade 19s infinite 11.5s' }}
                     className="absolute"
-                    style={{ animation: 'fade 19s infinite', animationDelay: '12s' }}
                 >
-                    Exhale (8s)
-                </motion.div>
+                    Exhale
+                </motion.p>
             </AnimatePresence>
         </div>
-        <style jsx>{`
-            @keyframes fade {
+         <style jsx>{`
+            @keyframes text-fade {
                 0% { opacity: 0; }
-                10% { opacity: 1; } /* Fade in */
-                21% { opacity: 1; } /* Inhale (4s) */
-                31% { opacity: 0; } /* Fade out */
-                32%, 100% { opacity: 0; }
+                5% { opacity: 1; }
+                21% { opacity: 1; } /* Visible for ~4s */
+                26% { opacity: 0; }
+                100% { opacity: 0; }
             }
         `}</style>
     </div>
@@ -123,7 +126,7 @@ export default function CalmRoomPage() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 1.5 }}
-                        className="absolute inset-0"
+                        className="absolute inset-0 z-0"
                     >
                         <a-scene embedded vr-mode-ui="enabled: false" class="w-full h-full">
                             <a-sky src={scenes[currentScene].image} rotation="0 -130 0" />
@@ -137,7 +140,7 @@ export default function CalmRoomPage() {
                 <div className="w-full h-full flex items-center justify-center bg-black text-white">Loading Scene...</div>
              )}
 
-            <div className="absolute top-5 left-1/2 -translate-x-1/2 z-10 flex gap-4 p-2 bg-black/30 backdrop-blur-md rounded-full border border-white/10">
+            <div className="absolute top-5 left-1/2 -translate-x-1/2 z-50 flex gap-4 p-2 bg-black/30 backdrop-blur-md rounded-full border border-white/10">
                 {(Object.keys(scenes) as Array<keyof typeof scenes>).map((sceneKey) => (
                     <Button
                         key={sceneKey}
@@ -157,3 +160,4 @@ export default function CalmRoomPage() {
         </div>
     );
 }
+
