@@ -60,13 +60,7 @@ const auraPrompt = ai.definePrompt({
     input: { schema: GetAuraResponseInputSchema },
     output: { schema: SingleCallOutputSchema },
     model: 'googleai/gemini-1.5-flash',
-    prompt: `{{#if conversationHistory}}
-{{#with conversationHistory.[0]}}
-{{#if (eq this.sender "bot")}}{{this.text}}{{/if}}
-{{/with}}
-{{/if}}
-
-You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
+    prompt: `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
 
 Your core principles are:
 1.  **Empathy and Validation:** Always validate the user's feelings. Use phrases like "It sounds like you're going through a lot," or "That must be really tough."
@@ -83,11 +77,7 @@ Then, analyze the user's message and your response to determine the core emotion
 
 Conversation History:
 {{#each conversationHistory}}
-    {{#if (eq this.sender "user")}}
-        User: {{this.text}}
-    {{else}}
-        Aura: {{this.text}}
-    {{/if}}
+  {{this.sender}}: {{this.text}}
 {{/each}}
 
 User: {{message}}
