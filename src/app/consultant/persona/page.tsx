@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { personas } from '@/app/consultant/personas';
-import { Video, Mic } from 'lucide-react';
+import { Video, Mic, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function PersonaSelectionPage() {
   const router = useRouter();
@@ -18,51 +19,80 @@ export default function PersonaSelectionPage() {
     router.push(`/consultant/audiocall?persona=${personaId}`);
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-950 p-4">
-      <div className="text-center mb-12">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-950 p-4 overflow-y-auto">
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-center mb-12"
+      >
         <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-4">
           Choose Your AI Consultant
         </h1>
         <p className="text-gray-400 text-lg max-w-2xl mx-auto">
           Select a persona that best fits the type of support you're looking for today.
         </p>
-      </div>
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 w-full max-w-5xl">
+      </motion.div>
+      <motion.div 
+        className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {personas.map((persona) => (
-          <Card
-            key={persona.id}
-            className="flex flex-col bg-gray-900/50 border border-blue-500/20 hover:border-blue-500/60 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_0_35px_rgba(72,149,239,0.25)] rounded-lg"
-          >
-            <CardHeader className="items-center text-center">
-              <div className="p-4 bg-gray-800/70 rounded-full mb-4 border border-blue-500/20">
-                <persona.icon className="h-10 w-10 text-blue-300" />
-              </div>
-              <CardTitle className="text-2xl text-blue-300">{persona.name}</CardTitle>
-              <CardDescription className="text-gray-400 pt-2 text-base">
-                {persona.description}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex-grow"></CardContent>
-            <CardFooter className="flex flex-col sm:flex-row gap-2 mt-auto p-4">
-              <Button
-                className="w-full bg-blue-600 hover:bg-blue-700 transition-all flex items-center gap-2"
-                onClick={() => handleSelectVideo(persona.id)}
-              >
-                <Video className="h-4 w-4" />
-                Video Session
-              </Button>
-              <Button
-                className="w-full bg-blue-800 hover:bg-blue-900 transition-all flex items-center gap-2"
-                onClick={() => handleSelectAudio(persona.id)}
-              >
-                 <Mic className="h-4 w-4" />
-                Audio Session
-              </Button>
-            </CardFooter>
-          </Card>
+            <motion.div key={persona.id} variants={itemVariants}>
+                <Card
+                    className="flex flex-col h-full bg-gray-900/50 border border-blue-500/20 hover:border-blue-500/60 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_0_35px_rgba(72,149,239,0.25)] rounded-2xl overflow-hidden group"
+                >
+                    <CardHeader className="items-center text-center p-8 bg-black/20">
+                    <motion.div 
+                        whileHover={{ scale: 1.1, rotate: -5 }}
+                        className="p-5 bg-gray-800/70 rounded-full mb-5 border-2 border-blue-500/20 group-hover:border-blue-400/50 transition-colors"
+                    >
+                        <persona.icon className="h-12 w-12 text-blue-300 group-hover:text-blue-200 transition-colors" />
+                    </motion.div>
+                    <CardTitle className="text-2xl text-blue-300">{persona.name}</CardTitle>
+                    <CardDescription className="text-gray-400 pt-2 text-base min-h-[60px]">
+                        {persona.description}
+                    </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-grow"></CardContent>
+                    <CardFooter className="flex flex-col gap-3 p-6 bg-black/20 mt-auto">
+                    <Button
+                        className="w-full text-base py-6 bg-blue-600 hover:bg-blue-500 transition-all flex items-center justify-center gap-2 group/button"
+                        onClick={() => handleSelectVideo(persona.id)}
+                    >
+                        <Video className="h-5 w-5" />
+                        Start Video Session
+                        <ArrowRight className="h-5 w-5 opacity-0 -translate-x-2 group-hover/button:opacity-100 group-hover/button:translate-x-0 transition-all duration-300" />
+                    </Button>
+                    <Button
+                        className="w-full text-base py-6 bg-transparent border border-blue-500/40 hover:bg-blue-500/10 text-blue-300 transition-all flex items-center justify-center gap-2 group/button"
+                        onClick={() => handleSelectAudio(persona.id)}
+                    >
+                        <Mic className="h-5 w-5" />
+                        Start Audio Session
+                        <ArrowRight className="h-5 w-5 opacity-0 -translate-x-2 group-hover/button:opacity-100 group-hover/button:translate-x-0 transition-all duration-300" />
+                    </Button>
+                    </CardFooter>
+                </Card>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

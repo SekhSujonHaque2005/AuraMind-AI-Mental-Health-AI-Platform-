@@ -1,5 +1,5 @@
 
-import { Heart, Zap, User } from 'lucide-react';
+import { Heart, Zap, User, ArrowRight } from 'lucide-react';
 
 export const personas = [
   {
