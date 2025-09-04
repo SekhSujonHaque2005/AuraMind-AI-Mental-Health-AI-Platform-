@@ -14,7 +14,7 @@ import {
     type TranslateWelcomeMessageInput, 
     type TranslateWelcomeMessageOutput,
     englishContent
-} from '@/app/actions';
+} from '@/contexts/ChatContext';
 
 
 export async function translateWelcomeMessage(input: TranslateWelcomeMessageInput): Promise<TranslateWelcomeMessageOutput> {

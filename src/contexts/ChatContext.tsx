@@ -2,26 +2,28 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { z } from 'zod';
 
-type MessageOption = {
-  label: string;
-  value: string;
-};
+// --- Shared Schemas and Types ---
+export const MessageOptionSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+});
 
-export type Message = {
-  sender: 'user' | 'bot';
-  text: string;
-  options?: MessageOption[];
-  gifUrl?: string;
-  id: number;
-};
+export const TranslateWelcomeMessageOutputSchema = z.object({
+  welcomeMessage: z.string().describe('The translated welcome message.'),
+  suggestedQuestions: z.array(MessageOptionSchema).describe('The list of translated suggested questions.'),
+});
+export type TranslateWelcomeMessageOutput = z.infer<typeof TranslateWelcomeMessageOutputSchema>;
 
-const initialMessage: Message = {
-    id: 0,
-    sender: 'bot',
-    text: "Hello! I'm Aura, your empathetic AI companion. I'm here to listen without judgment. To start, what's on your mind today? ☀️",
-    gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
-    options: [
+export const TranslateWelcomeMessageInputSchema = z.object({
+  language: z.string().describe('The target language to translate the content into (e.g., "Hindi", "Bengali").'),
+});
+export type TranslateWelcomeMessageInput = z.infer<typeof TranslateWelcomeMessageInputSchema>;
+
+export const englishContent: TranslateWelcomeMessageOutput = {
+    welcomeMessage: "Hello! I'm Aura, your empathetic AI companion. I'm here to listen without judgment. To start, what's on your mind today? ☀️",
+    suggestedQuestions: [
         { label: "I'm feeling happy! 😊", value: "I'm feeling happy today!" },
         { label: "I'm feeling sad 😔", value: "I'm feeling a bit sad" },
         { label: "I'm feeling anxious 😟", value: "I'm feeling anxious" },
@@ -32,6 +34,24 @@ const initialMessage: Message = {
         { label: "I'm stressed about work/school 😫", value: "I'm feeling stressed about work/school." },
         { label: "I just need to vent 😤", value: "I just need to vent for a minute." },
     ]
+};
+// --- End Shared Schemas ---
+
+
+export type Message = {
+  sender: 'user' | 'bot';
+  text: string;
+  options?: z.infer<typeof MessageOptionSchema>[];
+  gifUrl?: string;
+  id: number;
+};
+
+const initialMessage: Message = {
+    id: 0,
+    sender: 'bot',
+    text: englishContent.welcomeMessage,
+    gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    options: englishContent.suggestedQuestions,
 };
 
 interface ChatContextType {
