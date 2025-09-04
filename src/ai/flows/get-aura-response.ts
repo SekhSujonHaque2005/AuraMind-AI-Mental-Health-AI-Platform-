@@ -10,7 +10,7 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {z} from 'zod';
 
 const GetAuraResponseInputSchema = z.object({
   message: z.string().describe('The user message to respond to.'),
@@ -49,11 +49,13 @@ const emotionToGifMap: Record<string, string> = {
     'Greeting': 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
 };
 
+// Simplified Output schema for a more reliable response.
 const SingleCallOutputSchema = z.object({
   response: z.string().describe("The AI's empathetic and supportive text response. If a system prompt was provided, adhere to its instructions for persona and tone."),
   emotion: z.enum(['Happy', 'Sad', 'Angry', 'Anxious', 'Love', 'Tough', 'Overwhelmed', 'Celebrating', 'Lonely', 'Stressed', 'Venting', 'Support', 'Greeting'])
     .describe('The core emotion of the conversation from the provided list.'),
 });
+
 
 const auraPrompt = ai.definePrompt({
     name: 'auraPrompt',

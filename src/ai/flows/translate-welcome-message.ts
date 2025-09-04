@@ -17,6 +17,7 @@ import {
 import { z } from 'zod';
 
 function extractJson(str: string): any | null {
+  // Regex to find JSON wrapped in ```json ... ```
   const match = str.match(/```json\s*([\s\S]*?)\s*```/);
   if (match && match[1]) {
     try {
@@ -26,9 +27,11 @@ function extractJson(str: string): any | null {
       return null;
     }
   }
+  // Fallback for raw JSON string
   try {
       return JSON.parse(str);
   } catch(e) {
+      // The string is likely not JSON, or is malformed.
       return null;
   }
 }
@@ -41,13 +44,14 @@ export async function translateWelcomeMessage(input: TranslateWelcomeMessageInpu
         return englishContent;
     }
 
+    // This prompt is now defined inside the function to ensure it is always fresh.
     const translationPrompt = ai.definePrompt({
         name: 'translationPrompt',
         model: 'googleai/gemini-1.5-flash',
         input: { schema: z.object({ language: z.string() }) },
         prompt: `You are an expert translator. Your task is to translate the user-facing text in the provided English JSON object into {{language}}.
 
-You MUST produce a valid JSON object as your output. Wrap the JSON in \`\`\`json tags. Do not add any other text before or after the JSON block.
+You MUST produce a valid JSON object as your output, wrapped in \`\`\`json tags. Do not add any other text before or after the JSON block. Ensure all translated strings are valid JSON strings (e.g., escape double quotes).
 
 Here is the English JSON object to translate:
 ${JSON.stringify(englishContent, null, 2)}
@@ -75,6 +79,7 @@ ${JSON.stringify(englishContent, null, 2)}
         
     } catch (error) {
         console.error(`[Translation Flow Error] Failed to translate content for language: ${targetLanguage}`, error);
+        // Fallback to English content on any error.
         return englishContent;
     }
 }
