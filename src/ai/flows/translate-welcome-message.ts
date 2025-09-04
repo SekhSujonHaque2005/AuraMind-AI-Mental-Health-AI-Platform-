@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -15,20 +16,38 @@ import {
 } from '@/contexts/ChatContext';
 import { z } from 'zod';
 
+function extractJson(str: string): any | null {
+  const match = str.match(/```json\s*([\s\S]*?)\s*```/);
+  if (match && match[1]) {
+    try {
+      return JSON.parse(match[1]);
+    } catch (e) {
+      console.error("Failed to parse JSON from code block:", e);
+      return null;
+    }
+  }
+  try {
+      return JSON.parse(str);
+  } catch(e) {
+      return null;
+  }
+}
+
 export async function translateWelcomeMessage(input: TranslateWelcomeMessageInput): Promise<TranslateWelcomeMessageOutput> {
     const targetLanguage = input.language;
+
+    // Bypass for English to avoid unnecessary API calls.
     if (targetLanguage.toLowerCase() === 'english') {
         return englishContent;
     }
 
-    // Define the prompt without an output schema.
     const translationPrompt = ai.definePrompt({
         name: 'translationPrompt',
         model: 'googleai/gemini-1.5-flash',
         input: { schema: z.object({ language: z.string() }) },
         prompt: `You are an expert translator. Your task is to translate the user-facing text in the provided English JSON object into {{language}}.
 
-You MUST produce a valid JSON object as your output. Do not add any text or markdown formatting (like \`\`\`json) before or after the JSON object itself.
+You MUST produce a valid JSON object as your output. Wrap the JSON in \`\`\`json tags. Do not add any other text before or after the JSON block.
 
 Here is the English JSON object to translate:
 ${JSON.stringify(englishContent, null, 2)}
@@ -37,22 +56,25 @@ ${JSON.stringify(englishContent, null, 2)}
 
     try {
         const llmResponse = await translationPrompt({ language: targetLanguage });
-        // Get the raw text output from the LLM.
         const rawOutput = llmResponse.text;
 
         if (!rawOutput) {
              throw new Error("LLM response was empty.");
         }
         
-        // Manually parse and validate the JSON.
-        const parsedJson = JSON.parse(rawOutput);
+        const parsedJson = extractJson(rawOutput);
+
+        if (!parsedJson) {
+            console.error(`[Translation Flow Error] Failed to extract JSON for language: ${targetLanguage}. Raw output:`, rawOutput);
+            throw new Error("Failed to extract JSON from LLM response.");
+        }
+
         const validatedOutput = TranslateWelcomeMessageOutputSchema.parse(parsedJson);
         
         return validatedOutput;
         
     } catch (error) {
         console.error(`[Translation Flow Error] Failed to translate content for language: ${targetLanguage}`, error);
-        // Fallback to English content on any failure to prevent app crash.
         return englishContent;
     }
 }
