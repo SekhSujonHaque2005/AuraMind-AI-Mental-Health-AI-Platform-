@@ -26,7 +26,7 @@ const scenes = {
         emoji: '🌲'
     },
     beach: {
-        image: 'https://images.stockcake.com/public/4/a/f/4afda9c3-6f31-4617-b6b7-451b5fd4c5de_large/sunset-beach-scene-stockcake.jpg',
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX3HVPNVGz4O-VaiFZxYoB7IcfDnE2D6AMMw&s',
         sound: '/sounds/beach.mp3',
         label: 'Beach',
         emoji: '🏖️'
