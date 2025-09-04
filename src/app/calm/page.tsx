@@ -116,7 +116,13 @@ export default function CalmRoomPage() {
     // A-Frame's components are not standard HTML, so we need to suppress hydration warnings.
     // We also use a key on the a-scene to force a re-render when the scene changes.
     return (
-        <div className="relative w-full h-screen" suppressHydrationWarning>
+        <div className="relative w-full h-screen bg-gray-950 overflow-hidden" suppressHydrationWarning>
+            {/* Animated Gradient Background */}
+            <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 bg-gradient-to-tr from-gray-900 via-gray-950 to-blue-900/40 animate-[spin_30s_linear_infinite_reverse]" />
+                <div className="absolute inset-0 bg-gradient-to-bl from-gray-900 via-gray-950 to-purple-900/30 animate-[spin_40s_linear_infinite]" />
+            </div>
+
             <Script src="https://aframe.io/releases/1.5.0/aframe.min.js" onReady={() => setIsAFrameReady(true)} />
             
             <AnimatePresence>
@@ -126,7 +132,7 @@ export default function CalmRoomPage() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 1.5 }}
-                        className="absolute inset-0 z-0"
+                        className="absolute inset-0 z-10"
                     >
                         <a-scene embedded vr-mode-ui="enabled: false" class="w-full h-full">
                             <a-sky src={scenes[currentScene].image} rotation="0 -130 0" />
@@ -137,7 +143,16 @@ export default function CalmRoomPage() {
             </AnimatePresence>
 
              {!isAFrameReady && (
-                <div className="w-full h-full flex items-center justify-center bg-black text-white">Loading Scene...</div>
+                <div className="w-full h-full flex items-center justify-center text-white z-20 relative">
+                    <div className="flex flex-col items-center gap-2">
+                        <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+                            className="w-16 h-16 border-4 border-t-transparent border-blue-400 rounded-full"
+                        />
+                        <p className="mt-4 text-lg font-semibold tracking-wider">Loading Serenity...</p>
+                    </div>
+                </div>
              )}
 
             <div className="absolute top-5 left-1/2 -translate-x-1/2 z-50 flex gap-4 p-2 bg-black/30 backdrop-blur-md rounded-full border border-white/10">
