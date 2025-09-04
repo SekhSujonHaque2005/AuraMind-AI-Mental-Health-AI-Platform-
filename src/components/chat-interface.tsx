@@ -124,16 +124,15 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-full w-full">
-       <div className="flex justify-between items-center p-4 border-b border-blue-500/10">
-            <h1 className="text-xl font-semibold text-white">AuraMind Chat</h1>
+    <div className="relative flex flex-col h-full w-full">
+        <div className="absolute top-4 right-4 z-10">
             <Button variant="ghost" onClick={startNewChat} className="text-gray-400 hover:text-blue-300 hover:bg-blue-500/10">
                 <PlusSquare className="h-5 w-5 mr-2" />
                 New Chat
             </Button>
         </div>
       <ScrollArea 
-        className="flex-1 p-4 sm:p-6" 
+        className="flex-1 p-4 sm:p-6 pt-16" 
         ref={scrollAreaRef} 
         viewportRef={viewportRef}
         onScroll={handleScroll}
