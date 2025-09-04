@@ -9,14 +9,11 @@
 
 import {ai} from '@/ai/genkit';
 import { 
-    TranslateWelcomeMessageInputSchema, 
     TranslateWelcomeMessageOutputSchema, 
     type TranslateWelcomeMessageInput, 
     type TranslateWelcomeMessageOutput,
     englishContent
 } from '@/contexts/ChatContext';
-import { z } from 'zod';
-
 
 export async function translateWelcomeMessage(input: TranslateWelcomeMessageInput): Promise<TranslateWelcomeMessageOutput> {
     if (input.language.toLowerCase() === 'english') {
@@ -39,12 +36,17 @@ ${JSON.stringify(englishContent, null, 2)}
     const translatedText = llmResponse.text;
 
     try {
-        const parsedJson = JSON.parse(translatedText);
+        // The output from the LLM can sometimes be wrapped in ```json ... ```, so we need to strip that.
+        const jsonString = translatedText.replace(/^```json\n|```$/g, '');
+        const parsedJson = JSON.parse(jsonString);
+        
         // Manually validate the parsed object against the Zod schema
         const validatedOutput = TranslateWelcomeMessageOutputSchema.parse(parsedJson);
         return validatedOutput;
     } catch (error) {
         console.error("Failed to parse or validate translated JSON:", error);
-        throw new Error("Translation output was not in the expected format.");
+        console.error("Raw LLM output:", translatedText);
+        // Fallback to English content on failure to prevent app crash
+        return englishContent;
     }
 }
