@@ -1,7 +1,6 @@
 
 'use client';
 
-import 'aframe';
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,7 +10,7 @@ import Script from 'next/script';
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'a-scene': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { class?: string };
+            'a-scene': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { class?: string, embedded?: boolean, 'vr-mode-ui'?: string };
             'a-sky': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { src: string; rotation?: string };
             'a-camera': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { 'wasd-controls-enabled'?: string };
             'a-entity': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { sound?: string };
@@ -105,7 +104,7 @@ export default function CalmRoomPage() {
             audioRef.current.loop = true;
             audioRef.current.play().catch(error => console.log("Audio autoplay was prevented:", error));
         }
-    }, [currentScene]);
+    }, [currentScene, isAFrameReady]);
 
     const handleSceneChange = (scene: keyof typeof scenes) => {
         setCurrentScene(scene);
