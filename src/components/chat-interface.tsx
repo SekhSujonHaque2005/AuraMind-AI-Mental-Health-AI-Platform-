@@ -3,7 +3,7 @@
 
 import { useRef, useEffect, useTransition, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Loader2, Sparkles, Languages } from 'lucide-react';
+import { Loader2, Sparkles, Languages, PlusSquare } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatMessage from './chat-message';
 import { getAIResponse } from '@/app/actions';
@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from '@/components/ui/button';
 
 
 const languages = [
@@ -31,7 +32,7 @@ const languages = [
 ];
 
 export default function ChatInterface() {
-  const { messages, setMessages, getNextMessageId } = useChat();
+  const { messages, setMessages, getNextMessageId, startNewChat } = useChat();
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -124,6 +125,13 @@ export default function ChatInterface() {
 
   return (
     <div className="flex flex-col h-full w-full">
+       <div className="flex justify-between items-center p-4 border-b border-blue-500/10">
+            <h1 className="text-xl font-semibold text-white">AuraMind Chat</h1>
+            <Button variant="ghost" onClick={startNewChat} className="text-gray-400 hover:text-blue-300 hover:bg-blue-500/10">
+                <PlusSquare className="h-5 w-5 mr-2" />
+                New Chat
+            </Button>
+        </div>
       <ScrollArea 
         className="flex-1 p-4 sm:p-6" 
         ref={scrollAreaRef} 
