@@ -192,8 +192,9 @@ export default function CallPage() {
         if (transcript) {
             setIsSpeaking(true);
             
-            conversationHistory.current.push({ id: Date.now(), sender: 'user', text: transcript });
-            
+            const userMessage: Message = { id: Date.now(), sender: 'user', text: transcript };
+            conversationHistory.current.push(userMessage);
+
             try {
                 const aiResult = await getAIResponse({
                     message: transcript,
