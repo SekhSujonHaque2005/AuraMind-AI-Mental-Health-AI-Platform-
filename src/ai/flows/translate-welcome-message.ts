@@ -15,6 +15,7 @@ import {
     type TranslateWelcomeMessageOutput,
     englishContent
 } from '@/contexts/ChatContext';
+import { z } from 'zod';
 
 
 export async function translateWelcomeMessage(input: TranslateWelcomeMessageInput): Promise<TranslateWelcomeMessageOutput> {
@@ -24,8 +25,7 @@ export async function translateWelcomeMessage(input: TranslateWelcomeMessageInpu
 
     const translationPrompt = ai.definePrompt({
         name: 'translationPrompt',
-        input: { schema: TranslateWelcomeMessageInputSchema },
-        // We will parse the output manually to avoid schema resolution issues.
+        // By not defining an input schema, we simplify the call and avoid the 'typeName' error.
         prompt: `Translate the following JSON content into the target language: {{language}}.
 
 You MUST translate all fields: 'welcomeMessage' and every 'label' and 'value' within the 'suggestedQuestions' array. Do not change the JSON structure or keys. Your output must be a valid JSON object string.
@@ -35,7 +35,7 @@ ${JSON.stringify(englishContent, null, 2)}
 `,
     });
 
-    const llmResponse = await translationPrompt(input);
+    const llmResponse = await translationPrompt({ language: input.language });
     const translatedText = llmResponse.text;
 
     try {
