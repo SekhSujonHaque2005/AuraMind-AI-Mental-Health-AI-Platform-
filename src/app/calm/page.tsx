@@ -20,20 +20,20 @@ declare global {
 
 const scenes = {
     forest: {
-        image: '/calm-room/forest.jpg',
-        sound: '/calm-room/forest.mp3',
+        image: 'https://cdn.glitch.com/20600112-c54b-492c-986b-342d7bf4a04d%2Fforest.jpg?v=1616524472314',
+        sound: '/sounds/forest.mp3',
         label: 'Forest',
         emoji: '🌲'
     },
     beach: {
-        image: '/calm-room/beach.jpg',
-        sound: '/calm-room/beach.mp3',
+        image: 'https://cdn.glitch.com/20600112-c54b-492c-986b-342d7bf4a04d%2Fbeach.jpg?v=1616524467384',
+        sound: '/sounds/beach.mp3',
         label: 'Beach',
         emoji: '🏖️'
     },
     waterfall: {
-        image: '/calm-room/waterfall.jpg',
-        sound: '/calm-room/waterfall.mp3',
+        image: 'https://cdn.glitch.com/20600112-c54b-492c-986b-342d7bf4a04d%2Fwaterfall.jpg?v=161652448 waterfall.jpg',
+        sound: '/sounds/waterfall.mp3',
         label: 'Waterfall',
         emoji: '💧'
     },
@@ -99,7 +99,7 @@ export default function CalmRoomPage() {
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
-        if (audioRef.current) {
+        if (audioRef.current && isAFrameReady) {
             audioRef.current.src = scenes[currentScene].sound;
             audioRef.current.loop = true;
             audioRef.current.play().catch(error => console.log("Audio autoplay was prevented:", error));
@@ -117,7 +117,7 @@ export default function CalmRoomPage() {
             <Script src="https://aframe.io/releases/1.5.0/aframe.min.js" onReady={() => setIsAFrameReady(true)} />
             
             <AnimatePresence>
-                {isAFrameReady ? (
+                {isAFrameReady && (
                     <motion.div
                         key={currentScene}
                         initial={{ opacity: 0 }}
@@ -130,10 +130,12 @@ export default function CalmRoomPage() {
                             <a-camera wasd-controls-enabled="false" />
                         </a-scene>
                     </motion.div>
-                ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-black text-white">Loading Scene...</div>
                 )}
             </AnimatePresence>
+
+             {!isAFrameReady && (
+                <div className="w-full h-full flex items-center justify-center bg-black text-white">Loading Scene...</div>
+             )}
 
             <div className="absolute top-5 left-1/2 -translate-x-1/2 z-10 flex gap-4 p-2 bg-black/30 backdrop-blur-md rounded-full border border-white/10">
                 {(Object.keys(scenes) as Array<keyof typeof scenes>).map((sceneKey) => (
