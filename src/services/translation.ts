@@ -28,6 +28,12 @@ export async function translateText(
     // The v2 client expects the language code without the region part (e.g., 'en' instead of 'en-US')
     const langCode = targetLanguage.split('-')[0];
     
+    // An empty API key will cause an error, so we check for it here.
+    if (!process.env.TRANSLATE_API_KEY) {
+      console.error('TRANSLATE_API_KEY is not set. Translation will be skipped.');
+      return text;
+    }
+    
     const [translations] = await translateClient.translate(text, langCode);
     return translations;
   } catch (error) {

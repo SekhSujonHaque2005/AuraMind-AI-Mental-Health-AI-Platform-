@@ -21,7 +21,7 @@ export async function translateWelcomeMessage(input: TranslateWelcomeMessageInpu
     const targetLanguage = input.language;
 
     // Bypass for English to avoid unnecessary API calls and potential errors.
-    if (targetLanguage.toLowerCase() === 'english' || targetLanguage.toLowerCase().startsWith('en')) {
+    if (!targetLanguage || targetLanguage.toLowerCase() === 'english' || targetLanguage.toLowerCase().startsWith('en')) {
         return englishContent;
     }
 
