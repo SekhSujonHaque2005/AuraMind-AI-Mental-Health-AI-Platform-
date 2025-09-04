@@ -21,19 +21,19 @@ declare global {
 const scenes = {
     forest: {
         image: 'https://images.unsplash.com/photo-1620766165457-a8025baa82e0?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8aW5kaWElMjBmb3Jlc3R8ZW58MHx8MHx8fDA%3D',
-        sound: '/sounds/forest.mp3',
+        sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/forest-ambience-296528.mp3?alt=media&token=a6d2299f-b641-4d8f-95c1-a00c7d704060',
         label: 'Forest',
         emoji: '🌲'
     },
     beach: {
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX3HVPNVGz4O-VaiFZxYoB7IcfDnE2D6AMMw&s',
-        sound: '/sounds/beach.mp3',
+        sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/maldives-beach-381097.mp3?alt=media&token=b2302908-1232-4a6d-a4f3-f68af61108c0',
         label: 'Beach',
         emoji: '🏖️'
     },
     waterfall: {
         image: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2F0ZXJmYWxsJTIwd2FsbHBhcGVyfGVufDB8fDB8fHww',
-        sound: '/sounds/waterfall.mp3',
+        sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/waterfall-sounds-259625.mp3?alt=media&token=1a57989a-b844-48f9-97a8-ec2b489d57d8',
         label: 'Waterfall',
         emoji: '💧'
     },
