@@ -32,7 +32,7 @@ const scenes = {
         emoji: '🏖️'
     },
     waterfall: {
-        image: 'https://cdn.glitch.global/20600112-c54b-492c-986b-342d7bf4a04d/waterfall.jpg?v=161652448 waterfall.jpg',
+        image: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2F0ZXJmYWxsJTIwd2FsbHBhcGVyfGVufDB8fDB8fHww',
         sound: '/sounds/waterfall.mp3',
         label: 'Waterfall',
         emoji: '💧'
