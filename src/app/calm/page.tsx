@@ -20,7 +20,7 @@ declare global {
 
 const scenes = {
     forest: {
-        image: 'https://media.giphy.com/media/RoFXqXWN639Qs/giphy.gif',
+        image: 'https://images.unsplash.com/photo-1620766165457-a8025baa82e0?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8aW5kaWElMjBmb3Jlc3R8ZW58MHx8MHx8fDA%3D',
         sound: '/sounds/forest.mp3',
         label: 'Forest',
         emoji: '🌲'
