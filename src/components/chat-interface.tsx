@@ -31,7 +31,7 @@ const languages = [
     { value: 'gu-IN', label: 'Gujarati' },
     { value: 'pa-IN', label: 'Punjabi' },
     { value: 'bho-IN', label: 'Bhojpuri' },
-    { value: 'sat-IN', label: 'Santali (Jharkhandi)' },
+    { value: 'sat-IN', label: 'Santhali (Jharkhandi)' },
 ];
 
 export default function ChatInterface() {
