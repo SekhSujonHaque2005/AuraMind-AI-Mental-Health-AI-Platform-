@@ -181,4 +181,3 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
             <audio ref={audioRef} preload="auto" />
         </div>
     );
-}
