@@ -4,7 +4,6 @@
 import axios from 'axios';
 
 const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
-const API_KEY = process.env.YOUTUBE_API_KEY;
 
 export interface YouTubeVideo {
   id: {
@@ -23,6 +22,8 @@ export interface YouTubeVideo {
 }
 
 export async function getVideos(query: string, language: string = 'en'): Promise<YouTubeVideo[]> {
+  const API_KEY = process.env.YOUTUBE_API_KEY;
+  
   if (!API_KEY) {
     console.error('YouTube API key is not configured.');
     return [];
