@@ -37,6 +37,36 @@ export const englishContent: TranslateWelcomeMessageOutput = {
 };
 // --- End Shared Schemas ---
 
+// --- YouTube Video Schemas and Types ---
+export const GetYoutubeVideosInputSchema = z.object({
+  query: z.string().describe('The search query for YouTube.'),
+  language: z.string().optional().default('en').describe('The language for the search results.'),
+});
+export type GetYoutubeVideosInput = z.infer<typeof GetYoutubeVideosInputSchema>;
+
+export const GetYoutubeVideosOutputSchema = z.object({
+  videos: z.array(z.any()).describe('A list of fetched YouTube video resources.'),
+});
+export type GetYoutubeVideosOutput = z.infer<typeof GetYoutubeVideosOutputSchema>;
+
+const YouTubeVideoSchema = z.object({
+  id: z.object({
+    videoId: z.string(),
+  }),
+  snippet: z.object({
+    title: z.string(),
+    description: z.string(),
+    thumbnails: z.object({
+      high: z.object({
+        url: z.string(),
+      }),
+    }),
+    channelTitle: z.string(),
+  }),
+});
+export type YouTubeVideo = z.infer<typeof YouTubeVideoSchema>;
+// --- End YouTube Schemas ---
+
 
 export type Message = {
   sender: 'user' | 'bot';

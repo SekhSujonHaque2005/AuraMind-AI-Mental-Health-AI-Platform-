@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import type { YouTubeVideo } from "@/app/resources/actions";
+import type { YouTubeVideo } from "@/contexts/ChatContext";
 import { motion } from "framer-motion";
 
 interface VideoPlayerModalProps {

@@ -3,7 +3,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { ExternalLink, Clapperboard, PlayCircle, VideoIcon, Languages } from "lucide-react";
-import { getVideos, YouTubeVideo } from "./actions";
+import { getVideos } from "./actions";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import VideoPlayerModal from "@/components/video-player-modal";
@@ -13,6 +13,7 @@ import TextType from "@/components/ui/text-type";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
+import type { YouTubeVideo } from "@/contexts/ChatContext";
 
 
 const staticResources = [
@@ -279,5 +280,3 @@ export default function ResourcesPage() {
     </>
   );
 }
-
-    

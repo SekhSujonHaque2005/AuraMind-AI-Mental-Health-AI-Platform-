@@ -4,7 +4,7 @@
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { PlayCircle } from "lucide-react";
 import Image from "next/image";
-import type { YouTubeVideo } from "@/app/resources/actions";
+import type { YouTubeVideo } from "@/contexts/ChatContext";
 
 interface VideoCardProps {
     video: YouTubeVideo;
