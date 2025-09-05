@@ -19,7 +19,7 @@ declare global {
             'a-entity': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { sound?: string, position?: string, geometry?: string, material?: string, text?: string, scale?: string, animation?: string, animation__scale?: string, animation__color?: string, animation__opacity?: string };
             'a-sphere': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { position?: string, radius?: string, color?: string, shadow?: string };
             'a-text': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { value?: string, align?: string, color?: string, width?: string, position?: string };
-            'a-animation': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { attribute: string; from: string; to: string; dur?: string; repeat?: string; direction?: string; easing?: string; delay?: string };
+            'a-animation': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { attribute: string; from?: string; to: string; dur?: string; repeat?: string; direction?: string; easing?: string; delay?: string };
         }
     }
 }
@@ -123,7 +123,16 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
                         className="absolute inset-0 z-10"
                     >
                         <a-scene embedded vr-mode-ui="enabled: false" class="w-full h-full">
-                            <a-sky src={scene.image} rotation="0 -130 0" />
+                            <a-sky src={scene.image} rotation="0 -130 0">
+                                <a-animation
+                                    attribute="rotation"
+                                    dur="120000"
+                                    from="0 -130 0"
+                                    to="0 230 0"
+                                    repeat="indefinite"
+                                    easing="linear"
+                                ></a-animation>
+                            </a-sky>
                             <a-camera wasd-controls-enabled="false" />
                             <BreathingGuide />
                         </a-scene>
