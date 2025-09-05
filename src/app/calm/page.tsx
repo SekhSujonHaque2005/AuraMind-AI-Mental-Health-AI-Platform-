@@ -2,7 +2,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { scenes } from '@/app/calm/scenes';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
