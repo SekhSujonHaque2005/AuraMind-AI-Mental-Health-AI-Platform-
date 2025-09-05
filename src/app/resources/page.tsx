@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import VideoCard from "@/components/video-card";
 import TextType from "@/components/ui/text-type";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 
 const staticResources = [
   {
@@ -148,13 +149,34 @@ export default function ResourcesPage() {
 
   return (
     <>
-    <div className="relative flex flex-col items-center min-h-screen p-4 pb-24 overflow-y-auto overflow-x-hidden">
+    <div className="relative flex flex-col items-center min-h-screen p-4 pb-24 overflow-x-hidden">
       <div className="absolute inset-0 -z-10 h-full w-full">
             <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
             <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#3b82f633,transparent)]"></div>
       </div>
       
-      <div className="w-full max-w-7xl">
+      <div className="w-full max-w-7xl relative">
+        <div className="absolute top-0 right-0 z-20">
+            <div className="w-full max-w-xs flex flex-col items-end gap-2">
+                <Label className="text-sm text-gray-400 mr-2">Select Language</Label>
+                <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+                    <SelectTrigger className="w-[180px] bg-black/30 backdrop-blur-md border-blue-500/20 text-white focus:ring-blue-500/50">
+                        <div className="flex items-center gap-2">
+                           <Languages className="h-5 w-5 text-blue-400" />
+                           <SelectValue placeholder="Select Language" />
+                        </div>
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-900/80 backdrop-blur-md border-blue-500/30 text-white">
+                        {languages.map(lang => (
+                            <SelectItem key={lang.value} value={lang.value} className="cursor-pointer hover:bg-blue-500/10">
+                                {lang.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </div>
+        </div>
+
         <div className="text-center my-16 flex flex-col items-center">
             <TextType
               as="h1"
@@ -170,26 +192,6 @@ export default function ResourcesPage() {
                 loop={false}
                 className="text-lg max-w-2xl mx-auto bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500"
             />
-        </div>
-
-        <div className="mb-12 flex justify-center">
-            <div className="w-full max-w-xs">
-                <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-                    <SelectTrigger className="bg-black/30 backdrop-blur-md border-blue-500/20 text-white focus:ring-blue-500/50">
-                        <div className="flex items-center gap-2">
-                           <Languages className="h-5 w-5 text-blue-400" />
-                           <SelectValue placeholder="Select Language" />
-                        </div>
-                    </SelectTrigger>
-                    <SelectContent className="bg-gray-900/80 backdrop-blur-md border-blue-500/30 text-white">
-                        {languages.map(lang => (
-                            <SelectItem key={lang.value} value={lang.value} className="cursor-pointer hover:bg-blue-500/10">
-                                {lang.label}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-            </div>
         </div>
 
         {isLoading ? (
@@ -261,3 +263,5 @@ export default function ResourcesPage() {
     </>
   );
 }
+
+    
