@@ -130,10 +130,11 @@ export default function CalmSelectionPage() {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-16 text-center">
           <Button
             onClick={handleToggleScenes}
-            className="text-lg font-semibold py-6 px-8 bg-blue-600/10 border border-blue-500/30 text-blue-300 hover:bg-blue-500/20 hover:border-blue-500/50 transition-all group rounded-full"
+            variant="ghost"
+            className="text-lg font-semibold py-6 px-8 text-blue-300 hover:bg-transparent hover:text-blue-200 transition-all group rounded-full border-2 border-blue-500/30 hover:border-blue-400/60"
           >
             {isExpanded ? (
-              <Minus className="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-180" />
+              <Minus className="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-90" />
             ) : (
               <Plus className="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-90" />
             )}
