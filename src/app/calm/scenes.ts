@@ -22,7 +22,7 @@ export const scenes: Scene[] = [
     name: 'Sunset Beach',
     description: 'Relax on a serene beach and listen to the gentle waves.',
     emoji: '🏖️',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX3HVPNVGz4O-VaiFZxYoB7IcfDnE2D6AMMw&s',
+    image: 'https://images.pexels.com/photos/635279/pexels-photo-635279.jpeg?cs=srgb&dl=pexels-bella-white-201200-635279.jpg&fm=jpg',
     sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/maldives-beach-381097.mp3?alt=media&token=b2302908-1232-4a6d-a4f3-f68af61108c0',
   },
   {
