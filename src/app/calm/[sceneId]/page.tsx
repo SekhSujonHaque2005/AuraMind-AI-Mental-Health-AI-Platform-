@@ -258,5 +258,3 @@ export default function SceneViewerPage() {
         </div>
     );
 }
-
-    
