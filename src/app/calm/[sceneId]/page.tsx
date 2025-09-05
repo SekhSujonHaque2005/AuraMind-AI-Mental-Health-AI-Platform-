@@ -15,8 +15,8 @@ declare global {
             'a-scene': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { class?: string, embedded?: boolean, 'vr-mode-ui'?: string };
             'a-sky': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { src: string; rotation?: string, animation?: string };
             'a-camera': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { 'wasd-controls-enabled'?: string };
-            'a-entity': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { sound?: string, position?: string, geometry?: string, material?: string, text?: string, scale?: string, animation?: string, animation__scale?: string, animation__color?: string, animation__opacity?: string, 'phase-text'?: string };
-            'a-sphere': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { position?: string, radius?: string, color?: string, shadow?: string, animation?:string, 'animation__inhale'?:string, 'animation__hold'?:string, 'animation__exhale'?:string, 'animation__pause'?:string, 'animation__color-inhale'?:string, 'animation__color-exhale'?:string };
+            'a-entity': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { sound?: string, position?: string, geometry?: string, material?: string, text?: string, scale?: string, animation?: string, animation__scale?: string, animation__color?: string, animation__opacity?: string, 'phase-text'?: any };
+            'a-sphere': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { position?: string, radius?: string, color?: string, shadow?: any, animation?:string, 'animation__inhale'?:string, 'animation__hold'?:string, 'animation__exhale'?:string, 'animation__pause'?:string, 'animation__color-inhale'?:string, 'animation__color-exhale'?:string };
             'a-text': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { value?: string, align?: string, color?: string, width?: string, position?: string, 'animation__show'?: string, font?: string };
         }
     }
@@ -182,7 +182,7 @@ export default function SceneViewerPage() {
                         transition={{ duration: 1.5 }}
                         className="absolute inset-0 z-10"
                     >
-                        <a-scene embedded vr-mode-ui="enabled: false" class="w-full h-full">
+                        <a-scene embedded vr-mode-ui="enabled: false" className="w-full h-full">
                             <a-sky 
                                 src={scene.image} 
                                 rotation="0 -130 0"
@@ -257,4 +257,3 @@ export default function SceneViewerPage() {
         </div>
     );
 }
-    
