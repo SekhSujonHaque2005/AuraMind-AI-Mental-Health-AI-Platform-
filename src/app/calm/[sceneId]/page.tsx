@@ -90,12 +90,25 @@ export default function SceneViewerPage() {
     }, [params]);
 
     useEffect(() => {
-        if (audioRef.current && isAFrameReady && scene) {
-            audioRef.current.src = scene.sound;
-            audioRef.current.loop = true;
-            audioRef.current.play().catch(error => console.log("Audio autoplay was prevented:", error));
+        const audioEl = audioRef.current;
+        if (audioEl && scene) {
+            audioEl.src = scene.sound;
+            audioEl.loop = true;
+            // The user navigating to this page is the interaction.
+            // We'll attempt to play, and catch errors if the browser is particularly strict.
+            audioEl.play().catch(error => {
+                console.log("Audio autoplay was prevented. The user may need to interact with the page again.", error);
+            });
         }
-    }, [scene, isAFrameReady]);
+        
+        // Cleanup function to pause audio when the component unmounts or scene changes
+        return () => {
+            if (audioEl) {
+                audioEl.pause();
+                audioEl.currentTime = 0;
+            }
+        };
+    }, [scene]);
     
     useEffect(() => {
         if (!isAFrameReady) return;
