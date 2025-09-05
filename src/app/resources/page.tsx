@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import VideoPlayerModal from "@/components/video-player-modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import VideoCard from "@/components/video-card";
+import TextType from "@/components/ui/text-type";
 
 const staticResources = [
   {
@@ -139,12 +140,20 @@ export default function ResourcesPage() {
       
       <div className="w-full max-w-7xl">
         <div className="text-center my-16">
-            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-4">
-            Resources for Your Well-being
-            </h1>
-            <p className="text-lg max-w-2xl mx-auto bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500">
-            Support is available. Explore videos and hotlines to help you on your journey.
-            </p>
+            <TextType
+              as="h1"
+              text="Resources for Your Well-being"
+              typingSpeed={60}
+              loop={false}
+              className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-4"
+            />
+            <TextType
+                text="Support is available. Explore videos and hotlines to help you on your journey."
+                typingSpeed={20}
+                initialDelay={1500}
+                loop={false}
+                className="text-lg max-w-2xl mx-auto bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500"
+            />
         </div>
 
         {isLoading ? (
