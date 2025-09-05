@@ -82,6 +82,12 @@ const nextConfig: NextConfig = {
         hostname: 'images.pexels.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '4kwallpapers.com',
+        port: '',
+        pathname: '/**',
       }
     ]
   }

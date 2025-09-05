@@ -38,7 +38,7 @@ export const scenes: Scene[] = [
     name: 'Night Sky',
     description: 'Gaze at the stars and auroras under a clear night sky.',
     emoji: '🌌',
-    image: 'https://images.unsplash.com/photo-1475036127633-954353a23a49?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://4kwallpapers.com/images/wallpapers/milky-way-starry-sky-night-mountains-lake-reflection-cold-5k-4480x2520-287.jpg',
     sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/night-ambience-170643.mp3?alt=media&token=2621430c-2679-4171-a48f-3ad8f6a9e18e'
   },
   {
