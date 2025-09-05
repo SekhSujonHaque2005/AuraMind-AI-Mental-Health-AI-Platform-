@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus, Minus } from 'lucide-react';
 import Image from 'next/image';
+import ScrollFloat from '@/components/scroll-float';
 
 const INITIAL_VISIBLE_SCENES = 6;
 
@@ -92,7 +93,13 @@ export default function CalmSelectionPage() {
                             />
                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                              <div className="absolute bottom-4 left-4">
-                                 <h3 className="text-2xl font-bold text-white tracking-tight">{scene.name}</h3>
+                                <ScrollFloat
+                                    textClassName="text-2xl font-bold text-white tracking-tight"
+                                    stagger={0.02}
+                                    animationDuration={0.8}
+                                >
+                                    {scene.name}
+                                </ScrollFloat>
                              </div>
                         </div>
                         <CardContent className="p-6 flex-grow">
