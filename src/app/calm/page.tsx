@@ -7,7 +7,7 @@ import { scenes, Scene } from '@/app/calm/scenes';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Plus, Minus, ArrowRight, Volume2 } from 'lucide-react';
+import { Plus, Minus, ArrowRight, Volume2, Sun, Headphones } from 'lucide-react';
 import Image from 'next/image';
 import TextType from '@/components/ui/text-type';
 
@@ -47,8 +47,30 @@ const ScenePreview = ({ scene }: { scene: Scene | null }) => {
                         <span>With Audio</span>
                     </div>
                 </div>
-                <p className="text-gray-400 flex-grow">{scene.description}</p>
-                <Button onClick={() => router.push(`/calm/${scene.id}`)} className="mt-6 w-full bg-blue-600 hover:bg-blue-500 transition-all group">
+                <p className="text-gray-400 flex-grow mb-4">{scene.description}</p>
+                
+                <div className="flex flex-col gap-3 text-gray-300 mb-6 text-sm">
+                    <motion.div
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: 0.2 }}
+                        className="flex items-center gap-3 bg-black/20 p-2.5 rounded-lg border border-white/10"
+                    >
+                        <Sun className="h-5 w-5 text-yellow-300" />
+                        <span>Increase brightness for the best view.</span>
+                    </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: 0.4 }}
+                        className="flex items-center gap-3 bg-black/20 p-2.5 rounded-lg border border-white/10"
+                    >
+                        <Headphones className="h-5 w-5 text-blue-300" />
+                        <span>Use headphones to immerse yourself.</span>
+                    </motion.div>
+                </div>
+                
+                <Button onClick={() => router.push(`/calm/${scene.id}`)} className="mt-auto w-full bg-blue-600 hover:bg-blue-500 transition-all group">
                   Enter Scene <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
               </CardContent>
@@ -182,10 +204,12 @@ export default function CalmSelectionPage() {
                 </motion.div>
               )}
         </div>
-        <div className="hidden lg:block lg:col-span-1 sticky top-28 h-[500px]">
+        <div className="hidden lg:block lg:col-span-1 sticky top-28 h-[calc(100vh-10rem)] max-h-[600px]">
             <ScenePreview scene={hoveredScene} />
         </div>
       </div>
     </div>
   );
 }
+
+    
