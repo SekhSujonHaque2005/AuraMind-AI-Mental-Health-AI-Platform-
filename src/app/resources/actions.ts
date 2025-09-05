@@ -4,7 +4,9 @@
 import { z } from 'zod';
 import axios from 'axios';
 import type { GetYoutubeVideosInput, YouTubeVideo } from '@/contexts/ChatContext';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 export async function getVideos(query: string, language: string = 'en'): Promise<YouTubeVideo[]> {
     const input: GetYoutubeVideosInput = {
@@ -33,8 +35,20 @@ export async function getVideos(query: string, language: string = 'en'): Promise
             },
         });
         
-        const videos = response.data.items || [];
-        return videos as YouTubeVideo[];
+        const videos = response.data.items.map((item: any) => ({
+            id: item.id,
+            snippet: {
+                title: item.snippet.title,
+                description: item.snippet.description,
+                thumbnails: {
+                    high: {
+                        url: item.snippet.thumbnails.high.url
+                    }
+                },
+                channelTitle: item.snippet.channelTitle
+            }
+        }));
+        return videos;
 
     } catch (error) {
         if (axios.isAxiosError(error)) {
