@@ -257,5 +257,6 @@ export default function SceneViewerPage() {
             <audio ref={audioRef} preload="auto" />
         </div>
     );
+}
 
     
