@@ -7,7 +7,7 @@ import { scenes } from '@/app/calm/scenes';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 
 const INITIAL_VISIBLE_SCENES = 6;
 
@@ -19,8 +19,10 @@ export default function CalmSelectionPage() {
     router.push(`/calm/${sceneId}`);
   };
 
-  const handleShowMore = () => {
-    setVisibleCount(scenes.length);
+  const handleToggleScenes = () => {
+    setVisibleCount(prevCount => 
+      prevCount === scenes.length ? INITIAL_VISIBLE_SCENES : scenes.length
+    );
   };
 
   const containerVariants = {
@@ -36,7 +38,8 @@ export default function CalmSelectionPage() {
     visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
   };
   
-  const hasMoreScenes = visibleCount < scenes.length;
+  const showToggleButton = scenes.length > INITIAL_VISIBLE_SCENES;
+  const isExpanded = visibleCount === scenes.length;
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-950 p-4 pb-16 overflow-y-auto">
@@ -95,14 +98,18 @@ export default function CalmSelectionPage() {
         </AnimatePresence>
       </motion.div>
 
-      {hasMoreScenes && (
+      {showToggleButton && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-12 text-center">
           <Button
-            onClick={handleShowMore}
+            onClick={handleToggleScenes}
             className="text-lg font-semibold py-6 px-8 bg-blue-600 hover:bg-blue-700 transition-all group rounded-full"
           >
-            <Plus className="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-90" />
-            Show More
+            {isExpanded ? (
+              <Minus className="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-180" />
+            ) : (
+              <Plus className="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-90" />
+            )}
+            {isExpanded ? 'Show Less' : 'Show More'}
           </Button>
         </motion.div>
       )}
