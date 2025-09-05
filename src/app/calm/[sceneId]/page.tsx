@@ -7,7 +7,7 @@ import { scenes, Scene } from '@/app/calm/scenes';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import Script from 'next/script';
-import { Home, Sun, Headphones } from 'lucide-react';
+import { Home, Sun, Headphones, Maximize } from 'lucide-react';
 
 // Extend the JSX namespace to include A-Frame elements
 declare global {
@@ -249,6 +249,7 @@ export default function SceneViewerPage() {
                      variant="ghost"
                     className="rounded-full text-white bg-black/30 backdrop-blur-md border border-white/10 hover:bg-white/10"
                 >
+                    <Maximize className="mr-2 h-5 w-5" />
                     Enter Fullscreen
                 </Button>
             </div>
