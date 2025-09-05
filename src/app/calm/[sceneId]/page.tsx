@@ -18,7 +18,7 @@ declare global {
             'a-camera': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { 'wasd-controls-enabled'?: string };
             'a-entity': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { sound?: string, position?: string, geometry?: string, material?: string, text?: string, scale?: string, animation?: string, animation__scale?: string, animation__color?: string, animation__opacity?: string, 'phase-text'?: string };
             'a-sphere': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { position?: string, radius?: string, color?: string, shadow?: string, animation?:string, 'animation__inhale'?:string, 'animation__hold'?:string, 'animation__exhale'?:string, 'animation__pause'?:string, 'animation__color-inhale'?:string, 'animation__color-exhale'?:string };
-            'a-text': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { value?: string, align?: string, color?: string, width?: string, position?: string, 'animation__show'?: string };
+            'a-text': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { value?: string, align?: string, color?: string, width?: string, position?: string, 'animation__show'?: string, font?: string };
         }
     }
 }
@@ -257,6 +257,5 @@ export default function SceneViewerPage() {
             <audio ref={audioRef} preload="auto" />
         </div>
     );
-}
 
     
