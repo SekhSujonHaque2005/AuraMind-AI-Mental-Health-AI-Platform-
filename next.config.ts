@@ -67,6 +67,12 @@ const nextConfig: NextConfig = {
       },
        {
         protocol: 'https',
+        hostname: 'plus.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+       {
+        protocol: 'https',
         hostname: 'images.stockcake.com',
         port: '',
         pathname: '/**',

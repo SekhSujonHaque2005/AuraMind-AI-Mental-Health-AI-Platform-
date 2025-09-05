@@ -62,7 +62,7 @@ export const scenes: Scene[] = [
     name: 'Zen Garden',
     description: 'Find your center in a peaceful garden with flowing water.',
     emoji: '🧘',
-    image: 'https://images.unsplash.com/photo-1598078873099-2d6f1f2dba8f?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://plus.unsplash.com/premium_photo-1661954483883-edd65eac3577?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8emVuJTIwZ2FyZGVufGVufDB8fDB8fHww',
     sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/zen-garden-14874.mp3?alt=media&token=0a3a789a-6a9b-43d9-9f7b-6c68a6f3b0e1'
   },
   {
