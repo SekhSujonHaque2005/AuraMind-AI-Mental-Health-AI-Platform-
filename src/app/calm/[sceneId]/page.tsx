@@ -7,7 +7,7 @@ import { scenes, Scene } from '@/app/calm/scenes';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import Script from 'next/script';
-import { Home } from 'lucide-react';
+import { Home, Sun, Headphones } from 'lucide-react';
 
 // Extend the JSX namespace to include A-Frame elements
 declare global {
@@ -199,13 +199,31 @@ export default function SceneViewerPage() {
 
              {!isAFrameReady && (
                 <div className="w-full h-full flex items-center justify-center text-white z-20 relative">
-                    <div className="flex flex-col items-center gap-2">
+                    <div className="flex flex-col items-center gap-8 text-center">
                         <motion.div
                             animate={{ rotate: 360 }}
                             transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
                             className="w-16 h-16 border-4 border-t-transparent border-blue-400 rounded-full"
                         />
-                        <p className="mt-4 text-lg font-semibold tracking-wider">Loading Serenity...</p>
+                        <p className="text-xl font-semibold tracking-wider">Loading Serenity...</p>
+                        <div className="flex flex-col gap-4 text-gray-300">
+                             <motion.p 
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.5 }}
+                                className="flex items-center gap-3 bg-black/20 p-3 rounded-lg border border-white/10"
+                             >
+                                <Sun className="h-5 w-5 text-yellow-300" /> For the best experience, increase screen brightness.
+                             </motion.p>
+                             <motion.p 
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.8 }}
+                                className="flex items-center gap-3 bg-black/20 p-3 rounded-lg border border-white/10"
+                            >
+                                <Headphones className="h-5 w-5 text-blue-300" /> Put on headphones to immerse yourself.
+                             </motion.p>
+                        </div>
                     </div>
                 </div>
              )}
@@ -239,3 +257,5 @@ export default function SceneViewerPage() {
         </div>
     );
 }
+
+    
