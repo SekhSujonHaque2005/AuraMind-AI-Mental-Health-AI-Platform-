@@ -2,7 +2,6 @@
 'use client';
 
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
@@ -10,8 +9,6 @@ import Sidebar from '@/components/layout/sidebar';
 import React, from 'react';
 import { motion } from 'framer-motion';
 import { ChatProvider } from '@/contexts/ChatContext';
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 function AppContent({ children }: { children: React.ReactNode }) {
     const [isSidebarExpanded, setSidebarExpanded] = React.useState(false);
@@ -66,7 +63,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning className="dark">
-      <body className={cn('min-h-screen bg-background font-sans antialiased', inter.variable)}>
+      <body className={cn('min-h-screen bg-background font-sans antialiased')}>
         <ChatProvider>
             <AppContent>{children}</AppContent>
         </ChatProvider>
