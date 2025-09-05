@@ -312,10 +312,10 @@ export default function CallPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-950 p-4 text-white overflow-hidden">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4 text-white overflow-hidden">
         {/* Background Gradient */}
         <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-tr from-gray-900 via-gray-950 to-blue-900/40 animate-[spin_20s_linear_infinite_reverse]" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-gray-900 via-background to-blue-900/40 animate-[spin_20s_linear_infinite_reverse]" />
         </div>
 
         <Card className="w-full max-w-5xl h-[80vh] max-h-[900px] bg-black/30 backdrop-blur-xl border border-blue-500/20 shadow-[0_0_50px_rgba(72,149,239,0.15)] rounded-2xl flex flex-col relative overflow-hidden">

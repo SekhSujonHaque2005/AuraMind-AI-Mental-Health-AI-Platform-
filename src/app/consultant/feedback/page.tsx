@@ -31,7 +31,7 @@ export default function FeedbackPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-950 p-4">
+    <div className="flex items-center justify-center min-h-screen bg-background p-4">
       <Card className="w-full max-w-lg bg-gray-900/50 border border-blue-500/20 shadow-[0_0_25px_rgba(72,149,239,0.15)]">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-2">

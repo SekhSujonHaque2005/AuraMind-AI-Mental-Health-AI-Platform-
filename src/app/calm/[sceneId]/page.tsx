@@ -87,7 +87,7 @@ export default function SceneViewerPage() {
         } else {
             notFound();
         }
-    }, [params.sceneId]);
+    }, [params]);
 
     useEffect(() => {
         if (audioRef.current && isAFrameReady && scene) {
@@ -153,10 +153,10 @@ export default function SceneViewerPage() {
     }
     
     return (
-        <div className="relative w-full h-screen bg-gray-950 overflow-hidden" suppressHydrationWarning>
+        <div className="relative w-full h-screen bg-background overflow-hidden" suppressHydrationWarning>
             <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-gradient-to-tr from-gray-900 via-gray-950 to-blue-900/40 animate-[spin_30s_linear_infinite_reverse]" />
-                <div className="absolute inset-0 bg-gradient-to-bl from-gray-900 via-gray-950 to-purple-900/30 animate-[spin_40s_linear_infinite]" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-gray-900 via-background to-blue-900/40 animate-[spin_30s_linear_infinite_reverse]" />
+                <div className="absolute inset-0 bg-gradient-to-bl from-gray-900 via-background to-purple-900/30 animate-[spin_40s_linear_infinite]" />
             </div>
 
             <Script src="https://aframe.io/releases/1.5.0/aframe.min.js" onReady={() => setIsAFrameReady(true)} />

@@ -70,7 +70,7 @@ export default function ConsentPage() {
 
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-950 p-4">
+    <div className="flex items-center justify-center min-h-screen bg-background p-4">
       <Card className="w-full max-w-2xl bg-gray-900/50 border border-blue-500/20 shadow-[0_0_50px_rgba(72,149,239,0.15)] rounded-2xl">
         <CardHeader className="text-center p-8">
           <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.5 }}>

@@ -35,7 +35,7 @@ function AppContent({ children }: { children: React.ReactNode }) {
                 <Sidebar isExpanded={isSidebarExpanded} />
             </div>
             
-            <div className="flex-1 flex flex-col relative bg-gray-950">
+            <div className="flex-1 flex flex-col relative bg-background">
                 <div className="absolute inset-0 z-0">
                    {/* Ballpit removed for a cleaner look */}
                 </div>
