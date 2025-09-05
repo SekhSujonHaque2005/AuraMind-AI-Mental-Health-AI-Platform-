@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import type { YouTubeVideo } from "@/app/resources/actions";
 import { motion } from "framer-motion";
@@ -29,21 +30,24 @@ const VideoPlayerModal = ({ video, onClose }: VideoPlayerModalProps) => {
           transition={{ duration: 0.3, ease: 'easeOut' }}
           className="bg-black/90 backdrop-blur-sm rounded-lg border border-blue-500/20 overflow-hidden"
         >
-          <DialogHeader className="p-3 pr-12">
-            <DialogTitle className="text-blue-300 text-lg truncate font-semibold">
-              {video.snippet.title}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="aspect-video w-full">
-            <iframe
-              src={videoSrc}
-              title={video.snippet.title}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              className="w-full h-full"
-            ></iframe>
-          </div>
+            <div className="aspect-video w-full">
+                <iframe
+                src={videoSrc}
+                title={video.snippet.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="w-full h-full"
+                ></iframe>
+            </div>
+            <DialogHeader className="p-4">
+                <DialogTitle className="text-blue-300 text-xl font-bold truncate">
+                {video.snippet.title}
+                </DialogTitle>
+                <DialogDescription className="text-gray-400 max-h-24 overflow-y-auto text-sm pt-2">
+                    {video.snippet.description}
+                </DialogDescription>
+            </DialogHeader>
         </motion.div>
       </DialogContent>
     </Dialog>

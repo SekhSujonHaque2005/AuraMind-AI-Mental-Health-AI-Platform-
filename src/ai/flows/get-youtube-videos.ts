@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -14,25 +15,6 @@ import axios from 'axios';
 
 const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
 
-// Define the structure of a single YouTube video item
-const YouTubeVideoSchema = z.object({
-  id: z.object({
-    videoId: z.string(),
-  }),
-  snippet: z.object({
-    title: z.string(),
-    description: z.string(),
-    thumbnails: z.object({
-      high: z.object({
-        url: z.string(),
-      }),
-    }),
-    channelTitle: z.string(),
-  }),
-});
-export type YouTubeVideo = z.infer<typeof YouTubeVideoSchema>;
-
-
 // --- Flow Input and Output Schemas ---
 export const GetYoutubeVideosInputSchema = z.object({
   query: z.string().describe('The search query for YouTube.'),
@@ -40,8 +22,9 @@ export const GetYoutubeVideosInputSchema = z.object({
 });
 export type GetYoutubeVideosInput = z.infer<typeof GetYoutubeVideosInputSchema>;
 
-export const GetYoutubeVideosOutputSchema = z.object({
-  videos: z.array(YouTubeVideoSchema).describe('A list of fetched YouTube video resources.'),
+// We only need to define the schema for the flow's output, not export it as a type here.
+const GetYoutubeVideosOutputSchema = z.object({
+  videos: z.array(z.any()).describe('A list of fetched YouTube video resources.'),
 });
 export type GetYoutubeVideosOutput = z.infer<typeof GetYoutubeVideosOutputSchema>;
 
