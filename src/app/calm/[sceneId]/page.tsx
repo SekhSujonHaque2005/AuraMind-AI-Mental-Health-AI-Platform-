@@ -80,7 +80,8 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
 
 
     useEffect(() => {
-        const selectedScene = scenes.find(s => s.id === params.sceneId);
+        const sceneId = params.sceneId;
+        const selectedScene = scenes.find(s => s.id === sceneId);
         if (selectedScene) {
             setScene(selectedScene);
         } else {
@@ -124,7 +125,7 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
             if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
             countdownIntervalRef.current = setInterval(() => {
                 countdown--;
-                if (countdown > 0) {
+                if (countdown >= 1) {
                     setTimer(countdown);
                 } else {
                     clearInterval(countdownIntervalRef.current);
@@ -225,3 +226,5 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
         </div>
     );
 }
+
+    
