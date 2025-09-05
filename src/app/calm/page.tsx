@@ -19,16 +19,20 @@ const ScenePreview = ({ scene }: { scene: Scene | null }) => {
   const audioTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // Clear any existing timeout when the scene changes
-    if (audioTimeoutRef.current) {
-      clearTimeout(audioTimeoutRef.current);
-    }
+    // Always clean up the previous timer when the scene changes or unmounts.
+    const cleanup = () => {
+        if (audioTimeoutRef.current) {
+            clearTimeout(audioTimeoutRef.current);
+            audioTimeoutRef.current = null;
+        }
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+        }
+    };
     
-    if (audioRef.current) {
-        // Pause and reset previous audio
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-    }
+    // Run cleanup first.
+    cleanup();
 
     if (scene && audioRef.current) {
       audioRef.current.src = scene.sound;
@@ -36,12 +40,12 @@ const ScenePreview = ({ scene }: { scene: Scene | null }) => {
       
       if (playPromise !== undefined) {
         playPromise.catch(error => {
-          // Autoplay was prevented.
-          console.error("Audio preview failed:", error);
+          // Autoplay was prevented. This is a common browser policy.
+          console.error("Audio preview failed to play:", error);
         });
       }
 
-      // Set a timeout to stop the audio after 5 seconds
+      // Set a new timeout to stop the audio after 5 seconds
       audioTimeoutRef.current = setTimeout(() => {
         if (audioRef.current) {
           audioRef.current.pause();
@@ -50,12 +54,8 @@ const ScenePreview = ({ scene }: { scene: Scene | null }) => {
       }, 5000);
     }
     
-    // Cleanup function
-    return () => {
-        if (audioTimeoutRef.current) {
-            clearTimeout(audioTimeoutRef.current);
-        }
-    }
+    // Return the cleanup function to be called on component unmount or before the effect re-runs.
+    return cleanup;
   }, [scene]);
 
   return (
