@@ -4,9 +4,6 @@
 import { z } from 'zod';
 import axios from 'axios';
 import type { GetYoutubeVideosInput, YouTubeVideo } from '@/contexts/ChatContext';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 export async function getVideos(query: string, language: string = 'en'): Promise<YouTubeVideo[]> {
     const input: GetYoutubeVideosInput = {
