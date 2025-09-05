@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { scenes, Scene } from '@/app/calm/scenes';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus, Minus, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
@@ -15,40 +15,85 @@ const INITIAL_VISIBLE_SCENES = 6;
 
 const ScenePreview = ({ scene }: { scene: Scene | null }) => {
   const router = useRouter();
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    // Clear any existing timeout when the scene changes
+    if (audioTimeoutRef.current) {
+      clearTimeout(audioTimeoutRef.current);
+    }
+    
+    if (audioRef.current) {
+        // Pause and reset previous audio
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+    }
+
+    if (scene && audioRef.current) {
+      audioRef.current.src = scene.sound;
+      const playPromise = audioRef.current.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          // Autoplay was prevented.
+          console.error("Audio preview failed:", error);
+        });
+      }
+
+      // Set a timeout to stop the audio after 5 seconds
+      audioTimeoutRef.current = setTimeout(() => {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
+      }, 5000);
+    }
+    
+    // Cleanup function
+    return () => {
+        if (audioTimeoutRef.current) {
+            clearTimeout(audioTimeoutRef.current);
+        }
+    }
+  }, [scene]);
 
   return (
-    <AnimatePresence>
-      {scene && (
-        <motion.div
-          key={scene.id}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.5, ease: 'easeInOut' }}
-          className="w-full h-full"
-        >
-          <Card className="flex flex-col h-full bg-black/30 backdrop-blur-lg border border-blue-500/20 rounded-2xl overflow-hidden shadow-2xl shadow-blue-500/10">
-            <div className="relative w-full h-64">
-              <Image
-                src={scene.image}
-                alt={scene.name}
-                fill
-                className="object-cover"
-                data-ai-hint="calm nature"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-            </div>
-            <CardContent className="p-6 flex flex-col flex-grow">
-              <h3 className="text-2xl font-bold text-blue-300 mb-2">{scene.name}</h3>
-              <p className="text-gray-400 flex-grow">{scene.description}</p>
-              <Button onClick={() => router.push(`/calm/${scene.id}`)} className="mt-6 w-full bg-blue-600 hover:bg-blue-500 transition-all group">
-                Enter Scene <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </CardContent>
-          </Card>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <>
+      <AnimatePresence>
+        {scene && (
+          <motion.div
+            key={scene.id}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+            className="w-full h-full"
+          >
+            <Card className="flex flex-col h-full bg-black/30 backdrop-blur-lg border border-blue-500/20 rounded-2xl overflow-hidden shadow-2xl shadow-blue-500/10">
+              <div className="relative w-full h-64">
+                <Image
+                  src={scene.image}
+                  alt={scene.name}
+                  fill
+                  className="object-cover"
+                  data-ai-hint="calm nature"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+              </div>
+              <CardContent className="p-6 flex flex-col flex-grow">
+                <h3 className="text-2xl font-bold text-blue-300 mb-2">{scene.name}</h3>
+                <p className="text-gray-400 flex-grow">{scene.description}</p>
+                <Button onClick={() => router.push(`/calm/${scene.id}`)} className="mt-6 w-full bg-blue-600 hover:bg-blue-500 transition-all group">
+                  Enter Scene <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <audio ref={audioRef} preload="auto" />
+    </>
   );
 };
 
