@@ -12,6 +12,8 @@ import VideoCard from "@/components/video-card";
 import TextType from "@/components/ui/text-type";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { motion } from "framer-motion";
+
 
 const staticResources = [
   {
@@ -156,8 +158,22 @@ export default function ResourcesPage() {
       </div>
       
       <div className="w-full max-w-7xl relative">
-        <div className="absolute top-0 right-0 z-20">
-            <div className="w-full max-w-xs flex flex-col items-end gap-2">
+        <div className="absolute top-6 right-6 z-20">
+            <div className="relative w-full max-w-xs flex flex-col items-end gap-2">
+                 <motion.div
+                    animate={{ 
+                        scale: [1, 1.1, 1],
+                        opacity: [0, 1, 1, 0]
+                    }}
+                    transition={{
+                        duration: 3,
+                        ease: "easeInOut",
+                        times: [0, 0.1, 0.9, 1],
+                        repeat: Infinity,
+                        repeatDelay: 5
+                    }}
+                    className="absolute -top-4 -right-4 w-24 h-24 rounded-full bg-blue-500/30 blur-xl pointer-events-none"
+                />
                 <Label className="text-sm text-gray-400 mr-2">Select Language</Label>
                 <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
                     <SelectTrigger className="w-[180px] bg-black/30 backdrop-blur-md border-blue-500/20 text-white focus:ring-blue-500/50">
