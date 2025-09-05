@@ -14,11 +14,11 @@ declare global {
     namespace JSX {
         interface IntrinsicElements {
             'a-scene': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { class?: string, embedded?: boolean, 'vr-mode-ui'?: string };
-            'a-sky': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { src: string; rotation?: string };
+            'a-sky': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { src: string; rotation?: string, animation?: string };
             'a-camera': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { 'wasd-controls-enabled'?: string };
             'a-entity': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { sound?: string, position?: string, geometry?: string, material?: string, text?: string, scale?: string, animation?: string, animation__scale?: string, animation__color?: string, animation__opacity?: string };
-            'a-sphere': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { position?: string, radius?: string, color?: string, shadow?: string };
-            'a-text': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { value?: string, align?: string, color?: string, width?: string, position?: string };
+            'a-sphere': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { position?: string, radius?: string, color?: string, shadow?: string, animation?:string };
+            'a-text': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { value?: string, align?: string, color?: string, width?: string, position?: string, animation?: string };
             'a-animation': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { attribute: string; from?: string; to: string; dur?: string; repeat?: string; direction?: string; easing?: string; delay?: string };
         }
     }
@@ -32,24 +32,9 @@ const BreathingGuide = () => (
             radius="0.5"
             color="#ADD8E6"
             shadow
+            animation="property: scale; to: 1.5 1.5 1.5; dur: 4000; easing: easeInOutQuad; loop: true; dir: alternate"
+            animation__color="property: material.color; to: #E6E6FA; dur: 4000; easing: easeInOutQuad; loop: true; dir: alternate"
         >
-            <a-animation
-                attribute="scale"
-                dur="4000"
-                from="1 1 1"
-                to="1.5 1.5 1.5"
-                direction="alternate"
-                repeat="indefinite"
-                easing="ease-in-out"
-            ></a-animation>
-             <a-animation
-                attribute="material.color"
-                dur="4000"
-                from="#ADD8E6"
-                to="#E6E6FA"
-                direction="alternate"
-                repeat="indefinite"
-            ></a-animation>
         </a-sphere>
 
         {/* Text Labels */}
@@ -59,8 +44,8 @@ const BreathingGuide = () => (
             align="center"
             color="#FFFFFF"
             width="4"
+            animation="property: opacity; from: 1; to: 0; dur: 1000; delay: 3000; loop: true; dir: alternate"
         >
-             <a-animation attribute="opacity" from="1" to="0" delay="3000" dur="1000" repeat="indefinite" direction="alternate"></a-animation>
         </a-text>
          <a-text
             value="Exhale"
@@ -68,8 +53,8 @@ const BreathingGuide = () => (
             align="center"
             color="#FFFFFF"
             width="4"
+            animation="property: opacity; from: 0; to: 1; dur: 1000; delay: 3000; loop: true; dir: alternate"
         >
-            <a-animation attribute="opacity" from="0" to="1" delay="3000" dur="1000" repeat="indefinite" direction="alternate"></a-animation>
         </a-text>
     </a-entity>
 );
@@ -123,15 +108,11 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
                         className="absolute inset-0 z-10"
                     >
                         <a-scene embedded vr-mode-ui="enabled: false" class="w-full h-full">
-                            <a-sky src={scene.image} rotation="0 -130 0">
-                                <a-animation
-                                    attribute="rotation"
-                                    dur="120000"
-                                    from="0 -130 0"
-                                    to="0 230 0"
-                                    repeat="indefinite"
-                                    easing="linear"
-                                ></a-animation>
+                            <a-sky 
+                                src={scene.image} 
+                                rotation="0 -130 0"
+                                animation="property: rotation; to: 0 230 0; dur: 120000; easing: linear; loop: true"
+                            >
                             </a-sky>
                             <a-camera wasd-controls-enabled="false" />
                             <BreathingGuide />
@@ -181,3 +162,4 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
             <audio ref={audioRef} preload="auto" />
         </div>
     );
+}
