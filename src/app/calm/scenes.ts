@@ -78,7 +78,7 @@ export const scenes: Scene[] = [
     name: 'Underwater Reef',
     description: 'Drift peacefully through a vibrant and colorful coral reef.',
     emoji: '🐠',
-    image: 'https://images.unsplash.com/photo-1501813426742-d33f6b3510b6?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://images.pexels.com/photos/2397651/pexels-photo-2397651.jpeg?cs=srgb&dl=pexels-jeremy-bishop-1260133-2397651.jpg&fm=jpg',
     sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/underwater-6228.mp3?alt=media&token=2d4d0b1d-0b7e-4b4e-9b2a-8d7b8a7b9e7d'
   }
 ];
