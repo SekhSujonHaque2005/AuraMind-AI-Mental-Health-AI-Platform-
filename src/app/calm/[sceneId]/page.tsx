@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { notFound, useRouter } from 'next/navigation';
 import { scenes, Scene } from '@/app/calm/scenes';
 import { Button } from '@/components/ui/button';
@@ -77,7 +77,8 @@ const BreathingGuide = () => (
 
 export default function SceneViewerPage({ params }: { params: { sceneId: string } }) {
     const router = useRouter();
-    const { sceneId } = params;
+    const resolvedParams = React.use(params);
+    const { sceneId } = resolvedParams;
     const [scene, setScene] = useState<Scene | null>(null);
     const [isAFrameReady, setIsAFrameReady] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
