@@ -46,7 +46,7 @@ export const scenes: Scene[] = [
     name: 'Cozy Fireplace',
     description: 'Warm yourself by a crackling fire in a rustic cabin.',
     emoji: '🔥',
-    image: 'https://images.unsplash.com/photo-1542382257-80deda093718?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://images.pexels.com/photos/1629159/pexels-photo-1629159.jpeg?cs=srgb&dl=pexels-minan1398-1629159.jpg&fm=jpg',
     sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/relaxing-crackling-fireplace-12797.mp3?alt=media&token=96144e54-5264-4e4f-b679-7a39e836b801'
   },
   {
