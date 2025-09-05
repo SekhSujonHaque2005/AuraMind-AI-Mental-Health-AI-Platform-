@@ -15,7 +15,7 @@ interface VideoCardProps {
 }
 
 const VideoCard = ({ video, isHovered, onMouseEnter, onMouseLeave, onClick }: VideoCardProps) => {
-    const videoSrc = `https://www.youtube.com/embed/${video.id.videoId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${video.id.videoId}`;
+    const videoSrc = `https://www.youtube.com/embed/${video.id.videoId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${video.id.videoId}&modestbranding=1`;
 
     return (
         <div
