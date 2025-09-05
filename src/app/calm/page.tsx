@@ -70,7 +70,7 @@ export default function CalmSelectionPage() {
             typingSpeed={20}
             initialDelay={1500}
             loop={false}
-            className="text-gray-400 text-lg max-w-2xl mx-auto"
+            className="text-blue-200/80 text-lg max-w-2xl mx-auto"
         />
 
       </motion.div>
