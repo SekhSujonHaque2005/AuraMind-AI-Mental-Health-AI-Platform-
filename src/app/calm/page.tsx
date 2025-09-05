@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Plus, Minus } from 'lucide-react';
 import Image from 'next/image';
 import ScrollFloat from '@/components/scroll-float';
+import TextType from '@/components/ui/text-type';
 
 const INITIAL_VISIBLE_SCENES = 6;
 
@@ -56,12 +57,22 @@ export default function CalmSelectionPage() {
         transition={{ duration: 0.5 }}
         className="text-center my-16"
       >
-        <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-white via-blue-200 to-purple-400 mb-4 tracking-tight">
-          The Calm Room
-        </h1>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-          Select a scene to begin your immersive relaxation experience. Each is designed to transport you to a place of peace.
-        </p>
+        <TextType 
+          as="h1"
+          text="The Calm Room"
+          typingSpeed={60}
+          loop={false}
+          className="text-4xl md:text-6xl font-bold mb-4 tracking-tight"
+        />
+
+        <TextType
+            text="Select a scene to begin your immersive relaxation experience. Each is designed to transport you to a place of peace."
+            typingSpeed={20}
+            initialDelay={1500}
+            loop={false}
+            className="text-gray-400 text-lg max-w-2xl mx-auto"
+        />
+
       </motion.div>
       <motion.div 
         className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 w-full max-w-7xl"
