@@ -226,5 +226,3 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
         </div>
     );
 }
-
-    
