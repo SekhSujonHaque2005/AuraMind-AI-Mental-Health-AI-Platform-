@@ -17,12 +17,8 @@ const INITIAL_VISIBLE_SCENES = 6;
 export default function CalmSelectionPage() {
   const router = useRouter();
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_SCENES);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   
   const handleSelectScene = (sceneId: string) => {
-    if (audioRef.current) {
-        audioRef.current.pause();
-    }
     router.push(`/calm/${sceneId}`);
   };
 
@@ -30,34 +26,6 @@ export default function CalmSelectionPage() {
     setVisibleCount(prevCount => 
       prevCount === scenes.length ? INITIAL_VISIBLE_SCENES : scenes.length
     );
-  };
-  
-  const handleMouseEnter = (scene: Scene) => {
-    if (audioRef.current) {
-        audioRef.current.src = scene.sound;
-        audioRef.current.loop = true;
-        audioRef.current.volume = 0;
-        audioRef.current.play().catch(e => console.error("Audio play failed:", e));
-        
-        // Fade in
-        let vol = 0;
-        const fadeInterval = setInterval(() => {
-            if (vol < 1) {
-                vol = Math.min(1, vol + 0.1);
-                 if (audioRef.current) {
-                    audioRef.current.volume = vol;
-                 }
-            } else {
-                clearInterval(fadeInterval);
-            }
-        }, 50);
-    }
-  };
-  
-  const handleMouseLeave = () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
   };
 
   const containerVariants = {
@@ -121,8 +89,6 @@ export default function CalmSelectionPage() {
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
-                    onMouseEnter={() => handleMouseEnter(scene)}
-                    onMouseLeave={handleMouseLeave}
                 >
                     <Card
                         onClick={() => handleSelectScene(scene.id)}
@@ -137,7 +103,10 @@ export default function CalmSelectionPage() {
                                 data-ai-hint="calm nature"
                             />
                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                             <div className="absolute bottom-4 left-4">
+                             <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-6 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+                                <p className="text-white text-base">{scene.description}</p>
+                             </div>
+                             <div className="absolute bottom-4 left-4 transition-opacity duration-300 group-hover:opacity-0">
                                 <ScrollFloat
                                     textClassName="text-2xl font-bold text-white tracking-tight"
                                     stagger={0.02}
@@ -147,13 +116,6 @@ export default function CalmSelectionPage() {
                                 </ScrollFloat>
                              </div>
                         </div>
-                        <CardContent className="p-6 flex-grow">
-                            <div className="flex items-start gap-4">
-                                <p className="text-gray-400 text-base">
-                                    {scene.description}
-                                </p>
-                            </div>
-                        </CardContent>
                     </Card>
               </motion.div>
             ))}
@@ -176,7 +138,6 @@ export default function CalmSelectionPage() {
           </Button>
         </motion.div>
       )}
-      <audio ref={audioRef} preload="auto" />
     </div>
   );
 }
