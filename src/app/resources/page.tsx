@@ -136,7 +136,7 @@ export default function ResourcesPage() {
         <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-4">
           Resources for Your Well-being
         </h1>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+        <p className="text-lg max-w-2xl mx-auto bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500">
           Support is available. Explore videos and hotlines to help you on your journey.
         </p>
       </div>
