@@ -7,7 +7,7 @@ import { scenes, Scene } from '@/app/calm/scenes';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Plus, Minus, ArrowRight } from 'lucide-react';
+import { Plus, Minus, ArrowRight, Volume2 } from 'lucide-react';
 import Image from 'next/image';
 import TextType from '@/components/ui/text-type';
 
@@ -40,7 +40,13 @@ const ScenePreview = ({ scene }: { scene: Scene | null }) => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
               </div>
               <CardContent className="p-6 flex flex-col flex-grow">
-                <h3 className="text-2xl font-bold text-blue-300 mb-2">{scene.name}</h3>
+                <div className="flex items-center gap-3 mb-2">
+                    <h3 className="text-2xl font-bold text-blue-300">{scene.name}</h3>
+                    <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-blue-500/10 text-blue-300 text-xs font-medium">
+                        <Volume2 className="h-3.5 w-3.5" />
+                        <span>With Audio</span>
+                    </div>
+                </div>
                 <p className="text-gray-400 flex-grow">{scene.description}</p>
                 <Button onClick={() => router.push(`/calm/${scene.id}`)} className="mt-6 w-full bg-blue-600 hover:bg-blue-500 transition-all group">
                   Enter Scene <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
