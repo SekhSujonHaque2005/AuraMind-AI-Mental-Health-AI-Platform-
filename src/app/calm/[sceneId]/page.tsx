@@ -32,8 +32,12 @@ const BreathingGuide = () => (
             radius="0.5"
             color="#ADD8E6"
             shadow
-            animation="property: scale; to: 1.5 1.5 1.5; dur: 4000; easing: easeInOutQuad; loop: true; dir: alternate"
-            animation__color="property: material.color; to: #E6E6FA; dur: 4000; easing: easeInOutQuad; loop: true; dir: alternate"
+            animation__inhale="property: scale; from: 1 1 1; to: 1.5 1.5 1.5; dur: 4000; easing: easeInOutQuad; startEvents: start-inhale"
+            animation__hold="property: scale; from: 1.5 1.5 1.5; to: 1.5 1.5 1.5; dur: 2000; startEvents: start-hold"
+            animation__exhale="property: scale; from: 1.5 1.5 1.5; to: 1 1 1; dur: 5000; easing: easeInOutQuad; startEvents: start-exhale"
+            animation__pause="property: scale; from: 1 1 1; to: 1 1 1; dur: 1000; startEvents: start-pause"
+            animation__color-inhale="property: material.color; from: #ADD8E6; to: #E6E6FA; dur: 4000; easing: easeInOutQuad; startEvents: start-inhale"
+            animation__color-exhale="property: material.color; from: #E6E6FA; to: #ADD8E6; dur: 5000; easing: easeInOutQuad; startEvents: start-exhale"
         >
         </a-sphere>
 
@@ -44,7 +48,8 @@ const BreathingGuide = () => (
             align="center"
             color="#FFFFFF"
             width="4"
-            animation="property: opacity; from: 1; to: 0; dur: 1000; delay: 3000; loop: true; dir: alternate"
+            animation__show="property: opacity; from: 0; to: 1; dur: 1000; startEvents: start-inhale"
+            animation__hide="property: opacity; from: 1; to: 0; dur: 1000; startEvents: start-exhale"
         >
         </a-text>
          <a-text
@@ -53,7 +58,8 @@ const BreathingGuide = () => (
             align="center"
             color="#FFFFFF"
             width="4"
-            animation="property: opacity; from: 0; to: 1; dur: 1000; delay: 3000; loop: true; dir: alternate"
+            animation__show="property: opacity; from: 0; to: 1; dur: 1000; startEvents: start-exhale"
+            animation__hide="property: opacity; from: 1; to: 0; dur: 1000; startEvents: start-inhale"
         >
         </a-text>
     </a-entity>
@@ -84,6 +90,26 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
             audioRef.current.play().catch(error => console.log("Audio autoplay was prevented:", error));
         }
     }, [scene, isAFrameReady]);
+
+    useEffect(() => {
+        if (!isAFrameReady) return;
+
+        const sphere = document.querySelector('a-sphere');
+        if (!sphere) return;
+
+        const cycle = () => {
+            sphere.emit('start-inhale');
+            setTimeout(() => sphere.emit('start-hold'), 4000);
+            setTimeout(() => sphere.emit('start-exhale'), 6000); // 4000 (inhale) + 2000 (hold)
+            setTimeout(() => sphere.emit('start-pause'), 11000); // 6000 + 5000 (exhale)
+        };
+        
+        cycle(); // Start the first cycle
+        const interval = setInterval(cycle, 12000); // 4000 + 2000 + 5000 + 1000
+
+        return () => clearInterval(interval);
+    }, [isAFrameReady]);
+
 
     if (!scene) {
         return null; // Or a loading state
@@ -163,3 +189,5 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
         </div>
     );
 }
+
+    
