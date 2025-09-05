@@ -56,5 +56,29 @@ export const scenes: Scene[] = [
     emoji: '🌧️',
     image: 'https://images.unsplash.com/photo-1519692933481-e162a57d6721?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/rain-and-thunder-166243.mp3?alt=media&token=2343a411-e1a7-47b2-ac7f-9430c904323e'
+  },
+  {
+    id: 'zen-garden',
+    name: 'Zen Garden',
+    description: 'Find your center in a peaceful garden with flowing water.',
+    emoji: '🧘',
+    image: 'https://images.unsplash.com/photo-1598078873099-2d6f1f2dba8f?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/zen-garden-14874.mp3?alt=media&token=0a3a789a-6a9b-43d9-9f7b-6c68a6f3b0e1'
+  },
+  {
+    id: 'mountain-peak',
+    name: 'Mountain Peak',
+    description: 'Breathe in the crisp air from a majestic mountain summit.',
+    emoji: '⛰️',
+    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/mountain-wind-43336.mp3?alt=media&token=1c6b1b7f-8c3e-4b6e-812e-9d2113f8c8d8'
+  },
+  {
+    id: 'underwater-reef',
+    name: 'Underwater Reef',
+    description: 'Drift peacefully through a vibrant and colorful coral reef.',
+    emoji: '🐠',
+    image: 'https://images.unsplash.com/photo-1501813426742-d33f6b3510b6?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/underwater-6228.mp3?alt=media&token=2d4d0b1d-0b7e-4b4e-9b2a-8d7b8a7b9e7d'
   }
 ];
