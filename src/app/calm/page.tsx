@@ -62,7 +62,7 @@ export default function CalmSelectionPage() {
           text="The Calm Room"
           typingSpeed={60}
           loop={false}
-          className="text-4xl md:text-6xl font-bold mb-4 tracking-tight"
+          className="text-4xl md:text-6xl font-bold mb-4 tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500"
         />
 
         <TextType
