@@ -17,7 +17,7 @@ interface VideoPlayerModalProps {
 
 const VideoPlayerModal = ({ video, onClose }: VideoPlayerModalProps) => {
   if (!video) return null;
-  const videoSrc = `https://www.youtube.com/embed/${video.id.videoId}?autoplay=1&rel=0&controls=1&showinfo=0&mute=0&modestbranding=1`;
+  const videoSrc = `https://www.youtube.com/embed/${video.id.videoId}?autoplay=1&rel=0&controls=1&showinfo=0&modestbranding=1`;
 
   return (
     <Dialog open={!!video} onOpenChange={(isOpen) => !isOpen && onClose()}>
