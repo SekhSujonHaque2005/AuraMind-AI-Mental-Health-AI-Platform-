@@ -39,7 +39,7 @@ export const scenes: Scene[] = [
     description: 'Gaze at the stars and auroras under a clear night sky.',
     emoji: '🌌',
     image: 'https://images.pexels.com/photos/956981/milky-way-starry-sky-night-sky-star-956981.jpeg?cs=srgb&dl=pexels-umkreisel-app-956981.jpg&fm=jpg',
-    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/night-ambience-170643.mp3?alt=media&token=2621430c-2679-4171-a48f-3ad8f6a9e18e'
+    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/night-ambience-17064.mp3?alt=media&token=465eae31-18d4-4cf0-baf0-d3ce0881ed91'
   },
   {
     id: 'fireplace',
@@ -47,7 +47,7 @@ export const scenes: Scene[] = [
     description: 'Warm yourself by a crackling fire in a rustic cabin.',
     emoji: '🔥',
     image: 'https://images.pexels.com/photos/1629159/pexels-photo-1629159.jpeg?cs=srgb&dl=pexels-minan1398-1629159.jpg&fm=jpg',
-    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/relaxing-crackling-fireplace-12797.mp3?alt=media&token=96144e54-5264-4e4f-b679-7a39e836b801'
+    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/fireplace-loop-original-noise-178209.mp3?alt=media&token=a2505f7e-04b5-4076-8507-0029a3c2dea7'
   },
   {
     id: 'rainyday',
@@ -55,7 +55,7 @@ export const scenes: Scene[] = [
     description: 'Listen to the pitter-patter of rain on a window pane.',
     emoji: '🌧️',
     image: 'https://images.unsplash.com/photo-1519692933481-e162a57d6721?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/rain-and-thunder-166243.mp3?alt=media&token=2343a411-e1a7-47b2-ac7f-9430c904323e'
+    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/light-rain-109591.mp3?alt=media&token=8d42f9af-62b8-438e-b67a-eb88a42669d5'
   },
   {
     id: 'zen-garden',
@@ -63,7 +63,7 @@ export const scenes: Scene[] = [
     description: 'Find your center in a peaceful garden with flowing water.',
     emoji: '🧘',
     image: 'https://plus.unsplash.com/premium_photo-1661954483883-edd65eac3577?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8emVuJTIwZ2FyZGVufGVufDB8fDB8fHww',
-    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/zen-garden-14874.mp3?alt=media&token=0a3a789a-6a9b-43d9-9f7b-6c68a6f3b0e1'
+    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/calm-zen-river-flowing-228223.mp3?alt=media&token=acb0e4db-93d0-41fe-9a1f-cf127f8472ca'
   },
   {
     id: 'mountain-peak',
@@ -71,7 +71,7 @@ export const scenes: Scene[] = [
     description: 'Breathe in the crisp air from a majestic mountain summit.',
     emoji: '⛰️',
     image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/mountain-wind-43336.mp3?alt=media&token=1c6b1b7f-8c3e-4b6e-812e-9d2113f8c8d8'
+    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/mountain-wind-371074.mp3?alt=media&token=4af5b4fa-67ce-4efd-84d2-e7f864e900c2'
   },
   {
     id: 'underwater-reef',
@@ -79,6 +79,6 @@ export const scenes: Scene[] = [
     description: 'Drift peacefully through a vibrant and colorful coral reef.',
     emoji: '🐠',
     image: 'https://images.pexels.com/photos/2397651/pexels-photo-2397651.jpeg?cs=srgb&dl=pexels-jeremy-bishop-1260133-2397651.jpg&fm=jpg',
-    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/underwater-6228.mp3?alt=media&token=2d4d0b1d-0b7e-4b4e-9b2a-8d7b8a7b9e7d'
+    sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/underwater-loop-amb-6182.mp3?alt=media&token=2f25da03-2d4a-4dc8-bf47-76cf2030e6f8'
   }
 ];
