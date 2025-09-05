@@ -172,7 +172,7 @@ export default function ResourcesPage() {
             />
         </div>
 
-        <div className="mb-12 flex justify-end">
+        <div className="mb-12 flex justify-center">
             <div className="w-full max-w-xs">
                 <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
                     <SelectTrigger className="bg-black/30 backdrop-blur-md border-blue-500/20 text-white focus:ring-blue-500/50">
