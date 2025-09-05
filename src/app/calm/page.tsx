@@ -14,6 +14,8 @@ import TextType from '@/components/ui/text-type';
 const INITIAL_VISIBLE_SCENES = 6;
 
 const ScenePreview = ({ scene }: { scene: Scene | null }) => {
+  const router = useRouter();
+
   return (
     <AnimatePresence>
       {scene && (
@@ -21,7 +23,7 @@ const ScenePreview = ({ scene }: { scene: Scene | null }) => {
           key={scene.id}
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 20 }}
+          exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 0.5, ease: 'easeInOut' }}
           className="w-full h-full"
         >
@@ -39,7 +41,7 @@ const ScenePreview = ({ scene }: { scene: Scene | null }) => {
             <CardContent className="p-6 flex flex-col flex-grow">
               <h3 className="text-2xl font-bold text-blue-300 mb-2">{scene.name}</h3>
               <p className="text-gray-400 flex-grow">{scene.description}</p>
-              <Button className="mt-6 w-full bg-blue-600 hover:bg-blue-500 transition-all group">
+              <Button onClick={() => router.push(`/calm/${scene.id}`)} className="mt-6 w-full bg-blue-600 hover:bg-blue-500 transition-all group">
                 Enter Scene <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </CardContent>
@@ -54,7 +56,7 @@ const ScenePreview = ({ scene }: { scene: Scene | null }) => {
 export default function CalmSelectionPage() {
   const router = useRouter();
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_SCENES);
-  const [hoveredScene, setHoveredScene] = useState<Scene | null>(scenes[0]);
+  const [hoveredScene, setHoveredScene] = useState<Scene | null>(scenes[0] ?? null);
 
   const handleSelectScene = (sceneId: string) => {
     router.push(`/calm/${sceneId}`);
@@ -112,7 +114,7 @@ export default function CalmSelectionPage() {
         />
       </motion.div>
 
-      <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-8 w-full max-w-8xl mx-auto">
+      <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-8 w-full max-w-7xl mx-auto">
         <div className="lg:col-span-2">
             <motion.div
                 className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 w-full"
