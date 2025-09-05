@@ -7,7 +7,7 @@ import { scenes, Scene } from '@/app/calm/scenes';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import Script from 'next/script';
-import { Home, X } from 'lucide-react';
+import { Home } from 'lucide-react';
 
 // Extend the JSX namespace to include A-Frame elements
 declare global {
@@ -16,68 +16,60 @@ declare global {
             'a-scene': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { class?: string, embedded?: boolean, 'vr-mode-ui'?: string };
             'a-sky': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { src: string; rotation?: string };
             'a-camera': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { 'wasd-controls-enabled'?: string };
-            'a-entity': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { sound?: string };
+            'a-entity': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { sound?: string, position?: string, geometry?: string, material?: string, text?: string, scale?: string, animation__scale?: string, animation__color?: string, animation__opacity?: string };
+            'a-sphere': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { position?: string, radius?: string, color?: string, shadow?: string };
         }
     }
 }
 
 const BreathingGuide = () => (
-    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center z-50 pointer-events-none">
-        <motion.div
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', repeatDelay: 10 }}
-            className="w-24 h-24 bg-white/20 backdrop-blur-md rounded-full border border-white/20 shadow-lg"
-        />
-        <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-center pointer-events-none">
-            <AnimatePresence>
-                 <motion.p
-                    key="inhale-text"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1, delay: 0 }}
-                    style={{ animation: 'text-fade-in-out 18s infinite 0s' }}
-                    className="absolute text-shadow-md"
-                >
-                    Inhale
-                </motion.p>
-                <motion.p
-                    key="hold-text"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1, delay: 4.5 }}
-                     style={{ animation: 'text-fade-in-out 18s infinite 4.5s' }}
-                    className="absolute text-shadow-md"
-                >
-                    Hold
-                </motion.p>
-                <motion.p
-                    key="exhale-text"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1, delay: 10.5 }}
-                     style={{ animation: 'text-fade-in-out 18s infinite 10.5s' }}
-                    className="absolute text-shadow-md"
-                >
-                    Exhale
-                </motion.p>
-            </AnimatePresence>
-        </div>
-         <style jsx>{`
-            @keyframes text-fade-in-out {
-                0% { opacity: 0; }
-                5% { opacity: 1; }
-                22% { opacity: 1; } /* Visible for ~4s */
-                27% { opacity: 0; }
-                100% { opacity: 0; }
-            }
-            .text-shadow-md {
-                text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            }
-        `}</style>
-    </div>
+    <a-entity position="0 1 -4">
+        {/* Pulsating Sphere */}
+        <a-sphere
+            position="0 0 0"
+            radius="0.5"
+            color="#ADD8E6"
+            shadow
+        >
+            <a-animation
+                attribute="scale"
+                dur="4000"
+                from="1 1 1"
+                to="1.5 1.5 1.5"
+                direction="alternate"
+                repeat="indefinite"
+                easing="ease-in-out"
+            ></a-animation>
+             <a-animation
+                attribute="material.color"
+                dur="4000"
+                from="#ADD8E6"
+                to="#E6E6FA"
+                direction="alternate"
+                repeat="indefinite"
+            ></a-animation>
+        </a-sphere>
+
+        {/* Text Labels */}
+        <a-text
+            value="Inhale"
+            position="0 0.8 0"
+            align="center"
+            color="#FFFFFF"
+            width="4"
+        >
+             <a-animation attribute="opacity" from="1" to="0" delay="3000" dur="1000" repeat="indefinite" direction="alternate"></a-animation>
+        </a-text>
+         <a-text
+            value="Exhale"
+            position="0 -0.8 0"
+            align="center"
+            color="#FFFFFF"
+            width="4"
+        >
+            <a-animation attribute="opacity" from="0" to="1" delay="3000" dur="1000" repeat="indefinite" direction="alternate"></a-animation>
+        </a-text>
+    </a-entity>
 );
 
 
@@ -87,14 +79,16 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
     const [isAFrameReady, setIsAFrameReady] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
+    const { sceneId } = params;
+
     useEffect(() => {
-        const selectedScene = scenes.find(s => s.id === params.sceneId);
+        const selectedScene = scenes.find(s => s.id === sceneId);
         if (selectedScene) {
             setScene(selectedScene);
         } else {
             notFound();
         }
-    }, [params.sceneId]);
+    }, [sceneId]);
 
     useEffect(() => {
         if (audioRef.current && isAFrameReady && scene) {
@@ -119,7 +113,7 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
             
             <AnimatePresence>
                 {isAFrameReady && (
-                    <motion.div
+                     <motion.div
                         key={scene.id}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -129,6 +123,7 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
                         <a-scene embedded vr-mode-ui="enabled: false" class="w-full h-full">
                             <a-sky src={scene.image} rotation="0 -130 0" />
                             <a-camera wasd-controls-enabled="false" />
+                            <BreathingGuide />
                         </a-scene>
                     </motion.div>
                 )}
@@ -171,9 +166,6 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
                     Enter Fullscreen
                 </Button>
             </div>
-
-
-            <BreathingGuide />
             
             <audio ref={audioRef} preload="auto" />
         </div>
