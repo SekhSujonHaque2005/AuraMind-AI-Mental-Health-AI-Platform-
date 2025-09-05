@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { scenes, Scene } from '@/app/calm/scenes';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus, Minus, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
@@ -15,59 +15,6 @@ const INITIAL_VISIBLE_SCENES = 6;
 
 const ScenePreview = ({ scene }: { scene: Scene | null }) => {
   const router = useRouter();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const audioTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const playTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    // Cleanup function to stop audio and clear timers
-    const cleanup = () => {
-        if (playTimeoutRef.current) {
-            clearTimeout(playTimeoutRef.current);
-            playTimeoutRef.current = null;
-        }
-        if (audioTimeoutRef.current) {
-            clearTimeout(audioTimeoutRef.current);
-            audioTimeoutRef.current = null;
-        }
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-        }
-    };
-    
-    // Always run cleanup first when the scene changes or component unmounts
-    cleanup();
-
-    if (scene && audioRef.current) {
-      audioRef.current.src = scene.sound;
-      
-      // Introduce a small delay before playing to prevent interruption errors
-      playTimeoutRef.current = setTimeout(() => {
-        const playPromise = audioRef.current?.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(error => {
-            // Ignore interruption errors, as they are expected with fast hovering
-            if (error.name !== 'AbortError') {
-              console.error("Audio preview failed to play:", error);
-            }
-          });
-        }
-
-        // Set a timeout to stop the audio after 5 seconds
-        audioTimeoutRef.current = setTimeout(() => {
-          if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-          }
-        }, 5000);
-
-      }, 100); // 100ms delay
-    }
-    
-    // Return the master cleanup function
-    return cleanup;
-  }, [scene]);
 
   return (
     <>
@@ -103,7 +50,6 @@ const ScenePreview = ({ scene }: { scene: Scene | null }) => {
           </motion.div>
         )}
       </AnimatePresence>
-      <audio ref={audioRef} preload="auto" />
     </>
   );
 };
