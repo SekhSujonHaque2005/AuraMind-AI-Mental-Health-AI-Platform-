@@ -1,57 +1,22 @@
-
 'use server';
 
-import axios from 'axios';
+import { getYoutubeVideos, GetYoutubeVideosInput } from '@/ai/flows/get-youtube-videos';
+import type { YouTubeVideo } from '@/ai/flows/get-youtube-videos';
 
-const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
-
-export interface YouTubeVideo {
-  id: {
-    videoId: string;
-  };
-  snippet: {
-    title: string;
-    description: string;
-    thumbnails: {
-      high: {
-        url: string;
-      };
-    };
-    channelTitle: string;
-  };
-}
 
 export async function getVideos(query: string, language: string = 'en'): Promise<YouTubeVideo[]> {
-  // Ensure the API key is read at runtime inside the server action.
-  const API_KEY = process.env.YOUTUBE_API_KEY;
-  
-  if (!API_KEY) {
-    console.error('YouTube API key is not configured or accessible.');
-    return [];
-  }
-
-  try {
-    const response = await axios.get(YOUTUBE_API_URL, {
-      params: {
-        part: 'snippet',
-        q: query,
-        key: API_KEY,
-        maxResults: 6,
-        type: 'video',
-        videoEmbeddable: 'true',
-        relevanceLanguage: language,
-      },
-    });
-    return response.data.items;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-        const errorDetails = error.response?.data?.error;
-        console.error(
-          `Error fetching videos for query "${query}": ${errorDetails?.message || error.message}`
-        );
-    } else {
-        console.error(`An unexpected error occurred while fetching videos for "${query}":`, error);
+    const input: GetYoutubeVideosInput = {
+        query,
+        language
+    };
+    
+    try {
+        const result = await getYoutubeVideos(input);
+        return result.videos;
+    } catch (error) {
+        console.error(`Error fetching videos via flow for query "${query}":`, error);
+        return [];
     }
-    return [];
-  }
 }
+
+export type { YouTubeVideo };
