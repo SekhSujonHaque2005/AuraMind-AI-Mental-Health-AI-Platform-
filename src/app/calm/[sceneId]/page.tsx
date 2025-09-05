@@ -16,8 +16,10 @@ declare global {
             'a-scene': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { class?: string, embedded?: boolean, 'vr-mode-ui'?: string };
             'a-sky': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { src: string; rotation?: string };
             'a-camera': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { 'wasd-controls-enabled'?: string };
-            'a-entity': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { sound?: string, position?: string, geometry?: string, material?: string, text?: string, scale?: string, animation__scale?: string, animation__color?: string, animation__opacity?: string };
+            'a-entity': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { sound?: string, position?: string, geometry?: string, material?: string, text?: string, scale?: string, animation?: string, animation__scale?: string, animation__color?: string, animation__opacity?: string };
             'a-sphere': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { position?: string, radius?: string, color?: string, shadow?: string };
+            'a-text': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { value?: string, align?: string, color?: string, width?: string, position?: string };
+            'a-animation': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { attribute: string; from: string; to: string; dur?: string; repeat?: string; direction?: string; easing?: string; delay?: string };
         }
     }
 }
@@ -73,20 +75,20 @@ const BreathingGuide = () => (
 );
 
 
-export default function SceneViewerPage({ params: { sceneId } }: { params: { sceneId: string } }) {
+export default function SceneViewerPage({ params }: { params: { sceneId: string } }) {
     const router = useRouter();
     const [scene, setScene] = useState<Scene | null>(null);
     const [isAFrameReady, setIsAFrameReady] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
-        const selectedScene = scenes.find(s => s.id === sceneId);
+        const selectedScene = scenes.find(s => s.id === params.sceneId);
         if (selectedScene) {
             setScene(selectedScene);
         } else {
             notFound();
         }
-    }, [sceneId]);
+    }, [params.sceneId]);
 
     useEffect(() => {
         if (audioRef.current && isAFrameReady && scene) {
