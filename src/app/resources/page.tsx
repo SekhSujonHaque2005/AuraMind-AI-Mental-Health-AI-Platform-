@@ -139,7 +139,7 @@ export default function ResourcesPage() {
       </div>
       
       <div className="w-full max-w-7xl">
-        <div className="text-center my-16">
+        <div className="text-center my-16 flex flex-col items-center">
             <TextType
               as="h1"
               text="Resources for Your Well-being"
