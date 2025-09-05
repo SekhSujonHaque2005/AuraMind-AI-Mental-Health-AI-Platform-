@@ -73,13 +73,11 @@ const BreathingGuide = () => (
 );
 
 
-export default function SceneViewerPage({ params }: { params: { sceneId: string } }) {
+export default function SceneViewerPage({ params: { sceneId } }: { params: { sceneId: string } }) {
     const router = useRouter();
     const [scene, setScene] = useState<Scene | null>(null);
     const [isAFrameReady, setIsAFrameReady] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
-
-    const { sceneId } = params;
 
     useEffect(() => {
         const selectedScene = scenes.find(s => s.id === sceneId);
