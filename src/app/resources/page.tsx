@@ -36,6 +36,9 @@ const videoQueries = [
   { title: "Guided Meditations", query: "10 minute guided meditation for beginners" },
   { title: "Mental Health Tips", query: "daily mental health tips" },
   { title: "Mindfulness Exercises", query: "mindfulness exercises for anxiety" },
+  { title: "Yoga for Relaxation", query: "yoga for relaxation and stress relief" },
+  { title: "Positive Affirmations", query: "positive affirmations for self-love" },
+  { title: "Breathing Exercises", query: "5 minute breathing exercise for stress" },
 ];
 
 interface VideoSectionProps {
