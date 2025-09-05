@@ -3,9 +3,9 @@
 
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
-import { scenes } from '@/app/calm/scenes';
+import { scenes, Scene } from '@/app/calm/scenes';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus, Minus } from 'lucide-react';
 import Image from 'next/image';
@@ -17,8 +17,12 @@ const INITIAL_VISIBLE_SCENES = 6;
 export default function CalmSelectionPage() {
   const router = useRouter();
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_SCENES);
-
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  
   const handleSelectScene = (sceneId: string) => {
+    if (audioRef.current) {
+        audioRef.current.pause();
+    }
     router.push(`/calm/${sceneId}`);
   };
 
@@ -26,6 +30,34 @@ export default function CalmSelectionPage() {
     setVisibleCount(prevCount => 
       prevCount === scenes.length ? INITIAL_VISIBLE_SCENES : scenes.length
     );
+  };
+  
+  const handleMouseEnter = (scene: Scene) => {
+    if (audioRef.current) {
+        audioRef.current.src = scene.sound;
+        audioRef.current.loop = true;
+        audioRef.current.volume = 0;
+        audioRef.current.play().catch(e => console.error("Audio play failed:", e));
+        
+        // Fade in
+        let vol = 0;
+        const fadeInterval = setInterval(() => {
+            if (vol < 1) {
+                vol = Math.min(1, vol + 0.1);
+                 if (audioRef.current) {
+                    audioRef.current.volume = vol;
+                 }
+            } else {
+                clearInterval(fadeInterval);
+            }
+        }, 50);
+    }
+  };
+  
+  const handleMouseLeave = () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
   };
 
   const containerVariants = {
@@ -89,6 +121,8 @@ export default function CalmSelectionPage() {
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
+                    onMouseEnter={() => handleMouseEnter(scene)}
+                    onMouseLeave={handleMouseLeave}
                 >
                     <Card
                         onClick={() => handleSelectScene(scene.id)}
@@ -142,6 +176,7 @@ export default function CalmSelectionPage() {
           </Button>
         </motion.div>
       )}
+      <audio ref={audioRef} preload="auto" />
     </div>
   );
 }
