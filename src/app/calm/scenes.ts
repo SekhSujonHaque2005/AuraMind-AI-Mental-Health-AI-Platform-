@@ -54,7 +54,7 @@ export const scenes: Scene[] = [
     name: 'Rainy Day',
     description: 'Listen to the pitter-patter of rain on a window pane.',
     emoji: '🌧️',
-    image: 'https://images.unsplash.com/photo-1519692933481-e162a57d6721?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%2D%2D',
+    image: 'https://images.unsplash.com/photo-1519692933481-e162a57d6721?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     sound: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/rain-and-thunder-166243.mp3?alt=media&token=2343a411-e1a7-47b2-ac7f-9430c904323e'
   }
 ];
