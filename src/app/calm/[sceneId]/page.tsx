@@ -24,8 +24,8 @@ declare global {
     }
 }
 
-const BreathingGuide = () => (
-    <a-entity position="0 1 -4">
+const BreathingGuide = ({ timer, phase }: { timer: number; phase: string }) => (
+    <a-entity position="0 1.2 -4">
         {/* Pulsating Sphere */}
         <a-sphere
             position="0 0 0"
@@ -41,27 +41,28 @@ const BreathingGuide = () => (
         >
         </a-sphere>
 
-        {/* Text Labels */}
+        {/* Phase Text Label */}
         <a-text
-            value="Inhale"
-            position="0 0.8 0"
+            value={phase}
+            position="0 1 0"
             align="center"
             color="#FFFFFF"
-            width="4"
-            animation__show="property: opacity; from: 0; to: 1; dur: 1000; startEvents: start-inhale"
-            animation__hide="property: opacity; from: 1; to: 0; dur: 1000; startEvents: start-exhale"
+            width="6"
+            animation__show="property: opacity; from: 0; to: 1; dur: 500; easing: easeInQuad; startEvents: phase-change"
         >
         </a-text>
-         <a-text
-            value="Exhale"
-            position="0 -0.8 0"
+
+        {/* Countdown Timer */}
+        <a-text
+            value={timer.toString()}
+            position="0 0 0.6"
             align="center"
             color="#FFFFFF"
-            width="4"
-            animation__show="property: opacity; from: 0; to: 1; dur: 1000; startEvents: start-exhale"
-            animation__hide="property: opacity; from: 1; to: 0; dur: 1000; startEvents: start-inhale"
+            width="8"
+            font="kelsonsans"
         >
         </a-text>
+
     </a-entity>
 );
 
@@ -73,6 +74,9 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
     const [scene, setScene] = useState<Scene | null>(null);
     const [isAFrameReady, setIsAFrameReady] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
+    const [phase, setPhase] = useState('Inhale');
+    const [timer, setTimer] = useState(4);
+
 
     useEffect(() => {
         const selectedScene = scenes.find(s => s.id === sceneId);
@@ -93,22 +97,53 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
 
     useEffect(() => {
         if (!isAFrameReady) return;
-
+        
         const sphere = document.querySelector('a-sphere');
+        const phaseText = document.querySelector('a-text[value='+phase+']');
         if (!sphere) return;
 
-        const cycle = () => {
-            sphere.emit('start-inhale');
-            setTimeout(() => sphere.emit('start-hold'), 4000);
-            setTimeout(() => sphere.emit('start-exhale'), 6000); // 4000 (inhale) + 2000 (hold)
-            setTimeout(() => sphere.emit('start-pause'), 11000); // 6000 + 5000 (exhale)
+        const phases = [
+            { name: 'Inhale', duration: 4000, event: 'start-inhale' },
+            { name: 'Hold', duration: 2000, event: 'start-hold' },
+            { name: 'Exhale', duration: 5000, event: 'start-exhale' },
+            { name: 'Pause', duration: 1000, event: 'start-pause' }
+        ];
+
+        let currentPhaseIndex = 0;
+        let countdownInterval: NodeJS.Timeout;
+
+        const runCycle = () => {
+            const currentPhase = phases[currentPhaseIndex];
+            setPhase(currentPhase.name);
+            setTimer(currentPhase.duration / 1000);
+            
+            sphere.emit(currentPhase.event);
+            phaseText?.emit('phase-change');
+            
+            // Start the visual countdown
+            let countdown = currentPhase.duration / 1000;
+            countdownInterval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    setTimer(countdown);
+                }
+            }, 1000);
+
+            // Set timeout for the next phase
+            setTimeout(() => {
+                clearInterval(countdownInterval);
+                currentPhaseIndex = (currentPhaseIndex + 1) % phases.length;
+                runCycle();
+            }, currentPhase.duration);
         };
         
-        cycle(); // Start the first cycle
-        const interval = setInterval(cycle, 12000); // 4000 + 2000 + 5000 + 1000
+        runCycle();
 
-        return () => clearInterval(interval);
-    }, [isAFrameReady]);
+        return () => {
+            clearInterval(countdownInterval);
+        };
+
+    }, [isAFrameReady, phase]);
 
 
     if (!scene) {
@@ -141,7 +176,7 @@ export default function SceneViewerPage({ params }: { params: { sceneId: string 
                             >
                             </a-sky>
                             <a-camera wasd-controls-enabled="false" />
-                            <BreathingGuide />
+                            <BreathingGuide timer={timer} phase={phase} />
                         </a-scene>
                     </motion.div>
                 )}
