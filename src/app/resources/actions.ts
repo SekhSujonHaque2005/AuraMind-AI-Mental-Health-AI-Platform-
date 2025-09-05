@@ -22,10 +22,11 @@ export interface YouTubeVideo {
 }
 
 export async function getVideos(query: string, language: string = 'en'): Promise<YouTubeVideo[]> {
+  // Ensure the API key is read at runtime inside the server action.
   const API_KEY = process.env.YOUTUBE_API_KEY;
   
   if (!API_KEY) {
-    console.error('YouTube API key is not configured.');
+    console.error('YouTube API key is not configured or accessible.');
     return [];
   }
 
