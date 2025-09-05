@@ -2,7 +2,7 @@
 'use client';
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { ExternalLink, Clapperboard, PlayCircle, VideoIcon } from "lucide-react";
+import { ExternalLink, Clapperboard, PlayCircle, VideoIcon, Languages } from "lucide-react";
 import { getVideos, YouTubeVideo } from "./actions";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -10,6 +10,7 @@ import VideoPlayerModal from "@/components/video-player-modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import VideoCard from "@/components/video-card";
 import TextType from "@/components/ui/text-type";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const staticResources = [
   {
@@ -39,6 +40,17 @@ const videoQueries = [
   { title: "Yoga for Relaxation", query: "yoga for relaxation and stress relief" },
   { title: "Positive Affirmations", query: "positive affirmations for self-love" },
   { title: "Breathing Exercises", query: "5 minute breathing exercise for stress" },
+];
+
+const languages = [
+    { value: 'en', label: 'English' },
+    { value: 'hi', label: 'Hindi' },
+    { value: 'es', label: 'Spanish' },
+    { value: 'fr', label: 'French' },
+    { value: 'ar', label: 'Arabic' },
+    { value: 'bn', label: 'Bengali' },
+    { value: 'pt', label: 'Portuguese' },
+    { value: 'ru', label: 'Russian' },
 ];
 
 interface VideoSectionProps {
@@ -105,13 +117,14 @@ export default function ResourcesPage() {
   const [selectedVideo, setSelectedVideo] = useState<YouTubeVideo | null>(null);
   const [hoveredVideoId, setHoveredVideoId] = useState<string | null>(null);
   const [hasVideos, setHasVideos] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState('en');
 
   useEffect(() => {
     const fetchVideos = async () => {
       setIsLoading(true);
       const data = await Promise.all(
         videoQueries.map(async ({ title, query }) => {
-          const videos = await getVideos(query);
+          const videos = await getVideos(query, selectedLanguage);
           return { title, videos };
         })
       );
@@ -122,7 +135,7 @@ export default function ResourcesPage() {
     };
 
     fetchVideos();
-  }, []);
+  }, [selectedLanguage]);
 
   const handleVideoClick = (video: YouTubeVideo) => {
     setSelectedVideo(video);
@@ -157,6 +170,26 @@ export default function ResourcesPage() {
                 loop={false}
                 className="text-lg max-w-2xl mx-auto bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500"
             />
+        </div>
+
+        <div className="mb-12 flex justify-end">
+            <div className="w-full max-w-xs">
+                <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+                    <SelectTrigger className="bg-black/30 backdrop-blur-md border-blue-500/20 text-white focus:ring-blue-500/50">
+                        <div className="flex items-center gap-2">
+                           <Languages className="h-5 w-5 text-blue-400" />
+                           <SelectValue placeholder="Select Language" />
+                        </div>
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-900/80 backdrop-blur-md border-blue-500/30 text-white">
+                        {languages.map(lang => (
+                            <SelectItem key={lang.value} value={lang.value} className="cursor-pointer hover:bg-blue-500/10">
+                                {lang.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </div>
         </div>
 
         {isLoading ? (

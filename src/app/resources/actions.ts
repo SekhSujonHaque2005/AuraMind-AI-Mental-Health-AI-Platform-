@@ -22,7 +22,7 @@ export interface YouTubeVideo {
   };
 }
 
-export async function getVideos(query: string): Promise<YouTubeVideo[]> {
+export async function getVideos(query: string, language: string = 'en'): Promise<YouTubeVideo[]> {
   if (!API_KEY) {
     console.error('YouTube API key is not configured.');
     return [];
@@ -37,6 +37,7 @@ export async function getVideos(query: string): Promise<YouTubeVideo[]> {
         maxResults: 6,
         type: 'video',
         videoEmbeddable: 'true',
+        relevanceLanguage: language,
       },
     });
     return response.data.items;
