@@ -17,10 +17,15 @@ const ScenePreview = ({ scene }: { scene: Scene | null }) => {
   const router = useRouter();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const playTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // Always clean up the previous timer when the scene changes or unmounts.
+    // Cleanup function to stop audio and clear timers
     const cleanup = () => {
+        if (playTimeoutRef.current) {
+            clearTimeout(playTimeoutRef.current);
+            playTimeoutRef.current = null;
+        }
         if (audioTimeoutRef.current) {
             clearTimeout(audioTimeoutRef.current);
             audioTimeoutRef.current = null;
@@ -31,30 +36,36 @@ const ScenePreview = ({ scene }: { scene: Scene | null }) => {
         }
     };
     
-    // Run cleanup first.
+    // Always run cleanup first when the scene changes or component unmounts
     cleanup();
 
     if (scene && audioRef.current) {
       audioRef.current.src = scene.sound;
-      const playPromise = audioRef.current.play();
       
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          // Autoplay was prevented. This is a common browser policy.
-          console.error("Audio preview failed to play:", error);
-        });
-      }
-
-      // Set a new timeout to stop the audio after 5 seconds
-      audioTimeoutRef.current = setTimeout(() => {
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.currentTime = 0;
+      // Introduce a small delay before playing to prevent interruption errors
+      playTimeoutRef.current = setTimeout(() => {
+        const playPromise = audioRef.current?.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            // Ignore interruption errors, as they are expected with fast hovering
+            if (error.name !== 'AbortError') {
+              console.error("Audio preview failed to play:", error);
+            }
+          });
         }
-      }, 5000);
+
+        // Set a timeout to stop the audio after 5 seconds
+        audioTimeoutRef.current = setTimeout(() => {
+          if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+          }
+        }, 5000);
+
+      }, 100); // 100ms delay
     }
     
-    // Return the cleanup function to be called on component unmount or before the effect re-runs.
+    // Return the master cleanup function
     return cleanup;
   }, [scene]);
 
