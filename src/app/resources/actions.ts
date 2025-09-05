@@ -1,8 +1,8 @@
 
 'use server';
 
-import { getYoutubeVideos as getYoutubeVideosFlow } from '@/ai/flows/get-youtube-videos';
 import { z } from 'zod';
+import axios from 'axios';
 
 // --- Shared Schemas and Types for YouTube Flow ---
 export const GetYoutubeVideosInputSchema = z.object({
@@ -43,12 +43,39 @@ export async function getVideos(query: string, language: string = 'en'): Promise
         language
     };
     
+    const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
+    const API_KEY = process.env.YOUTUBE_API_KEY;
+
+    if (!API_KEY) {
+        console.error('YouTube API key is not configured or accessible.');
+        return [];
+    }
+    
     try {
-        const result = await getYoutubeVideosFlow(input);
-        // We cast the result here after fetching. The Zod schema in the flow still ensures a base level of structure.
-        return result.videos as YouTubeVideo[];
+        const response = await axios.get(YOUTUBE_API_URL, {
+            params: {
+                part: 'snippet',
+                q: input.query,
+                key: API_KEY,
+                maxResults: 6,
+                type: 'video',
+                videoEmbeddable: 'true',
+                relevanceLanguage: input.language,
+            },
+        });
+        
+        const videos = response.data.items || [];
+        return videos as YouTubeVideo[];
+
     } catch (error) {
-        console.error(`Error fetching videos via flow for query "${query}":`, error);
+        if (axios.isAxiosError(error)) {
+            const errorDetails = error.response?.data?.error;
+            console.error(
+            `Error fetching videos for query "${input.query}": ${errorDetails?.message || error.message}`
+            );
+        } else {
+            console.error(`An unexpected error occurred while fetching videos for "${input.query}":`, error);
+        }
         return [];
     }
 }
