@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { notFound, useRouter } from 'next/navigation';
+import { notFound, useRouter, useParams } from 'next/navigation';
 import { scenes, Scene } from '@/app/calm/scenes';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -19,7 +19,6 @@ declare global {
             'a-entity': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { sound?: string, position?: string, geometry?: string, material?: string, text?: string, scale?: string, animation?: string, animation__scale?: string, animation__color?: string, animation__opacity?: string, 'phase-text'?: string };
             'a-sphere': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { position?: string, radius?: string, color?: string, shadow?: string, animation?:string, 'animation__inhale'?:string, 'animation__hold'?:string, 'animation__exhale'?:string, 'animation__pause'?:string, 'animation__color-inhale'?:string, 'animation__color-exhale'?:string };
             'a-text': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { value?: string, align?: string, color?: string, width?: string, position?: string, 'animation__show'?: string };
-            'a-animation': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { attribute: string; from?: string; to: string; dur?: string; repeat?: string; direction?: string; easing?: string; delay?: string };
         }
     }
 }
@@ -68,8 +67,9 @@ const BreathingGuide = ({ timer, phase }: { timer: number; phase: string }) => (
 );
 
 
-export default function SceneViewerPage({ params }: { params: { sceneId: string } }) {
+export default function SceneViewerPage() {
     const router = useRouter();
+    const params = useParams();
     const [scene, setScene] = useState<Scene | null>(null);
     const [isAFrameReady, setIsAFrameReady] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
