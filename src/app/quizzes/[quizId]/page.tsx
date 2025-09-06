@@ -11,6 +11,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X, Repeat, Brain, Award, ArrowLeft, Printer, Share2 } from 'lucide-react';
 import type { Question } from '@/app/quizzes/types';
 import { format } from 'date-fns';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 
 
 const staticQuizData: Record<string, {title: string; questions: Question[]}> = {
@@ -238,11 +240,13 @@ const CertificateView = ({
   score,
   total,
   quizTitle,
+  userName,
   onRestart,
 }: {
   score: number;
   total: number;
   quizTitle: string;
+  userName: string;
   onRestart: () => void;
 }) => {
     const percentage = Math.round((score / total) * 100);
@@ -257,9 +261,7 @@ const CertificateView = ({
                     url: window.location.href
                 });
             } catch (error) {
-                // Handle cases where the user cancels the share dialog or an error occurs.
                 console.error("Could not share:", error);
-                alert("Sharing failed. This could be due to browser permissions or canceling the share.");
             }
         } else {
             alert('Web Share API is not supported in your browser.');
@@ -280,7 +282,7 @@ const CertificateView = ({
                     Certificate of Completion
                 </h2>
                 <p className="text-gray-300">This certifies that</p>
-                <p className="text-2xl font-semibold text-white">A studious user</p>
+                <p className="text-2xl font-semibold text-white">{userName || 'A studious user'}</p>
                 <p className="text-gray-300">has successfully completed the quiz</p>
                 <h3 className="text-xl font-bold text-violet-300">{quizTitle}</h3>
                 <div className="flex justify-around items-center pt-4">
@@ -345,6 +347,8 @@ export default function QuizPage() {
   const router = useRouter();
   const quizId = params.quizId as string;
   const [quiz, setQuiz] = useState<QuizData | null>(null);
+  const [userName, setUserName] = useState('');
+  const [isNameModalOpen, setIsNameModalOpen] = useState(false);
   
   useEffect(() => {
       let quizData: QuizData | null = null;
@@ -390,9 +394,14 @@ export default function QuizPage() {
     if (currentQuestionIndex < quiz.questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      setShowResults(true);
+      setIsNameModalOpen(true);
     }
   };
+
+  const handleShowCertificate = () => {
+      setIsNameModalOpen(false);
+      setShowResults(true);
+  }
 
   const calculateScore = () => {
     return quiz.questions.reduce((score, question, index) => {
@@ -412,6 +421,7 @@ export default function QuizPage() {
   const isLastQuestion = currentQuestionIndex === quiz.questions.length - 1;
 
   return (
+    <>
     <div className="flex items-center justify-center h-full w-full p-4 md:p-8">
       <div className="absolute inset-0 -z-10 h-full w-full">
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
@@ -432,6 +442,7 @@ export default function QuizPage() {
                 score={calculateScore()}
                 total={quiz.questions.length}
                 quizTitle={quiz.title}
+                userName={userName}
                 onRestart={handleRestart}
             />
           ) : (
@@ -460,5 +471,30 @@ export default function QuizPage() {
         </AnimatePresence>
       </Card>
     </div>
+    
+    <Dialog open={isNameModalOpen} onOpenChange={setIsNameModalOpen}>
+        <DialogContent className="bg-gray-900 border-violet-500/40 text-white">
+            <DialogHeader>
+                <DialogTitle className="text-2xl text-violet-300">Congratulations!</DialogTitle>
+                <DialogDescription>
+                    You've completed the quiz. Please enter your name to appear on the certificate.
+                </DialogDescription>
+            </DialogHeader>
+            <div className="py-4">
+                 <Label htmlFor="name" className="text-gray-400">Name for Certificate</Label>
+                 <Input 
+                    id="name"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    placeholder="e.g., Jane Doe"
+                    className="bg-gray-800/60 border-violet-500/30 text-gray-200 focus:ring-violet-500 mt-2"
+                 />
+            </div>
+            <DialogFooter>
+                <Button onClick={handleShowCertificate} className="bg-violet-600 hover:bg-violet-700 text-white">Generate Certificate</Button>
+            </DialogFooter>
+        </DialogContent>
+    </Dialog>
+    </>
   );
 }
