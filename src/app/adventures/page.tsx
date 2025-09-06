@@ -5,9 +5,8 @@ import { useState, useEffect, useCallback, useTransition } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
-import { Flame, Droplet, BookOpen, Footprints, Star, Shield, Trophy, Plus, BrainCircuit, Wand2 } from 'lucide-react';
+import { Flame, Droplet, BookOpen, Footprints, Star, Shield, Trophy, Plus, BrainCircuit, Wand2, Timer, Play, CheckCircle2, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TextType from '@/components/ui/text-type';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from '@/components/ui/alert-dialog';
@@ -15,20 +14,31 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { db } from '@/lib/firebase';
-import { ref, onValue, set, update, get, push, remove } from 'firebase/database';
+import { ref, update, get, push, set, remove } from 'firebase/database';
 import { getAIGeneratedQuest } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import Confetti from 'react-confetti';
 import { isToday, isYesterday, formatISO, startOfToday } from 'date-fns';
 
+type QuestCategory = 'mindfulness' | 'hydration' | 'gratitude' | 'exercise' | 'learning' | 'digital-detox' | 'custom';
+
+const questIcons: Record<QuestCategory, React.ElementType> = {
+    mindfulness: Flame,
+    hydration: Droplet,
+    gratitude: BookOpen,
+    exercise: Footprints,
+    learning: BookOpen,
+    'digital-detox': Shield,
+    custom: Wand2,
+};
 
 const defaultQuests = [
-  { id: 'water', title: 'Drink 8 glasses of water', icon: Droplet, xp: 10, isDefault: true },
-  { id: 'meditate', title: '10 minutes of meditation', icon: Flame, xp: 20, isDefault: true },
-  { id: 'journal', title: 'Gratitude journaling', icon: BookOpen, xp: 15, isDefault: true },
-  { id: 'walk', title: 'Go for an evening walk', icon: Footprints, xp: 15, isDefault: true },
-  { id: 'read', title: 'Read a book for 15 mins', icon: BookOpen, xp: 10, isDefault: true },
-  { id: 'no_screen', title: '30 mins no screen before bed', icon: Shield, xp: 20, isDefault: true },
+  { id: 'water', title: 'Drink 8 glasses of water', xp: 10, isDefault: true, duration: null, category: 'hydration' as QuestCategory },
+  { id: 'meditate', title: '10 minutes of meditation', xp: 20, isDefault: true, duration: 600, category: 'mindfulness' as QuestCategory },
+  { id: 'journal', title: 'Gratitude journaling', xp: 15, isDefault: true, duration: 300, category: 'gratitude' as QuestCategory },
+  { id: 'walk', title: 'Go for a 15-minute walk', xp: 15, isDefault: true, duration: 900, category: 'exercise' as QuestCategory },
+  { id: 'read', title: 'Read a book for 15 mins', xp: 10, isDefault: true, duration: 900, category: 'learning' as QuestCategory },
+  { id: 'no_screen', title: '30 mins no screen before bed', xp: 20, isDefault: true, duration: 1800, category: 'digital-detox' as QuestCategory },
 ];
 
 const levels = [
@@ -46,6 +56,8 @@ const badges = {
 }
 
 type BadgeKey = keyof typeof badges;
+type QuestStatus = 'idle' | 'active' | 'completed' | 'failed';
+type QuestWithStatus = (typeof defaultQuests)[0] & { status: QuestStatus; icon: React.ElementType };
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -59,9 +71,81 @@ const itemVariants = {
 
 const USER_ID = 'user_adventures_test';
 
+const TimerModal = ({
+    quest,
+    isOpen,
+    onClose,
+    onComplete
+}: {
+    quest: QuestWithStatus | null;
+    isOpen: boolean;
+    onClose: () => void;
+    onComplete: () => void;
+}) => {
+    if (!quest || !quest.duration) return null;
+
+    const [timeLeft, setTimeLeft] = useState(quest.duration);
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        setTimeLeft(quest.duration!);
+        const interval = setInterval(() => {
+            setTimeLeft(prev => {
+                if (prev <= 1) {
+                    clearInterval(interval);
+                    onClose(); // Auto-close when timer ends
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [isOpen, quest.duration, onClose]);
+
+    const formatTime = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    };
+
+    const handleManualComplete = () => {
+        onComplete();
+        onClose();
+    };
+
+    return (
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent className="bg-gray-900 border-amber-500/40 text-white">
+                <DialogHeader>
+                    <DialogTitle className="text-2xl text-amber-300">{quest.title}</DialogTitle>
+                    <DialogDescription>
+                        Focus on your task. Mark it as complete when you're done.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="py-8 flex flex-col items-center justify-center gap-6">
+                    <div className="text-7xl font-bold font-mono text-white tracking-widest">
+                        {formatTime(timeLeft)}
+                    </div>
+                    <Progress value={(timeLeft / quest.duration!) * 100} className="w-full h-3 bg-amber-900/50 [&>div]:bg-gradient-to-r [&>div]:from-amber-400 [&>div]:to-orange-500" />
+                </div>
+                <DialogFooter>
+                    <Button variant="ghost" onClick={onClose}>Cancel</Button>
+                    <Button onClick={handleManualComplete} className="bg-green-600 hover:bg-green-700 text-white">
+                        <CheckCircle2 className="mr-2 h-4 w-4" />
+                        Mark as Complete
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+};
+
+
 export default function AdventuresPage() {
-    const [allQuests, setAllQuests] = useState(defaultQuests);
-    const [completedQuests, setCompletedQuests] = useState<Set<string>>(new Set());
+    const [allQuests, setAllQuests] = useState<QuestWithStatus[]>([]);
+    const [questStatuses, setQuestStatuses] = useState<Record<string, QuestStatus>>({});
     const [currentXp, setCurrentXp] = useState(0);
     const [streak, setStreak] = useState(0);
     const [lastCompletionDate, setLastCompletionDate] = useState<string | null>(null);
@@ -70,98 +154,120 @@ export default function AdventuresPage() {
     const [newQuestTitle, setNewQuestTitle] = useState("");
     const [isGeneratingAi, startTransition] = useTransition();
     const [celebrating, setCelebrating] = useState(false);
-    const { toast } = useToast();
+    const [activeTimerQuest, setActiveTimerQuest] = useState<QuestWithStatus | null>(null);
 
+    const { toast } = useToast();
 
     const userRef = ref(db, `users/${USER_ID}`);
     const userQuestsRef = ref(db, `users/${USER_ID}/customQuests`);
-    const completedQuestsRef = ref(db, `users/${USER_ID}/completedQuests`);
-    
+    const dailyStatusRef = ref(db, `users/${USER_ID}/dailyStatus/${formatISO(startOfToday(), { representation: 'date' })}`);
+
     useEffect(() => {
         const fetchInitialData = async () => {
              try {
                 const snapshot = await get(userRef);
+                const todayStr = formatISO(startOfToday(), { representation: 'date' });
+
                 if (snapshot.exists()) {
                     const data = snapshot.val();
-                    const todayStr = formatISO(startOfToday(), { representation: 'date' });
-                    
-                    if (data.lastCompletionDate && data.lastCompletionDate < todayStr) {
-                        await remove(completedQuestsRef);
-                        setCompletedQuests(new Set());
-                    } else {
-                        setCompletedQuests(new Set(data.completedQuests ? Object.keys(data.completedQuests) : []));
-                    }
-
                     setCurrentXp(data.xp || 0);
                     setStreak(data.streak || 0);
                     setLastCompletionDate(data.lastCompletionDate || null);
 
                     const customQuestsData = data.customQuests || {};
                     const customQuestsList = Object.entries(customQuestsData).map(([id, quest]: [string, any]) => ({
-                        ...quest,
                         id,
-                        icon: Wand2,
+                        icon: questIcons[quest.category as QuestCategory || 'custom'],
                         isDefault: false,
+                        ...quest,
                     }));
-                    setAllQuests([...defaultQuests, ...customQuestsList]);
+
+                    const combinedQuests = [...defaultQuests.map(q => ({...q, icon: questIcons[q.category]})), ...customQuestsList];
+                    
+                    const dailyStatusSnapshot = await get(dailyStatusRef);
+                    const savedStatuses = dailyStatusSnapshot.exists() ? dailyStatusSnapshot.val() : {};
+                    
+                    const initialStatuses: Record<string, QuestStatus> = {};
+                    combinedQuests.forEach(q => {
+                        initialStatuses[q.id] = savedStatuses[q.id] || 'idle';
+                    });
+
+                    setQuestStatuses(initialStatuses);
+                    setAllQuests(combinedQuests.map(q => ({...q, status: initialStatuses[q.id]})));
 
                 } else {
+                    // Initialize new user
                     set(userRef, {
-                        name: 'You',
                         xp: 0,
-                        avatar: `https://i.pravatar.cc/150?u=${USER_ID}`,
-                        completedQuests: {},
-                        customQuests: {},
                         streak: 0,
                         lastCompletionDate: null,
                     });
+                     setQuestStatuses(defaultQuests.reduce((acc, q) => ({...acc, [q.id]: 'idle'}), {}));
+                     setAllQuests(defaultQuests.map(q => ({...q, status: 'idle', icon: questIcons[q.category]})));
                 }
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
         };
         fetchInitialData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const updateXpInDb = useCallback((newXp: number) => {
-        update(userRef, { xp: newXp });
-    }, [userRef]);
+    const updateQuestStatus = useCallback((questId: string, status: QuestStatus) => {
+        setQuestStatuses(prev => {
+            const newStatuses = { ...prev, [questId]: status };
+            update(dailyStatusRef, { [questId]: status });
+            return newStatuses;
+        });
+    }, [dailyStatusRef]);
 
-    const handleQuestToggle = (questId: string, xp: number) => {
-        const newCompleted = new Set(completedQuests);
-
-        if (newCompleted.has(questId)) {
-            // If quest is already completed, do nothing.
-            return;
+    const handleCompleteQuest = (questId: string, xp: number) => {
+        if (questStatuses[questId] !== 'completed') {
+            updateQuestStatus(questId, 'completed');
+            const newXp = currentXp + xp;
+            setCurrentXp(newXp);
+            update(userRef, { xp: newXp });
         }
-
-        let newXp = currentXp;
-        const questRef = ref(db, `users/${USER_ID}/completedQuests/${questId}`);
-
-        newCompleted.add(questId);
-        newXp += xp;
-        set(questRef, true);
-        
-        setCompletedQuests(newCompleted);
-        setCurrentXp(newXp);
-        updateXpInDb(newXp);
     };
+
+    const handleStartQuest = (quest: QuestWithStatus) => {
+        if (quest.duration) {
+            setActiveTimerQuest(quest);
+        } else {
+            handleCompleteQuest(quest.id, quest.xp);
+        }
+    };
+    
+    useEffect(() => {
+        if (activeTimerQuest) {
+            const timeout = setTimeout(() => {
+                // If the quest is still active (not completed) when timer runs out, mark as failed.
+                if (questStatuses[activeTimerQuest.id] !== 'completed') {
+                    updateQuestStatus(activeTimerQuest.id, 'failed');
+                }
+                setActiveTimerQuest(null);
+            }, (activeTimerQuest.duration || 0) * 1000);
+
+            return () => clearTimeout(timeout);
+        }
+    }, [activeTimerQuest, questStatuses, updateQuestStatus]);
+
 
     const handleAddQuest = async () => {
         if (!newQuestTitle.trim()) return;
-
-        const newQuest = {
+        const newQuestData = {
             title: newQuestTitle,
-            xp: 10, // Default XP for custom quests
+            xp: 10,
+            duration: null,
+            category: 'custom' as QuestCategory,
+            isDefault: false,
         };
-
         try {
             const newQuestRef = push(userQuestsRef);
-            await set(newQuestRef, newQuest);
-            
-            const newQuestWithId = { ...newQuest, id: newQuestRef.key!, icon: Wand2, isDefault: false };
+            await set(newQuestRef, newQuestData);
+            const newQuestWithId: QuestWithStatus = { ...newQuestData, id: newQuestRef.key!, icon: Wand2, status: 'idle' };
             setAllQuests(prev => [...prev, newQuestWithId]);
-
+            setQuestStatuses(prev => ({ ...prev, [newQuestWithId.id]: 'idle' }));
             setNewQuestTitle("");
             setIsAddQuestOpen(false);
         } catch (error) {
@@ -173,19 +279,11 @@ export default function AdventuresPage() {
         startTransition(async () => {
             const existingQuests = allQuests.map(q => q.title);
             const result = await getAIGeneratedQuest({ existingQuests });
-
             if (result.error) {
-                toast({
-                    variant: 'destructive',
-                    title: 'AI Generation Failed',
-                    description: result.error,
-                });
+                toast({ variant: 'destructive', title: 'AI Generation Failed', description: result.error });
             } else if (result.quest) {
                 setNewQuestTitle(result.quest);
-                 toast({
-                    title: 'AI Quest Generated!',
-                    description: 'Your new quest is ready to be added.',
-                });
+                 toast({ title: 'AI Quest Generated!', description: 'Your new quest is ready to be added.' });
             }
         });
     }
@@ -194,12 +292,16 @@ export default function AdventuresPage() {
         setShowBadge(null);
         setCelebrating(true);
     }
-
+    
+    const questsWithLiveStatus = useMemo(() => {
+        return allQuests.map(q => ({...q, status: questStatuses[q.id] || 'idle'}));
+    }, [allQuests, questStatuses]);
 
     useEffect(() => {
         const checkAllQuestsCompleted = async () => {
-            if (completedQuests.size === allQuests.length && allQuests.length > 0) {
-                const todayStr = formatISO(new Date(), { representation: 'date' });
+            const allDone = questsWithLiveStatus.length > 0 && questsWithLiveStatus.every(q => q.status === 'completed' || q.status === 'failed');
+            if (allDone) {
+                const todayStr = formatISO(startOfToday(), { representation: 'date' });
                 if (lastCompletionDate !== todayStr) {
                     let newStreak = 1;
                     if (lastCompletionDate && isYesterday(new Date(lastCompletionDate))) {
@@ -210,25 +312,22 @@ export default function AdventuresPage() {
                     setLastCompletionDate(todayStr);
                     await update(userRef, { streak: newStreak, lastCompletionDate: todayStr });
 
-                    if (!showBadge) {
-                        setShowBadge('daily_complete');
-                    }
+                    if (!showBadge) setShowBadge('daily_complete');
                 }
             }
         };
         checkAllQuestsCompleted();
-    }, [completedQuests, allQuests, lastCompletionDate, streak, userRef, showBadge]);
+    }, [questsWithLiveStatus, lastCompletionDate, streak, userRef, showBadge]);
     
-    const totalDailyXp = allQuests.reduce((sum, quest) => sum + quest.xp, 0);
-    const dailyXp = allQuests
-        .filter(quest => completedQuests.has(quest.id))
+    const totalDailyXp = questsWithLiveStatus.reduce((sum, quest) => sum + quest.xp, 0);
+    const dailyXp = questsWithLiveStatus
+        .filter(quest => quest.status === 'completed')
         .reduce((sum, quest) => sum + quest.xp, 0);
 
     const currentLevelInfo = [...levels].reverse().find(l => currentXp >= l.xpThreshold) || levels[0];
     const nextLevelInfo = levels.find(l => l.xpThreshold > currentXp);
     
     const dailyProgressPercentage = totalDailyXp > 0 ? (dailyXp / totalDailyXp) * 100 : 0;
-
 
     return (
         <>
@@ -309,42 +408,53 @@ export default function AdventuresPage() {
                                         </Button>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
-                                        {allQuests.map(quest => (
+                                        {questsWithLiveStatus.map(quest => {
+                                            const Icon = quest.icon;
+                                            const status = questStatuses[quest.id] || 'idle';
+
+                                            return (
                                             <motion.div key={quest.id} variants={itemVariants}>
-                                                <div 
-                                                    className={cn(
-                                                        "flex items-center p-4 rounded-lg border transition-all duration-300",
-                                                        completedQuests.has(quest.id) 
-                                                            ? 'bg-green-500/10 border-green-500/40 cursor-default' 
-                                                            : 'bg-gray-800/50 border-amber-500/20 hover:border-amber-400/50 cursor-pointer'
-                                                    )}
-                                                    onClick={() => handleQuestToggle(quest.id, quest.xp)}
-                                                >
-                                                    <quest.icon className={cn(
+                                                <div className={cn(
+                                                    "flex items-center p-4 rounded-lg border transition-all duration-300",
+                                                    status === 'completed' && 'bg-green-500/10 border-green-500/40',
+                                                    status === 'failed' && 'bg-red-500/10 border-red-500/40',
+                                                    status === 'idle' && 'bg-gray-800/50 border-amber-500/20 hover:border-amber-400/50'
+                                                )}>
+                                                    <Icon className={cn(
                                                         "h-8 w-8 mr-4",
-                                                        completedQuests.has(quest.id) ? 'text-green-400' : 'text-amber-400'
+                                                        status === 'completed' ? 'text-green-400' : 
+                                                        status === 'failed' ? 'text-red-400' : 'text-amber-400'
                                                     )} />
                                                     <div className="flex-grow">
                                                         <p className="text-lg font-medium text-white">{quest.title}</p>
                                                     </div>
                                                     <div className="flex items-center gap-3">
+                                                        {quest.duration && <div className="flex items-center text-xs text-gray-400 gap-1"><Timer className="h-4 w-4"/> {quest.duration / 60}m</div>}
                                                         <div className="flex items-center text-amber-400 font-bold text-sm">
                                                             <Star className="h-4 w-4 mr-1" />
                                                             <span>{quest.xp} XP</span>
                                                         </div>
-                                                        <Checkbox 
-                                                            checked={completedQuests.has(quest.id)}
-                                                            onCheckedChange={() => handleQuestToggle(quest.id, quest.xp)}
-                                                            className={cn(
-                                                                "h-6 w-6 border-amber-400 data-[state=checked]:bg-green-500",
-                                                                completedQuests.has(quest.id) ? "cursor-default" : "cursor-pointer"
-                                                            )}
-                                                            disabled={completedQuests.has(quest.id)}
-                                                        />
+                                                        {status === 'idle' && (
+                                                            <Button size="sm" className="bg-amber-500 hover:bg-amber-600" onClick={() => handleStartQuest(quest)}>
+                                                                <Play className="h-4 w-4 mr-2" /> Start
+                                                            </Button>
+                                                        )}
+                                                        {status === 'completed' && (
+                                                            <div className="flex items-center gap-2 text-green-400">
+                                                                <CheckCircle2 className="h-5 w-5" />
+                                                                <span>Completed</span>
+                                                            </div>
+                                                        )}
+                                                         {status === 'failed' && (
+                                                            <div className="flex items-center gap-2 text-red-400">
+                                                                <XCircle className="h-5 w-5" />
+                                                                <span>Failed</span>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </motion.div>
-                                        ))}
+                                        )})}
                                     </CardContent>
                                 </Card>
                              </motion.div>
@@ -421,10 +531,17 @@ export default function AdventuresPage() {
                     </AlertDialog>
                 )}
             </AnimatePresence>
+            
+            <TimerModal
+                quest={activeTimerQuest}
+                isOpen={!!activeTimerQuest}
+                onClose={() => setActiveTimerQuest(null)}
+                onComplete={() => {
+                    if (activeTimerQuest) {
+                        handleCompleteQuest(activeTimerQuest.id, activeTimerQuest.xp);
+                    }
+                }}
+            />
         </>
     );
 }
-
-    
-
-    
