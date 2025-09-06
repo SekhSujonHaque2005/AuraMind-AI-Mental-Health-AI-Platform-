@@ -8,8 +8,9 @@ import { useState, useMemo, useEffect } from 'react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, X, Repeat, Brain, Award, ArrowLeft } from 'lucide-react';
+import { Check, X, Repeat, Brain, Award, ArrowLeft, Printer, Share2 } from 'lucide-react';
 import type { Question } from '@/app/quizzes/types';
+import { format } from 'date-fns';
 
 
 const staticQuizData: Record<string, {title: string; questions: Question[]}> = {
@@ -212,9 +213,9 @@ const QuestionCard = ({
     transition={{ duration: 0.5, type: 'spring' }}
   >
     <CardHeader>
-      <CardTitle className="text-xl md:text-2xl text-center font-bold text-violet-300">
+      <div className="text-xl md:text-2xl text-center font-bold text-violet-300">
         {question.question}
-      </CardTitle>
+      </div>
     </CardHeader>
     <CardContent>
       <RadioGroup value={selectedOption} onValueChange={onOptionSelect} className="space-y-4">
@@ -233,50 +234,91 @@ const QuestionCard = ({
   </motion.div>
 );
 
-const ResultsCard = ({
+const CertificateView = ({
   score,
   total,
+  quizTitle,
   onRestart,
 }: {
   score: number;
   total: number;
+  quizTitle: string;
   onRestart: () => void;
 }) => {
-  const percentage = Math.round((score / total) * 100);
-  const resultMessage = useMemo(() => {
-    if (percentage >= 80) return "Excellent! You have a strong understanding.";
-    if (percentage >= 50) return "Good job! A little more reading could be helpful.";
-    return "No worries! This is a great starting point for learning.";
-  }, [percentage]);
+    const percentage = Math.round((score / total) * 100);
+    const date = format(new Date(), 'MMMM d, yyyy');
 
-  return (
+    return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, type: 'spring' }}
-      className="text-center"
+      className="flex flex-col h-full"
     >
-      <CardHeader>
-        <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-violet-400 to-purple-600">
-          Quiz Complete!
-        </CardTitle>
-        <CardDescription className="text-gray-400 pt-2">{resultMessage}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="relative flex justify-center items-center">
-            <Award className="h-40 w-40 text-yellow-500/20" />
-            <div className="absolute flex flex-col items-center">
-                <p className="text-5xl font-bold text-white">{score}/{total}</p>
-                <p className="text-2xl text-yellow-400">{percentage}%</p>
+        <div id="certificate" className="flex-grow p-6 md:p-10 bg-gray-900/50 rounded-t-lg border-x border-t border-violet-500/20">
+            <div className="text-center space-y-4 border-4 border-violet-400/50 p-8 rounded-lg relative bg-gray-900/70">
+                <Award className="h-16 w-16 text-yellow-400 mx-auto absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 p-2 rounded-full border-4 border-violet-400/50" />
+                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-yellow-300 to-amber-500 mt-4">
+                    Certificate of Completion
+                </h2>
+                <p className="text-gray-300">This certifies that</p>
+                <p className="text-2xl font-semibold text-white">A studious user</p>
+                <p className="text-gray-300">has successfully completed the quiz</p>
+                <h3 className="text-xl font-bold text-violet-300">{quizTitle}</h3>
+                <div className="flex justify-around items-center pt-4">
+                    <div>
+                        <p className="text-lg font-bold text-white">{score}/{total}</p>
+                        <p className="text-sm text-gray-400">Score</p>
+                    </div>
+                     <div>
+                        <p className="text-lg font-bold text-white">{percentage}%</p>
+                        <p className="text-sm text-gray-400">Result</p>
+                    </div>
+                    <div>
+                        <p className="text-lg font-bold text-white">{date}</p>
+                        <p className="text-sm text-gray-400">Date</p>
+                    </div>
+                </div>
             </div>
         </div>
-        <Button onClick={onRestart} className="w-full bg-violet-600 hover:bg-violet-500 text-white text-lg py-6">
-          <Repeat className="mr-2 h-5 w-5" />
-          Take Again
-        </Button>
-      </CardContent>
+        <CardFooter className="bg-gray-900/80 rounded-b-lg border-x border-b border-violet-500/20 p-4 flex justify-end gap-3">
+             <Button variant="ghost" onClick={onRestart}>
+                <Repeat className="mr-2 h-4 w-4" />
+                Take Another Quiz
+            </Button>
+            <Button onClick={() => window.print()} className="bg-blue-600 hover:bg-blue-500">
+                <Printer className="mr-2 h-4 w-4" />
+                Print Certificate
+            </Button>
+             <Button onClick={() => navigator.share ? navigator.share({title: 'Quiz Certificate', text: `I completed the ${quizTitle} quiz!`}) : alert('Share not supported.')} className="bg-green-600 hover:bg-green-500">
+                <Share2 className="mr-2 h-4 w-4" />
+                Share
+            </Button>
+        </CardFooter>
+
+        <style jsx global>{`
+            @media print {
+                body * {
+                    visibility: hidden;
+                }
+                #certificate, #certificate * {
+                    visibility: visible;
+                }
+                #certificate {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    border: none !important;
+                }
+                 .no-print {
+                    display: none;
+                 }
+            }
+        `}</style>
     </motion.div>
-  );
+    );
 };
 
 
@@ -291,7 +333,6 @@ export default function QuizPage() {
       if(quizId in staticQuizData) {
           quizData = staticQuizData[quizId as keyof typeof staticQuizData];
       } else {
-          // It's a dynamically generated quiz, get it from sessionStorage
           const storedQuiz = sessionStorage.getItem(`quiz-${quizId}`);
           if(storedQuiz) {
               const parsedData = JSON.parse(storedQuiz);
@@ -302,7 +343,6 @@ export default function QuizPage() {
       if(quizData) {
           setQuiz(quizData);
       } else {
-          // If no quiz data is found after checking both, it's a 404
           notFound();
       }
   }, [quizId]);
@@ -313,7 +353,6 @@ export default function QuizPage() {
   const [showResults, setShowResults] = useState(false);
 
   if (!quiz) {
-    // You can return a loading spinner here while waiting for the effect to run
     return (
         <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8">
             <Brain className="h-16 w-16 text-violet-400 animate-pulse" />
@@ -344,9 +383,10 @@ export default function QuizPage() {
   };
   
   const handleRestart = () => {
-      setCurrentQuestionIndex(0);
-      setSelectedAnswers({});
       setShowResults(false);
+      setTimeout(() => {
+          router.push('/quizzes');
+      }, 300)
   }
 
   const currentQuestion = quiz.questions[currentQuestionIndex];
@@ -359,20 +399,21 @@ export default function QuizPage() {
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
         <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#a78bfa33,transparent)]"></div>
       </div>
-      <Card className="w-full max-w-2xl bg-gray-900/50 border border-violet-500/20 shadow-2xl min-h-[450px] relative">
+      <Card className="w-full max-w-2xl bg-transparent border-none shadow-none min-h-[550px] relative">
          <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => router.push('/quizzes')}
-            className="absolute top-4 left-4 text-violet-300 hover:bg-violet-500/10 hover:text-violet-200 rounded-full"
+            className="absolute top-0 left-0 text-violet-300 hover:bg-violet-500/10 hover:text-violet-200 rounded-full no-print"
         >
             <ArrowLeft className="h-5 w-5" />
         </Button>
         <AnimatePresence mode="wait">
           {showResults ? (
-            <ResultsCard 
+            <CertificateView
                 score={calculateScore()}
                 total={quiz.questions.length}
+                quizTitle={quiz.title}
                 onRestart={handleRestart}
             />
           ) : (
@@ -380,6 +421,7 @@ export default function QuizPage() {
               key={currentQuestionIndex}
               initial={{ opacity: 1 }}
               exit={{ opacity: 1 }}
+              className="bg-gray-900/50 border border-violet-500/20 shadow-2xl rounded-lg"
             >
               <QuestionCard
                 question={currentQuestion}
