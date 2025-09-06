@@ -313,14 +313,11 @@ const CertificateView = ({
     };
 
     return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, type: 'spring' }}
-      className="flex flex-col h-full"
+    <div
+      className="printable-certificate"
       id="certificate-container"
     >
-        <div id="certificate" ref={certificateRef} className="flex-grow pt-16 p-6 md:p-8 bg-gray-900 rounded-t-lg border-x border-t border-violet-500/20 relative overflow-hidden">
+        <div ref={certificateRef} className="certificate-content flex-grow pt-16 p-6 md:p-8 bg-gray-900 rounded-t-lg border-x border-t border-violet-500/20 relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-violet-900/50 via-gray-900 to-gray-900 opacity-40"></div>
             <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%239C92AC%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C%2Fsvg%3E')] opacity-30"></div>
             
@@ -378,30 +375,33 @@ const CertificateView = ({
 
         <style jsx global>{`
             @media print {
-                body {
-                    background-color: #fff !important;
+                body * {
+                    visibility: hidden;
                 }
-                .quiz-container {
-                    display: none;
-                }
-                #certificate-container, #certificate, body, html {
-                    height: 100%;
-                    width: 100%;
-                    margin: 0;
-                    padding: 0;
+                .printable-certificate, .printable-certificate * {
                     visibility: visible;
                 }
-                #certificate {
-                    border: none !important;
-                    -webkit-print-color-adjust: exact; 
-                    print-color-adjust: exact;
+                .printable-certificate {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                    border: none;
                 }
-                 .no-print {
+                .certificate-content {
+                    border: none;
+                    height: 100%;
+                    display: block;
+                }
+                .no-print {
                     display: none !important;
-                 }
+                }
             }
         `}</style>
-    </motion.div>
+    </div>
     );
 };
 
@@ -491,7 +491,7 @@ export default function QuizPage() {
 
   return (
     <>
-    <div className="flex items-center justify-center h-full w-full p-4 md:p-8 quiz-container">
+    <div className="quiz-container flex items-center justify-center h-full w-full p-4 md:p-8">
       <div className="absolute inset-0 -z-10 h-full w-full no-print">
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
         <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#a78bfa33,transparent)]"></div>
@@ -507,13 +507,20 @@ export default function QuizPage() {
         </Button>
         <AnimatePresence mode="wait">
           {showResults ? (
-            <CertificateView
-                score={calculateScore()}
-                total={quiz.questions.length}
-                quizTitle={quiz.title}
-                userName={userName}
-                onRestart={handleRestart}
-            />
+            <motion.div
+              key="results"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+            >
+                <CertificateView
+                    score={calculateScore()}
+                    total={quiz.questions.length}
+                    quizTitle={quiz.title}
+                    userName={userName}
+                    onRestart={handleRestart}
+                />
+            </motion.div>
           ) : (
             <motion.div
               key={currentQuestionIndex}
