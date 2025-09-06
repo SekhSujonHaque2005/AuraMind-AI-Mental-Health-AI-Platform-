@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import html2canvas from 'html2canvas';
+import { cn } from '@/lib/utils';
 
 
 const staticQuizData: Record<string, {title: string; questions: Question[]}> = {
@@ -203,10 +204,12 @@ const QuestionCard = ({
   question,
   selectedOption,
   onOptionSelect,
+  isAnswered,
 }: {
   question: Question;
   selectedOption: string;
   onOptionSelect: (option: string) => void;
+  isAnswered: boolean;
 }) => (
   <motion.div
     key={question.question}
@@ -214,6 +217,7 @@ const QuestionCard = ({
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: -50 }}
     transition={{ duration: 0.5, type: 'spring' }}
+    className="min-h-[450px]"
   >
     <CardHeader>
       <div className="text-xl md:text-2xl text-center font-bold text-violet-300">
@@ -221,17 +225,39 @@ const QuestionCard = ({
       </div>
     </CardHeader>
     <CardContent>
-      <RadioGroup value={selectedOption} onValueChange={onOptionSelect} className="space-y-4">
-        {question.options.map((option) => (
-          <motion.div
-            key={option}
-            whileHover={{ scale: 1.03 }}
-            className="flex items-center space-x-3 p-4 bg-gray-800/50 border border-violet-500/20 rounded-lg hover:border-violet-400/50 transition-colors"
-          >
-            <RadioGroupItem value={option} id={option} className="h-5 w-5 border-violet-400 text-violet-500 focus:ring-violet-500" />
-            <Label htmlFor={option} className="text-base text-gray-300 cursor-pointer flex-1">{option}</Label>
-          </motion.div>
-        ))}
+      <RadioGroup
+        value={selectedOption}
+        onValueChange={onOptionSelect}
+        className="space-y-4"
+        disabled={isAnswered}
+      >
+        {question.options.map((option) => {
+          const isCorrect = option === question.answer;
+          const isSelected = option === selectedOption;
+
+          return (
+            <motion.div
+              key={option}
+              whileHover={{ scale: isAnswered ? 1 : 1.03 }}
+              className="flex items-center space-x-3"
+            >
+              <RadioGroupItem value={option} id={option} className="sr-only" />
+              <Label
+                htmlFor={option}
+                className={cn(
+                  'flex-1 p-4 border rounded-lg transition-all duration-300 cursor-pointer text-base',
+                  'bg-gray-800/50 border-violet-500/20 text-gray-300', // Default
+                  isAnswered ? 'cursor-default' : 'hover:border-violet-400/50',
+                  isSelected && isAnswered && isCorrect && 'bg-green-500/20 border-green-500 text-white', // Selected and Correct
+                  isSelected && isAnswered && !isCorrect && 'bg-red-500/20 border-red-500 text-white', // Selected and Incorrect
+                  !isSelected && isAnswered && isCorrect && 'bg-green-500/20 border-green-500 text-white' // Not selected but correct
+                )}
+              >
+                {option}
+              </Label>
+            </motion.div>
+          );
+        })}
       </RadioGroup>
     </CardContent>
   </motion.div>
@@ -295,7 +321,7 @@ const CertificateView = ({
     >
         <div id="certificate" ref={certificateRef} className="flex-grow pt-16 p-6 md:p-8 bg-gray-900 rounded-t-lg border-x border-t border-violet-500/20 relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-violet-900/50 via-gray-900 to-gray-900 opacity-40"></div>
-            <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%239C92AC%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%239C92AC%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-30"></div>
             
             <div className="text-center space-y-3 border-2 border-amber-300/40 p-6 md:p-8 rounded-lg relative bg-gray-900/80 backdrop-blur-sm h-full flex flex-col justify-center">
                 <Award className="h-20 w-20 text-yellow-400 mx-auto absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 p-2 rounded-full border-4 border-amber-300/40" />
@@ -411,6 +437,8 @@ export default function QuizPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [showResults, setShowResults] = useState(false);
+  const [isAnswered, setIsAnswered] = useState(false);
+
 
   if (!quiz) {
     return (
@@ -422,13 +450,16 @@ export default function QuizPage() {
   }
 
   const handleOptionSelect = (option: string) => {
+    if (isAnswered) return;
     setSelectedAnswers((prev) => ({
       ...prev,
       [currentQuestionIndex]: option,
     }));
+    setIsAnswered(true);
   };
 
   const handleNext = () => {
+    setIsAnswered(false);
     if (currentQuestionIndex < quiz.questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
@@ -494,11 +525,12 @@ export default function QuizPage() {
                 question={currentQuestion}
                 selectedOption={selectedOption}
                 onOptionSelect={handleOptionSelect}
+                isAnswered={isAnswered}
               />
               <CardFooter className="justify-center p-6">
                 <Button
                   onClick={handleNext}
-                  disabled={!selectedOption}
+                  disabled={!isAnswered}
                   className="w-full md:w-1/2 bg-violet-600 hover:bg-violet-500 disabled:bg-gray-700 disabled:text-gray-400 text-white text-lg py-6"
                 >
                   {isLastQuestion ? 'Finish Quiz' : 'Next Question'}
@@ -536,3 +568,5 @@ export default function QuizPage() {
     </>
   );
 }
+
+    
