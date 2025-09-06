@@ -1,4 +1,5 @@
 import { initializeApp, getApp, getApps } from 'firebase/app';
+import { getDatabase } from 'firebase/database';
 
 const firebaseConfig = {
   projectId: "auramind-14qmq",
@@ -7,10 +8,12 @@ const firebaseConfig = {
   apiKey: "AIzaSyDgQA7iZMIWuG2FO8ts0NmWdURrbysQwnQ",
   authDomain: "auramind-14qmq.firebaseapp.com",
   measurementId: "",
-  messagingSenderId: "498977361728"
+  messagingSenderId: "498977361728",
+  databaseURL: "https://auramind-14qmq-default-rtdb.firebaseio.com"
 };
 
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const db = getDatabase(app);
 
-export { app };
+export { app, db };

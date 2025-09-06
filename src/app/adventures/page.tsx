@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,8 @@ import { cn } from '@/lib/utils';
 import TextType from '@/components/ui/text-type';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from '@/components/ui/alert-dialog';
 import Image from 'next/image';
+import { db } from '@/lib/firebase';
+import { ref, onValue, set, update, get } from 'firebase/database';
 
 const quests = [
   { id: 'water', title: 'Drink 8 glasses of water', icon: Droplet, xp: 10 },
@@ -30,10 +32,9 @@ const levels = [
   { level: 5, name: 'Zen Master', xpThreshold: 1000, icon: '🧘‍♀️' },
 ];
 
-const leaderboardData = [
+const initialLeaderboard = [
     { name: 'Alex', xp: 2450, avatar: 'https://i.pravatar.cc/150?u=alex' },
     { name: 'Sarah', xp: 2310, avatar: 'https://i.pravatar.cc/150?u=sarah' },
-    { name: 'You', xp: 2200, avatar: 'https://i.pravatar.cc/150?u=you' },
     { name: 'Mike', xp: 2050, avatar: 'https://i.pravatar.cc/150?u=mike' },
     { name: 'Jenna', xp: 1890, avatar: 'https://i.pravatar.cc/150?u=jenna' },
 ]
@@ -56,28 +57,94 @@ const itemVariants = {
     visible: { opacity: 1, y: 0, transition: { type: 'spring' } }
 };
 
+// Using a hardcoded user ID for demonstration purposes.
+// In a real app, this would come from an authentication system.
+const USER_ID = 'user_adventures_test';
+
 export default function AdventuresPage() {
     const [completedQuests, setCompletedQuests] = useState<Set<string>>(new Set());
-    const [currentXp, setCurrentXp] = useState(2200); // Start with some XP
+    const [currentXp, setCurrentXp] = useState(0);
+    const [leaderboardData, setLeaderboardData] = useState<{name: string, xp: number, avatar: string}[]>([]);
     const [showBadge, setShowBadge] = useState<BadgeKey | null>(null);
 
-    const currentLevelInfo = [...levels].reverse().find(l => currentXp >= l.xpThreshold) || levels[0];
-    const nextLevelInfo = levels.find(l => l.xpThreshold > currentXp);
+    const userRef = ref(db, `users/${USER_ID}`);
+    
+    // Fetch initial user data
+    useEffect(() => {
+        const fetchInitialData = async () => {
+             try {
+                const snapshot = await get(userRef);
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    setCurrentXp(data.xp || 0);
+                    setCompletedQuests(new Set(data.completedQuests ? Object.keys(data.completedQuests) : []));
+                } else {
+                    // Initialize user in DB if they don't exist
+                    set(userRef, {
+                        name: 'You',
+                        xp: 0,
+                        avatar: `https://i.pravatar.cc/150?u=${USER_ID}`,
+                        completedQuests: {}
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+        fetchInitialData();
+    }, []);
 
-    const progressToNextLevel = nextLevelInfo 
-        ? ((currentXp - currentLevelInfo.xpThreshold) / (nextLevelInfo.xpThreshold - currentLevelInfo.xpThreshold)) * 100
-        : 100;
-        
+    // Listen for leaderboard changes
+    useEffect(() => {
+        const leaderboardRef = ref(db, 'users');
+        const unsubscribe = onValue(leaderboardRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const loadedUsers = Object.entries(data).map(([id, userData]: [string, any]) => ({
+                    id,
+                    name: userData.name || 'Anonymous',
+                    xp: userData.xp || 0,
+                    avatar: userData.avatar || 'https://i.pravatar.cc/150?u=anonymous'
+                }));
+                // Sort by XP descending and take top 5
+                const sortedLeaderboard = loadedUsers.sort((a, b) => b.xp - a.xp).slice(0, 5);
+                setLeaderboardData(sortedLeaderboard);
+            } else {
+                // Seed initial data if leaderboard is empty
+                initialLeaderboard.forEach(user => {
+                    const id = user.name === 'You' ? USER_ID : user.name.toLowerCase();
+                    set(ref(db, `users/${id}`), user);
+                });
+            }
+        });
+
+        // Cleanup subscription on unmount
+        return () => unsubscribe();
+    }, []);
+
+    const updateXpInDb = useCallback((newXp: number) => {
+        update(userRef, { xp: newXp });
+    }, [userRef]);
+
     const handleQuestToggle = (questId: string, xp: number) => {
         const newCompleted = new Set(completedQuests);
+        let newXp = currentXp;
+
+        const questRef = ref(db, `users/${USER_ID}/completedQuests/${questId}`);
+
         if (newCompleted.has(questId)) {
             newCompleted.delete(questId);
-            setCurrentXp(prev => prev - xp);
+            newXp -= xp;
+            set(questRef, null); // Remove from DB
         } else {
             newCompleted.add(questId);
-            setCurrentXp(prev => prev + xp);
+            newXp += xp;
+            set(questRef, true); // Add to DB
         }
+        
         setCompletedQuests(newCompleted);
+        setCurrentXp(newXp);
+        updateXpInDb(newXp);
     };
 
     useEffect(() => {
@@ -86,6 +153,12 @@ export default function AdventuresPage() {
         }
     }, [completedQuests, showBadge]);
 
+    const currentLevelInfo = [...levels].reverse().find(l => currentXp >= l.xpThreshold) || levels[0];
+    const nextLevelInfo = levels.find(l => l.xpThreshold > currentXp);
+
+    const progressToNextLevel = nextLevelInfo 
+        ? ((currentXp - currentLevelInfo.xpThreshold) / (nextLevelInfo.xpThreshold - currentLevelInfo.xpThreshold)) * 100
+        : 100;
 
     return (
         <>
@@ -237,5 +310,3 @@ export default function AdventuresPage() {
         </>
     );
 }
-
-    
