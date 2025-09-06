@@ -22,23 +22,24 @@ const TimerModal = ({
 }) => {
     const [timeLeft, setTimeLeft] = useState(duration);
 
+    // Effect to handle the countdown logic
     useEffect(() => {
         if (!isOpen) return;
 
-        setTimeLeft(duration);
+        setTimeLeft(duration); // Reset timer when modal opens
         const interval = setInterval(() => {
-            setTimeLeft(prev => {
-                if (prev <= 1) {
-                    clearInterval(interval);
-                    onClose(); // Auto-close when timer ends
-                    return 0;
-                }
-                return prev - 1;
-            });
+            setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [isOpen, duration, onClose]);
+    }, [isOpen, duration]);
+
+    // Effect to handle closing the modal when the timer finishes
+    useEffect(() => {
+        if (timeLeft === 0 && isOpen) {
+            onClose();
+        }
+    }, [timeLeft, isOpen, onClose]);
     
     if (!isOpen) {
         return null;
