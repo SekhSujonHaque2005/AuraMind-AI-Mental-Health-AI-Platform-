@@ -37,7 +37,7 @@ const levels = [
 ];
 
 const badges = {
-    'daily_complete': { name: 'Daily Champion', icon: '🏆', description: 'You completed all quests for the day!' },
+    'daily_complete': { name: 'Daily Champion', icon: '🏆', description: "Your goals for today have been completed! Come back tomorrow for new adventures." },
     'consistency_hero': { name: 'Consistency Hero', icon: '💪', description: 'Completed quests 3 days in a row!' },
     'zen_master': { name: 'Zen Master', icon: '🧘', description: 'Completed 10 meditation sessions!' },
 }
@@ -360,4 +360,5 @@ export default function AdventuresPage() {
     );
 }
 
+    
     
