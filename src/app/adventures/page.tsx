@@ -6,10 +6,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Flame, Droplet, BookOpen, Footprints, Star, Shield, Trophy, Plus, BrainCircuit, Wand2, Timer, Play, CheckCircle2, XCircle } from 'lucide-react';
+import { Flame, Droplet, BookOpen, Footprints, Star, Shield, Plus, BrainCircuit, Wand2, Timer, Play, CheckCircle2, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TextType from '@/components/ui/text-type';
-import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from '@/components/ui/alert-dialog';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,10 +18,12 @@ import { getAIGeneratedQuest } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import Confetti from 'react-confetti';
 import { isToday, isYesterday, formatISO, startOfToday } from 'date-fns';
+import TimerModal from '@/components/adventures/timer-modal';
+import BadgeDialog, { type BadgeKey, badges } from '@/components/adventures/badge-dialog';
 
 type QuestCategory = 'mindfulness' | 'hydration' | 'gratitude' | 'exercise' | 'learning' | 'digital-detox' | 'custom';
 
-const questIcons: Record<QuestCategory, React.ElementType> = {
+export const questIcons: Record<QuestCategory, React.ElementType> = {
     mindfulness: Flame,
     hydration: Droplet,
     gratitude: BookOpen,
@@ -49,15 +50,8 @@ const levels = [
   { level: 5, name: 'Zen Master', xpThreshold: 1000, icon: '🧘‍♀️' },
 ];
 
-const badges = {
-    'daily_complete': { name: 'Daily Champion', icon: '🏆', description: "Your goals for today have been completed! Come back tomorrow for new adventures." },
-    'consistency_hero': { name: 'Consistency Hero', icon: '💪', description: 'Completed quests 3 days in a row!' },
-    'zen_master': { name: 'Zen Master', icon: '🧘', description: 'Completed 10 meditation sessions!' },
-}
-
-type BadgeKey = keyof typeof badges;
-type QuestStatus = 'idle' | 'active' | 'completed' | 'failed';
-type QuestWithStatus = (typeof defaultQuests)[0] & { status: QuestStatus; icon: React.ElementType };
+export type QuestStatus = 'idle' | 'active' | 'completed' | 'failed';
+export type QuestWithStatus = (typeof defaultQuests)[0] & { status: QuestStatus; icon: React.ElementType };
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -70,112 +64,6 @@ const itemVariants = {
 };
 
 const USER_ID = 'user_adventures_test';
-
-const TimerModal = ({
-    quest,
-    isOpen,
-    onClose,
-    onComplete
-}: {
-    quest: QuestWithStatus | null;
-    isOpen: boolean;
-    onClose: () => void;
-    onComplete: () => void;
-}) => {
-    if (!quest || !quest.duration) return null;
-
-    const [timeLeft, setTimeLeft] = useState(quest.duration);
-
-    useEffect(() => {
-        if (!isOpen) return;
-
-        setTimeLeft(quest.duration!);
-        const interval = setInterval(() => {
-            setTimeLeft(prev => {
-                if (prev <= 1) {
-                    clearInterval(interval);
-                    onClose(); // Auto-close when timer ends
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [isOpen, quest.duration, onClose]);
-
-    const formatTime = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-    };
-
-    const handleManualComplete = () => {
-        onComplete();
-        onClose();
-    };
-
-    return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-gray-900 border-amber-500/40 text-white">
-                <DialogHeader>
-                    <DialogTitle className="text-2xl text-amber-300">{quest.title}</DialogTitle>
-                    <DialogDescription>
-                        Focus on your task. Mark it as complete when you're done.
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="py-8 flex flex-col items-center justify-center gap-6">
-                    <div className="text-7xl font-bold font-mono text-white tracking-widest">
-                        {formatTime(timeLeft)}
-                    </div>
-                    <Progress value={(timeLeft / quest.duration!) * 100} className="w-full h-3 bg-amber-900/50 [&>div]:bg-gradient-to-r [&>div]:from-amber-400 [&>div]:to-orange-500" />
-                </div>
-                <DialogFooter>
-                    <Button variant="ghost" onClick={onClose}>Cancel</Button>
-                    <Button onClick={handleManualComplete} className="bg-green-600 hover:bg-green-700 text-white">
-                        <CheckCircle2 className="mr-2 h-4 w-4" />
-                        Mark as Complete
-                    </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-    );
-};
-
-const BadgeDialog = ({ badge, onClose }: { badge: BadgeKey | null; onClose: () => void }) => {
-  if (!badge) return null;
-
-  return (
-    <AnimatePresence>
-      {badge && (
-        <AlertDialog open={!!badge}>
-          <AlertDialogContent className="bg-gray-900 border-amber-500/40 text-white">
-            <AlertDialogHeader className="items-center text-center">
-              <motion.div
-                initial={{ scale: 0, rotate: -180 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                className="text-7xl mb-4"
-              >
-                {badges[badge].icon}
-              </motion.div>
-              <AlertDialogTitle className="text-3xl text-amber-300">{badges[badge].name}</AlertDialogTitle>
-              <AlertDialogDescription className="text-gray-300 text-lg">
-                {badges[badge].description}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogAction onClick={onClose} className="w-full bg-amber-500 hover:bg-amber-600 text-white">
-                Awesome!
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
-    </AnimatePresence>
-  );
-};
-
 
 export default function AdventuresPage() {
     const [allQuests, setAllQuests] = useState<QuestWithStatus[]>([]);
@@ -556,7 +444,3 @@ export default function AdventuresPage() {
         </>
     );
 }
-
-    
-
-    
