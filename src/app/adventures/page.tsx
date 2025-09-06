@@ -20,7 +20,7 @@ import Confetti from 'react-confetti';
 import { isToday, isYesterday, formatISO, startOfToday } from 'date-fns';
 import TimerModal from '@/components/adventures/timer-modal';
 import BadgeDialog from '@/components/adventures/badge-dialog';
-import { questIcons, defaultQuests, levels, type QuestCategory, type QuestStatus, type QuestWithStatus, type BadgeKey } from './types';
+import { questIcons, defaultQuests, levels, type QuestCategory, type QuestStatus, type QuestWithStatus, type BadgeKey } from '@/app/adventures/types';
 
 
 const containerVariants = {
@@ -63,8 +63,17 @@ export default function AdventuresPage() {
                 if (snapshot.exists()) {
                     const data = snapshot.val();
                     setCurrentXp(data.xp || 0);
-                    setStreak(data.streak || 0);
-                    setLastCompletionDate(data.lastCompletionDate || null);
+                    
+                    const savedLastCompletion = data.lastCompletionDate || null;
+                    // Reset streak if a day was missed
+                    if (savedLastCompletion && !isToday(new Date(savedLastCompletion)) && !isYesterday(new Date(savedLastCompletion))) {
+                        setStreak(0);
+                        update(userRef, { streak: 0 });
+                    } else {
+                        setStreak(data.streak || 0);
+                    }
+                    setLastCompletionDate(savedLastCompletion);
+
 
                     const customQuestsData = data.customQuests || {};
                     const customQuestsList = Object.entries(customQuestsData).map(([id, quest]: [string, any]) => ({
@@ -185,7 +194,7 @@ export default function AdventuresPage() {
 
     const handleCloseBadge = () => {
         setShowBadge(null);
-        setCelebrating(true);
+        setCelebrating(true); // Keep celebrating even after closing the badge
     }
     
     const questsWithLiveStatus = useMemo(() => {
