@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MessageSquare, BookUser, BrainCircuit, Wind, ShieldCheck } from 'lucide-react';
+import { MessageSquare, BookUser, BrainCircuit, Wind, ShieldCheck, FileQuestion } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import React from 'react';
@@ -15,6 +15,7 @@ const navItems = [
   { href: '/consultant', label: 'AI Consultant', icon: BrainCircuit },
   { href: '/calm', label: 'Calm Room', icon: Wind },
   { href: '/adventures', label: 'Adventures', icon: ShieldCheck },
+  { href: '/quizzes', label: 'Quizzes', icon: FileQuestion },
 ];
 
 const Sidebar = ({ isExpanded }: { isExpanded: boolean }) => {
