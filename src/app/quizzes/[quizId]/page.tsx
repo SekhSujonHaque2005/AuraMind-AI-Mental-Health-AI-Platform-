@@ -277,7 +277,7 @@ const CertificateView = ({
       transition={{ duration: 0.5, type: 'spring' }}
       className="flex flex-col h-full"
     >
-        <div id="certificate" className="flex-grow p-4 md:p-6 bg-gray-900/50 rounded-t-lg border-x border-t border-violet-500/20 relative overflow-hidden">
+        <div id="certificate" className="flex-grow p-6 md:p-8 pt-16 bg-gray-900/50 rounded-t-lg border-x border-t border-violet-500/20 relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-violet-900/50 via-gray-900 to-gray-900 opacity-40"></div>
             <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%239C92AC%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
             
@@ -394,7 +394,7 @@ export default function QuizPage() {
 
   if (!quiz) {
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8">
+        <div className="flex flex-col items-center justify-center h-full p-4 md:p-8">
             <Brain className="h-16 w-16 text-violet-400 animate-pulse" />
             <p className="text-violet-300 mt-4">Loading Quiz...</p>
         </div>
@@ -440,7 +440,7 @@ export default function QuizPage() {
 
   return (
     <>
-    <div className="flex items-center justify-center min-h-screen w-full p-4 md:p-8">
+    <div className="flex items-center justify-center h-full w-full p-4 md:p-8">
       <div className="absolute inset-0 -z-10 h-full w-full no-print">
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
         <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#a78bfa33,transparent)]"></div>
