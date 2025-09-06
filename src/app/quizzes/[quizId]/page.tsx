@@ -248,6 +248,24 @@ const CertificateView = ({
     const percentage = Math.round((score / total) * 100);
     const date = format(new Date(), 'MMMM d, yyyy');
 
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Quiz Certificate',
+                    text: `I just completed the "${quizTitle}" quiz on AuraMind and scored ${score}/${total}!`,
+                    url: window.location.href
+                });
+            } catch (error) {
+                // Handle cases where the user cancels the share dialog or an error occurs.
+                console.error("Could not share:", error);
+                alert("Sharing failed. This could be due to browser permissions or canceling the share.");
+            }
+        } else {
+            alert('Web Share API is not supported in your browser.');
+        }
+    };
+
     return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
@@ -290,7 +308,7 @@ const CertificateView = ({
                 <Printer className="mr-2 h-4 w-4" />
                 Print Certificate
             </Button>
-             <Button onClick={() => navigator.share ? navigator.share({title: 'Quiz Certificate', text: `I completed the ${quizTitle} quiz!`}) : alert('Share not supported.')} className="bg-green-600 hover:bg-green-500">
+             <Button onClick={handleShare} className="bg-green-600 hover:bg-green-500">
                 <Share2 className="mr-2 h-4 w-4" />
                 Share
             </Button>
