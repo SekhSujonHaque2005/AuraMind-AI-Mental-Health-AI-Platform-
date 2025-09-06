@@ -6,7 +6,30 @@ import { getAuraResponse, GetAuraResponseInput } from '@/ai/flows/get-aura-respo
 import { translateWelcomeMessage } from '@/ai/flows/translate-welcome-message';
 import { TranslateWelcomeMessageInput, TranslateWelcomeMessageOutput } from '@/contexts/ChatContext';
 import { generateSelfCareQuest, GenerateSelfCareQuestInput } from '@/ai/flows/generate-self-care-quest';
+import { generateQuiz } from '@/ai/flows/generate-quiz';
 import { z } from 'zod';
+
+// --- Quiz Schemas (moved from generate-quiz.ts) ---
+export const QuestionSchema = z.object({
+  question: z.string().describe('The question to ask.'),
+  options: z.array(z.string()).length(4).describe('A list of exactly 4 possible answers.'),
+  answer: z.string().describe('The correct answer from the options list.'),
+});
+export type Question = z.infer<typeof QuestionSchema>;
+
+
+export const GenerateQuizInputSchema = z.object({
+  topic: z.string().describe('The topic for the quiz.'),
+});
+export type GenerateQuizInput = z.infer<typeof GenerateQuizInputSchema>;
+
+export const GenerateQuizOutputSchema = z.object({
+  title: z.string().describe('A creative and relevant title for the quiz.'),
+  questions: z.array(QuestionSchema).length(5).describe('An array of exactly 5 quiz questions.'),
+});
+export type GenerateQuizOutput = z.infer<typeof GenerateQuizOutputSchema>;
+// --- End Quiz Schemas ---
+
 
 const chatActionInputSchema = z.object({
   message: z.string().min(1, { message: "Message cannot be empty." }),
@@ -89,5 +112,20 @@ export async function getAIGeneratedQuest(input: GenerateSelfCareQuestInput): Pr
     console.error("Error in getAIGeneratedQuest:", error);
     const errorMessage = error instanceof Error ? error.message : 'An unknown server error occurred.';
     return { error: `Failed to generate AI quest: ${errorMessage}` };
+  }
+}
+
+export async function getAIGeneratedQuiz(input: GenerateQuizInput): Promise<{ quiz?: GenerateQuizOutput; error?: string }> {
+  try {
+    const result = await generateQuiz(input);
+    if (!result || !result.questions || result.questions.length === 0) {
+      console.error("AI quiz generation returned an empty or invalid result.");
+      return { error: 'The AI could not generate a quiz for that topic. Please try a different one.' };
+    }
+    return { quiz: result };
+  } catch (error) {
+    console.error("Error in getAIGeneratedQuiz:", error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown server error occurred.';
+    return { error: `Failed to generate AI quiz: ${errorMessage}` };
   }
 }

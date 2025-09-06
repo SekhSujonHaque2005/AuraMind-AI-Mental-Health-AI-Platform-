@@ -4,17 +4,27 @@
 import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Brain, Puzzle, Lightbulb, ArrowRight, ShieldAlert, Mountain, PlusSquare, Wand2 } from 'lucide-react';
+import { Brain, Puzzle, Lightbulb, ArrowRight, ShieldAlert, Mountain, PlusSquare, Wand2, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import TextType from '@/components/ui/text-type';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { getAIGeneratedQuiz } from '@/app/actions';
+import type { Question } from '@/app/actions';
 
+interface Quiz {
+    id: string;
+    title: string;
+    description: string;
+    icon: React.ElementType;
+    tags: string[];
+    questions?: Question[]; 
+}
 
-const quizzes = [
+const staticQuizzes: Quiz[] = [
   {
     id: 'cbt-basics',
     title: 'CBT Basics',
@@ -55,16 +65,58 @@ const quizzes = [
 export default function QuizzesPage() {
   const router = useRouter();
   const [isCreateQuizOpen, setIsCreateQuizOpen] = useState(false);
+  const [quizTopic, setQuizTopic] = useState('');
+  const [isGenerating, startTransition] = useTransition();
+  const [allQuizzes, setAllQuizzes] = useState<Quiz[]>(staticQuizzes);
   const { toast } = useToast();
 
   const handleStartQuiz = (quizId: string) => {
+    // Pass quiz data through state to avoid complex data serialization in URL
+    const quizData = allQuizzes.find(q => q.id === quizId);
+    if(quizData?.questions) {
+        sessionStorage.setItem(`quiz-${quizId}`, JSON.stringify(quizData));
+    }
     router.push(`/quizzes/${quizId}`);
   };
 
   const handleGenerateAiQuiz = () => {
-    toast({
-        title: "Coming Soon!",
-        description: "AI quiz generation is under development. Stay tuned!",
+    if (!quizTopic.trim()) {
+        toast({
+            variant: "destructive",
+            title: "Topic is required",
+            description: "Please enter a topic for your quiz.",
+        });
+        return;
+    }
+
+    startTransition(async () => {
+        const result = await getAIGeneratedQuiz({ topic: quizTopic });
+
+        if (result.error) {
+            toast({
+                variant: 'destructive',
+                title: 'AI Generation Failed',
+                description: result.error,
+            });
+        } else if (result.quiz) {
+            const newQuiz: Quiz = {
+                id: `ai-${Date.now()}`,
+                title: result.quiz.title,
+                description: `An AI-generated quiz about ${quizTopic}.`,
+                icon: Wand2,
+                tags: ['AI', 'Custom'],
+                questions: result.quiz.questions,
+            };
+
+            setAllQuizzes(prev => [...prev, newQuiz]);
+
+            toast({
+                title: 'Quiz Generated!',
+                description: `Your new quiz "${result.quiz.title}" is ready.`,
+            });
+            setIsCreateQuizOpen(false);
+            setQuizTopic('');
+        }
     });
   }
 
@@ -117,7 +169,7 @@ export default function QuizzesPage() {
         initial="hidden"
         animate="visible"
       >
-        {quizzes.map((quiz) => (
+        {allQuizzes.map((quiz) => (
           <motion.div key={quiz.id} variants={itemVariants}>
             <Card
               className="flex flex-col h-full bg-gray-900/50 border border-violet-500/20 hover:border-violet-500/60 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_0_35px_rgba(167,139,250,0.25)] rounded-2xl overflow-hidden group"
@@ -184,16 +236,28 @@ export default function QuizzesPage() {
                         id="quiz-topic"
                         placeholder="e.g., 'The basics of stoicism' or 'Identifying cognitive biases'"
                         className="bg-gray-800/60 border-violet-500/30 text-gray-200 focus:ring-violet-500"
+                        value={quizTopic}
+                        onChange={(e) => setQuizTopic(e.target.value)}
+                        disabled={isGenerating}
                      />
                 </div>
-                <Button onClick={handleGenerateAiQuiz} className="w-full bg-violet-600 hover:bg-violet-700 text-white">
-                   <Wand2 className="mr-2 h-4 w-4" />
-                    Generate with AI
+                <Button onClick={handleGenerateAiQuiz} className="w-full bg-violet-600 hover:bg-violet-700 text-white" disabled={isGenerating}>
+                   {isGenerating ? (
+                       <>
+                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                           Generating...
+                       </>
+                   ) : (
+                       <>
+                           <Wand2 className="mr-2 h-4 w-4" />
+                           Generate with AI
+                       </>
+                   )}
                  </Button>
                  {/* Manual creation UI could go here in the future */}
             </div>
             <DialogFooter>
-                <Button variant="ghost" onClick={() => setIsCreateQuizOpen(false)}>Cancel</Button>
+                <Button variant="ghost" onClick={() => setIsCreateQuizOpen(false)} disabled={isGenerating}>Cancel</Button>
             </DialogFooter>
         </DialogContent>
     </Dialog>

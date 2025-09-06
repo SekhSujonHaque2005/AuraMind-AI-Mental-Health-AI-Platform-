@@ -1,16 +1,18 @@
 
 'use client';
 
-import { useParams, notFound } from 'next/navigation';
+import { useParams, notFound, useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, X, Repeat, Brain, Award } from 'lucide-react';
+import { Check, X, Repeat, Brain, Award, ArrowLeft } from 'lucide-react';
+import type { Question } from '@/app/actions';
 
-const quizData = {
+
+const staticQuizData: Record<string, {title: string; questions: Question[]}> = {
   'cbt-basics': {
     title: 'CBT Basics Quiz',
     questions: [
@@ -188,8 +190,10 @@ const quizData = {
   },
 };
 
-type Quiz = typeof quizData[keyof typeof quizData];
-type Question = Quiz['questions'][0];
+interface QuizData {
+    title: string;
+    questions: Question[];
+}
 
 const QuestionCard = ({
   question,
@@ -278,15 +282,44 @@ const ResultsCard = ({
 
 export default function QuizPage() {
   const params = useParams();
+  const router = useRouter();
   const quizId = params.quizId as string;
-  const quiz = quizData[quizId as keyof typeof quizData];
+  const [quiz, setQuiz] = useState<QuizData | null>(null);
+  
+  useEffect(() => {
+      let quizData: QuizData | null = null;
+      if(quizId in staticQuizData) {
+          quizData = staticQuizData[quizId as keyof typeof staticQuizData];
+      } else {
+          // It's a dynamically generated quiz, get it from sessionStorage
+          const storedQuiz = sessionStorage.getItem(`quiz-${quizId}`);
+          if(storedQuiz) {
+              const parsedData = JSON.parse(storedQuiz);
+              quizData = { title: parsedData.title, questions: parsedData.questions };
+          }
+      }
+      
+      if(quizData) {
+          setQuiz(quizData);
+      } else {
+          // If no quiz data is found after checking both, it's a 404
+          notFound();
+      }
+  }, [quizId]);
+
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [showResults, setShowResults] = useState(false);
 
   if (!quiz) {
-    notFound();
+    // You can return a loading spinner here while waiting for the effect to run
+    return (
+        <div className="flex flex-col items-center justify-center w-full min-h-screen p-4 md:p-8">
+            <Brain className="h-16 w-16 text-violet-400 animate-pulse" />
+            <p className="text-violet-300 mt-4">Loading Quiz...</p>
+        </div>
+    );
   }
 
   const handleOptionSelect = (option: string) => {
@@ -321,12 +354,20 @@ export default function QuizPage() {
   const isLastQuestion = currentQuestionIndex === quiz.questions.length - 1;
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full p-4 md:p-8">
+    <div className="flex flex-col items-center justify-center w-full min-h-screen p-4 md:p-8">
       <div className="absolute inset-0 -z-10 h-full w-full">
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
         <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#a78bfa33,transparent)]"></div>
       </div>
-      <Card className="w-full max-w-2xl bg-gray-900/50 border border-violet-500/20 shadow-2xl min-h-[450px]">
+      <Card className="w-full max-w-2xl bg-gray-900/50 border border-violet-500/20 shadow-2xl min-h-[450px] relative">
+         <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => router.push('/quizzes')}
+            className="absolute top-4 left-4 text-violet-300 hover:bg-violet-500/10 hover:text-violet-200 rounded-full"
+        >
+            <ArrowLeft className="h-5 w-5" />
+        </Button>
         <AnimatePresence mode="wait">
           {showResults ? (
             <ResultsCard 
