@@ -259,7 +259,7 @@ export default function AdventuresPage() {
                             <motion.div variants={itemVariants} initial="hidden" animate="visible">
                                 <Card className="bg-black/30 backdrop-blur-md border border-amber-500/20 rounded-2xl shadow-lg">
                                     <CardHeader>
-                                        <CardTitle className="text-2xl text-amber-300 flex items-center gap-2"><Trophy className="h-6 w-6"/> Leaderboard</CardTitle>
+                                        <CardTitle className="text-2xl text-amber-300">Leaderboard</CardTitle>
                                     </CardHeader>
                                     <CardContent>
                                         <ul className="space-y-3">
@@ -310,3 +310,5 @@ export default function AdventuresPage() {
         </>
     );
 }
+
+    
