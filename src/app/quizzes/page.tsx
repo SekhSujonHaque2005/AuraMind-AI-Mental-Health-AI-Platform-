@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { getAIGeneratedQuiz } from '@/app/actions';
-import type { Question } from '@/app/actions';
+import type { Question } from '@/app/quizzes/types';
 
 interface Quiz {
     id: string;

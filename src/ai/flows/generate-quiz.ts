@@ -10,7 +10,9 @@
  */
 
 import {ai} from '@/ai/genkit';
-import { GenerateQuizInputSchema, GenerateQuizOutputSchema, type GenerateQuizInput, type GenerateQuizOutput } from '@/app/actions';
+import { GenerateQuizInputSchema, GenerateQuizOutputSchema } from '@/app/quizzes/types';
+import type { GenerateQuizInput, GenerateQuizOutput } from '@/app/quizzes/types';
+
 
 export async function generateQuiz(
   input: GenerateQuizInput
