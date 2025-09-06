@@ -4,9 +4,15 @@
 import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Brain, Puzzle, Lightbulb, ArrowRight, ShieldAlert, Mountain } from 'lucide-react';
+import { Brain, Puzzle, Lightbulb, ArrowRight, ShieldAlert, Mountain, PlusSquare, Wand2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import TextType from '@/components/ui/text-type';
+import { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+
 
 const quizzes = [
   {
@@ -48,16 +54,25 @@ const quizzes = [
 
 export default function QuizzesPage() {
   const router = useRouter();
+  const [isCreateQuizOpen, setIsCreateQuizOpen] = useState(false);
+  const { toast } = useToast();
 
   const handleStartQuiz = (quizId: string) => {
     router.push(`/quizzes/${quizId}`);
   };
 
+  const handleGenerateAiQuiz = () => {
+    toast({
+        title: "Coming Soon!",
+        description: "AI quiz generation is under development. Stay tuned!",
+    });
+  }
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
     }
   };
 
@@ -67,6 +82,7 @@ export default function QuizzesPage() {
   };
 
   return (
+    <>
     <div className="relative flex flex-col items-center p-4 md:p-8 overflow-x-hidden">
         <div className="absolute inset-0 -z-10 h-full w-full">
             <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
@@ -136,7 +152,52 @@ export default function QuizzesPage() {
             </Card>
           </motion.div>
         ))}
+
+        {/* Create Your Own Quiz Card */}
+        <motion.div variants={itemVariants}>
+            <Card
+                onClick={() => setIsCreateQuizOpen(true)}
+                className="cursor-pointer flex flex-col h-full items-center justify-center bg-gray-900/50 border-2 border-dashed border-violet-500/30 hover:border-violet-500/80 hover:bg-gray-900/80 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_0_35px_rgba(167,139,250,0.25)] rounded-2xl group"
+            >
+                <div className="p-8 text-center">
+                    <PlusSquare className="h-12 w-12 text-violet-400/70 mx-auto mb-4 transition-transform group-hover:rotate-12 group-hover:scale-110" />
+                    <h3 className="text-2xl font-bold text-violet-300">Create Your Own Quiz</h3>
+                    <p className="text-gray-400 mt-2">Design a quiz manually or let our AI help you build one on any topic.</p>
+                </div>
+            </Card>
+        </motion.div>
       </motion.div>
     </div>
+
+    <Dialog open={isCreateQuizOpen} onOpenChange={setIsCreateQuizOpen}>
+        <DialogContent className="bg-gray-900 border-violet-500/40 text-white">
+            <DialogHeader>
+                <DialogTitle className="text-2xl text-violet-300">Create a New Quiz</DialogTitle>
+                <DialogDescription>
+                    Generate a new quiz using AI. Just provide a topic to get started.
+                </DialogDescription>
+            </DialogHeader>
+            <div className="py-4 space-y-4">
+                <div className="space-y-2">
+                     <Label htmlFor="quiz-topic" className="text-gray-400">Quiz Topic</Label>
+                     <Input 
+                        id="quiz-topic"
+                        placeholder="e.g., 'The basics of stoicism' or 'Identifying cognitive biases'"
+                        className="bg-gray-800/60 border-violet-500/30 text-gray-200 focus:ring-violet-500"
+                     />
+                </div>
+                <Button onClick={handleGenerateAiQuiz} className="w-full bg-violet-600 hover:bg-violet-700 text-white">
+                   <Wand2 className="mr-2 h-4 w-4" />
+                    Generate with AI
+                 </Button>
+                 {/* Manual creation UI could go here in the future */}
+            </div>
+            <DialogFooter>
+                <Button variant="ghost" onClick={() => setIsCreateQuizOpen(false)}>Cancel</Button>
+            </DialogFooter>
+        </DialogContent>
+    </Dialog>
+
+    </>
   );
 }
