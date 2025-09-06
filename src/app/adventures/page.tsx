@@ -6,22 +6,21 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Flame, Star, Plus, BrainCircuit, Timer, Play, CheckCircle2, XCircle, Wand2, RotateCcw } from 'lucide-react';
+import { Flame, Star, Plus, BrainCircuit, Timer, Play, CheckCircle2, XCircle, Wand2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TextType from '@/components/ui/text-type';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { db } from '@/lib/firebase';
-import { ref, update, get, push, set, remove } from 'firebase/database';
+import { ref, update, get, push, set } from 'firebase/database';
 import { getAIGeneratedQuest } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import Confetti from 'react-confetti';
 import { isToday, isYesterday, formatISO, startOfToday } from 'date-fns';
 import TimerModal from '@/components/adventures/timer-modal';
 import BadgeDialog from '@/components/adventures/badge-dialog';
-import { questIcons, defaultQuests, levels, type QuestCategory, type QuestStatus, type QuestWithStatus, type BadgeKey } from '@/app/adventures/types';
+import { questIcons, defaultQuests, type QuestCategory, type QuestStatus, type QuestWithStatus, type BadgeKey } from '@/app/adventures/types';
 
 
 const containerVariants = {
@@ -228,24 +227,6 @@ export default function AdventuresPage() {
         checkAllQuestsCompleted();
     }, [questsWithLiveStatus, lastCompletionDate, streak, userRef, showBadge]);
 
-    const handleResetProgress = async () => {
-        try {
-            await remove(userRef);
-            toast({
-                title: 'Progress Reset',
-                description: 'Your adventures have been reset successfully.',
-            });
-            // Refetch initial data to reset the state locally
-            fetchInitialData();
-        } catch (error) {
-            console.error("Failed to reset progress:", error);
-            toast({
-                variant: 'destructive',
-                title: 'Reset Failed',
-                description: 'Could not reset your progress. Please try again.',
-            });
-        }
-    };
     
     const totalDailyXp = questsWithLiveStatus.reduce((sum, quest) => sum + quest.xp, 0);
     const dailyXp = questsWithLiveStatus
@@ -332,27 +313,6 @@ export default function AdventuresPage() {
                                             <CardDescription className="text-gray-400">Complete tasks to earn XP and level up!</CardDescription>
                                         </div>
                                         <div className="flex items-center gap-2">
-                                            <AlertDialog>
-                                                <AlertDialogTrigger asChild>
-                                                    <Button variant="destructive" size="sm" className="bg-red-800/60 hover:bg-red-800/90 text-red-200 border border-red-500/30">
-                                                        <RotateCcw className="mr-2 h-4 w-4" /> Reset
-                                                    </Button>
-                                                </AlertDialogTrigger>
-                                                <AlertDialogContent className="bg-gray-900 border-red-500/40 text-white">
-                                                    <AlertDialogHeader>
-                                                        <AlertDialogTitle className="text-red-300">Are you absolutely sure?</AlertDialogTitle>
-                                                        <AlertDialogDescription>
-                                                            This action cannot be undone. This will permanently delete all your progress, including your level, XP, streak, and custom quests.
-                                                        </AlertDialogDescription>
-                                                    </AlertDialogHeader>
-                                                    <AlertDialogFooter>
-                                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                        <AlertDialogAction onClick={handleResetProgress} className="bg-red-600 hover:bg-red-700">
-                                                            Yes, reset my progress
-                                                        </AlertDialogAction>
-                                                    </AlertDialogFooter>
-                                                </AlertDialogContent>
-                                            </AlertDialog>
                                             <Button onClick={() => setIsAddQuestOpen(true)} className="bg-amber-500 hover:bg-amber-600 text-white">
                                                 <Plus className="mr-2 h-4 w-4" /> Add Quest
                                             </Button>
@@ -471,5 +431,7 @@ export default function AdventuresPage() {
         </>
     );
 }
+
+    
 
     
