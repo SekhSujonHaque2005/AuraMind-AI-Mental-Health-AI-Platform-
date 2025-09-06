@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Flame, Star, Plus, BrainCircuit, Timer, Play, CheckCircle2, XCircle } from 'lucide-react';
+import { Flame, Star, Plus, BrainCircuit, Timer, Play, CheckCircle2, XCircle, Wand2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TextType from '@/components/ui/text-type';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -312,7 +312,7 @@ export default function AdventuresPage() {
                                     </CardHeader>
                                     <CardContent className="space-y-4">
                                         {questsWithLiveStatus.map(quest => {
-                                            const Icon = questIcons[quest.category];
+                                            const Icon = questIcons[quest.category] || Wand2;
                                             const status = quest.status;
 
                                             return (
@@ -422,5 +422,7 @@ export default function AdventuresPage() {
         </>
     );
 }
+
+    
 
     
