@@ -180,7 +180,7 @@ export default function AdventuresPage() {
         setTimeout(() => {
             setShowBadge(null);
             setCelebrating(false);
-        }, 3000); // Confetti duration
+        }, 5000); // Confetti duration increased to 5 seconds
     }
 
 
@@ -201,7 +201,7 @@ export default function AdventuresPage() {
         <>
             {celebrating && (
                 <div className="fixed inset-0 z-[9999]">
-                    <Confetti recycle={false} numberOfPieces={300} />
+                    <Confetti recycle={false} numberOfPieces={500} />
                 </div>
             )}
             <div className="relative min-h-screen p-4 md:p-8 overflow-x-hidden">
@@ -375,3 +375,5 @@ export default function AdventuresPage() {
         </>
     );
 }
+
+    
