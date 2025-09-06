@@ -120,19 +120,18 @@ export default function AdventuresPage() {
 
     const handleQuestToggle = (questId: string, xp: number) => {
         const newCompleted = new Set(completedQuests);
-        let newXp = currentXp;
-
-        const questRef = ref(db, `users/${USER_ID}/completedQuests/${questId}`);
 
         if (newCompleted.has(questId)) {
-            newCompleted.delete(questId);
-            newXp -= xp;
-            set(questRef, null); 
-        } else {
-            newCompleted.add(questId);
-            newXp += xp;
-            set(questRef, true); 
+            // If quest is already completed, do nothing.
+            return;
         }
+
+        let newXp = currentXp;
+        const questRef = ref(db, `users/${USER_ID}/completedQuests/${questId}`);
+
+        newCompleted.add(questId);
+        newXp += xp;
+        set(questRef, true);
         
         setCompletedQuests(newCompleted);
         setCurrentXp(newXp);
@@ -185,7 +184,6 @@ export default function AdventuresPage() {
     const handleCloseBadge = () => {
         setShowBadge(null);
         setCelebrating(true);
-        setTimeout(() => setCelebrating(false), 5000); // Confetti for 5 seconds
     }
 
 
@@ -222,8 +220,8 @@ export default function AdventuresPage() {
     return (
         <>
             {celebrating && (
-                <div className="fixed inset-0 z-50 pointer-events-none">
-                    <Confetti recycle={false} numberOfPieces={400} />
+                <div className="fixed inset-0 z-[9999] pointer-events-none">
+                    <Confetti recycle={true} numberOfPieces={600} />
                 </div>
             )}
             <div className="relative min-h-screen p-4 md:p-8 overflow-x-hidden">
@@ -302,10 +300,10 @@ export default function AdventuresPage() {
                                             <motion.div key={quest.id} variants={itemVariants}>
                                                 <div 
                                                     className={cn(
-                                                        "flex items-center p-4 rounded-lg border transition-all duration-300 cursor-pointer",
+                                                        "flex items-center p-4 rounded-lg border transition-all duration-300",
                                                         completedQuests.has(quest.id) 
-                                                            ? 'bg-green-500/10 border-green-500/40' 
-                                                            : 'bg-gray-800/50 border-amber-500/20 hover:border-amber-400/50'
+                                                            ? 'bg-green-500/10 border-green-500/40 cursor-default' 
+                                                            : 'bg-gray-800/50 border-amber-500/20 hover:border-amber-400/50 cursor-pointer'
                                                     )}
                                                     onClick={() => handleQuestToggle(quest.id, quest.xp)}
                                                 >
@@ -324,7 +322,11 @@ export default function AdventuresPage() {
                                                         <Checkbox 
                                                             checked={completedQuests.has(quest.id)}
                                                             onCheckedChange={() => handleQuestToggle(quest.id, quest.xp)}
-                                                            className="h-6 w-6 border-amber-400 data-[state=checked]:bg-green-500"
+                                                            className={cn(
+                                                                "h-6 w-6 border-amber-400 data-[state=checked]:bg-green-500",
+                                                                completedQuests.has(quest.id) ? "cursor-default" : "cursor-pointer"
+                                                            )}
+                                                            disabled={completedQuests.has(quest.id)}
                                                         />
                                                     </div>
                                                 </div>
@@ -409,7 +411,5 @@ export default function AdventuresPage() {
         </>
     );
 }
-
-    
 
     
