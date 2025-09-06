@@ -348,9 +348,9 @@ export default function AdventuresPage() {
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                                <Button onClick={() => setShowBadge(null)} className="w-full bg-amber-500 hover:bg-amber-600 text-white">
+                                <AlertDialogAction onClick={() => setShowBadge(null)} className="w-full bg-amber-500 hover:bg-amber-600 text-white">
                                     Awesome!
-                                </Button>
+                                </AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
