@@ -6,14 +6,14 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Flame, Star, Plus, BrainCircuit, Timer, Play, CheckCircle2, XCircle, Wand2 } from 'lucide-react';
+import { Flame, Star, Plus, BrainCircuit, Timer, Play, CheckCircle2, XCircle, Wand2, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TextType from '@/components/ui/text-type';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { db } from '@/lib/firebase';
-import { ref, update, get, push, set } from 'firebase/database';
+import { ref, update, get, push, set, remove } from 'firebase/database';
 import { getAIGeneratedQuest } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import Confetti from 'react-confetti';
@@ -136,6 +136,13 @@ export default function AdventuresPage() {
             update(userRef, { xp: newXp });
         }
     };
+    
+    const handleFailQuest = (questId: string) => {
+        if (questStatuses[questId] !== 'completed') {
+            updateQuestStatus(questId, 'failed');
+        }
+    };
+
 
     const handleStartQuest = (quest: QuestWithStatus) => {
         if (quest.status !== 'idle') return;
@@ -145,21 +152,6 @@ export default function AdventuresPage() {
             handleCompleteQuest(quest.id, quest.xp);
         }
     };
-    
-    useEffect(() => {
-        if (activeTimerQuest) {
-            const timeout = setTimeout(() => {
-                // If the quest is still active (not completed) when timer runs out, mark as failed.
-                if (questStatuses[activeTimerQuest.id] !== 'completed') {
-                    updateQuestStatus(activeTimerQuest.id, 'failed');
-                }
-                setActiveTimerQuest(null);
-            }, (activeTimerQuest.duration || 0) * 1000);
-
-            return () => clearTimeout(timeout);
-        }
-    }, [activeTimerQuest, questStatuses, updateQuestStatus]);
-
 
     const handleAddQuest = async () => {
         if (!newQuestInfo.title.trim()) return;
@@ -425,6 +417,11 @@ export default function AdventuresPage() {
                 onComplete={() => {
                     if (activeTimerQuest) {
                         handleCompleteQuest(activeTimerQuest.id, activeTimerQuest.xp);
+                    }
+                }}
+                onFail={() => {
+                    if (activeTimerQuest) {
+                       handleFailQuest(activeTimerQuest.id);
                     }
                 }}
             />
