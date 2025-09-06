@@ -5,15 +5,16 @@
 import { useParams, notFound, useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, X, Repeat, Brain, Award, ArrowLeft, Printer, Share2 } from 'lucide-react';
+import { Check, X, Repeat, Brain, Award, ArrowLeft, Printer, Share2, Download } from 'lucide-react';
 import type { Question } from '@/app/quizzes/types';
 import { format } from 'date-fns';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import html2canvas from 'html2canvas';
 
 
 const staticQuizData: Record<string, {title: string; questions: Question[]}> = {
@@ -252,6 +253,7 @@ const CertificateView = ({
 }) => {
     const percentage = Math.round((score / total) * 100);
     const date = format(new Date(), 'MMMM d, yyyy');
+    const certificateRef = useRef<HTMLDivElement>(null);
 
     const handleShare = async () => {
       try {
@@ -270,6 +272,21 @@ const CertificateView = ({
       }
     };
 
+    const handleDownloadJpg = () => {
+        if (certificateRef.current) {
+            html2canvas(certificateRef.current, {
+                useCORS: true,
+                scale: 2, // Higher scale for better resolution
+                backgroundColor: '#111827', // Match the background
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'AuraMind-Certificate.jpg';
+                link.href = canvas.toDataURL('image/jpeg', 0.9); // Quality 0.9
+                link.click();
+            });
+        }
+    };
+
     return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
@@ -277,7 +294,7 @@ const CertificateView = ({
       transition={{ duration: 0.5, type: 'spring' }}
       className="flex flex-col h-full"
     >
-        <div id="certificate" className="flex-grow p-6 md:p-8 pt-16 bg-gray-900/50 rounded-t-lg border-x border-t border-violet-500/20 relative overflow-hidden">
+        <div id="certificate" ref={certificateRef} className="flex-grow p-6 md:p-8 pt-16 bg-gray-900 rounded-t-lg border-x border-t border-violet-500/20 relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-violet-900/50 via-gray-900 to-gray-900 opacity-40"></div>
             <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%239C92AC%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
             
@@ -314,10 +331,14 @@ const CertificateView = ({
                 </div>
             </div>
         </div>
-        <CardFooter className="bg-gray-900/80 rounded-b-lg border-x border-b border-violet-500/20 p-4 flex justify-end gap-3 no-print">
+        <CardFooter className="bg-gray-900 rounded-b-lg border-x border-b border-violet-500/20 p-4 flex justify-end gap-3 no-print">
              <Button variant="ghost" onClick={onRestart}>
                 <Repeat className="mr-2 h-4 w-4" />
                 Take Another Quiz
+            </Button>
+            <Button onClick={handleDownloadJpg} className="bg-amber-600 hover:bg-amber-500">
+                <Download className="mr-2 h-4 w-4" />
+                Download JPG
             </Button>
             <Button onClick={() => window.print()} className="bg-blue-600 hover:bg-blue-500">
                 <Printer className="mr-2 h-4 w-4" />
@@ -345,7 +366,7 @@ const CertificateView = ({
                     height: 100%;
                     border: none !important;
                     margin: 0;
-                    padding: 0;
+                    padding: 40px !important;
                     background-color: #111827 !important; /* bg-gray-900 */
                     -webkit-print-color-adjust: exact; 
                     print-color-adjust: exact;
