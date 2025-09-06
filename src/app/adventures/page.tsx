@@ -2,14 +2,15 @@
 'use client';
 
 import { useState, useEffect, useCallback, useTransition, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Flame, Star, Plus, BrainCircuit, Timer, Play, CheckCircle2, XCircle, Wand2 } from 'lucide-react';
+import { Flame, Star, Plus, BrainCircuit, Timer, Play, CheckCircle2, XCircle, Wand2, RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TextType from '@/components/ui/text-type';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { db } from '@/lib/firebase';
@@ -59,64 +60,64 @@ export default function AdventuresPage() {
     const userQuestsRef = ref(db, `users/${USER_ID}/customQuests`);
     const dailyStatusRef = ref(db, `users/${USER_ID}/dailyStatus/${formatISO(startOfToday(), { representation: 'date' })}`);
 
-    useEffect(() => {
-        const fetchInitialData = async () => {
-             try {
-                const snapshot = await get(userRef);
-                const todayStr = formatISO(startOfToday(), { representation: 'date' });
+    const fetchInitialData = useCallback(async () => {
+         try {
+            const snapshot = await get(userRef);
 
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    setCurrentXp(data.xp || 0);
-                    
-                    const savedLastCompletion = data.lastCompletionDate || null;
-                    // Reset streak if a day was missed
-                    if (savedLastCompletion && !isToday(new Date(savedLastCompletion)) && !isYesterday(new Date(savedLastCompletion))) {
-                        setStreak(0);
-                        update(userRef, { streak: 0 });
-                    } else {
-                        setStreak(data.streak || 0);
-                    }
-                    setLastCompletionDate(savedLastCompletion);
-
-
-                    const customQuestsData = data.customQuests || {};
-                    const customQuestsList = Object.entries(customQuestsData).map(([id, quest]: [string, any]) => ({
-                        id,
-                        isDefault: false,
-                        ...quest,
-                    }));
-
-                    const combinedQuests = [...defaultQuests, ...customQuestsList];
-                    
-                    const dailyStatusSnapshot = await get(dailyStatusRef);
-                    const savedStatuses = dailyStatusSnapshot.exists() ? dailyStatusSnapshot.val() : {};
-                    
-                    const initialStatuses: Record<string, QuestStatus> = {};
-                    combinedQuests.forEach(q => {
-                        initialStatuses[q.id] = savedStatuses[q.id] || 'idle';
-                    });
-
-                    setQuestStatuses(initialStatuses);
-                    setAllQuests(combinedQuests.map(q => ({...q, status: initialStatuses[q.id]})));
-
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                setCurrentXp(data.xp || 0);
+                
+                const savedLastCompletion = data.lastCompletionDate || null;
+                // Reset streak if a day was missed
+                if (savedLastCompletion && !isToday(new Date(savedLastCompletion)) && !isYesterday(new Date(savedLastCompletion))) {
+                    setStreak(0);
+                    update(userRef, { streak: 0 });
                 } else {
-                    // Initialize new user
-                    set(userRef, {
-                        xp: 0,
-                        streak: 0,
-                        lastCompletionDate: null,
-                    });
-                     setQuestStatuses(defaultQuests.reduce((acc, q) => ({...acc, [q.id]: 'idle'}), {}));
-                     setAllQuests(defaultQuests.map(q => ({...q, status: 'idle'})));
+                    setStreak(data.streak || 0);
                 }
-            } catch (error) {
-                console.error("Error fetching user data:", error);
+                setLastCompletionDate(savedLastCompletion);
+
+
+                const customQuestsData = data.customQuests || {};
+                const customQuestsList = Object.entries(customQuestsData).map(([id, quest]: [string, any]) => ({
+                    id,
+                    isDefault: false,
+                    ...quest,
+                }));
+
+                const combinedQuests = [...defaultQuests, ...customQuestsList];
+                
+                const dailyStatusSnapshot = await get(dailyStatusRef);
+                const savedStatuses = dailyStatusSnapshot.exists() ? dailyStatusSnapshot.val() : {};
+                
+                const initialStatuses: Record<string, QuestStatus> = {};
+                combinedQuests.forEach(q => {
+                    initialStatuses[q.id] = savedStatuses[q.id] || 'idle';
+                });
+
+                setQuestStatuses(initialStatuses);
+                setAllQuests(combinedQuests.map(q => ({...q, status: initialStatuses[q.id]})));
+
+            } else {
+                // Initialize new user
+                set(userRef, {
+                    xp: 0,
+                    streak: 0,
+                    lastCompletionDate: null,
+                });
+                 setQuestStatuses(defaultQuests.reduce((acc, q) => ({...acc, [q.id]: 'idle'}), {}));
+                 setAllQuests(defaultQuests.map(q => ({...q, status: 'idle'})));
             }
-        };
-        fetchInitialData();
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        fetchInitialData();
+    }, [fetchInitialData]);
 
     const updateQuestStatus = useCallback((questId: string, status: QuestStatus) => {
         if(questStatuses[questId] === 'completed') return;
@@ -226,6 +227,25 @@ export default function AdventuresPage() {
         };
         checkAllQuestsCompleted();
     }, [questsWithLiveStatus, lastCompletionDate, streak, userRef, showBadge]);
+
+    const handleResetProgress = async () => {
+        try {
+            await remove(userRef);
+            toast({
+                title: 'Progress Reset',
+                description: 'Your adventures have been reset successfully.',
+            });
+            // Refetch initial data to reset the state locally
+            fetchInitialData();
+        } catch (error) {
+            console.error("Failed to reset progress:", error);
+            toast({
+                variant: 'destructive',
+                title: 'Reset Failed',
+                description: 'Could not reset your progress. Please try again.',
+            });
+        }
+    };
     
     const totalDailyXp = questsWithLiveStatus.reduce((sum, quest) => sum + quest.xp, 0);
     const dailyXp = questsWithLiveStatus
@@ -311,9 +331,32 @@ export default function AdventuresPage() {
                                             <CardTitle className="text-3xl font-bold text-amber-300">Daily Quests</CardTitle>
                                             <CardDescription className="text-gray-400">Complete tasks to earn XP and level up!</CardDescription>
                                         </div>
-                                        <Button onClick={() => setIsAddQuestOpen(true)} className="bg-amber-500 hover:bg-amber-600 text-white">
-                                            <Plus className="mr-2 h-4 w-4" /> Add Quest
-                                        </Button>
+                                        <div className="flex items-center gap-2">
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button variant="destructive" size="sm" className="bg-red-800/60 hover:bg-red-800/90 text-red-200 border border-red-500/30">
+                                                        <RotateCcw className="mr-2 h-4 w-4" /> Reset
+                                                    </Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent className="bg-gray-900 border-red-500/40 text-white">
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle className="text-red-300">Are you absolutely sure?</AlertDialogTitle>
+                                                        <AlertDialogDescription>
+                                                            This action cannot be undone. This will permanently delete all your progress, including your level, XP, streak, and custom quests.
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                        <AlertDialogAction onClick={handleResetProgress} className="bg-red-600 hover:bg-red-700">
+                                                            Yes, reset my progress
+                                                        </AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
+                                            <Button onClick={() => setIsAddQuestOpen(true)} className="bg-amber-500 hover:bg-amber-600 text-white">
+                                                <Plus className="mr-2 h-4 w-4" /> Add Quest
+                                            </Button>
+                                        </div>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
                                         {questsWithLiveStatus.map(quest => {
@@ -428,3 +471,5 @@ export default function AdventuresPage() {
         </>
     );
 }
+
+    
