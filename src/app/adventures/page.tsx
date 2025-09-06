@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Flame, Star, Plus, BrainCircuit, Timer, Play, CheckCircle2, XCircle, Wand2, Trash2 } from 'lucide-react';
+import { Flame, Star, Plus, BrainCircuit, Timer, Play, CheckCircle2, XCircle, Wand2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TextType from '@/components/ui/text-type';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -20,7 +20,7 @@ import Confetti from 'react-confetti';
 import { isToday, isYesterday, formatISO, startOfToday } from 'date-fns';
 import TimerModal from '@/components/adventures/timer-modal';
 import BadgeDialog from '@/components/adventures/badge-dialog';
-import { questIcons, defaultQuests, levels, type QuestCategory, type QuestStatus, type QuestWithStatus, type BadgeKey } from '@/app/adventures/types';
+import { questIcons, defaultQuests, levels as importedLevels, type QuestCategory, type QuestStatus, type QuestWithStatus, type BadgeKey } from '@/app/adventures/types';
 
 
 const containerVariants = {
@@ -37,6 +37,7 @@ const USER_ID = 'user_adventures_test';
 
 interface NewQuestInfo {
     title: string;
+    description: string;
     duration: number | null;
 }
 
@@ -48,7 +49,7 @@ export default function AdventuresPage() {
     const [lastCompletionDate, setLastCompletionDate] = useState<string | null>(null);
     const [showBadge, setShowBadge] = useState<BadgeKey | null>(null);
     const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
-    const [newQuestInfo, setNewQuestInfo] = useState<NewQuestInfo>({ title: "", duration: null });
+    const [newQuestInfo, setNewQuestInfo] = useState<NewQuestInfo>({ title: "", description: "A custom goal to improve my well-being.", duration: null });
     const [isGeneratingAi, startTransition] = useTransition();
     const [celebrating, setCelebrating] = useState(false);
     const [activeTimerQuest, setActiveTimerQuest] = useState<QuestWithStatus | null>(null);
@@ -58,6 +59,7 @@ export default function AdventuresPage() {
     const userRef = ref(db, `users/${USER_ID}`);
     const userQuestsRef = ref(db, `users/${USER_ID}/customQuests`);
     const dailyStatusRef = ref(db, `users/${USER_ID}/dailyStatus/${formatISO(startOfToday(), { representation: 'date' })}`);
+    const levels = importedLevels;
 
     const fetchInitialData = useCallback(async () => {
          try {
@@ -157,6 +159,7 @@ export default function AdventuresPage() {
         if (!newQuestInfo.title.trim()) return;
         const newQuestData = {
             title: newQuestInfo.title,
+            description: newQuestInfo.description,
             xp: 10,
             duration: newQuestInfo.duration || null,
             category: 'custom' as QuestCategory,
@@ -168,7 +171,7 @@ export default function AdventuresPage() {
             const newQuestWithId: QuestWithStatus = { ...newQuestData, id: newQuestRef.key!, status: 'idle' };
             setAllQuests(prev => [...prev, newQuestWithId]);
             setQuestStatuses(prev => ({ ...prev, [newQuestWithId.id]: 'idle' }));
-            setNewQuestInfo({ title: "", duration: null });
+            setNewQuestInfo({ title: "", description: "A custom goal to improve my well-being.", duration: null });
             setIsAddQuestOpen(false);
         } catch (error) {
             console.error("Failed to add new quest:", error);
@@ -182,7 +185,7 @@ export default function AdventuresPage() {
             if (result.error) {
                 toast({ variant: 'destructive', title: 'AI Generation Failed', description: result.error });
             } else if (result.quest) {
-                setNewQuestInfo({ title: result.quest, duration: result.duration || null });
+                setNewQuestInfo({ title: result.quest, duration: result.duration || null, description: 'An AI-suggested quest for a better day.' });
                  toast({ title: 'AI Quest Generated!', description: 'Your new quest is ready to be added.' });
             }
         });
@@ -330,6 +333,7 @@ export default function AdventuresPage() {
                                                     )} />
                                                     <div className="flex-grow">
                                                         <p className="text-lg font-medium text-white">{quest.title}</p>
+                                                        <p className="text-sm text-gray-400">{quest.description}</p>
                                                     </div>
                                                     <div className="flex items-center gap-3">
                                                         {quest.duration && <div className="flex items-center text-xs text-gray-400 gap-1"><Timer className="h-4 w-4"/> {quest.duration / 60}m</div>}
@@ -409,7 +413,7 @@ export default function AdventuresPage() {
 
             <BadgeDialog badge={showBadge} onClose={handleCloseBadge} />
             
-            <TimerModal
+             <TimerModal
                 isOpen={!!activeTimerQuest}
                 title={activeTimerQuest?.title || ''}
                 duration={activeTimerQuest?.duration || 0}
@@ -418,11 +422,13 @@ export default function AdventuresPage() {
                     if (activeTimerQuest) {
                         handleCompleteQuest(activeTimerQuest.id, activeTimerQuest.xp);
                     }
+                    setActiveTimerQuest(null);
                 }}
                 onFail={() => {
                     if (activeTimerQuest) {
                        handleFailQuest(activeTimerQuest.id);
                     }
+                    setActiveTimerQuest(null);
                 }}
             />
         </>

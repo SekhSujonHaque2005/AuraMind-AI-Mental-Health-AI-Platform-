@@ -15,12 +15,12 @@ export const questIcons: Record<QuestCategory, ElementType> = {
 };
 
 export const defaultQuests = [
-  { id: 'water', title: 'Drink 8 glasses of water', xp: 10, isDefault: true, duration: 3600, category: 'hydration' as QuestCategory },
-  { id: 'meditate', title: '10 minutes of meditation', xp: 20, isDefault: true, duration: 600, category: 'mindfulness' as QuestCategory },
-  { id: 'journal', title: 'Gratitude journaling', xp: 15, isDefault: true, duration: 300, category: 'gratitude' as QuestCategory },
-  { id: 'walk', title: 'Go for a 15-minute walk', xp: 15, isDefault: true, duration: 900, category: 'exercise' as QuestCategory },
-  { id: 'read', title: 'Read a book for 15 mins', xp: 10, isDefault: true, duration: 900, category: 'learning' as QuestCategory },
-  { id: 'no_screen', title: '30 mins no screen before bed', xp: 20, isDefault: true, duration: 1800, category: 'digital-detox' as QuestCategory },
+  { id: 'water', title: 'Drink 8 glasses of water', description: 'Stay hydrated for better energy and focus throughout the day.', xp: 10, isDefault: true, duration: 3600, category: 'hydration' as QuestCategory },
+  { id: 'meditate', title: '10 minutes of meditation', description: 'Clear your mind and reduce stress with a brief meditation session.', xp: 20, isDefault: true, duration: 600, category: 'mindfulness' as QuestCategory },
+  { id: 'journal', title: 'Gratitude journaling', description: 'Write down three things you\'re grateful for to boost your mood.', xp: 15, isDefault: true, duration: 300, category: 'gratitude' as QuestCategory },
+  { id: 'walk', title: 'Go for a 15-minute walk', description: 'Get some fresh air and light exercise to energize your body.', xp: 15, isDefault: true, duration: 900, category: 'exercise' as QuestCategory },
+  { id: 'read', title: 'Read a book for 15 mins', description: 'Expand your mind or escape into a story for a little while.', xp: 10, isDefault: true, duration: 900, category: 'learning' as QuestCategory },
+  { id: 'no_screen', title: '30 mins no screen before bed', description: 'Improve your sleep quality by disconnecting from screens.', xp: 20, isDefault: true, duration: 1800, category: 'digital-detox' as QuestCategory },
 ];
 
 export const levels = [
@@ -36,6 +36,7 @@ export type QuestStatus = 'idle' | 'active' | 'completed' | 'failed';
 interface Quest {
     id: string;
     title: string;
+    description: string;
     xp: number;
     isDefault: boolean;
     duration: number | null;
