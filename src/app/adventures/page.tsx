@@ -107,7 +107,7 @@ const TimerModal = ({
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
-        return `${'${'}minutes.toString().padStart(2, '0')}:${'${'}remainingSeconds.toString().padStart(2, '0')}`;
+        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
 
     const handleManualComplete = () => {
@@ -158,9 +158,9 @@ export default function AdventuresPage() {
 
     const { toast } = useToast();
 
-    const userRef = ref(db, `users/${'${'}USER_ID}`);
-    const userQuestsRef = ref(db, `users/${'${'}USER_ID}/customQuests`);
-    const dailyStatusRef = ref(db, `users/${'${'}USER_ID}/dailyStatus/${'${'}formatISO(startOfToday(), { representation: 'date' })}`);
+    const userRef = ref(db, `users/${USER_ID}`);
+    const userQuestsRef = ref(db, `users/${USER_ID}/customQuests`);
+    const dailyStatusRef = ref(db, `users/${USER_ID}/dailyStatus/${formatISO(startOfToday(), { representation: 'date' })}`);
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -371,7 +371,7 @@ export default function AdventuresPage() {
                                 <CardHeader className="text-center">
                                     <CardTitle className="text-2xl text-amber-300">Daily Progress</CardTitle>
                                     <div className="text-5xl mt-2">{currentLevelInfo.icon}</div>
-                                    <CardDescription className="text-lg font-semibold">{`Level ${'${'}currentLevelInfo.level}: ${'${'}currentLevelInfo.name}`}</CardDescription>
+                                    <CardDescription className="text-lg font-semibold">{`Level ${currentLevelInfo.level}: ${currentLevelInfo.name}`}</CardDescription>
                                 </CardHeader>
                                 <CardContent className="px-6 pb-6">
                                     <Progress value={dailyProgressPercentage} className="h-3 bg-amber-900/50 [&>div]:bg-gradient-to-r [&>div]:from-amber-400 [&>div]:to-orange-500" />
@@ -389,7 +389,7 @@ export default function AdventuresPage() {
                                         <span>{streak}</span>
                                     </div>
                                     <CardDescription>
-                                        {streak > 0 ? `You're on a ${'${'}streak}-day streak!` : "Complete all quests to start a streak!"}
+                                        {streak > 0 ? `You're on a ${streak}-day streak!` : "Complete all quests to start a streak!"}
                                     </CardDescription>
                                 </CardHeader>
                             </Card>
