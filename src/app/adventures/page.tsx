@@ -18,6 +18,8 @@ import { db } from '@/lib/firebase';
 import { ref, onValue, set, update, get, push } from 'firebase/database';
 import { getAIGeneratedQuest } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
+import Confetti from 'react-confetti';
+
 
 const defaultQuests = [
   { id: 'water', title: 'Drink 8 glasses of water', icon: Droplet, xp: 10, isDefault: true },
@@ -64,6 +66,7 @@ export default function AdventuresPage() {
     const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
     const [newQuestTitle, setNewQuestTitle] = useState("");
     const [isGeneratingAi, startTransition] = useTransition();
+    const [celebrating, setCelebrating] = useState(false);
     const { toast } = useToast();
 
 
@@ -172,6 +175,14 @@ export default function AdventuresPage() {
         });
     }
 
+    const handleCloseBadge = () => {
+        setCelebrating(true);
+        setTimeout(() => {
+            setShowBadge(null);
+            setCelebrating(false);
+        }, 3000); // Confetti duration
+    }
+
 
     useEffect(() => {
         if (completedQuests.size === allQuests.length && allQuests.length > 0 && !showBadge) {
@@ -188,6 +199,7 @@ export default function AdventuresPage() {
 
     return (
         <>
+            {celebrating && <Confetti recycle={false} numberOfPieces={300} />}
             <div className="relative min-h-screen p-4 md:p-8 overflow-x-hidden">
                 <div className="absolute inset-0 -z-10 h-full w-full">
                     <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
@@ -331,7 +343,7 @@ export default function AdventuresPage() {
 
             <AnimatePresence>
                 {showBadge && (
-                     <AlertDialog open={!!showBadge} onOpenChange={(isOpen) => !isOpen && setShowBadge(null)}>
+                     <AlertDialog open={!!showBadge} onOpenChange={(isOpen) => !isOpen && handleCloseBadge()}>
                         <AlertDialogContent className="bg-gray-900 border-amber-500/40 text-white">
                              <AlertDialogHeader className="items-center text-center">
                                 <motion.div
@@ -348,7 +360,7 @@ export default function AdventuresPage() {
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                                <AlertDialogAction onClick={() => setShowBadge(null)} className="w-full bg-amber-500 hover:bg-amber-600 text-white">
+                                <AlertDialogAction onClick={handleCloseBadge} className="w-full bg-amber-500 hover:bg-amber-600 text-white">
                                     Awesome!
                                 </AlertDialogAction>
                             </AlertDialogFooter>
@@ -359,6 +371,3 @@ export default function AdventuresPage() {
         </>
     );
 }
-
-    
-    
