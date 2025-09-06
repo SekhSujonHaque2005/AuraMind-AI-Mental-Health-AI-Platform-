@@ -20,7 +20,7 @@ import Confetti from 'react-confetti';
 import { isToday, isYesterday, formatISO, startOfToday } from 'date-fns';
 import TimerModal from '@/components/adventures/timer-modal';
 import BadgeDialog from '@/components/adventures/badge-dialog';
-import { questIcons, defaultQuests, levels as importedLevels, type QuestCategory, type QuestStatus, type QuestWithStatus, type BadgeKey } from '@/app/adventures/types';
+import { questIcons, defaultQuests, levels, type QuestCategory, type QuestStatus, type QuestWithStatus, type BadgeKey } from '@/app/adventures/types';
 
 
 const containerVariants = {
@@ -59,7 +59,6 @@ export default function AdventuresPage() {
     const userRef = ref(db, `users/${USER_ID}`);
     const userQuestsRef = ref(db, `users/${USER_ID}/customQuests`);
     const dailyStatusRef = ref(db, `users/${USER_ID}/dailyStatus/${formatISO(startOfToday(), { representation: 'date' })}`);
-    const levels = importedLevels;
 
     const fetchInitialData = useCallback(async () => {
          try {
@@ -246,7 +245,7 @@ export default function AdventuresPage() {
                     <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#f59e0b33,transparent)]"></div>
                 </div>
 
-                <div className="w-full max-w-4xl mx-auto">
+                <div className="w-full max-w-6xl mx-auto">
                     <motion.div 
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
