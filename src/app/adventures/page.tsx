@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useTransition } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { db } from '@/lib/firebase';
 import { ref, onValue, set, update, get, push } from 'firebase/database';
+import { getAIGeneratedQuest } from '@/app/actions';
+import { useToast } from '@/hooks/use-toast';
 
 const defaultQuests = [
   { id: 'water', title: 'Drink 8 glasses of water', icon: Droplet, xp: 10, isDefault: true },
@@ -61,7 +63,8 @@ export default function AdventuresPage() {
     const [showBadge, setShowBadge] = useState<BadgeKey | null>(null);
     const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
     const [newQuestTitle, setNewQuestTitle] = useState("");
-    const [isGeneratingAi, setIsGeneratingAi] = useState(false);
+    const [isGeneratingAi, startTransition] = useTransition();
+    const { toast } = useToast();
 
 
     const userRef = ref(db, `users/${USER_ID}`);
@@ -149,18 +152,24 @@ export default function AdventuresPage() {
     };
 
     const handleGenerateAiQuest = () => {
-        setIsGeneratingAi(true);
-        // Placeholder for AI generation logic
-        setTimeout(() => {
-            const aiQuests = [
-                "Practice mindful breathing for 5 minutes.",
-                "Write down one thing you are proud of.",
-                "Disconnect from social media for an hour."
-            ];
-            const randomQuest = aiQuests[Math.floor(Math.random() * aiQuests.length)];
-            setNewQuestTitle(randomQuest);
-            setIsGeneratingAi(false);
-        }, 1500);
+        startTransition(async () => {
+            const existingQuests = allQuests.map(q => q.title);
+            const result = await getAIGeneratedQuest({ existingQuests });
+
+            if (result.error) {
+                toast({
+                    variant: 'destructive',
+                    title: 'AI Generation Failed',
+                    description: result.error,
+                });
+            } else if (result.quest) {
+                setNewQuestTitle(result.quest);
+                 toast({
+                    title: 'AI Quest Generated!',
+                    description: 'Your new quest is ready to be added.',
+                });
+            }
+        });
     }
 
 
@@ -350,5 +359,3 @@ export default function AdventuresPage() {
         </>
     );
 }
-
-    

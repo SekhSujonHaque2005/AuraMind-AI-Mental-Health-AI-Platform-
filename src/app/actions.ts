@@ -5,6 +5,7 @@ import { checkSafetyAndRespond, SafetyCheckInput } from '@/ai/flows/critical-saf
 import { getAuraResponse, GetAuraResponseInput } from '@/ai/flows/get-aura-response';
 import { translateWelcomeMessage } from '@/ai/flows/translate-welcome-message';
 import { TranslateWelcomeMessageInput, TranslateWelcomeMessageOutput } from '@/contexts/ChatContext';
+import { generateSelfCareQuest, GenerateSelfCareQuestInput } from '@/ai/flows/generate-self-care-quest';
 import { z } from 'zod';
 
 const chatActionInputSchema = z.object({
@@ -73,4 +74,20 @@ export async function getTranslatedWelcome(input: TranslateWelcomeMessageInput):
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
         return { error: `An unexpected error occurred: ${errorMessage}. Please try again.` };
     }
+}
+
+
+export async function getAIGeneratedQuest(input: GenerateSelfCareQuestInput): Promise<{ quest?: string; error?: string }> {
+  try {
+    const result = await generateSelfCareQuest(input);
+    if (!result || !result.quest) {
+      console.error("AI quest generation returned an empty result.");
+      return { error: 'The AI could not generate a quest idea right now. Please try again.' };
+    }
+    return { quest: result.quest };
+  } catch (error) {
+    console.error("Error in getAIGeneratedQuest:", error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown server error occurred.';
+    return { error: `Failed to generate AI quest: ${errorMessage}` };
+  }
 }
