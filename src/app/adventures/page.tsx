@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
-import { Flame, Droplet, BookOpen, Footprints, Star, Award, Shield, Trophy } from 'lucide-react';
+import { Flame, Droplet, BookOpen, Footprints, Star, Shield, Trophy } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TextType from '@/components/ui/text-type';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from '@/components/ui/alert-dialog';
@@ -81,15 +81,15 @@ export default function AdventuresPage() {
     };
 
     useEffect(() => {
-        if (completedQuests.size === quests.length) {
+        if (completedQuests.size === quests.length && !showBadge) {
             setShowBadge('daily_complete');
         }
-    }, [completedQuests]);
+    }, [completedQuests, showBadge]);
 
 
     return (
         <>
-            <div className="min-h-screen p-4 md:p-8 overflow-x-hidden">
+            <div className="min-h-screen p-4 md:p-8 overflow-x-hidden bg-background">
                 <div className="absolute inset-0 -z-10 h-full w-full">
                     <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
                     <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#f59e0b33,transparent)]"></div>
@@ -178,7 +178,7 @@ export default function AdventuresPage() {
                                         <Progress value={progressToNextLevel} className="h-3 bg-amber-900/50 [&>div]:bg-gradient-to-r [&>div]:from-amber-400 [&>div]:to-orange-500" />
                                         <div className="flex justify-between text-xs text-gray-400 mt-2">
                                             <span>{currentXp} XP</span>
-                                            {nextLevelInfo && <span>{nextLevelInfo.xpThreshold} XP to next level</span>}
+                                            {nextLevelInfo ? <span>{nextLevelInfo.xpThreshold - currentXp} XP to next level</span> : <span>Max Level!</span>}
                                         </div>
                                     </CardContent>
                                 </Card>
@@ -238,3 +238,4 @@ export default function AdventuresPage() {
     );
 }
 
+    
