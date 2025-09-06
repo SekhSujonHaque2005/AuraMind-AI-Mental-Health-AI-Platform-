@@ -218,13 +218,17 @@ export default function AdventuresPage() {
         };
         checkAllQuestsCompleted();
     }, [completedQuests, allQuests, lastCompletionDate, streak, userRef, showBadge]);
+    
+    const totalDailyXp = allQuests.reduce((sum, quest) => sum + quest.xp, 0);
+    const dailyXp = allQuests
+        .filter(quest => completedQuests.has(quest.id))
+        .reduce((sum, quest) => sum + quest.xp, 0);
 
     const currentLevelInfo = [...levels].reverse().find(l => currentXp >= l.xpThreshold) || levels[0];
     const nextLevelInfo = levels.find(l => l.xpThreshold > currentXp);
+    
+    const dailyProgressPercentage = totalDailyXp > 0 ? (dailyXp / totalDailyXp) * 100 : 0;
 
-    const progressToNextLevel = nextLevelInfo 
-        ? ((currentXp - currentLevelInfo.xpThreshold) / (nextLevelInfo.xpThreshold - currentLevelInfo.xpThreshold)) * 100
-        : 100;
 
     return (
         <>
@@ -266,14 +270,14 @@ export default function AdventuresPage() {
                         <motion.div className="lg:col-span-1 space-y-8" variants={itemVariants} initial="hidden" animate="visible">
                             <Card className="bg-black/30 backdrop-blur-md border border-amber-500/20 rounded-2xl shadow-lg">
                                 <CardHeader className="text-center">
-                                    <CardTitle className="text-2xl text-amber-300">Your Progress</CardTitle>
+                                    <CardTitle className="text-2xl text-amber-300">Daily Progress</CardTitle>
                                     <div className="text-5xl mt-2">{currentLevelInfo.icon}</div>
                                     <CardDescription className="text-lg font-semibold">{`Level ${currentLevelInfo.level}: ${currentLevelInfo.name}`}</CardDescription>
                                 </CardHeader>
                                 <CardContent className="px-6 pb-6">
-                                    <Progress value={progressToNextLevel} className="h-3 bg-amber-900/50 [&>div]:bg-gradient-to-r [&>div]:from-amber-400 [&>div]:to-orange-500" />
+                                    <Progress value={dailyProgressPercentage} className="h-3 bg-amber-900/50 [&>div]:bg-gradient-to-r [&>div]:from-amber-400 [&>div]:to-orange-500" />
                                     <div className="flex justify-between text-xs text-gray-400 mt-2">
-                                        <span>{currentXp} XP</span>
+                                        <span>{dailyXp} / {totalDailyXp} XP Today</span>
                                         {nextLevelInfo ? <span>{nextLevelInfo.xpThreshold - currentXp} XP to next level</span> : <span>Max Level!</span>}
                                     </div>
                                 </CardContent>
@@ -420,5 +424,7 @@ export default function AdventuresPage() {
         </>
     );
 }
+
+    
 
     
