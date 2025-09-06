@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useParams, notFound, useRouter } from 'next/navigation';
@@ -253,19 +254,21 @@ const CertificateView = ({
     const date = format(new Date(), 'MMMM d, yyyy');
 
     const handleShare = async () => {
+      try {
         if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: 'Quiz Certificate',
-                    text: `I just completed the "${quizTitle}" quiz on AuraMind and scored ${score}/${total}!`,
-                    url: window.location.href
-                });
-            } catch (error) {
-                console.error("Could not share:", error);
-            }
+            await navigator.share({
+                title: 'Quiz Certificate',
+                text: `I just completed the "${quizTitle}" quiz on AuraMind and scored ${score}/${total}!`,
+                url: window.location.href
+            });
         } else {
             alert('Web Share API is not supported in your browser.');
         }
+      } catch (error) {
+        // Log error and inform user, but don't crash the app
+        console.error("Could not share:", error);
+        alert(`Sharing failed. You can copy the page URL to share it.`);
+      }
     };
 
     return (
@@ -301,7 +304,7 @@ const CertificateView = ({
                 </div>
             </div>
         </div>
-        <CardFooter className="bg-gray-900/80 rounded-b-lg border-x border-b border-violet-500/20 p-4 flex justify-end gap-3">
+        <CardFooter className="bg-gray-900/80 rounded-b-lg border-x border-b border-violet-500/20 p-4 flex justify-end gap-3 no-print">
              <Button variant="ghost" onClick={onRestart}>
                 <Repeat className="mr-2 h-4 w-4" />
                 Take Another Quiz
@@ -331,9 +334,11 @@ const CertificateView = ({
                     width: 100%;
                     height: 100%;
                     border: none !important;
+                    margin: 0;
+                    padding: 0;
                 }
                  .no-print {
-                    display: none;
+                    display: none !important;
                  }
             }
         `}</style>
@@ -423,7 +428,7 @@ export default function QuizPage() {
   return (
     <>
     <div className="flex items-center justify-center h-full w-full p-4 md:p-8">
-      <div className="absolute inset-0 -z-10 h-full w-full">
+      <div className="absolute inset-0 -z-10 h-full w-full no-print">
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
         <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#a78bfa33,transparent)]"></div>
       </div>
@@ -473,7 +478,7 @@ export default function QuizPage() {
     </div>
     
     <Dialog open={isNameModalOpen} onOpenChange={setIsNameModalOpen}>
-        <DialogContent className="bg-gray-900 border-violet-500/40 text-white">
+        <DialogContent className="bg-gray-900 border-violet-500/40 text-white no-print">
             <DialogHeader>
                 <DialogTitle className="text-2xl text-violet-300">Congratulations!</DialogTitle>
                 <DialogDescription>
