@@ -94,6 +94,12 @@ const nextConfig: NextConfig = {
         hostname: '4kwallpapers.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.pravatar.cc',
+        port: '',
+        pathname: '/**',
       }
     ]
   }
