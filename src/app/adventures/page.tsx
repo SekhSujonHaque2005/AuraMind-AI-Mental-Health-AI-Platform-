@@ -15,11 +15,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { db } from '@/lib/firebase';
-import { ref, onValue, set, update, get, push } from 'firebase/database';
+import { ref, onValue, set, update, get, push, remove } from 'firebase/database';
 import { getAIGeneratedQuest } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import Confetti from 'react-confetti';
-import { isToday, isYesterday, formatISO } from 'date-fns';
+import { isToday, isYesterday, formatISO, startOfToday } from 'date-fns';
 
 
 const defaultQuests = [
@@ -75,6 +75,7 @@ export default function AdventuresPage() {
 
     const userRef = ref(db, `users/${USER_ID}`);
     const userQuestsRef = ref(db, `users/${USER_ID}/customQuests`);
+    const completedQuestsRef = ref(db, `users/${USER_ID}/completedQuests`);
     
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -82,8 +83,16 @@ export default function AdventuresPage() {
                 const snapshot = await get(userRef);
                 if (snapshot.exists()) {
                     const data = snapshot.val();
+                    const todayStr = formatISO(startOfToday(), { representation: 'date' });
+                    
+                    if (data.lastCompletionDate && data.lastCompletionDate < todayStr) {
+                        await remove(completedQuestsRef);
+                        setCompletedQuests(new Set());
+                    } else {
+                        setCompletedQuests(new Set(data.completedQuests ? Object.keys(data.completedQuests) : []));
+                    }
+
                     setCurrentXp(data.xp || 0);
-                    setCompletedQuests(new Set(data.completedQuests ? Object.keys(data.completedQuests) : []));
                     setStreak(data.streak || 0);
                     setLastCompletionDate(data.lastCompletionDate || null);
 
