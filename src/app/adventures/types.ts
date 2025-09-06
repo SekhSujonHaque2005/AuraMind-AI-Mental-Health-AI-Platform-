@@ -15,7 +15,7 @@ export const questIcons: Record<QuestCategory, ElementType> = {
 };
 
 export const defaultQuests = [
-  { id: 'water', title: 'Drink 8 glasses of water', xp: 10, isDefault: true, duration: null, category: 'hydration' as QuestCategory },
+  { id: 'water', title: 'Drink 8 glasses of water', xp: 10, isDefault: true, duration: 28800, category: 'hydration' as QuestCategory },
   { id: 'meditate', title: '10 minutes of meditation', xp: 20, isDefault: true, duration: 600, category: 'mindfulness' as QuestCategory },
   { id: 'journal', title: 'Gratitude journaling', xp: 15, isDefault: true, duration: 300, category: 'gratitude' as QuestCategory },
   { id: 'walk', title: 'Go for a 15-minute walk', xp: 15, isDefault: true, duration: 900, category: 'exercise' as QuestCategory },
