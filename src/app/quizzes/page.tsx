@@ -36,7 +36,7 @@ export default function QuizzesPage() {
   const router = useRouter();
 
   const handleStartQuiz = (quizId: string) => {
-    // router.push(`/quizzes/${quizId}`);
+    router.push(`/quizzes/${quizId}`);
   };
 
   const containerVariants = {
