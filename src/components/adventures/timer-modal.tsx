@@ -6,27 +6,26 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import type { QuestWithStatus } from '@/app/adventures/types';
 
 const TimerModal = ({
-    quest,
     isOpen,
+    title,
+    duration,
     onClose,
     onComplete
 }: {
-    quest: QuestWithStatus | null;
     isOpen: boolean;
+    title: string;
+    duration: number;
     onClose: () => void;
     onComplete: () => void;
 }) => {
-    if (!quest || !quest.duration) return null;
-
-    const [timeLeft, setTimeLeft] = useState(quest.duration);
+    const [timeLeft, setTimeLeft] = useState(duration);
 
     useEffect(() => {
         if (!isOpen) return;
 
-        setTimeLeft(quest.duration!);
+        setTimeLeft(duration);
         const interval = setInterval(() => {
             setTimeLeft(prev => {
                 if (prev <= 1) {
@@ -39,7 +38,11 @@ const TimerModal = ({
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [isOpen, quest.duration, onClose]);
+    }, [isOpen, duration, onClose]);
+    
+    if (!isOpen) {
+        return null;
+    }
 
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
@@ -56,7 +59,7 @@ const TimerModal = ({
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="bg-gray-900 border-amber-500/40 text-white">
                 <DialogHeader>
-                    <DialogTitle className="text-2xl text-amber-300">{quest.title}</DialogTitle>
+                    <DialogTitle className="text-2xl text-amber-300">{title}</DialogTitle>
                     <DialogDescription>
                         Focus on your task. Mark it as complete when you're done.
                     </DialogDescription>
@@ -65,7 +68,7 @@ const TimerModal = ({
                     <div className="text-7xl font-bold font-mono text-white tracking-widest">
                         {formatTime(timeLeft)}
                     </div>
-                    <Progress value={(timeLeft / quest.duration!) * 100} className="w-full h-3 bg-amber-900/50 [&>div]:bg-gradient-to-r [&>div]:from-amber-400 [&>div]:to-orange-500" />
+                    <Progress value={(timeLeft / duration) * 100} className="w-full h-3 bg-amber-900/50 [&>div]:bg-gradient-to-r [&>div]:from-amber-400 [&>div]:to-orange-500" />
                 </div>
                 <DialogFooter>
                     <Button variant="ghost" onClick={onClose}>Cancel</Button>
@@ -80,5 +83,3 @@ const TimerModal = ({
 };
 
 export default TimerModal;
-
-    

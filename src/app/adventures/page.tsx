@@ -410,8 +410,9 @@ export default function AdventuresPage() {
             <BadgeDialog badge={showBadge} onClose={handleCloseBadge} />
             
             <TimerModal
-                quest={activeTimerQuest}
                 isOpen={!!activeTimerQuest}
+                title={activeTimerQuest?.title || ''}
+                duration={activeTimerQuest?.duration || 0}
                 onClose={() => setActiveTimerQuest(null)}
                 onComplete={() => {
                     if (activeTimerQuest) {
@@ -422,7 +423,3 @@ export default function AdventuresPage() {
         </>
     );
 }
-
-    
-
-    
