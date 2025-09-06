@@ -19,6 +19,7 @@ import { ref, onValue, set, update, get, push } from 'firebase/database';
 import { getAIGeneratedQuest } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import Confetti from 'react-confetti';
+import { isToday, isYesterday, formatISO } from 'date-fns';
 
 
 const defaultQuests = [
@@ -62,6 +63,8 @@ export default function AdventuresPage() {
     const [allQuests, setAllQuests] = useState(defaultQuests);
     const [completedQuests, setCompletedQuests] = useState<Set<string>>(new Set());
     const [currentXp, setCurrentXp] = useState(0);
+    const [streak, setStreak] = useState(0);
+    const [lastCompletionDate, setLastCompletionDate] = useState<string | null>(null);
     const [showBadge, setShowBadge] = useState<BadgeKey | null>(null);
     const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
     const [newQuestTitle, setNewQuestTitle] = useState("");
@@ -81,6 +84,8 @@ export default function AdventuresPage() {
                     const data = snapshot.val();
                     setCurrentXp(data.xp || 0);
                     setCompletedQuests(new Set(data.completedQuests ? Object.keys(data.completedQuests) : []));
+                    setStreak(data.streak || 0);
+                    setLastCompletionDate(data.lastCompletionDate || null);
 
                     const customQuestsData = data.customQuests || {};
                     const customQuestsList = Object.entries(customQuestsData).map(([id, quest]: [string, any]) => ({
@@ -97,7 +102,9 @@ export default function AdventuresPage() {
                         xp: 0,
                         avatar: `https://i.pravatar.cc/150?u=${USER_ID}`,
                         completedQuests: {},
-                        customQuests: {}
+                        customQuests: {},
+                        streak: 0,
+                        lastCompletionDate: null,
                     });
                 }
             } catch (error) {
@@ -182,10 +189,27 @@ export default function AdventuresPage() {
 
 
     useEffect(() => {
-        if (completedQuests.size === allQuests.length && allQuests.length > 0 && !showBadge && !celebrating) {
-            setShowBadge('daily_complete');
-        }
-    }, [completedQuests, allQuests, showBadge, celebrating]);
+        const checkAllQuestsCompleted = async () => {
+            if (completedQuests.size === allQuests.length && allQuests.length > 0) {
+                const todayStr = formatISO(new Date(), { representation: 'date' });
+                if (lastCompletionDate !== todayStr) {
+                    let newStreak = 1;
+                    if (lastCompletionDate && isYesterday(new Date(lastCompletionDate))) {
+                        newStreak = streak + 1;
+                    }
+                    
+                    setStreak(newStreak);
+                    setLastCompletionDate(todayStr);
+                    await update(userRef, { streak: newStreak, lastCompletionDate: todayStr });
+
+                    if (!showBadge && !celebrating) {
+                        setShowBadge('daily_complete');
+                    }
+                }
+            }
+        };
+        checkAllQuestsCompleted();
+    }, [completedQuests, allQuests, lastCompletionDate, streak, userRef, showBadge, celebrating]);
 
     const currentLevelInfo = [...levels].reverse().find(l => currentXp >= l.xpThreshold) || levels[0];
     const nextLevelInfo = levels.find(l => l.xpThreshold > currentXp);
@@ -231,7 +255,7 @@ export default function AdventuresPage() {
                     </motion.div>
                     
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <motion.div className="lg:col-span-1" variants={itemVariants} initial="hidden" animate="visible">
+                        <motion.div className="lg:col-span-1 space-y-8" variants={itemVariants} initial="hidden" animate="visible">
                             <Card className="bg-black/30 backdrop-blur-md border border-amber-500/20 rounded-2xl shadow-lg">
                                 <CardHeader className="text-center">
                                     <CardTitle className="text-2xl text-amber-300">Your Progress</CardTitle>
@@ -245,6 +269,18 @@ export default function AdventuresPage() {
                                         {nextLevelInfo ? <span>{nextLevelInfo.xpThreshold - currentXp} XP to next level</span> : <span>Max Level!</span>}
                                     </div>
                                 </CardContent>
+                            </Card>
+                            <Card className="bg-black/30 backdrop-blur-md border border-amber-500/20 rounded-2xl shadow-lg">
+                                <CardHeader className="text-center items-center">
+                                    <CardTitle className="text-2xl text-amber-300">Daily Streak</CardTitle>
+                                    <div className="flex items-center text-5xl font-bold text-orange-400 mt-2">
+                                        <Flame className="h-12 w-12 mr-2" />
+                                        <span>{streak}</span>
+                                    </div>
+                                    <CardDescription>
+                                        {streak > 0 ? `You're on a ${streak}-day streak!` : "Complete all quests to start a streak!"}
+                                    </CardDescription>
+                                </CardHeader>
                             </Card>
                         </motion.div>
 
@@ -372,3 +408,5 @@ export default function AdventuresPage() {
         </>
     );
 }
+
+    
