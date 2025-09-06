@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Flame, Droplet, BookOpen, Footprints, Star, Shield, Plus, BrainCircuit, Wand2, Timer, Play, CheckCircle2, XCircle } from 'lucide-react';
+import { Flame, Star, Plus, BrainCircuit, Timer, Play, CheckCircle2, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TextType from '@/components/ui/text-type';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -19,39 +19,9 @@ import { useToast } from '@/hooks/use-toast';
 import Confetti from 'react-confetti';
 import { isToday, isYesterday, formatISO, startOfToday } from 'date-fns';
 import TimerModal from '@/components/adventures/timer-modal';
-import BadgeDialog, { type BadgeKey, badges } from '@/components/adventures/badge-dialog';
+import BadgeDialog from '@/components/adventures/badge-dialog';
+import { questIcons, defaultQuests, levels, type QuestCategory, type QuestStatus, type QuestWithStatus, type BadgeKey } from './types';
 
-type QuestCategory = 'mindfulness' | 'hydration' | 'gratitude' | 'exercise' | 'learning' | 'digital-detox' | 'custom';
-
-export const questIcons: Record<QuestCategory, React.ElementType> = {
-    mindfulness: Flame,
-    hydration: Droplet,
-    gratitude: BookOpen,
-    exercise: Footprints,
-    learning: BookOpen,
-    'digital-detox': Shield,
-    custom: Wand2,
-};
-
-const defaultQuests = [
-  { id: 'water', title: 'Drink 8 glasses of water', xp: 10, isDefault: true, duration: null, category: 'hydration' as QuestCategory },
-  { id: 'meditate', title: '10 minutes of meditation', xp: 20, isDefault: true, duration: 600, category: 'mindfulness' as QuestCategory },
-  { id: 'journal', title: 'Gratitude journaling', xp: 15, isDefault: true, duration: 300, category: 'gratitude' as QuestCategory },
-  { id: 'walk', title: 'Go for a 15-minute walk', xp: 15, isDefault: true, duration: 900, category: 'exercise' as QuestCategory },
-  { id: 'read', title: 'Read a book for 15 mins', xp: 10, isDefault: true, duration: 900, category: 'learning' as QuestCategory },
-  { id: 'no_screen', title: '30 mins no screen before bed', xp: 20, isDefault: true, duration: 1800, category: 'digital-detox' as QuestCategory },
-];
-
-const levels = [
-  { level: 1, name: 'Mindful Novice', xpThreshold: 0, icon: '🌱' },
-  { level: 2, name: 'Wellness Apprentice', xpThreshold: 100, icon: '🌿' },
-  { level: 3, name: 'Mindful Explorer', xpThreshold: 250, icon: '🌲' },
-  { level: 4, name: 'Serenity Seeker', xpThreshold: 500, icon: '🧘' },
-  { level: 5, name: 'Zen Master', xpThreshold: 1000, icon: '🧘‍♀️' },
-];
-
-export type QuestStatus = 'idle' | 'active' | 'completed' | 'failed';
-export type QuestWithStatus = (typeof defaultQuests)[0] & { status: QuestStatus; icon: React.ElementType };
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -190,7 +160,7 @@ export default function AdventuresPage() {
         try {
             const newQuestRef = push(userQuestsRef);
             await set(newQuestRef, newQuestData);
-            const newQuestWithId: QuestWithStatus = { ...newQuestData, id: newQuestRef.key!, icon: Wand2, status: 'idle' };
+            const newQuestWithId: QuestWithStatus = { ...newQuestData, id: newQuestRef.key!, icon: questIcons.custom, status: 'idle' };
             setAllQuests(prev => [...prev, newQuestWithId]);
             setQuestStatuses(prev => ({ ...prev, [newQuestWithId.id]: 'idle' }));
             setNewQuestTitle("");
@@ -444,5 +414,3 @@ export default function AdventuresPage() {
         </>
     );
 }
-
-    

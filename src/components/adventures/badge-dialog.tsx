@@ -3,13 +3,8 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from '@/components/ui/alert-dialog';
+import { badges, type BadgeKey } from '@/app/adventures/types';
 
-export const badges = {
-    'daily_complete': { name: 'Daily Champion', icon: '🏆', description: "Your goals for today have been completed! Come back tomorrow for new adventures." },
-    'consistency_hero': { name: 'Consistency Hero', icon: '💪', description: 'Completed quests 3 days in a row!' },
-    'zen_master': { name: 'Zen Master', icon: '🧘', description: 'Completed 10 meditation sessions!' },
-}
-export type BadgeKey = keyof typeof badges;
 
 const BadgeDialog = ({ badge, onClose }: { badge: BadgeKey | null; onClose: () => void }) => {
   if (!badge) return null;

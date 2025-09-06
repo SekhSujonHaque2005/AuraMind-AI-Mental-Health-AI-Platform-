@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import type { QuestWithStatus } from '@/app/adventures/page';
+import type { QuestWithStatus } from '@/app/adventures/types';
 
 const TimerModal = ({
     quest,
