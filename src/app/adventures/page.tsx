@@ -142,6 +142,40 @@ const TimerModal = ({
     );
 };
 
+const BadgeDialog = ({ badge, onClose }: { badge: BadgeKey | null; onClose: () => void }) => {
+  if (!badge) return null;
+
+  return (
+    <AnimatePresence>
+      {badge && (
+        <AlertDialog open={!!badge}>
+          <AlertDialogContent className="bg-gray-900 border-amber-500/40 text-white">
+            <AlertDialogHeader className="items-center text-center">
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+                className="text-7xl mb-4"
+              >
+                {badges[badge].icon}
+              </motion.div>
+              <AlertDialogTitle className="text-3xl text-amber-300">{badges[badge].name}</AlertDialogTitle>
+              <AlertDialogDescription className="text-gray-300 text-lg">
+                {badges[badge].description}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogAction onClick={onClose} className="w-full bg-amber-500 hover:bg-amber-600 text-white">
+                Awesome!
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
+    </AnimatePresence>
+  );
+};
+
 
 export default function AdventuresPage() {
     const [allQuests, setAllQuests] = useState<QuestWithStatus[]>([]);
@@ -214,12 +248,14 @@ export default function AdventuresPage() {
     }, []);
 
     const updateQuestStatus = useCallback((questId: string, status: QuestStatus) => {
+        if(questStatuses[questId] === 'completed') return;
+
         setQuestStatuses(prev => {
             const newStatuses = { ...prev, [questId]: status };
             update(dailyStatusRef, { [questId]: status });
             return newStatuses;
         });
-    }, [dailyStatusRef]);
+    }, [dailyStatusRef, questStatuses]);
 
     const handleCompleteQuest = (questId: string, xp: number) => {
         if (questStatuses[questId] !== 'completed') {
@@ -231,6 +267,7 @@ export default function AdventuresPage() {
     };
 
     const handleStartQuest = (quest: QuestWithStatus) => {
+        if (quest.status !== 'idle') return;
         if (quest.duration) {
             setActiveTimerQuest(quest);
         } else {
@@ -504,33 +541,7 @@ export default function AdventuresPage() {
                 </DialogContent>
             </Dialog>
 
-            <AnimatePresence>
-                {showBadge && (
-                     <AlertDialog open={!!showBadge}>
-                        <AlertDialogContent className="bg-gray-900 border-amber-500/40 text-white">
-                             <AlertDialogHeader className="items-center text-center">
-                                <motion.div
-                                    initial={{ scale: 0, rotate: -180 }}
-                                    animate={{ scale: 1, rotate: 0 }}
-                                    transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                                    className="text-7xl mb-4"
-                                >
-                                    {badges[showBadge].icon}
-                                </motion.div>
-                                <AlertDialogTitle className="text-3xl text-amber-300">{badges[showBadge].name}</AlertDialogTitle>
-                                <AlertDialogDescription className="text-gray-300 text-lg">
-                                    {badges[showBadge].description}
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogAction onClick={handleCloseBadge} className="w-full bg-amber-500 hover:bg-amber-600 text-white">
-                                    Awesome!
-                                </AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                )}
-            </AnimatePresence>
+            <BadgeDialog badge={showBadge} onClose={handleCloseBadge} />
             
             <TimerModal
                 quest={activeTimerQuest}
@@ -545,5 +556,7 @@ export default function AdventuresPage() {
         </>
     );
 }
+
+    
 
     
