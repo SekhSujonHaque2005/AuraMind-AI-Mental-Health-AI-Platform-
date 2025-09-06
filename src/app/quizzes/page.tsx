@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Brain, Puzzle, Lightbulb, ArrowRight } from 'lucide-react';
+import { Brain, Puzzle, Lightbulb, ArrowRight, ShieldAlert, Mountain } from 'lucide-react';
 import { motion } from 'framer-motion';
 import TextType from '@/components/ui/text-type';
 
@@ -29,6 +29,20 @@ const quizzes = [
     description: 'Explore your emotional intelligence and learn how to better understand your feelings.',
     icon: Lightbulb,
     tags: ['Emotions', 'Self-Awareness'],
+  },
+   {
+    id: 'anxiety-assessment',
+    title: 'Anxiety Self-Assessment',
+    description: 'A quick check-in to gauge your current anxiety levels based on common symptoms.',
+    icon: ShieldAlert,
+    tags: ['Anxiety', 'Self-Assessment'],
+  },
+  {
+    id: 'resilience-scale',
+    title: 'The Resilience Scale',
+    description: 'Measure your ability to bounce back from adversity and identify areas to build mental toughness.',
+    icon: Mountain,
+    tags: ['Resilience', 'Strength'],
   },
 ];
 

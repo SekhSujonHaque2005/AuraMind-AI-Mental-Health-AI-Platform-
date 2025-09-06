@@ -126,6 +126,66 @@ const quizData = {
       },
     ],
   },
+  'anxiety-assessment': {
+    title: 'Anxiety Self-Assessment',
+    questions: [
+      {
+        question: 'Over the last 2 weeks, how often have you been bothered by feeling nervous, anxious, or on edge?',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        answer: 'Nearly every day',
+      },
+      {
+        question: 'How often have you been bothered by not being able to stop or control worrying?',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        answer: 'Nearly every day',
+      },
+      {
+        question: 'How often have you been bothered by worrying too much about different things?',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        answer: 'Nearly every day',
+      },
+      {
+        question: 'How often have you been bothered by having trouble relaxing?',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        answer: 'Nearly every day',
+      },
+      {
+        question: 'How often have you been bothered by feeling afraid as if something awful might happen?',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        answer: 'Nearly every day',
+      },
+    ],
+  },
+  'resilience-scale': {
+    title: 'The Resilience Scale',
+    questions: [
+      {
+        question: 'I tend to bounce back quickly after hard times.',
+        options: ['Disagree', 'Neutral', 'Agree', 'Strongly Agree'],
+        answer: 'Strongly Agree',
+      },
+      {
+        question: 'I have a hard time making it through stressful events.',
+        options: ['Strongly Agree', 'Agree', 'Neutral', 'Disagree'],
+        answer: 'Disagree',
+      },
+      {
+        question: 'I tend to take a long time to recover from a stressful event.',
+        options: ['Strongly Agree', 'Agree', 'Neutral', 'Disagree'],
+        answer: 'Disagree',
+      },
+      {
+        question: 'It is hard for me to snap back when something bad happens.',
+        options: ['Strongly Agree', 'Agree', 'Neutral', 'Disagree'],
+        answer: 'Disagree',
+      },
+      {
+        question: 'I usually come through difficult times with little trouble.',
+        options: ['Disagree', 'Neutral', 'Agree', 'Strongly Agree'],
+        answer: 'Strongly Agree',
+      },
+    ],
+  },
 };
 
 type Quiz = typeof quizData[keyof typeof quizData];
