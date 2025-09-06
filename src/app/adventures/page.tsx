@@ -78,12 +78,11 @@ export default function AdventuresPage() {
                     const customQuestsData = data.customQuests || {};
                     const customQuestsList = Object.entries(customQuestsData).map(([id, quest]: [string, any]) => ({
                         id,
-                        icon: questIcons[quest.category as QuestCategory || 'custom'],
                         isDefault: false,
                         ...quest,
                     }));
 
-                    const combinedQuests = [...defaultQuests.map(q => ({...q, icon: questIcons[q.category]})), ...customQuestsList];
+                    const combinedQuests = [...defaultQuests, ...customQuestsList];
                     
                     const dailyStatusSnapshot = await get(dailyStatusRef);
                     const savedStatuses = dailyStatusSnapshot.exists() ? dailyStatusSnapshot.val() : {};
@@ -104,7 +103,7 @@ export default function AdventuresPage() {
                         lastCompletionDate: null,
                     });
                      setQuestStatuses(defaultQuests.reduce((acc, q) => ({...acc, [q.id]: 'idle'}), {}));
-                     setAllQuests(defaultQuests.map(q => ({...q, status: 'idle', icon: questIcons[q.category]})));
+                     setAllQuests(defaultQuests.map(q => ({...q, status: 'idle'})));
                 }
             } catch (error) {
                 console.error("Error fetching user data:", error);
@@ -169,7 +168,7 @@ export default function AdventuresPage() {
         try {
             const newQuestRef = push(userQuestsRef);
             await set(newQuestRef, newQuestData);
-            const newQuestWithId: QuestWithStatus = { ...newQuestData, id: newQuestRef.key!, icon: questIcons.custom, status: 'idle' };
+            const newQuestWithId: QuestWithStatus = { ...newQuestData, id: newQuestRef.key!, status: 'idle' };
             setAllQuests(prev => [...prev, newQuestWithId]);
             setQuestStatuses(prev => ({ ...prev, [newQuestWithId.id]: 'idle' }));
             setNewQuestTitle("");
@@ -313,8 +312,8 @@ export default function AdventuresPage() {
                                     </CardHeader>
                                     <CardContent className="space-y-4">
                                         {questsWithLiveStatus.map(quest => {
-                                            const Icon = quest.icon;
-                                            const status = questStatuses[quest.id] || 'idle';
+                                            const Icon = questIcons[quest.category];
+                                            const status = quest.status;
 
                                             return (
                                             <motion.div key={quest.id} variants={itemVariants}>
@@ -423,3 +422,5 @@ export default function AdventuresPage() {
         </>
     );
 }
+
+    

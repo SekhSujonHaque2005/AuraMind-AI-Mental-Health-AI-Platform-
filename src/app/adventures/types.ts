@@ -1,9 +1,10 @@
 
 import { Flame, Droplet, BookOpen, Footprints, Shield, Wand2 } from 'lucide-react';
+import type { ElementType } from 'react';
 
 export type QuestCategory = 'mindfulness' | 'hydration' | 'gratitude' | 'exercise' | 'learning' | 'digital-detox' | 'custom';
 
-export const questIcons: Record<QuestCategory, React.ElementType> = {
+export const questIcons: Record<QuestCategory, ElementType> = {
     mindfulness: Flame,
     hydration: Droplet,
     gratitude: BookOpen,
@@ -41,7 +42,7 @@ interface Quest {
     category: QuestCategory;
 }
   
-export type QuestWithStatus = Quest & { status: QuestStatus; icon: React.ElementType };
+export type QuestWithStatus = Quest & { status: QuestStatus };
 
 export const badges = {
     'daily_complete': { name: 'Daily Champion', icon: '🏆', description: "Your goals for today have been completed! Come back tomorrow for new adventures." },
@@ -49,3 +50,5 @@ export const badges = {
     'zen_master': { name: 'Zen Master', icon: '🧘', description: 'Completed 10 meditation sessions!' },
 }
 export type BadgeKey = keyof typeof badges;
+
+    
