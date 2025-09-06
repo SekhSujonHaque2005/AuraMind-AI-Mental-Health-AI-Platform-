@@ -331,7 +331,7 @@ export default function AdventuresPage() {
 
             <AnimatePresence>
                 {showBadge && (
-                     <AlertDialog open onOpenChange={() => setShowBadge(null)}>
+                     <AlertDialog open={!!showBadge} onOpenChange={(isOpen) => !isOpen && setShowBadge(null)}>
                         <AlertDialogContent className="bg-gray-900 border-amber-500/40 text-white">
                              <AlertDialogHeader className="items-center text-center">
                                 <motion.div
