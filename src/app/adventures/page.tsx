@@ -7,21 +7,23 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
-import { Flame, Droplet, BookOpen, Footprints, Star, Shield, Trophy } from 'lucide-react';
+import { Flame, Droplet, BookOpen, Footprints, Star, Shield, Trophy, Plus, BrainCircuit, Wand2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TextType from '@/components/ui/text-type';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from '@/components/ui/alert-dialog';
-import Image from 'next/image';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { db } from '@/lib/firebase';
-import { ref, onValue, set, update, get } from 'firebase/database';
+import { ref, onValue, set, update, get, push } from 'firebase/database';
 
-const quests = [
-  { id: 'water', title: 'Drink 8 glasses of water', icon: Droplet, xp: 10 },
-  { id: 'meditate', title: '10 minutes of meditation', icon: Flame, xp: 20 },
-  { id: 'journal', title: 'Gratitude journaling', icon: BookOpen, xp: 15 },
-  { id: 'walk', title: 'Go for an evening walk', icon: Footprints, xp: 15 },
-  { id: 'read', title: 'Read a book for 15 mins', icon: BookOpen, xp: 10 },
-  { id: 'no_screen', title: '30 mins no screen before bed', icon: Shield, xp: 20 },
+const defaultQuests = [
+  { id: 'water', title: 'Drink 8 glasses of water', icon: Droplet, xp: 10, isDefault: true },
+  { id: 'meditate', title: '10 minutes of meditation', icon: Flame, xp: 20, isDefault: true },
+  { id: 'journal', title: 'Gratitude journaling', icon: BookOpen, xp: 15, isDefault: true },
+  { id: 'walk', title: 'Go for an evening walk', icon: Footprints, xp: 15, isDefault: true },
+  { id: 'read', title: 'Read a book for 15 mins', icon: BookOpen, xp: 10, isDefault: true },
+  { id: 'no_screen', title: '30 mins no screen before bed', icon: Shield, xp: 20, isDefault: true },
 ];
 
 const levels = [
@@ -50,18 +52,21 @@ const itemVariants = {
     visible: { opacity: 1, y: 0, transition: { type: 'spring' } }
 };
 
-// Using a hardcoded user ID for demonstration purposes.
-// In a real app, this would come from an authentication system.
 const USER_ID = 'user_adventures_test';
 
 export default function AdventuresPage() {
+    const [allQuests, setAllQuests] = useState(defaultQuests);
     const [completedQuests, setCompletedQuests] = useState<Set<string>>(new Set());
     const [currentXp, setCurrentXp] = useState(0);
     const [showBadge, setShowBadge] = useState<BadgeKey | null>(null);
+    const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
+    const [newQuestTitle, setNewQuestTitle] = useState("");
+    const [isGeneratingAi, setIsGeneratingAi] = useState(false);
+
 
     const userRef = ref(db, `users/${USER_ID}`);
+    const userQuestsRef = ref(db, `users/${USER_ID}/customQuests`);
     
-    // Fetch initial user data
     useEffect(() => {
         const fetchInitialData = async () => {
              try {
@@ -70,13 +75,23 @@ export default function AdventuresPage() {
                     const data = snapshot.val();
                     setCurrentXp(data.xp || 0);
                     setCompletedQuests(new Set(data.completedQuests ? Object.keys(data.completedQuests) : []));
+
+                    const customQuestsData = data.customQuests || {};
+                    const customQuestsList = Object.entries(customQuestsData).map(([id, quest]: [string, any]) => ({
+                        ...quest,
+                        id,
+                        icon: Wand2,
+                        isDefault: false,
+                    }));
+                    setAllQuests([...defaultQuests, ...customQuestsList]);
+
                 } else {
-                    // Initialize user in DB if they don't exist
                     set(userRef, {
                         name: 'You',
                         xp: 0,
                         avatar: `https://i.pravatar.cc/150?u=${USER_ID}`,
-                        completedQuests: {}
+                        completedQuests: {},
+                        customQuests: {}
                     });
                 }
             } catch (error) {
@@ -99,11 +114,11 @@ export default function AdventuresPage() {
         if (newCompleted.has(questId)) {
             newCompleted.delete(questId);
             newXp -= xp;
-            set(questRef, null); // Remove from DB
+            set(questRef, null); 
         } else {
             newCompleted.add(questId);
             newXp += xp;
-            set(questRef, true); // Add to DB
+            set(questRef, true); 
         }
         
         setCompletedQuests(newCompleted);
@@ -111,11 +126,49 @@ export default function AdventuresPage() {
         updateXpInDb(newXp);
     };
 
+    const handleAddQuest = async () => {
+        if (!newQuestTitle.trim()) return;
+
+        const newQuest = {
+            title: newQuestTitle,
+            xp: 10, // Default XP for custom quests
+        };
+
+        try {
+            const newQuestRef = push(userQuestsRef);
+            await set(newQuestRef, newQuest);
+            
+            const newQuestWithId = { ...newQuest, id: newQuestRef.key!, icon: Wand2, isDefault: false };
+            setAllQuests(prev => [...prev, newQuestWithId]);
+
+            setNewQuestTitle("");
+            setIsAddQuestOpen(false);
+        } catch (error) {
+            console.error("Failed to add new quest:", error);
+        }
+    };
+
+    const handleGenerateAiQuest = () => {
+        setIsGeneratingAi(true);
+        // Placeholder for AI generation logic
+        setTimeout(() => {
+            const aiQuests = [
+                "Practice mindful breathing for 5 minutes.",
+                "Write down one thing you are proud of.",
+                "Disconnect from social media for an hour."
+            ];
+            const randomQuest = aiQuests[Math.floor(Math.random() * aiQuests.length)];
+            setNewQuestTitle(randomQuest);
+            setIsGeneratingAi(false);
+        }, 1500);
+    }
+
+
     useEffect(() => {
-        if (completedQuests.size === quests.length && !showBadge) {
+        if (completedQuests.size === allQuests.length && allQuests.length > 0 && !showBadge) {
             setShowBadge('daily_complete');
         }
-    }, [completedQuests, showBadge]);
+    }, [completedQuests, allQuests, showBadge]);
 
     const currentLevelInfo = [...levels].reverse().find(l => currentXp >= l.xpThreshold) || levels[0];
     const nextLevelInfo = levels.find(l => l.xpThreshold > currentXp);
@@ -132,7 +185,7 @@ export default function AdventuresPage() {
                     <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#f59e0b33,transparent)]"></div>
                 </div>
 
-                <div className="w-full max-w-7xl mx-auto">
+                <div className="w-full max-w-4xl mx-auto">
                     <motion.div 
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -154,38 +207,39 @@ export default function AdventuresPage() {
                             className="text-lg max-w-2xl mx-auto text-gray-400"
                         />
                     </motion.div>
-
+                    
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {/* Progress Column */}
-                        <div className="lg:col-span-1">
-                            <motion.div variants={itemVariants} initial="hidden" animate="visible">
-                                <Card className="bg-black/30 backdrop-blur-md border border-amber-500/20 rounded-2xl shadow-lg">
-                                    <CardHeader className="text-center">
-                                        <CardTitle className="text-2xl text-amber-300">Your Progress</CardTitle>
-                                        <div className="text-5xl mt-2">{currentLevelInfo.icon}</div>
-                                        <CardDescription className="text-lg font-semibold">{`Level ${currentLevelInfo.level}: ${currentLevelInfo.name}`}</CardDescription>
-                                    </CardHeader>
-                                    <CardContent className="px-6 pb-6">
-                                        <Progress value={progressToNextLevel} className="h-3 bg-amber-900/50 [&>div]:bg-gradient-to-r [&>div]:from-amber-400 [&>div]:to-orange-500" />
-                                        <div className="flex justify-between text-xs text-gray-400 mt-2">
-                                            <span>{currentXp} XP</span>
-                                            {nextLevelInfo ? <span>{nextLevelInfo.xpThreshold - currentXp} XP to next level</span> : <span>Max Level!</span>}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </motion.div>
-                        </div>
-                        
-                        {/* Quests Column */}
+                        <motion.div className="lg:col-span-1" variants={itemVariants} initial="hidden" animate="visible">
+                            <Card className="bg-black/30 backdrop-blur-md border border-amber-500/20 rounded-2xl shadow-lg">
+                                <CardHeader className="text-center">
+                                    <CardTitle className="text-2xl text-amber-300">Your Progress</CardTitle>
+                                    <div className="text-5xl mt-2">{currentLevelInfo.icon}</div>
+                                    <CardDescription className="text-lg font-semibold">{`Level ${currentLevelInfo.level}: ${currentLevelInfo.name}`}</CardDescription>
+                                </CardHeader>
+                                <CardContent className="px-6 pb-6">
+                                    <Progress value={progressToNextLevel} className="h-3 bg-amber-900/50 [&>div]:bg-gradient-to-r [&>div]:from-amber-400 [&>div]:to-orange-500" />
+                                    <div className="flex justify-between text-xs text-gray-400 mt-2">
+                                        <span>{currentXp} XP</span>
+                                        {nextLevelInfo ? <span>{nextLevelInfo.xpThreshold - currentXp} XP to next level</span> : <span>Max Level!</span>}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+
                         <div className="lg:col-span-2">
                              <motion.div variants={containerVariants} initial="hidden" animate="visible">
                                 <Card className="bg-black/30 backdrop-blur-md border border-amber-500/20 shadow-2xl shadow-amber-500/10 rounded-2xl">
-                                    <CardHeader>
-                                        <CardTitle className="text-3xl font-bold text-amber-300">Daily Quests</CardTitle>
-                                        <CardDescription className="text-gray-400">Complete these tasks to earn XP and level up!</CardDescription>
+                                    <CardHeader className="flex flex-row items-center justify-between">
+                                        <div>
+                                            <CardTitle className="text-3xl font-bold text-amber-300">Daily Quests</CardTitle>
+                                            <CardDescription className="text-gray-400">Complete tasks to earn XP and level up!</CardDescription>
+                                        </div>
+                                        <Button onClick={() => setIsAddQuestOpen(true)} className="bg-amber-500 hover:bg-amber-600 text-white">
+                                            <Plus className="mr-2 h-4 w-4" /> Add Quest
+                                        </Button>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
-                                        {quests.map(quest => (
+                                        {allQuests.map(quest => (
                                             <motion.div key={quest.id} variants={itemVariants}>
                                                 <div 
                                                     className={cn(
@@ -225,6 +279,47 @@ export default function AdventuresPage() {
                 </div>
             </div>
 
+            <Dialog open={isAddQuestOpen} onOpenChange={setIsAddQuestOpen}>
+                <DialogContent className="bg-gray-900 border-amber-500/40 text-white">
+                    <DialogHeader>
+                        <DialogTitle className="text-2xl text-amber-300">Create a New Quest</DialogTitle>
+                        <DialogDescription>
+                            Add a personal self-care task to your daily adventures. What do you want to accomplish today?
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="py-4 space-y-4">
+                        <div className="space-y-2">
+                             <Label htmlFor="quest-title" className="text-gray-400">Quest Title</Label>
+                             <Input 
+                                id="quest-title"
+                                value={newQuestTitle}
+                                onChange={(e) => setNewQuestTitle(e.target.value)}
+                                placeholder="e.g., Go for a 15-minute bike ride"
+                                className="bg-gray-800/60 border-amber-500/30 text-gray-200 focus:ring-amber-500"
+                             />
+                        </div>
+                        <div className="text-center text-gray-500 my-4">OR</div>
+                         <Button onClick={handleGenerateAiQuest} className="w-full bg-transparent border border-amber-500/40 hover:bg-amber-500/10 text-amber-300" disabled={isGeneratingAi}>
+                           {isGeneratingAi ? (
+                                <>
+                                    <BrainCircuit className="mr-2 h-4 w-4 animate-spin" />
+                                    Generating...
+                                </>
+                           ) : (
+                                <>
+                                    <BrainCircuit className="mr-2 h-4 w-4" />
+                                    Generate with AI
+                                </>
+                           )}
+                         </Button>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="ghost" onClick={() => setIsAddQuestOpen(false)}>Cancel</Button>
+                        <Button onClick={handleAddQuest} className="bg-amber-500 hover:bg-amber-600 text-white">Add Quest</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
             <AnimatePresence>
                 {showBadge && (
                      <AlertDialog open onOpenChange={() => setShowBadge(null)}>
@@ -255,7 +350,5 @@ export default function AdventuresPage() {
         </>
     );
 }
-
-    
 
     
