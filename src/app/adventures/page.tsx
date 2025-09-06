@@ -183,8 +183,9 @@ export default function AdventuresPage() {
     }
 
     const handleCloseBadge = () => {
-        setCelebrating(true);
         setShowBadge(null);
+        setCelebrating(true);
+        setTimeout(() => setCelebrating(false), 5000); // Confetti for 5 seconds
     }
 
 
@@ -202,14 +203,14 @@ export default function AdventuresPage() {
                     setLastCompletionDate(todayStr);
                     await update(userRef, { streak: newStreak, lastCompletionDate: todayStr });
 
-                    if (!showBadge && !celebrating) {
+                    if (!showBadge) {
                         setShowBadge('daily_complete');
                     }
                 }
             }
         };
         checkAllQuestsCompleted();
-    }, [completedQuests, allQuests, lastCompletionDate, streak, userRef, showBadge, celebrating]);
+    }, [completedQuests, allQuests, lastCompletionDate, streak, userRef, showBadge]);
 
     const currentLevelInfo = [...levels].reverse().find(l => currentXp >= l.xpThreshold) || levels[0];
     const nextLevelInfo = levels.find(l => l.xpThreshold > currentXp);
@@ -221,8 +222,8 @@ export default function AdventuresPage() {
     return (
         <>
             {celebrating && (
-                <div className="fixed inset-0 z-[9999]">
-                    <Confetti recycle={true} numberOfPieces={200} />
+                <div className="fixed inset-0 z-50 pointer-events-none">
+                    <Confetti recycle={false} numberOfPieces={400} />
                 </div>
             )}
             <div className="relative min-h-screen p-4 md:p-8 overflow-x-hidden">
@@ -380,7 +381,7 @@ export default function AdventuresPage() {
 
             <AnimatePresence>
                 {showBadge && (
-                     <AlertDialog open={!!showBadge} onOpenChange={(isOpen) => !isOpen && handleCloseBadge()}>
+                     <AlertDialog open={!!showBadge}>
                         <AlertDialogContent className="bg-gray-900 border-amber-500/40 text-white">
                              <AlertDialogHeader className="items-center text-center">
                                 <motion.div
@@ -408,5 +409,7 @@ export default function AdventuresPage() {
         </>
     );
 }
+
+    
 
     
