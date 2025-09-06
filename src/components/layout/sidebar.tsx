@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MessageSquare, BookUser, BrainCircuit, Feather, ShieldCheck, FileQuestion } from 'lucide-react';
+import { MessageSquare, BookUser, Users, Feather, ShieldCheck, FileQuestion } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import React from 'react';
@@ -12,7 +12,7 @@ import { useChat } from '@/contexts/ChatContext';
 const navItems = [
   { href: '/', label: 'Chat', icon: MessageSquare },
   { href: '/resources', label: 'Resources', icon: BookUser },
-  { href: '/consultant', label: 'AI Consultant', icon: BrainCircuit },
+  { href: '/consultant', label: 'AI Consultant', icon: Users },
   { href: '/calm', label: 'Calm Room', icon: Feather },
   { href: '/adventures', label: 'Adventures', icon: ShieldCheck },
   { href: '/quizzes', label: 'Quizzes', icon: FileQuestion },
