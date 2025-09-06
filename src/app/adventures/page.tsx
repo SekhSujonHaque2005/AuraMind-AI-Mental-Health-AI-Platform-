@@ -32,13 +32,6 @@ const levels = [
   { level: 5, name: 'Zen Master', xpThreshold: 1000, icon: '🧘‍♀️' },
 ];
 
-const initialLeaderboard = [
-    { name: 'Alex', xp: 2450, avatar: 'https://i.pravatar.cc/150?u=alex' },
-    { name: 'Sarah', xp: 2310, avatar: 'https://i.pravatar.cc/150?u=sarah' },
-    { name: 'Mike', xp: 2050, avatar: 'https://i.pravatar.cc/150?u=mike' },
-    { name: 'Jenna', xp: 1890, avatar: 'https://i.pravatar.cc/150?u=jenna' },
-]
-
 const badges = {
     'daily_complete': { name: 'Daily Champion', icon: '🏆', description: 'You completed all quests for the day!' },
     'consistency_hero': { name: 'Consistency Hero', icon: '💪', description: 'Completed quests 3 days in a row!' },
@@ -64,7 +57,6 @@ const USER_ID = 'user_adventures_test';
 export default function AdventuresPage() {
     const [completedQuests, setCompletedQuests] = useState<Set<string>>(new Set());
     const [currentXp, setCurrentXp] = useState(0);
-    const [leaderboardData, setLeaderboardData] = useState<{name: string, xp: number, avatar: string}[]>([]);
     const [showBadge, setShowBadge] = useState<BadgeKey | null>(null);
 
     const userRef = ref(db, `users/${USER_ID}`);
@@ -92,34 +84,6 @@ export default function AdventuresPage() {
             }
         };
         fetchInitialData();
-    }, []);
-
-    // Listen for leaderboard changes
-    useEffect(() => {
-        const leaderboardRef = ref(db, 'users');
-        const unsubscribe = onValue(leaderboardRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                const loadedUsers = Object.entries(data).map(([id, userData]: [string, any]) => ({
-                    id,
-                    name: userData.name || 'Anonymous',
-                    xp: userData.xp || 0,
-                    avatar: userData.avatar || 'https://i.pravatar.cc/150?u=anonymous'
-                }));
-                // Sort by XP descending and take top 5
-                const sortedLeaderboard = loadedUsers.sort((a, b) => b.xp - a.xp).slice(0, 5);
-                setLeaderboardData(sortedLeaderboard);
-            } else {
-                // Seed initial data if leaderboard is empty
-                initialLeaderboard.forEach(user => {
-                    const id = user.name === 'You' ? USER_ID : user.name.toLowerCase();
-                    set(ref(db, `users/${id}`), user);
-                });
-            }
-        });
-
-        // Cleanup subscription on unmount
-        return () => unsubscribe();
     }, []);
 
     const updateXpInDb = useCallback((newXp: number) => {
@@ -192,6 +156,26 @@ export default function AdventuresPage() {
                     </motion.div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        {/* Progress Column */}
+                        <div className="lg:col-span-1">
+                            <motion.div variants={itemVariants} initial="hidden" animate="visible">
+                                <Card className="bg-black/30 backdrop-blur-md border border-amber-500/20 rounded-2xl shadow-lg">
+                                    <CardHeader className="text-center">
+                                        <CardTitle className="text-2xl text-amber-300">Your Progress</CardTitle>
+                                        <div className="text-5xl mt-2">{currentLevelInfo.icon}</div>
+                                        <CardDescription className="text-lg font-semibold">{`Level ${currentLevelInfo.level}: ${currentLevelInfo.name}`}</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="px-6 pb-6">
+                                        <Progress value={progressToNextLevel} className="h-3 bg-amber-900/50 [&>div]:bg-gradient-to-r [&>div]:from-amber-400 [&>div]:to-orange-500" />
+                                        <div className="flex justify-between text-xs text-gray-400 mt-2">
+                                            <span>{currentXp} XP</span>
+                                            {nextLevelInfo ? <span>{nextLevelInfo.xpThreshold - currentXp} XP to next level</span> : <span>Max Level!</span>}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </motion.div>
+                        </div>
+                        
                         {/* Quests Column */}
                         <div className="lg:col-span-2">
                              <motion.div variants={containerVariants} initial="hidden" animate="visible">
@@ -236,45 +220,6 @@ export default function AdventuresPage() {
                                     </CardContent>
                                 </Card>
                              </motion.div>
-                        </div>
-                        
-                        {/* Progress & Leaderboard Column */}
-                        <div className="space-y-8">
-                            <motion.div variants={itemVariants} initial="hidden" animate="visible">
-                                <Card className="bg-black/30 backdrop-blur-md border border-amber-500/20 rounded-2xl shadow-lg">
-                                    <CardHeader className="text-center">
-                                        <CardTitle className="text-2xl text-amber-300">Your Progress</CardTitle>
-                                        <div className="text-5xl mt-2">{currentLevelInfo.icon}</div>
-                                        <CardDescription className="text-lg font-semibold">{`Level ${currentLevelInfo.level}: ${currentLevelInfo.name}`}</CardDescription>
-                                    </CardHeader>
-                                    <CardContent className="px-6 pb-6">
-                                        <Progress value={progressToNextLevel} className="h-3 bg-amber-900/50 [&>div]:bg-gradient-to-r [&>div]:from-amber-400 [&>div]:to-orange-500" />
-                                        <div className="flex justify-between text-xs text-gray-400 mt-2">
-                                            <span>{currentXp} XP</span>
-                                            {nextLevelInfo ? <span>{nextLevelInfo.xpThreshold - currentXp} XP to next level</span> : <span>Max Level!</span>}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </motion.div>
-                            <motion.div variants={itemVariants} initial="hidden" animate="visible">
-                                <Card className="bg-black/30 backdrop-blur-md border border-amber-500/20 rounded-2xl shadow-lg">
-                                    <CardHeader>
-                                        <CardTitle className="text-2xl text-amber-300">Leaderboard</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <ul className="space-y-3">
-                                            {leaderboardData.map((user, index) => (
-                                                <li key={user.name} className={cn("flex items-center gap-4 p-2 rounded-lg", user.name === 'You' && 'bg-amber-500/10')}>
-                                                    <span className="font-bold text-lg text-gray-400 w-6 text-center">{index + 1}</span>
-                                                     <Image src={user.avatar} alt={user.name} width={40} height={40} className="rounded-full" data-ai-hint="person avatar"/>
-                                                    <span className="font-medium text-white flex-grow">{user.name}</span>
-                                                    <span className="font-bold text-amber-400">{user.xp} XP</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </CardContent>
-                                </Card>
-                            </motion.div>
                         </div>
                     </div>
                 </div>
