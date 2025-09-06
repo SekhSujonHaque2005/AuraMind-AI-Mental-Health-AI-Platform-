@@ -20,7 +20,7 @@ import Confetti from 'react-confetti';
 import { isToday, isYesterday, formatISO, startOfToday } from 'date-fns';
 import TimerModal from '@/components/adventures/timer-modal';
 import BadgeDialog from '@/components/adventures/badge-dialog';
-import { questIcons, defaultQuests, type QuestCategory, type QuestStatus, type QuestWithStatus, type BadgeKey } from '@/app/adventures/types';
+import { questIcons, defaultQuests, levels, type QuestCategory, type QuestStatus, type QuestWithStatus, type BadgeKey } from '@/app/adventures/types';
 
 
 const containerVariants = {
@@ -431,7 +431,3 @@ export default function AdventuresPage() {
         </>
     );
 }
-
-    
-
-    
