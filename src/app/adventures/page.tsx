@@ -177,18 +177,15 @@ export default function AdventuresPage() {
 
     const handleCloseBadge = () => {
         setCelebrating(true);
-        setTimeout(() => {
-            setShowBadge(null);
-            setCelebrating(false);
-        }, 5000); // Confetti duration increased to 5 seconds
+        setShowBadge(null);
     }
 
 
     useEffect(() => {
-        if (completedQuests.size === allQuests.length && allQuests.length > 0 && !showBadge) {
+        if (completedQuests.size === allQuests.length && allQuests.length > 0 && !showBadge && !celebrating) {
             setShowBadge('daily_complete');
         }
-    }, [completedQuests, allQuests, showBadge]);
+    }, [completedQuests, allQuests, showBadge, celebrating]);
 
     const currentLevelInfo = [...levels].reverse().find(l => currentXp >= l.xpThreshold) || levels[0];
     const nextLevelInfo = levels.find(l => l.xpThreshold > currentXp);
@@ -201,7 +198,7 @@ export default function AdventuresPage() {
         <>
             {celebrating && (
                 <div className="fixed inset-0 z-[9999]">
-                    <Confetti recycle={false} numberOfPieces={500} />
+                    <Confetti recycle={true} numberOfPieces={200} />
                 </div>
             )}
             <div className="relative min-h-screen p-4 md:p-8 overflow-x-hidden">
@@ -375,5 +372,3 @@ export default function AdventuresPage() {
         </>
     );
 }
-
-    
