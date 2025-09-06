@@ -27,6 +27,7 @@ const TimerModal = ({
     const [timeLeft, setTimeLeft] = useState(duration);
     const [stage, setStage] = useState<'running' | 'confirming'>('running');
     const [confirmationTimeLeft, setConfirmationTimeLeft] = useState(CONFIRMATION_TIMEOUT);
+    const [isTimedOut, setIsTimedOut] = useState(false);
 
     // Effect to handle the main countdown logic
     useEffect(() => {
@@ -36,6 +37,7 @@ const TimerModal = ({
         setTimeLeft(duration);
         setStage('running');
         setConfirmationTimeLeft(CONFIRMATION_TIMEOUT);
+        setIsTimedOut(false);
 
         const interval = setInterval(() => {
             setTimeLeft(prev => {
@@ -61,16 +63,23 @@ const TimerModal = ({
                 if (prev > 1) {
                     return prev - 1;
                 }
-                // Confirmation time ran out, fail the quest
-                onFail();
-                onClose();
+                // Confirmation time ran out, mark as timed out
+                setIsTimedOut(true);
                 clearInterval(confirmationInterval);
                 return 0;
             });
         }, 1000);
 
         return () => clearInterval(confirmationInterval);
-    }, [stage, isOpen, onFail, onClose]);
+    }, [stage, isOpen]);
+
+    // Effect to handle the side-effect of failing/closing after timeout
+    useEffect(() => {
+        if(isTimedOut) {
+            onFail();
+            onClose();
+        }
+    }, [isTimedOut, onFail, onClose]);
     
     if (!isOpen) {
         return null;
