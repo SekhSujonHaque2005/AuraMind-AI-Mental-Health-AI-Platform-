@@ -19,6 +19,7 @@ export type GenerateSelfCareQuestInput = z.infer<typeof GenerateSelfCareQuestInp
 
 const GenerateSelfCareQuestOutputSchema = z.object({
   quest: z.string().describe('A new, short, actionable self-care quest.'),
+  duration: z.number().nullable().describe('An optional suggested duration for the quest in seconds (e.g., 300 for 5 minutes). Return null if not applicable.'),
 });
 export type GenerateSelfCareQuestOutput = z.infer<typeof GenerateSelfCareQuestOutputSchema>;
 
@@ -40,12 +41,14 @@ The quest should be:
 - Focused on mental wellness, mindfulness, or simple self-care.
 - Different from the quests the user already has.
 
+Now, also suggest a reasonable duration for this quest in seconds. For example, a 5-minute meditation would be 300 seconds. If the quest is instantaneous (like "Compliment a stranger"), the duration should be null.
+
 Here are the user's existing quests:
 {{#each existingQuests}}
 - {{{this}}}
 {{/each}}
 
-Generate one new quest suggestion.
+Generate one new quest suggestion with its duration.
 `,
 });
 
@@ -60,7 +63,7 @@ const generateQuestFlow = ai.defineFlow(
     
     if (!output) {
         // Fallback in case the AI fails to generate a response.
-        return { quest: "Take five deep, calming breaths." };
+        return { quest: "Take five deep, calming breaths.", duration: 60 };
     }
 
     return output;

@@ -35,6 +35,11 @@ const itemVariants = {
 
 const USER_ID = 'user_adventures_test';
 
+interface NewQuestInfo {
+    title: string;
+    duration: number | null;
+}
+
 export default function AdventuresPage() {
     const [allQuests, setAllQuests] = useState<QuestWithStatus[]>([]);
     const [questStatuses, setQuestStatuses] = useState<Record<string, QuestStatus>>({});
@@ -43,7 +48,7 @@ export default function AdventuresPage() {
     const [lastCompletionDate, setLastCompletionDate] = useState<string | null>(null);
     const [showBadge, setShowBadge] = useState<BadgeKey | null>(null);
     const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
-    const [newQuestTitle, setNewQuestTitle] = useState("");
+    const [newQuestInfo, setNewQuestInfo] = useState<NewQuestInfo>({ title: "", duration: null });
     const [isGeneratingAi, startTransition] = useTransition();
     const [celebrating, setCelebrating] = useState(false);
     const [activeTimerQuest, setActiveTimerQuest] = useState<QuestWithStatus | null>(null);
@@ -157,11 +162,11 @@ export default function AdventuresPage() {
 
 
     const handleAddQuest = async () => {
-        if (!newQuestTitle.trim()) return;
+        if (!newQuestInfo.title.trim()) return;
         const newQuestData = {
-            title: newQuestTitle,
+            title: newQuestInfo.title,
             xp: 10,
-            duration: null,
+            duration: newQuestInfo.duration || null,
             category: 'custom' as QuestCategory,
             isDefault: false,
         };
@@ -171,7 +176,7 @@ export default function AdventuresPage() {
             const newQuestWithId: QuestWithStatus = { ...newQuestData, id: newQuestRef.key!, status: 'idle' };
             setAllQuests(prev => [...prev, newQuestWithId]);
             setQuestStatuses(prev => ({ ...prev, [newQuestWithId.id]: 'idle' }));
-            setNewQuestTitle("");
+            setNewQuestInfo({ title: "", duration: null });
             setIsAddQuestOpen(false);
         } catch (error) {
             console.error("Failed to add new quest:", error);
@@ -185,7 +190,7 @@ export default function AdventuresPage() {
             if (result.error) {
                 toast({ variant: 'destructive', title: 'AI Generation Failed', description: result.error });
             } else if (result.quest) {
-                setNewQuestTitle(result.quest);
+                setNewQuestInfo({ title: result.quest, duration: result.duration || null });
                  toast({ title: 'AI Quest Generated!', description: 'Your new quest is ready to be added.' });
             }
         });
@@ -379,8 +384,8 @@ export default function AdventuresPage() {
                              <Label htmlFor="quest-title" className="text-gray-400">Quest Title</Label>
                              <Input 
                                 id="quest-title"
-                                value={newQuestTitle}
-                                onChange={(e) => setNewQuestTitle(e.target.value)}
+                                value={newQuestInfo.title}
+                                onChange={(e) => setNewQuestInfo(prev => ({...prev, title: e.target.value}))}
                                 placeholder="e.g., Go for a 15-minute bike ride"
                                 className="bg-gray-800/60 border-amber-500/30 text-gray-200 focus:ring-amber-500"
                              />
