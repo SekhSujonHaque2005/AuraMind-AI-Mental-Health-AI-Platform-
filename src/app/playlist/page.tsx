@@ -3,9 +3,8 @@
 
 import { useState, useRef, useEffect, useCallback, useId, useMemo, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Pause, Music, Volume2, X, SkipForward, SkipBack, Repeat, Shuffle, VolumeX, Search, Wand2, Loader2 } from 'lucide-react';
+import { Play, Pause, Music, Volume2, X, SkipForward, SkipBack, Repeat, Shuffle, VolumeX, Search, Wand2, Loader2, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useOutsideClick } from '@/hooks/use-outside-click';
 import { Slider } from '@/components/ui/slider';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
@@ -13,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { findTrackWithAI } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import type { Track } from '@/app/playlist/types';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import TextType from '@/components/ui/text-type';
 
 const staticTracks: Track[] = [
@@ -267,33 +266,61 @@ const staticTracks: Track[] = [
   { id: 908, title: 'Chakra Balancing Sounds', category: 'Meditation', duration: '14:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Tones for each of the 7 chakras.', src: 'https://images.unsplash.com/photo-1558537348-4359cb3a514d?q=80&w=2670&auto=format&fit=crop', content: () => <p>A sequence of sounds and frequencies designed to help align and balance your chakras.</p> },
 ];
 
-
-const CloseIcon = () => {
+const TrackPreview = ({ track, onPlay, isPlaying, currentTrackId }: { track: Track | null, onPlay: (track: Track) => void, isPlaying: boolean, currentTrackId: number | null }) => {
+  if (!track) {
     return (
-      <motion.svg
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0, transition: { duration: 0.05 } }}
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="h-4 w-4 text-black"
-      >
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M18 6l-12 12" />
-        <path d="M6 6l12 12" />
-      </motion.svg>
+      <div className="flex flex-col h-full items-center justify-center bg-black/30 backdrop-blur-lg border border-green-500/20 rounded-2xl p-6 text-center">
+        <Music className="h-16 w-16 text-green-400/50" />
+        <p className="mt-4 text-gray-400">Hover over a track to see details</p>
+      </div>
     );
+  }
+
+  return (
+    <>
+      <AnimatePresence>
+        <motion.div
+          key={track.id}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.5, ease: 'easeInOut' }}
+          className="w-full h-full"
+        >
+          <Card className="flex flex-col h-full bg-black/30 backdrop-blur-lg border border-green-500/20 rounded-2xl overflow-hidden shadow-2xl shadow-green-500/10">
+            <CardHeader className="p-0">
+                <div className="relative w-full h-64">
+                    <Image
+                    src={track.src}
+                    alt={track.title}
+                    fill
+                    className="object-cover"
+                    data-ai-hint="calm nature"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                </div>
+            </CardHeader>
+            <CardContent className="p-6 flex flex-col flex-grow">
+              <h3 className="text-2xl font-bold text-green-300">{track.title}</h3>
+              <p className="text-gray-400 mt-2 flex-grow mb-4">{track.description}</p>
+              <div className="text-gray-300 text-sm mb-6">{track.content()}</div>
+              
+              <Button onClick={() => onPlay(track)} className="mt-auto w-full bg-green-600 hover:bg-green-500 transition-all group">
+                {isPlaying && currentTrackId === track.id ? <Pause className="mr-2 h-5 w-5"/> : <Play className="mr-2 h-5 w-5"/>}
+                {isPlaying && currentTrackId === track.id ? 'Pause' : 'Play'}
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </AnimatePresence>
+    </>
+  );
 };
 
+
 export default function AudioPlaylistPage() {
-    const [activeCard, setActiveCard] = useState<Track | null>(null);
+    const [hoveredTrack, setHoveredTrack] = useState<Track | null>(staticTracks[0] ?? null);
     const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -312,10 +339,7 @@ export default function AudioPlaylistPage() {
 
     const { toast } = useToast();
     const audioRef = useRef<HTMLAudioElement>(null);
-    const expandableCardRef = useRef<HTMLDivElement>(null);
     const id = useId();
-
-    useOutsideClick(expandableCardRef, () => setActiveCard(null));
     
     const categories = useMemo(() => ['All', ...Array.from(new Set(staticTracks.map(t => t.category)))], []);
     
@@ -336,21 +360,6 @@ export default function AudioPlaylistPage() {
         
         return tracks;
     }, [activeFilter, searchQuery]);
-
-    useEffect(() => {
-        function onKeyDown(event: KeyboardEvent) {
-          if (event.key === "Escape") {
-            setActiveCard(null);
-          }
-        }
-        if (activeCard) {
-          document.body.style.overflow = "hidden";
-        } else {
-          document.body.style.overflow = "auto";
-        }
-        window.addEventListener("keydown", onKeyDown);
-        return () => window.removeEventListener("keydown", onKeyDown);
-    }, [activeCard]);
 
     const formatTime = (timeInSeconds: number) => {
         if (isNaN(timeInSeconds)) return '0:00';
@@ -558,7 +567,7 @@ export default function AudioPlaylistPage() {
                     />
                 </div>
                 
-                <div className="w-full max-w-6xl mx-auto mb-8 sticky top-4 z-20 px-2">
+                <div className="w-full max-w-7xl mx-auto mb-8 sticky top-4 z-20 px-2">
                     <div className="relative flex items-center gap-2 bg-gray-900/60 backdrop-blur-xl border border-green-500/20 p-2 rounded-xl shadow-lg">
                         <Search className="h-5 w-5 text-gray-400 ml-2"/>
                         <Input 
@@ -597,106 +606,62 @@ export default function AudioPlaylistPage() {
                     ))}
                 </div>
 
-                <AnimatePresence>
-                    {activeCard && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/80 backdrop-blur-sm h-full w-full z-30"
-                    />
-                    )}
-                </AnimatePresence>
-                
-                <AnimatePresence>
-                {activeCard && (
-                    <div className="fixed inset-0 grid place-items-center z-[100]" onClick={(e) => e.stopPropagation()}>
-                    <motion.button
-                        key={`button-close-${activeCard.title}-${id}`}
-                        layoutId={`close-button-${activeCard.id}-${id}`}
-                        className="flex absolute top-4 right-4 z-50 items-center justify-center bg-white/20 backdrop-blur-md rounded-full h-8 w-8 border border-white/20"
-                        onClick={() => setActiveCard(null)}
-                    >
-                        <X className="h-5 w-5 text-white" />
-                    </motion.button>
-
-                    <div className="w-full max-w-md" ref={expandableCardRef}>
-                        <Card
-                        className={cn("flex flex-col h-full bg-black/30 backdrop-blur-lg border border-green-500/20 rounded-2xl overflow-hidden shadow-2xl shadow-green-500/10")}
+                <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-8 w-full max-w-7xl mx-auto">
+                    <div className="lg:col-span-2">
+                        <motion.div 
+                            layout 
+                            className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 w-full"
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="visible"
                         >
-                            <motion.div className="relative w-full h-64" layoutId={`image-${activeCard.id}-${id}`}>
-                                <Image
-                                src={activeCard.src}
-                                alt={activeCard.title}
-                                fill
-                                className="object-cover"
-                                data-ai-hint="calm nature"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                            <AnimatePresence>
+                                {filteredTracks.map((track) => (
+                                <motion.div
+                                    layoutId={`card-${track.id}-${id}`}
+                                    key={`card-motion-${track.id}-${id}`}
+                                    variants={itemVariants}
+                                    onMouseEnter={() => setHoveredTrack(track)}
+                                    onClick={() => handlePlayPause(track)}
+                                    className={cn(
+                                        "group cursor-pointer",
+                                        aiRecommendedTrackId === track.id && 'ring-2 ring-green-400/80 rounded-2xl'
+                                    )}
+                                    id={`card-${track.id}-${id}`}
+                                >
+                                <Card
+                                    className={cn("flex flex-col h-full bg-black/30 backdrop-blur-md border hover:border-green-400/50 transition-all duration-300 transform hover:-translate-y-1 rounded-2xl overflow-hidden group")}
+                                    style={{ borderColor: hoveredTrack?.id === track.id ? 'hsl(var(--primary))' : 'hsla(var(--border))' }}
+                                    >
+                                        <div className="relative w-full h-40 overflow-hidden">
+                                            <Image
+                                                src={track.src}
+                                                alt={track.title}
+                                                fill
+                                                className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+                                                data-ai-hint="calm nature"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+
+                                            <div className="absolute bottom-4 left-4">
+                                                <h3 className="text-xl font-bold text-white tracking-tight">{track.title}</h3>
+                                            </div>
+                                        </div>
+                                    </Card>
                             </motion.div>
-                            <CardContent className="p-6 flex flex-col flex-grow">
-                                <motion.h3 layoutId={`title-${activeCard.id}-${id}`} className="text-2xl font-bold text-green-300">{activeCard.title}</motion.h3>
-                                <motion.p layoutId={`description-${activeCard.id}-${id}`} className="text-gray-400 mt-2 flex-grow mb-4">{activeCard.description}</motion.p>
-                                <motion.div layoutId={`content-${activeCard.id}-${id}`} className="text-gray-300 text-sm">{activeCard.content()}</motion.div>
-                                <motion.div layoutId={`play-button-${activeCard.id}-${id}`} className="mt-6">
-                                <Button onClick={(e) => {e.stopPropagation(); handlePlayPause(activeCard)}} className="w-full bg-green-600 hover:bg-green-500 transition-all group">
-                                    {isPlaying && currentTrack?.id === activeCard.id ? <Pause className="mr-2 h-5 w-5"/> : <Play className="mr-2 h-5 w-5"/>}
-                                    {isPlaying && currentTrack?.id === activeCard.id ? 'Pause' : 'Play'}
-                                </Button>
-                                </motion.div>
-                            </CardContent>
-                        </Card>
+                            ))}
+                            </AnimatePresence>
+                        </motion.div>
                     </div>
+                     <div className="hidden lg:block lg:col-span-1 sticky top-28 h-[calc(100vh-10rem)] max-h-[700px]">
+                        <TrackPreview 
+                            track={hoveredTrack}
+                            onPlay={handlePlayPause}
+                            isPlaying={isPlaying}
+                            currentTrackId={currentTrack?.id || null}
+                        />
                     </div>
-                )}
-                </AnimatePresence>
-
-                <motion.div 
-                    layout 
-                    className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 w-full max-w-7xl mx-auto"
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                >
-                    <AnimatePresence>
-                        {filteredTracks.map((track) => (
-                        <motion.div
-                            layoutId={`card-${track.id}-${id}`}
-                            key={`card-motion-${track.id}-${id}`}
-                            variants={itemVariants}
-                            onClick={() => setActiveCard(track)}
-                            className={cn(
-                                "group cursor-pointer",
-                                aiRecommendedTrackId === track.id && 'ring-2 ring-green-400/80 rounded-2xl'
-                            )}
-                            id={`card-${track.id}-${id}`}
-                        >
-                          <Card
-                            className={cn("flex flex-col h-full bg-black/30 backdrop-blur-md border hover:border-green-400/50 transition-all duration-300 transform hover:-translate-y-1 rounded-2xl overflow-hidden group")}
-                            style={{ borderColor: activeCard?.id === track.id ? 'hsl(var(--primary))' : 'hsla(var(--border))' }}
-                            >
-                                <motion.div className="relative w-full h-40 overflow-hidden" layoutId={`image-${track.id}-${id}`}>
-                                    <Image
-                                        src={track.src}
-                                        alt={track.title}
-                                        fill
-                                        className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
-                                        data-ai-hint="calm nature"
-                                    />
-                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-
-                                     <motion.div className="absolute bottom-4 left-4" layoutId={`title-${track.id}-${id}`}>
-                                        <h3 className="text-xl font-bold text-white tracking-tight">{track.title}</h3>
-                                     </motion.div>
-                                </motion.div>
-                                <CardContent className="p-4">
-                                     <motion.p layoutId={`description-${track.id}-${id}`} className="text-sm text-gray-400 line-clamp-2">{track.description}</motion.p>
-                                </CardContent>
-                            </Card>
-                      </motion.div>
-                    ))}
-                    </AnimatePresence>
-                </motion.div>
+                </div>
 
                 <audio ref={audioRef} />
             </div>
