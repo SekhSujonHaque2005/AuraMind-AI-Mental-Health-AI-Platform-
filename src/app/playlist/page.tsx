@@ -541,7 +541,7 @@ export default function AudioPlaylistPage() {
                     <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#22c55e33,transparent)]"></div>
                 </div>
 
-                <div className="text-center my-12">
+                <div className="text-center my-12 flex flex-col items-center">
                     <TextType
                         as="h1"
                         text="Audio Playlist"
