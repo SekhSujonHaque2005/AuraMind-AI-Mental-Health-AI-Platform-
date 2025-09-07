@@ -222,7 +222,8 @@ export default function AdventuresPage() {
             }
         };
         checkAllQuestsCompleted();
-    }, [questsWithLiveStatus, lastCompletionDate, streak, userRef, showBadge]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [questsWithLiveStatus, lastCompletionDate, streak, userRef]);
 
     
     const totalDailyXp = questsWithLiveStatus.reduce((sum, quest) => sum + quest.xp, 0);
