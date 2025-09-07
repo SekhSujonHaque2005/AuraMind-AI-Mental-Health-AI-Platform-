@@ -486,17 +486,11 @@ export default function AudioPlaylistPage() {
                 toast({ variant: 'destructive', title: 'AI Search Failed', description: result.error });
                 setAiRecommendedTrackId(null);
             } else if (result.trackId) {
-                setAiRecommendedTrackId(result.trackId);
                 const recommendedTrack = staticTracks.find(t => t.id === result.trackId);
                 if (recommendedTrack) {
                     setActiveFilter(recommendedTrack.category);
+                    setAiRecommendedTrackId(result.trackId); // Set the ID to trigger useEffect
                     toast({ title: 'AI Recommendation', description: `Found "${recommendedTrack.title}" for you.` });
-
-                    // Scroll to the recommended card
-                    setTimeout(() => {
-                        const cardElement = document.getElementById(`card-${recommendedTrack.title}-${id}`);
-                        cardElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 100);
                 }
             } else {
                  toast({ title: 'No specific match found', description: 'Try refining your search query.' });
@@ -511,13 +505,18 @@ export default function AudioPlaylistPage() {
             handleAiSearch();
         }
     };
-
+    
     useEffect(() => {
         if (aiRecommendedTrackId) {
+            const cardElement = document.getElementById(`card-${aiRecommendedTrackId}-${id}`);
+            if (cardElement) {
+                cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
             const timer = setTimeout(() => setAiRecommendedTrackId(null), 3000);
             return () => clearTimeout(timer);
         }
-    }, [aiRecommendedTrackId]);
+    }, [aiRecommendedTrackId, id]);
+
 
     return (
         <>
@@ -588,11 +587,11 @@ export default function AudioPlaylistPage() {
                             <CloseIcon />
                         </motion.button>
                         <motion.div
-                        layoutId={`card-${activeCard.title}-${id}`}
+                        layoutId={`card-${activeCard.id}-${id}`}
                         ref={expandableCardRef}
                         className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-gray-900 sm:rounded-3xl overflow-hidden"
                         >
-                        <motion.div layoutId={`image-${activeCard.title}-${id}`}>
+                        <motion.div layoutId={`image-${activeCard.id}-${id}`}>
                             <Image
                                 width={500}
                                 height={320}
@@ -607,20 +606,20 @@ export default function AudioPlaylistPage() {
                             <div className="flex justify-between items-start p-4">
                             <div className="">
                                 <motion.h3
-                                layoutId={`title-${activeCard.title}-${id}`}
+                                layoutId={`title-${activeCard.id}-${id}`}
                                 className="font-bold text-neutral-200"
                                 >
                                 {activeCard.title}
                                 </motion.h3>
                                 <motion.p
-                                layoutId={`description-${activeCard.description}-${id}`}
+                                layoutId={`description-${activeCard.id}-${id}`}
                                 className="text-neutral-400"
                                 >
                                 {activeCard.description}
                                 </motion.p>
                             </div>
 
-                            <motion.div layoutId={`button-${activeCard.title}-${id}`}>
+                            <motion.div layoutId={`button-${activeCard.id}-${id}`}>
                                 <Button size="icon" className="bg-green-600 hover:bg-green-500 rounded-full w-12 h-12" onClick={() => handlePlayPause(activeCard)}>
                                     {(isPlaying && currentTrack?.id === activeCard.id) ? <Pause className="h-6 w-6"/> : <Play className="h-6 w-6"/>}
                                 </Button>
@@ -648,13 +647,9 @@ export default function AudioPlaylistPage() {
                     <AnimatePresence>
                         {filteredTracks.map((track) => (
                         <motion.div
-                            id={`card-${track.title}-${id}`}
-                            layout
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                            key={`card-${track.title}-${id}`}
+                            id={`card-${track.id}-${id}`}
+                            layoutId={`card-${track.id}-${id}`}
+                            key={`card-${track.id}-${id}`}
                             onClick={() => setActiveCard(track)}
                             className={cn(
                                 "p-4 flex flex-col md:flex-row justify-between items-center bg-gray-900/50 hover:bg-gray-800/70 rounded-xl cursor-pointer border border-green-500/10 hover:border-green-500/30 transition-all",
@@ -662,7 +657,7 @@ export default function AudioPlaylistPage() {
                             )}
                         >
                             <div className="flex gap-4 flex-col md:flex-row items-center w-full">
-                            <motion.div layoutId={`image-${track.title}-${id}`}>
+                            <motion.div layoutId={`image-${track.id}-${id}`}>
                                 <Image
                                     width={56}
                                     height={56}
@@ -674,20 +669,20 @@ export default function AudioPlaylistPage() {
                             </motion.div>
                             <div className="flex-grow">
                                 <motion.h3
-                                layoutId={`title-${track.title}-${id}`}
+                                layoutId={`title-${track.id}-${id}`}
                                 className="font-medium text-neutral-200 text-center md:text-left"
                                 >
                                 {track.title}
                                 </motion.h3>
                                 <motion.p
-                                layoutId={`description-${track.description}-${id}`}
+                                layoutId={`description-${track.id}-${id}`}
                                 className="text-neutral-400 text-center md:text-left text-sm"
                                 >
                                 {track.description}
                                 </motion.p>
                             </div>
                             <motion.div
-                                layoutId={`button-${track.title}-${id}`}
+                                layoutId={`button-${track.id}-${id}`}
                                 className="mt-4 md:mt-0 flex-shrink-0"
                             >
                                 <Button size="icon" className="bg-green-600 hover:bg-green-500 rounded-full" onClick={(e) => { e.stopPropagation(); handlePlayPause(track); }}>
