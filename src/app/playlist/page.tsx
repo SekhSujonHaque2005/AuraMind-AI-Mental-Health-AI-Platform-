@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useRef, useEffect, useCallback, useId } from 'react';
+import { useState, useRef, useEffect, useCallback, useId, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Play, Pause, Music, Volume2, X, SkipForward, SkipBack, Repeat, Shuffle, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -65,7 +65,7 @@ const staticTracks: Track[] = [
   },
   {
     id: 5,
-    title: 'Deep Focus',
+    title: 'Deep Focus (50Hz)',
     description: 'Binaural beats for concentration.',
     category: 'Binaural',
     duration: '6:12',
@@ -80,7 +80,7 @@ const staticTracks: Track[] = [
     category: 'Soundscape',
     duration: '7:30',
     url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-6.mp3?alt=media&token=8d48a04b-3c48-4334-a151-dd2199127814',
-    src: 'https://images.unsplash.com/photo-1515542706-9ab635001a47?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    src: 'https://images.unsplash.com/photo-1515542706-9ab635001a47?q=80&w=2670&auto=format&fit=crop&ixlib.rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     content: () => <p>The comforting sound of rain tapping on a window pane, mixed with the subtle, warm ambiance of a quiet coffee shop. Ideal for reading, studying, or simply relaxing on a cozy afternoon.</p>,
   },
   {
@@ -110,7 +110,7 @@ const staticTracks: Track[] = [
     category: 'Meditation',
     duration: '9:15',
     url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841',
-    src: 'https://images.unsplash.com/photo-1544928140-65c382185a6a?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    src: 'https://images.unsplash.com/photo-1544928140-65c382185a6a?q=80&w=2670&auto=format&fit=crop&ixlib.rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     content: () => <p>The resonant, healing sounds of Tibetan singing bowls. This track is designed for deep meditation, helping to balance your chakras and promote a sense of inner peace and clarity.</p>,
   },
   {
@@ -172,6 +172,7 @@ export default function AudioPlaylistPage() {
     const [isLooping, setIsLooping] = useState(false);
     const [isShuffled, setIsShuffled] = useState(false);
     const [shuffledTracks, setShuffledTracks] = useState<Track[]>([]);
+    const [activeFilter, setActiveFilter] = useState('All');
 
 
     const audioRef = useRef<HTMLAudioElement>(null);
@@ -179,6 +180,13 @@ export default function AudioPlaylistPage() {
     const id = useId();
 
     useOutsideClick(expandableCardRef, () => setActiveCard(null));
+    
+    const categories = useMemo(() => ['All', ...Array.from(new Set(staticTracks.map(t => t.category)))], []);
+    
+    const filteredTracks = useMemo(() => {
+        if (activeFilter === 'All') return staticTracks;
+        return staticTracks.filter(t => t.category === activeFilter);
+    }, [activeFilter]);
 
     useEffect(() => {
         function onKeyDown(event: KeyboardEvent) {
@@ -248,7 +256,7 @@ export default function AudioPlaylistPage() {
 
     useEffect(() => {
         const audio = audioRef.current;
-        if (!audio) return;
+        if (!audio || !currentTrack) return;
 
         const updateProgress = () => {
             setProgress((audio.currentTime / audio.duration) * 100 || 0);
@@ -326,6 +334,25 @@ export default function AudioPlaylistPage() {
                     <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-br from-green-400 to-emerald-600">Audio Playlist</h1>
                     <p className="text-lg max-w-2xl mx-auto text-gray-400">A curated selection of sounds for focus, relaxation, and mindfulness.</p>
                 </div>
+                
+                <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
+                    {categories.map(category => (
+                        <Button
+                            key={category}
+                            variant={activeFilter === category ? "default" : "outline"}
+                            onClick={() => setActiveFilter(category)}
+                            className={cn(
+                                "rounded-full transition-all duration-300",
+                                activeFilter === category
+                                    ? 'bg-green-600 hover:bg-green-500 text-white'
+                                    : 'bg-gray-800/50 border-green-500/20 text-green-300 hover:bg-gray-800 hover:text-green-200'
+                            )}
+                        >
+                            {category}
+                        </Button>
+                    ))}
+                </div>
+
 
                 <AnimatePresence>
                     {activeCard && (
@@ -404,52 +431,58 @@ export default function AudioPlaylistPage() {
                     </div>
                     ) : null}
                 </AnimatePresence>
-
-                <ul className="w-full max-w-2xl mx-auto gap-4 flex flex-col">
-                    {staticTracks.map((track) => (
-                    <motion.div
-                        layoutId={`card-${track.title}-${id}`}
-                        key={`card-${track.title}-${id}`}
-                        onClick={() => setActiveCard(track)}
-                        className="p-4 flex flex-col md:flex-row justify-between items-center bg-gray-900/50 hover:bg-gray-800/70 rounded-xl cursor-pointer border border-green-500/10 hover:border-green-500/30 transition-colors"
-                    >
-                        <div className="flex gap-4 flex-col md:flex-row items-center">
-                        <motion.div layoutId={`image-${track.title}-${id}`}>
-                            <Image
-                                width={56}
-                                height={56}
-                                src={track.src}
-                                alt={track.title}
-                                className="h-20 w-20 md:h-14 md:w-14 rounded-lg object-cover object-top"
-                                data-ai-hint="calm nature"
-                            />
-                        </motion.div>
-                        <div className="">
-                            <motion.h3
-                            layoutId={`title-${track.title}-${id}`}
-                            className="font-medium text-neutral-200 text-center md:text-left"
-                            >
-                            {track.title}
-                            </motion.h3>
-                            <motion.p
-                            layoutId={`description-${track.description}-${id}`}
-                            className="text-neutral-400 text-center md:text-left text-sm"
-                            >
-                            {track.description}
-                            </motion.p>
-                        </div>
-                        </div>
+                
+                <motion.ul layout className="w-full max-w-2xl mx-auto gap-4 flex flex-col">
+                    <AnimatePresence>
+                        {filteredTracks.map((track) => (
                         <motion.div
-                        layoutId={`button-${track.title}-${id}`}
-                        className="mt-4 md:mt-0"
+                            layout
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            key={`card-${track.title}-${id}`}
+                            onClick={() => setActiveCard(track)}
+                            className="p-4 flex flex-col md:flex-row justify-between items-center bg-gray-900/50 hover:bg-gray-800/70 rounded-xl cursor-pointer border border-green-500/10 hover:border-green-500/30 transition-colors"
                         >
-                            <Button size="icon" className="bg-green-600 hover:bg-green-500 rounded-full" onClick={(e) => { e.stopPropagation(); handlePlayPause(track); }}>
-                                {(isPlaying && currentTrack?.id === track.id) ? <Pause className="h-5 w-5"/> : <Play className="h-5 w-5"/>}
-                            </Button>
+                            <div className="flex gap-4 flex-col md:flex-row items-center w-full">
+                            <motion.div layoutId={`image-${track.title}-${id}`}>
+                                <Image
+                                    width={56}
+                                    height={56}
+                                    src={track.src}
+                                    alt={track.title}
+                                    className="h-20 w-20 md:h-14 md:w-14 rounded-lg object-cover object-top"
+                                    data-ai-hint="calm nature"
+                                />
+                            </motion.div>
+                            <div className="flex-grow">
+                                <motion.h3
+                                layoutId={`title-${track.title}-${id}`}
+                                className="font-medium text-neutral-200 text-center md:text-left"
+                                >
+                                {track.title}
+                                </motion.h3>
+                                <motion.p
+                                layoutId={`description-${track.description}-${id}`}
+                                className="text-neutral-400 text-center md:text-left text-sm"
+                                >
+                                {track.description}
+                                </motion.p>
+                            </div>
+                            <motion.div
+                                layoutId={`button-${track.title}-${id}`}
+                                className="mt-4 md:mt-0 flex-shrink-0"
+                            >
+                                <Button size="icon" className="bg-green-600 hover:bg-green-500 rounded-full" onClick={(e) => { e.stopPropagation(); handlePlayPause(track); }}>
+                                    {(isPlaying && currentTrack?.id === track.id) ? <Pause className="h-5 w-5"/> : <Play className="h-5 w-5"/>}
+                                </Button>
+                            </motion.div>
+                            </div>
                         </motion.div>
-                    </motion.div>
-                    ))}
-                </ul>
+                        ))}
+                    </AnimatePresence>
+                </motion.ul>
 
                 <audio ref={audioRef} />
             </div>
@@ -535,4 +568,3 @@ export default function AudioPlaylistPage() {
         </>
     );
 }
-
