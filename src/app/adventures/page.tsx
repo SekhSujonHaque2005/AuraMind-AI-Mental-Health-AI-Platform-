@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, useCallback, useTransition, useMemo } from 'react';
+import { useState, useEffect, useCallback, useTransition, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -73,6 +73,7 @@ export default function AdventuresPage() {
                 const savedLastCompletion = data.lastCompletionDate || null;
                 setLastCompletionDate(savedLastCompletion);
                 
+                // Acknowledge completion if it's already for today
                 if (savedLastCompletion === todayStr) {
                     setDailyCompletionAcknowledged(true);
                 }
@@ -130,10 +131,12 @@ export default function AdventuresPage() {
 
         setQuestStatuses(prev => {
             const newStatuses = { ...prev, [questId]: status };
+            // Persist status to Firebase
             update(dailyStatusRef, { [questId]: status });
             return newStatuses;
         });
     }, [dailyStatusRef, questStatuses]);
+
 
     const handleCompleteQuest = (questId: string, xp: number) => {
         if (questStatuses[questId] !== 'completed') {
@@ -141,8 +144,6 @@ export default function AdventuresPage() {
             const newXp = currentXp + xp;
             setCurrentXp(newXp);
             update(userRef, { xp: newXp });
-            setShowConfetti(true);
-            setTimeout(() => setShowConfetti(false), 5000);
         }
     };
     
@@ -199,8 +200,8 @@ export default function AdventuresPage() {
 
     const handleCloseBadge = () => {
         setShowBadge(null);
-        setShowConfetti(true);
         setDailyCompletionAcknowledged(true);
+        setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 5000);
     }
     
@@ -209,12 +210,15 @@ export default function AdventuresPage() {
     }, [allQuests, questStatuses]);
 
     useEffect(() => {
+        // Check if all quests are either 'completed' or 'failed'
         const allDone = questsWithLiveStatus.length > 0 && questsWithLiveStatus.every(q => q.status === 'completed' || q.status === 'failed');
             
+        // If all quests are done and the user hasn't seen the badge for this completion set yet
         if (allDone && !dailyCompletionAcknowledged) {
             setShowBadge('daily_complete');
+            
             const todayStr = formatISO(startOfToday(), { representation: 'date' });
-
+            // Only update streak and date if it's the first time completing today
             if (lastCompletionDate !== todayStr) {
                 let newStreak = 1;
                 if (lastCompletionDate && isYesterday(new Date(lastCompletionDate))) {
@@ -436,3 +440,5 @@ export default function AdventuresPage() {
         </>
     );
 }
+
+    
