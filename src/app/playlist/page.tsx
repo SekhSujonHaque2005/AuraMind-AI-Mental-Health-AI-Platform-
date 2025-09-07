@@ -14,6 +14,7 @@ import { findTrackWithAI } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import type { Track } from '@/app/playlist/types';
 import { Card, CardContent } from '@/components/ui/card';
+import TextType from '@/components/ui/text-type';
 
 const staticTracks: Track[] = [
   // Ambient (10 tracks)
@@ -541,11 +542,23 @@ export default function AudioPlaylistPage() {
                 </div>
 
                 <div className="text-center my-12">
-                    <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-br from-green-400 to-emerald-600">Audio Playlist</h1>
-                    <p className="text-lg max-w-2xl mx-auto text-gray-400">A curated selection of sounds for focus, relaxation, and mindfulness.</p>
+                    <TextType
+                        as="h1"
+                        text="Audio Playlist"
+                        typingSpeed={60}
+                        loop={false}
+                        className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-br from-green-400 to-emerald-600"
+                    />
+                    <TextType
+                        text="A curated selection of sounds for focus, relaxation, and mindfulness."
+                        typingSpeed={20}
+                        initialDelay={1500}
+                        loop={false}
+                        className="text-lg max-w-2xl mx-auto text-gray-400"
+                    />
                 </div>
                 
-                <div className="w-full max-w-4xl mx-auto mb-8 sticky top-4 z-20 px-2">
+                <div className="w-full max-w-6xl mx-auto mb-8 sticky top-4 z-20 px-2">
                     <div className="relative flex items-center gap-2 bg-gray-900/60 backdrop-blur-xl border border-green-500/20 p-2 rounded-xl shadow-lg">
                         <Search className="h-5 w-5 text-gray-400 ml-2"/>
                         <Input 
@@ -768,5 +781,3 @@ export default function AudioPlaylistPage() {
         </>
     );
 }
-
-    
