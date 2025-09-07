@@ -268,34 +268,28 @@ const staticTracks: Track[] = [
 
 const TrackCard = ({
     track,
-    isExpanded,
-    onClick,
     onPlay,
+    onMouseEnter,
+    onMouseLeave,
     isPlaying,
 }: {
     track: Track;
-    isExpanded: boolean;
-    onClick: () => void;
     onPlay: (track: Track) => void;
+    onMouseEnter: (track: Track) => void;
+    onMouseLeave: () => void;
     isPlaying: boolean;
 }) => {
-    const cardVariants = {
-        collapsed: { height: '224px' },
-        expanded: { height: 'auto' },
-    };
-
-    const contentVariants = {
-        collapsed: { opacity: 0, height: 0, y: -10 },
-        expanded: { opacity: 1, height: 'auto', y: 0, transition: { duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] } },
-    };
-    
     return (
-        <motion.div layout="position" className="w-full">
+        <motion.div 
+            layout="position" 
+            className="w-full"
+            onMouseEnter={() => onMouseEnter(track)}
+            onMouseLeave={onMouseLeave}
+        >
             <Card
-                onClick={onClick}
+                onClick={(e) => { e.stopPropagation(); onPlay(track); }}
                 className={cn(
-                    "flex flex-col bg-black/30 backdrop-blur-md border hover:border-green-400/50 transition-all duration-300 transform hover:-translate-y-1 rounded-2xl overflow-hidden group cursor-pointer",
-                    isExpanded && "border-green-500/60"
+                    "flex flex-col bg-black/30 backdrop-blur-md border hover:border-green-400/50 transition-all duration-300 transform hover:-translate-y-1 rounded-2xl overflow-hidden group cursor-pointer"
                 )}
             >
                 <div className="relative w-full h-40 overflow-hidden">
@@ -307,43 +301,63 @@ const TrackCard = ({
                         data-ai-hint="calm nature"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div className="absolute bottom-4 left-4">
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                         <div className="bg-black/50 rounded-full p-3">
+                             {isPlaying ? <Pause className="h-8 w-8 text-white"/> : <Play className="h-8 w-8 text-white"/>}
+                         </div>
+                    </div>
+                     <div className="absolute bottom-4 left-4">
                         <h3 className="text-xl font-bold text-white tracking-tight">{track.title}</h3>
                     </div>
                 </div>
-
-                <AnimatePresence initial={false}>
-                    {isExpanded && (
-                        <motion.div
-                            key="content"
-                            initial="collapsed"
-                            animate="expanded"
-                            exit="collapsed"
-                            variants={contentVariants}
-                            className="overflow-hidden"
-                        >
-                            <CardContent className="p-4 pt-4">
-                                <p className="text-gray-400 text-sm mb-4">{track.description}</p>
-                                <div className="text-gray-300 text-sm">{track.content()}</div>
-                            </CardContent>
-                             <CardFooter className="p-4 pt-0">
-                                <Button onClick={(e) => { e.stopPropagation(); onPlay(track); }} className="w-full bg-green-600 hover:bg-green-500 transition-all group/button">
-                                    {isPlaying ? <Pause className="mr-2 h-5 w-5"/> : <Play className="mr-2 h-5 w-5"/>}
-                                    {isPlaying ? 'Pause' : 'Play'}
-                                    <ArrowRight className="ml-2 h-4 w-4 opacity-0 group-hover/button:opacity-100 group-hover/button:translate-x-1 transition-transform" />
-                                </Button>
-                            </CardFooter>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
             </Card>
         </motion.div>
     );
 };
 
+const TrackPreviewPopup = ({ track, position, onPlay, isPlaying }: { track: Track, position: { x: number, y: number }, onPlay: (track: Track) => void, isPlaying: boolean }) => {
+    return (
+        <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="fixed z-50 w-full max-w-sm pointer-events-none"
+            style={{
+                left: position.x,
+                top: position.y,
+                transform: `translate(${position.x > window.innerWidth / 2 ? '-100%' : '0%'}, -50%)`, // Adjust position based on screen half
+            }}
+        >
+            <Card className="bg-gray-900/80 backdrop-blur-lg border border-green-500/30 shadow-2xl shadow-green-500/10">
+                <CardHeader>
+                    <Image
+                        src={track.src}
+                        alt={track.title}
+                        width={400}
+                        height={200}
+                        className="rounded-t-lg object-cover w-full h-40"
+                    />
+                </CardHeader>
+                <CardContent>
+                    <h3 className="text-xl font-bold text-white">{track.title}</h3>
+                    <p className="text-gray-400 mt-2 text-sm">{track.description}</p>
+                     <div className="text-gray-300 text-sm mt-4">{track.content()}</div>
+                </CardContent>
+                <CardFooter>
+                    <Button onClick={(e) => { e.stopPropagation(); onPlay(track); }} className="w-full bg-green-600 hover:bg-green-500 transition-all group/button pointer-events-auto">
+                        {isPlaying ? <Pause className="mr-2 h-5 w-5"/> : <Play className="mr-2 h-5 w-5"/>}
+                        {isPlaying ? 'Pause' : 'Play'}
+                    </Button>
+                </CardFooter>
+            </Card>
+        </motion.div>
+    )
+}
 
 export default function AudioPlaylistPage() {
-    const [selectedTrackId, setSelectedTrackId] = useState<number | null>(null);
+    const [hoveredTrack, setHoveredTrack] = useState<Track | null>(null);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -363,6 +377,14 @@ export default function AudioPlaylistPage() {
     const { toast } = useToast();
     const audioRef = useRef<HTMLAudioElement>(null);
     const id = useId();
+    
+    useEffect(() => {
+        const handleMouseMove = (event: MouseEvent) => {
+            setMousePosition({ x: event.clientX + 20, y: event.clientY });
+        };
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
     
     const categories = useMemo(() => ['All', ...Array.from(new Set(staticTracks.map(t => t.category)))], []);
     
@@ -523,7 +545,7 @@ export default function AudioPlaylistPage() {
                 const recommendedTrack = staticTracks.find(t => t.id === result.trackId);
                 if (recommendedTrack) {
                     setActiveFilter(recommendedTrack.category);
-                    setAiRecommendedTrackId(result.trackId); // Set the ID to trigger useEffect
+                    setAiRecommendedTrackId(result.trackId);
                     toast({ title: 'AI Recommendation', description: `Found "${recommendedTrack.title}" for you.` });
                 }
             } else {
@@ -651,8 +673,8 @@ export default function AudioPlaylistPage() {
                                     <TrackCard
                                         key={track.id}
                                         track={track}
-                                        isExpanded={selectedTrackId === track.id}
-                                        onClick={() => setSelectedTrackId(prev => (prev === track.id ? null : track.id))}
+                                        onMouseEnter={setHoveredTrack}
+                                        onMouseLeave={() => setHoveredTrack(null)}
                                         onPlay={() => handlePlayPause(track)}
                                         isPlaying={isPlaying && currentTrack?.id === track.id}
                                     />
@@ -661,6 +683,18 @@ export default function AudioPlaylistPage() {
                         </AnimatePresence>
                     </motion.div>
                 </div>
+                
+                 <AnimatePresence>
+                    {hoveredTrack && (
+                        <TrackPreviewPopup 
+                            track={hoveredTrack}
+                            position={mousePosition}
+                            onPlay={() => handlePlayPause(hoveredTrack)}
+                            isPlaying={isPlaying && currentTrack?.id === hoveredTrack.id}
+                        />
+                    )}
+                 </AnimatePresence>
+
 
                 <audio ref={audioRef} />
             </div>
