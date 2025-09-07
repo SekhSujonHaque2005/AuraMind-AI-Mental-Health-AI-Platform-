@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, useCallback, useTransition, useMemo, useRef } from 'react';
+import { useState, useEffect, useCallback, useTransition, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,7 +16,7 @@ import { db } from '@/lib/firebase';
 import { ref, update, get, push, set, remove } from 'firebase/database';
 import { getAIGeneratedQuest } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import Confetti from 'react-confetti';
 import { isToday, isYesterday, formatISO, startOfToday } from 'date-fns';
 import TimerModal from '@/components/adventures/timer-modal';
 import BadgeDialog from '@/components/adventures/badge-dialog';
@@ -51,8 +51,9 @@ export default function AdventuresPage() {
     const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
     const [newQuestInfo, setNewQuestInfo] = useState<NewQuestInfo>({ title: "", description: "A custom goal to improve my well-being.", duration: null });
     const [isGeneratingAi, startTransition] = useTransition();
-    const [showConfettiAnimation, setShowConfettiAnimation] = useState(false);
+    const [showConfetti, setShowConfetti] = useState(false);
     const [activeTimerQuest, setActiveTimerQuest] = useState<QuestWithStatus | null>(null);
+    const [dailyCompletionAcknowledged, setDailyCompletionAcknowledged] = useState(false);
 
     const { toast } = useToast();
 
@@ -63,12 +64,19 @@ export default function AdventuresPage() {
     const fetchInitialData = useCallback(async () => {
          try {
             const snapshot = await get(userRef);
+            const todayStr = formatISO(startOfToday(), { representation: 'date' });
 
             if (snapshot.exists()) {
                 const data = snapshot.val();
                 setCurrentXp(data.xp || 0);
                 
                 const savedLastCompletion = data.lastCompletionDate || null;
+                setLastCompletionDate(savedLastCompletion);
+                
+                if (savedLastCompletion === todayStr) {
+                    setDailyCompletionAcknowledged(true);
+                }
+                
                 // Reset streak if a day was missed
                 if (savedLastCompletion && !isToday(new Date(savedLastCompletion)) && !isYesterday(new Date(savedLastCompletion))) {
                     setStreak(0);
@@ -76,8 +84,6 @@ export default function AdventuresPage() {
                 } else {
                     setStreak(data.streak || 0);
                 }
-                setLastCompletionDate(savedLastCompletion);
-
 
                 const customQuestsData = data.customQuests || {};
                 const customQuestsList = Object.entries(customQuestsData).map(([id, quest]: [string, any]) => ({
@@ -135,8 +141,8 @@ export default function AdventuresPage() {
             const newXp = currentXp + xp;
             setCurrentXp(newXp);
             update(userRef, { xp: newXp });
-            setShowConfettiAnimation(true);
-            setTimeout(() => setShowConfettiAnimation(false), 4000);
+            setShowConfetti(true);
+            setTimeout(() => setShowConfetti(false), 5000);
         }
     };
     
@@ -145,7 +151,6 @@ export default function AdventuresPage() {
             updateQuestStatus(questId, 'failed');
         }
     };
-
 
     const handleStartQuest = (quest: QuestWithStatus) => {
         if (quest.status !== 'idle') return;
@@ -194,30 +199,22 @@ export default function AdventuresPage() {
 
     const handleCloseBadge = () => {
         setShowBadge(null);
+        setShowConfetti(true);
+        setDailyCompletionAcknowledged(true);
+        setTimeout(() => setShowConfetti(false), 5000);
     }
-
-    const prevShowBadgeRef = useRef<BadgeKey | null>(null);
-    useEffect(() => {
-        if (prevShowBadgeRef.current === 'daily_complete' && showBadge === null) {
-            setShowConfettiAnimation(true);
-            setTimeout(() => setShowConfettiAnimation(false), 4000);
-        }
-        prevShowBadgeRef.current = showBadge;
-    }, [showBadge]);
-
+    
     const questsWithLiveStatus = useMemo(() => {
-        return allQuests.map(q => ({...q, status: questStatuses[q.id] || 'idle'}));
+        return allQuests.map(q => ({...q, status: questStatuses[q.id] || 'idle'})).filter(q => q.isDefault || q.status !== undefined);
     }, [allQuests, questStatuses]);
 
     useEffect(() => {
         const allDone = questsWithLiveStatus.length > 0 && questsWithLiveStatus.every(q => q.status === 'completed' || q.status === 'failed');
             
-        if (allDone) {
-            // Always show the badge if all quests are done for the day.
+        if (allDone && !dailyCompletionAcknowledged) {
             setShowBadge('daily_complete');
-
-            // Only update streak and DB once per day.
             const todayStr = formatISO(startOfToday(), { representation: 'date' });
+
             if (lastCompletionDate !== todayStr) {
                 let newStreak = 1;
                 if (lastCompletionDate && isYesterday(new Date(lastCompletionDate))) {
@@ -229,7 +226,7 @@ export default function AdventuresPage() {
                 update(userRef, { streak: newStreak, lastCompletionDate: todayStr });
             }
         }
-    }, [questsWithLiveStatus, lastCompletionDate, streak, userRef]);
+    }, [questsWithLiveStatus, dailyCompletionAcknowledged, lastCompletionDate, streak, userRef]);
 
     
     const totalDailyXp = questsWithLiveStatus.reduce((sum, quest) => sum + quest.xp, 0);
@@ -244,15 +241,7 @@ export default function AdventuresPage() {
 
     return (
         <>
-            {showConfettiAnimation && (
-                <div className="fixed inset-0 z-[9999] pointer-events-none flex items-center justify-center">
-                    <DotLottieReact
-                        src="https://lottie.host/4f9b5a34-754d-4e94-8178-384784917094/tLhM8MBSz4.json"
-                        autoplay
-                        className="w-full h-full"
-                    />
-                </div>
-            )}
+            {showConfetti && <Confetti recycle={false} numberOfPieces={600} />}
             <div className="relative min-h-screen p-4 md:p-8 overflow-x-hidden">
                 <div className="absolute inset-0 -z-10 h-full w-full">
                     <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
@@ -447,7 +436,3 @@ export default function AdventuresPage() {
         </>
     );
 }
-
-    
-
-    
