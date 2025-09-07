@@ -1,9 +1,9 @@
 
 'use client';
 
-import { useState, useRef, useEffect, useCallback, useId, useMemo, useTransition } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Pause, Music, Volume2, X, SkipForward, SkipBack, Repeat, Shuffle, VolumeX, Search, Wand2, Loader2, ArrowRight } from 'lucide-react';
+import { Play, Pause, Music, Volume2, X, SkipForward, SkipBack, Repeat, Shuffle, VolumeX, Search, Wand2, Loader2, Plus, Minus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Slider } from '@/components/ui/slider';
 import Image from 'next/image';
@@ -266,6 +266,8 @@ const staticTracks: Track[] = [
   { id: 908, title: 'Chakra Balancing Sounds', category: 'Meditation', duration: '14:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Tones for each of the 7 chakras.', src: 'https://images.unsplash.com/photo-1558537348-4359cb3a514d?q=80&w=2670&auto=format&fit=crop', content: () => <p>A sequence of sounds and frequencies designed to help align and balance your chakras.</p> },
 ];
 
+const INITIAL_VISIBLE_TRACKS = 6;
+
 const TrackCard = ({
     track,
     onPlay,
@@ -374,10 +376,10 @@ export default function AudioPlaylistPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [isAiSearching, startAiSearchTransition] = useTransition();
     const [aiRecommendedTrackId, setAiRecommendedTrackId] = useState<number | null>(null);
+    const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_TRACKS);
 
     const { toast } = useToast();
     const audioRef = useRef<HTMLAudioElement>(null);
-    const pageId = useId();
     
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
@@ -412,7 +414,7 @@ export default function AudioPlaylistPage() {
         const seconds = Math.floor(timeInSeconds);
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
-        return `${'${'}minutes}:${'${'}remainingSeconds.toString().padStart(2, '0')}`;
+        return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
 
     const handlePlayPause = useCallback((track: Track) => {
@@ -547,7 +549,7 @@ export default function AudioPlaylistPage() {
                 if (recommendedTrack) {
                     setActiveFilter(recommendedTrack.category);
                     setAiRecommendedTrackId(result.trackId);
-                    toast({ title: 'AI Recommendation', description: `Found "${'${'}recommendedTrack.title}" for you.` });
+                    toast({ title: 'AI Recommendation', description: `Found "${recommendedTrack.title}" for you.` });
                 }
             } else {
                  toast({ title: 'No specific match found', description: 'Try refining your search query.' });
@@ -565,7 +567,7 @@ export default function AudioPlaylistPage() {
     
     useEffect(() => {
         if (aiRecommendedTrackId) {
-            const cardElement = document.getElementById(`card-${'${'}aiRecommendedTrackId}`);
+            const cardElement = document.getElementById(`card-${aiRecommendedTrackId}`);
             if (cardElement) {
                 cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
@@ -573,6 +575,15 @@ export default function AudioPlaylistPage() {
             return () => clearTimeout(timer);
         }
     }, [aiRecommendedTrackId]);
+
+    const handleToggleTracks = () => {
+        setVisibleCount(prevCount =>
+            prevCount === filteredTracks.length ? INITIAL_VISIBLE_TRACKS : filteredTracks.length
+        );
+    };
+
+    const showToggleButton = filteredTracks.length > INITIAL_VISIBLE_TRACKS;
+    const isExpanded = visibleCount === filteredTracks.length;
 
      const containerVariants = {
         hidden: { opacity: 0 },
@@ -660,16 +671,16 @@ export default function AudioPlaylistPage() {
                         animate="visible"
                     >
                         <AnimatePresence>
-                            {filteredTracks.map((track) => (
+                            {filteredTracks.slice(0, visibleCount).map((track) => (
                                 <motion.div
                                     layout
-                                    key={track.id}
+                                    key={`card-motion-${track.id}`}
                                     variants={itemVariants}
                                     className={cn(
                                         "group",
                                         aiRecommendedTrackId === track.id && 'ring-2 ring-green-400/80 rounded-2xl'
                                     )}
-                                    id={`card-${'${'}track.id}`}
+                                    id={`card-${track.id}`}
                                 >
                                     <TrackCard
                                         track={track}
@@ -682,6 +693,22 @@ export default function AudioPlaylistPage() {
                             ))}
                         </AnimatePresence>
                     </motion.div>
+                     {showToggleButton && (
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-12 text-center">
+                        <Button
+                            onClick={handleToggleTracks}
+                            variant="ghost"
+                            className="text-lg font-semibold py-4 px-8 text-green-300 hover:bg-transparent hover:text-green-200 transition-all group rounded-full border-2 border-green-500/30 hover:border-green-400/60"
+                        >
+                            {isExpanded ? (
+                            <Minus className="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-90" />
+                            ) : (
+                            <Plus className="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-90" />
+                            )}
+                            {isExpanded ? 'Show Less' : 'Show More'}
+                        </Button>
+                        </motion.div>
+                    )}
                 </div>
                 
                  <AnimatePresence>
@@ -780,3 +807,5 @@ export default function AudioPlaylistPage() {
         </>
     );
 }
+
+    
