@@ -3,11 +3,13 @@
 
 import { useState, useRef, useEffect, useCallback, useId } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Pause, Music, Volume2, X, SkipForward, SkipBack } from 'lucide-react';
+import { Play, Pause, Music, Volume2, X, SkipForward, SkipBack, Repeat, Shuffle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useOutsideClick } from '@/hooks/use-outside-click';
 import { Slider } from '@/components/ui/slider';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
+
 
 interface Track {
   id: number;
@@ -105,6 +107,10 @@ export default function AudioPlaylistPage() {
     const [volume, setVolume] = useState(1);
     const [currentTime, setCurrentTime] = useState('0:00');
     const [duration, setDuration] = useState('0:00');
+    const [isLooping, setIsLooping] = useState(false);
+    const [isShuffled, setIsShuffled] = useState(false);
+    const [shuffledTracks, setShuffledTracks] = useState<Track[]>([]);
+
 
     const audioRef = useRef<HTMLAudioElement>(null);
     const expandableCardRef = useRef<HTMLDivElement>(null);
@@ -155,21 +161,20 @@ export default function AudioPlaylistPage() {
     }, [currentTrack, isPlaying]);
 
     const handleTrackEnded = useCallback(() => {
-        if(currentTrack) {
-            const currentIndex = staticTracks.findIndex(t => t.id === currentTrack.id);
-            const nextIndex = (currentIndex + 1) % staticTracks.length;
-            handlePlayPause(staticTracks[nextIndex]);
+        if (!isLooping) {
+            handleSkip('forward');
         }
-    }, [currentTrack, handlePlayPause]);
+    }, [isLooping, handleSkip]);
 
-    const handleSkip = (direction: 'forward' | 'backward') => {
+    const handleSkip = useCallback((direction: 'forward' | 'backward') => {
         if (!currentTrack) return;
-        const currentIndex = staticTracks.findIndex(t => t.id === currentTrack.id);
+        const playlist = isShuffled ? shuffledTracks : staticTracks;
+        const currentIndex = playlist.findIndex(t => t.id === currentTrack.id);
         const newIndex = direction === 'forward'
-            ? (currentIndex + 1) % staticTracks.length
-            : (currentIndex - 1 + staticTracks.length) % staticTracks.length;
-        handlePlayPause(staticTracks[newIndex]);
-    };
+            ? (currentIndex + 1) % playlist.length
+            : (currentIndex - 1 + playlist.length) % playlist.length;
+        handlePlayPause(playlist[newIndex]);
+    }, [currentTrack, isShuffled, shuffledTracks, handlePlayPause]);
 
     useEffect(() => {
         const audio = audioRef.current;
@@ -199,6 +204,24 @@ export default function AudioPlaylistPage() {
             audioRef.current.volume = volume;
         }
     }, [volume]);
+    
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.loop = isLooping;
+        }
+    }, [isLooping]);
+
+    const toggleShuffle = () => {
+        setIsShuffled(prev => {
+            const newShuffleState = !prev;
+            if (newShuffleState) {
+                // Shuffle logic: sort randomly
+                const shuffled = [...staticTracks].sort(() => Math.random() - 0.5);
+                setShuffledTracks(shuffled);
+            }
+            return newShuffleState;
+        });
+    };
       
     return (
         <>
@@ -377,14 +400,12 @@ export default function AudioPlaylistPage() {
 
                                <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2 w-1/3">
-                                        <Volume2 className="h-5 w-5 text-gray-400" />
-                                        <Slider 
-                                            value={[volume]}
-                                            max={1} 
-                                            step={0.01} 
-                                            onValueChange={(value) => setVolume(value[0])}
-                                            className="w-full [&>span:first-child]:h-1.5 [&>span>span]:h-1.5 [&>span>span]:bg-green-500"
-                                        />
+                                        <Button variant="ghost" size="icon" className={cn("text-gray-400 hover:text-white rounded-full", isShuffled && "text-green-500")} onClick={toggleShuffle}>
+                                           <Shuffle className="h-5 w-5" />
+                                        </Button>
+                                         <Button variant="ghost" size="icon" className={cn("text-gray-400 hover:text-white rounded-full", isLooping && "text-green-500")} onClick={() => setIsLooping(prev => !prev)}>
+                                           <Repeat className="h-5 w-5" />
+                                        </Button>
                                     </div>
                                     <div className="flex items-center gap-2 justify-center w-1/3">
                                         <Button variant="ghost" size="icon" className="text-white rounded-full" onClick={() => handleSkip('backward')}>
@@ -397,7 +418,16 @@ export default function AudioPlaylistPage() {
                                            <SkipForward className="h-5 w-5" />
                                         </Button>
                                     </div>
-                                    <div className="w-1/3"></div>
+                                    <div className="w-1/3 flex items-center justify-end gap-2">
+                                        <Volume2 className="h-5 w-5 text-gray-400" />
+                                        <Slider 
+                                            value={[volume]}
+                                            max={1} 
+                                            step={0.01} 
+                                            onValueChange={(value) => setVolume(value[0])}
+                                            className="w-20 [&>span:first-child]:h-1.5 [&>span>span]:h-1.5 [&>span>span]:bg-green-500"
+                                        />
+                                    </div>
                                </div>
                            </div>
                         </div>
