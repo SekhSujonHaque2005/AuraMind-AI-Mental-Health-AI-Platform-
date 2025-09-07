@@ -194,10 +194,17 @@ export default function AdventuresPage() {
 
     const handleCloseBadge = () => {
         setShowBadge(null);
-        setShowConfettiAnimation(true);
-        setTimeout(() => setShowConfettiAnimation(false), 4000);
     }
-    
+
+    const prevShowBadgeRef = useRef<BadgeKey | null>(null);
+    useEffect(() => {
+        if (prevShowBadgeRef.current === 'daily_complete' && showBadge === null) {
+            setShowConfettiAnimation(true);
+            setTimeout(() => setShowConfettiAnimation(false), 4000);
+        }
+        prevShowBadgeRef.current = showBadge;
+    }, [showBadge]);
+
     const questsWithLiveStatus = useMemo(() => {
         return allQuests.map(q => ({...q, status: questStatuses[q.id] || 'idle'}));
     }, [allQuests, questStatuses]);
@@ -207,11 +214,9 @@ export default function AdventuresPage() {
             const allDone = questsWithLiveStatus.length > 0 && questsWithLiveStatus.every(q => q.status === 'completed' || q.status === 'failed');
             
             if (allDone) {
-                // Always show the badge if all quests are done.
                 setShowBadge('daily_complete');
 
                 const todayStr = formatISO(startOfToday(), { representation: 'date' });
-                // Only update streak and date if it hasn't been done today.
                 if (lastCompletionDate !== todayStr) {
                     let newStreak = 1;
                     if (lastCompletionDate && isYesterday(new Date(lastCompletionDate))) {
@@ -445,5 +450,7 @@ export default function AdventuresPage() {
         </>
     );
 }
+
+    
 
     
