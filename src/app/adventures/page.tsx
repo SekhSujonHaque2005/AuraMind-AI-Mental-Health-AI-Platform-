@@ -239,7 +239,11 @@ export default function AdventuresPage() {
                     <DotLottieReact
                         src="https://lottie.host/4f9b5a34-754d-4e94-8178-384784917094/tLhM8MBSz4.json"
                         autoplay
-                        onComplete={() => setShowConfettiAnimation(false)}
+                        onEvent={(event) => {
+                            if (event === 'complete') {
+                                setShowConfettiAnimation(false);
+                            }
+                        }}
                     />
                 </div>
             )}
