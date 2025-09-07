@@ -674,7 +674,7 @@ export default function AudioPlaylistPage() {
                             {filteredTracks.slice(0, visibleCount).map((track) => (
                                 <motion.div
                                     layout
-                                    key={`card-motion-${track.id}`}
+                                    key={track.id}
                                     variants={itemVariants}
                                     className={cn(
                                         "group",
@@ -807,5 +807,3 @@ export default function AudioPlaylistPage() {
         </>
     );
 }
-
-    
