@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, useCallback, useTransition, useMemo } from 'react';
+import { useState, useEffect, useCallback, useTransition, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -210,29 +210,26 @@ export default function AdventuresPage() {
     }, [allQuests, questStatuses]);
 
     useEffect(() => {
-        const checkAllQuestsCompleted = async () => {
-            const allDone = questsWithLiveStatus.length > 0 && questsWithLiveStatus.every(q => q.status === 'completed' || q.status === 'failed');
+        const allDone = questsWithLiveStatus.length > 0 && questsWithLiveStatus.every(q => q.status === 'completed' || q.status === 'failed');
             
-            if (allDone) {
-                setShowBadge('daily_complete');
+        if (allDone) {
+            // Always show the badge if all quests are done for the day.
+            setShowBadge('daily_complete');
 
-                const todayStr = formatISO(startOfToday(), { representation: 'date' });
-                if (lastCompletionDate !== todayStr) {
-                    let newStreak = 1;
-                    if (lastCompletionDate && isYesterday(new Date(lastCompletionDate))) {
-                        newStreak = streak + 1;
-                    }
-                    
-                    setStreak(newStreak);
-                    setLastCompletionDate(todayStr);
-                    await update(userRef, { streak: newStreak, lastCompletionDate: todayStr });
+            // Only update streak and DB once per day.
+            const todayStr = formatISO(startOfToday(), { representation: 'date' });
+            if (lastCompletionDate !== todayStr) {
+                let newStreak = 1;
+                if (lastCompletionDate && isYesterday(new Date(lastCompletionDate))) {
+                    newStreak = streak + 1;
                 }
+                
+                setStreak(newStreak);
+                setLastCompletionDate(todayStr);
+                update(userRef, { streak: newStreak, lastCompletionDate: todayStr });
             }
-        };
-
-        checkAllQuestsCompleted();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [questsWithLiveStatus, lastCompletionDate, streak]);
+        }
+    }, [questsWithLiveStatus, lastCompletionDate, streak, userRef]);
 
     
     const totalDailyXp = questsWithLiveStatus.reduce((sum, quest) => sum + quest.xp, 0);
