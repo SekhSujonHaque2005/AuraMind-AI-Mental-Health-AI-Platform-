@@ -160,12 +160,6 @@ export default function AudioPlaylistPage() {
         }
     }, [currentTrack, isPlaying]);
 
-    const handleTrackEnded = useCallback(() => {
-        if (!isLooping) {
-            handleSkip('forward');
-        }
-    }, [isLooping, handleSkip]);
-
     const handleSkip = useCallback((direction: 'forward' | 'backward') => {
         if (!currentTrack) return;
         const playlist = isShuffled ? shuffledTracks : staticTracks;
@@ -175,6 +169,12 @@ export default function AudioPlaylistPage() {
             : (currentIndex - 1 + playlist.length) % playlist.length;
         handlePlayPause(playlist[newIndex]);
     }, [currentTrack, isShuffled, shuffledTracks, handlePlayPause]);
+
+    const handleTrackEnded = useCallback(() => {
+        if (!isLooping) {
+            handleSkip('forward');
+        }
+    }, [isLooping, handleSkip]);
 
     useEffect(() => {
         const audio = audioRef.current;
