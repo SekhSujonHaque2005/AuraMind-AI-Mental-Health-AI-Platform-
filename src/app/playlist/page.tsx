@@ -229,7 +229,7 @@ const staticTracks: Track[] = [
   { id: 801, title: 'Sunday Morning', category: 'Lofi', duration: '4:30', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-8.mp3?alt=media&token=7c1f1f94-734d-4e94-817a-59b9e592750e', description: 'Relaxed beats for a lazy day.', src: 'https://images.unsplash.com/photo-1506477331477-33d5d8b3dc85?q=80&w=2534&auto=format&fit=crop', content: () => <p>The perfect soundtrack for a slow, lazy Sunday morning with a cup of coffee.</p> },
   { id: 802, title: 'Rainy Day Lofi', category: 'Lofi', duration: '5:45', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-16.mp3?alt=media&token=7c1f1f94-734d-4e94-817a-59b9e592750e', description: 'Cozy beats for a rainy day.', src: 'https://images.unsplash.com/photo-1496034663057-6245f11be793?q=80&w=2670&auto=format&fit=crop', content: () => <p>A lofi track with the added ambiance of gentle rain, perfect for staying indoors.</p> },
   { id: 803, title: 'Focus Flow', category: 'Lofi', duration: '6:20', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-8.mp3?alt=media&token=7c1f1f94-734d-4e94-817a-59b9e592750e', description: 'Instrumentals for deep work.', src: 'https://images.unsplash.com/photo-1522199755839-a2bacb67c546?q=80&w=2672&auto=format&fit=crop', content: () => <p>A steady, unobtrusive lofi beat designed to help you get into a state of flow.</p> },
-  { id: 804, title: 'Stargazing Lofi', category: 'Lofi', duration: '5:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-16.mp3?alt=media&token=7c1f1f94-734d-4e94-817a-59b9e592750e', description: 'Dreamy beats for looking at the stars.', src: 'https://images.unsplash.com/photo-1538370965246-fe2be6ce4352?q=80&w=2670&auto=format&fit=crop', content: () => <p>A spacey, dreamy lofi track perfect for late-night stargazing sessions.</p> },
+  { id: 804, title: 'Stargazing Lofi', category: 'Lofi', duration: '5:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-16.mp3?alt=media&token=7c1f1f94-734d-4e94-817a-59b9e592750e', description: 'Dreamy beats for looking at the stars.', src: 'https://images.unsplash.com/photo-1538370965246-fe2be6ce14352?q=80&w=2670&auto=format&fit=crop', content: () => <p>A spacey, dreamy lofi track perfect for late-night stargazing sessions.</p> },
   { id: 805, title: 'Cozy Cafe Lofi', category: 'Lofi', duration: '6:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-8.mp3?alt=media&token=7c1f1f94-734d-4e94-817a-59b9e592750e', description: 'Lofi beats with cafe ambiance.', src: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?q=80&w=2670&auto=format&fit=crop', content: () => <p>A warm lofi track mixed with the gentle background noise of a coffee shop.</p> },
   { id: 806, title: 'Autumn Walk Lofi', category: 'Lofi', duration: '4:45', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-16.mp3?alt=media&token=7c1f1f94-734d-4e94-817a-59b9e592750e', description: 'Crisp beats for a cool day.', src: 'https://images.unsplash.com/photo-1477322524744-0eece9e79640?q=80&w=2552&auto=format&fit=crop', content: () => <p>A lofi track with a crisp, clean beat, reminiscent of a cool autumn day.</p> },
   { id: 807, title: 'Late Night Coding', category: 'Lofi', duration: '7:30', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-8.mp3?alt=media&token=7c1f1f94-734d-4e94-817a-59b9e592750e', description: 'Beats for programmers.', src: 'https://images.unsplash.com/photo-1550439062-609e1531270e?q=80&w=2670&auto=format&fit=crop', content: () => <p>A long, focused lofi track designed for late-night coding or study sessions.</p> },
@@ -266,61 +266,84 @@ const staticTracks: Track[] = [
   { id: 908, title: 'Chakra Balancing Sounds', category: 'Meditation', duration: '14:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Tones for each of the 7 chakras.', src: 'https://images.unsplash.com/photo-1558537348-4359cb3a514d?q=80&w=2670&auto=format&fit=crop', content: () => <p>A sequence of sounds and frequencies designed to help align and balance your chakras.</p> },
 ];
 
-const TrackPreview = ({ track, onPlay, isPlaying, currentTrackId }: { track: Track | null, onPlay: (track: Track) => void, isPlaying: boolean, currentTrackId: number | null }) => {
-  if (!track) {
-    return (
-      <div className="flex flex-col h-full items-center justify-center bg-black/30 backdrop-blur-lg border border-green-500/20 rounded-2xl p-6 text-center">
-        <Music className="h-16 w-16 text-green-400/50" />
-        <p className="mt-4 text-gray-400">Hover over a track to see details</p>
-      </div>
-    );
-  }
+const TrackCard = ({
+    track,
+    isExpanded,
+    onClick,
+    onPlay,
+    isPlaying,
+}: {
+    track: Track;
+    isExpanded: boolean;
+    onClick: () => void;
+    onPlay: (track: Track) => void;
+    isPlaying: boolean;
+}) => {
+    const cardVariants = {
+        collapsed: { height: '224px' },
+        expanded: { height: 'auto' },
+    };
 
-  return (
-    <>
-      <AnimatePresence>
-        <motion.div
-          key={track.id}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.5, ease: 'easeInOut' }}
-          className="w-full h-full"
-        >
-          <Card className="flex flex-col h-full bg-black/30 backdrop-blur-lg border border-green-500/20 rounded-2xl overflow-hidden shadow-2xl shadow-green-500/10">
-            <CardHeader className="p-0">
-                <div className="relative w-full h-64">
+    const contentVariants = {
+        collapsed: { opacity: 0, height: 0, y: -10 },
+        expanded: { opacity: 1, height: 'auto', y: 0, transition: { duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] } },
+    };
+    
+    return (
+        <motion.div layout="position" className="w-full">
+            <Card
+                onClick={onClick}
+                className={cn(
+                    "flex flex-col bg-black/30 backdrop-blur-md border hover:border-green-400/50 transition-all duration-300 transform hover:-translate-y-1 rounded-2xl overflow-hidden group cursor-pointer",
+                    isExpanded && "border-green-500/60"
+                )}
+            >
+                <div className="relative w-full h-40 overflow-hidden">
                     <Image
-                    src={track.src}
-                    alt={track.title}
-                    fill
-                    className="object-cover"
-                    data-ai-hint="calm nature"
+                        src={track.src}
+                        alt={track.title}
+                        fill
+                        className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+                        data-ai-hint="calm nature"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div className="absolute bottom-4 left-4">
+                        <h3 className="text-xl font-bold text-white tracking-tight">{track.title}</h3>
+                    </div>
                 </div>
-            </CardHeader>
-            <CardContent className="p-6 flex flex-col flex-grow">
-              <h3 className="text-2xl font-bold text-green-300">{track.title}</h3>
-              <p className="text-gray-400 mt-2 flex-grow mb-4">{track.description}</p>
-              <div className="text-gray-300 text-sm mb-6">{track.content()}</div>
-              
-              <Button onClick={() => onPlay(track)} className="mt-auto w-full bg-green-600 hover:bg-green-500 transition-all group">
-                {isPlaying && currentTrackId === track.id ? <Pause className="mr-2 h-5 w-5"/> : <Play className="mr-2 h-5 w-5"/>}
-                {isPlaying && currentTrackId === track.id ? 'Pause' : 'Play'}
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </CardContent>
-          </Card>
+
+                <AnimatePresence initial={false}>
+                    {isExpanded && (
+                        <motion.div
+                            key="content"
+                            initial="collapsed"
+                            animate="expanded"
+                            exit="collapsed"
+                            variants={contentVariants}
+                            className="overflow-hidden"
+                        >
+                            <CardContent className="p-4 pt-4">
+                                <p className="text-gray-400 text-sm mb-4">{track.description}</p>
+                                <div className="text-gray-300 text-sm">{track.content()}</div>
+                            </CardContent>
+                             <CardFooter className="p-4 pt-0">
+                                <Button onClick={(e) => { e.stopPropagation(); onPlay(track); }} className="w-full bg-green-600 hover:bg-green-500 transition-all group/button">
+                                    {isPlaying ? <Pause className="mr-2 h-5 w-5"/> : <Play className="mr-2 h-5 w-5"/>}
+                                    {isPlaying ? 'Pause' : 'Play'}
+                                    <ArrowRight className="ml-2 h-4 w-4 opacity-0 group-hover/button:opacity-100 group-hover/button:translate-x-1 transition-transform" />
+                                </Button>
+                            </CardFooter>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </Card>
         </motion.div>
-      </AnimatePresence>
-    </>
-  );
+    );
 };
 
 
 export default function AudioPlaylistPage() {
-    const [hoveredTrack, setHoveredTrack] = useState<Track | null>(staticTracks[0] ?? null);
+    const [selectedTrackId, setSelectedTrackId] = useState<number | null>(null);
     const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -605,62 +628,38 @@ export default function AudioPlaylistPage() {
                         </Button>
                     ))}
                 </div>
-
-                <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-8 w-full max-w-7xl mx-auto">
-                    <div className="lg:col-span-2">
-                        <motion.div 
-                            layout 
-                            className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 w-full"
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
-                        >
-                            <AnimatePresence>
-                                {filteredTracks.map((track) => (
+                <div className="w-full max-w-7xl mx-auto">
+                    <motion.div 
+                        layout 
+                        className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 w-full"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        <AnimatePresence>
+                            {filteredTracks.map((track) => (
                                 <motion.div
-                                    layoutId={`card-${track.id}-${id}`}
+                                    layout
                                     key={`card-motion-${track.id}-${id}`}
                                     variants={itemVariants}
-                                    onMouseEnter={() => setHoveredTrack(track)}
-                                    onClick={() => handlePlayPause(track)}
                                     className={cn(
-                                        "group cursor-pointer",
+                                        "group",
                                         aiRecommendedTrackId === track.id && 'ring-2 ring-green-400/80 rounded-2xl'
                                     )}
                                     id={`card-${track.id}-${id}`}
                                 >
-                                <Card
-                                    className={cn("flex flex-col h-full bg-black/30 backdrop-blur-md border hover:border-green-400/50 transition-all duration-300 transform hover:-translate-y-1 rounded-2xl overflow-hidden group")}
-                                    style={{ borderColor: hoveredTrack?.id === track.id ? 'hsl(var(--primary))' : 'hsla(var(--border))' }}
-                                    >
-                                        <div className="relative w-full h-40 overflow-hidden">
-                                            <Image
-                                                src={track.src}
-                                                alt={track.title}
-                                                fill
-                                                className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
-                                                data-ai-hint="calm nature"
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-
-                                            <div className="absolute bottom-4 left-4">
-                                                <h3 className="text-xl font-bold text-white tracking-tight">{track.title}</h3>
-                                            </div>
-                                        </div>
-                                    </Card>
-                            </motion.div>
+                                    <TrackCard
+                                        key={track.id}
+                                        track={track}
+                                        isExpanded={selectedTrackId === track.id}
+                                        onClick={() => setSelectedTrackId(prev => (prev === track.id ? null : track.id))}
+                                        onPlay={() => handlePlayPause(track)}
+                                        isPlaying={isPlaying && currentTrack?.id === track.id}
+                                    />
+                                </motion.div>
                             ))}
-                            </AnimatePresence>
-                        </motion.div>
-                    </div>
-                     <div className="hidden lg:block lg:col-span-1 sticky top-28 h-[calc(100vh-10rem)] max-h-[700px]">
-                        <TrackPreview 
-                            track={hoveredTrack}
-                            onPlay={handlePlayPause}
-                            isPlaying={isPlaying}
-                            currentTrackId={currentTrack?.id || null}
-                        />
-                    </div>
+                        </AnimatePresence>
+                    </motion.div>
                 </div>
 
                 <audio ref={audioRef} />
