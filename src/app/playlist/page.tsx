@@ -3,7 +3,7 @@
 
 import { useState, useRef, useEffect, useCallback, useId } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Pause, Music, Volume2, X, SkipForward, SkipBack, Repeat, Shuffle } from 'lucide-react';
+import { Play, Pause, Music, Volume2, X, SkipForward, SkipBack, Repeat, Shuffle, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useOutsideClick } from '@/hooks/use-outside-click';
 import { Slider } from '@/components/ui/slider';
@@ -40,7 +40,7 @@ const staticTracks: Track[] = [
     category: 'Nature',
     duration: '4:49',
     url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-2.mp3?alt=media&token=c27f7f90-1c64-4e2b-9c2b-23218e888496',
-    src: 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    src: 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2670&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     content: () => <p>Immerse yourself in the serene soundscape of a forest. The gentle rustling of leaves, distant bird calls, and the soft whisper of the wind create a perfect atmosphere for focus and relaxation.</p>,
   },
   {
@@ -50,7 +50,7 @@ const staticTracks: Track[] = [
     category: 'Water Sounds',
     duration: '5:27',
     url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-3.mp3?alt=media&token=3b3d9d37-2a4c-4e89-8d76-880479132104',
-    src: 'https://images.unsplash.com/photo-1536584754829-12214d404f32?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    src: 'https://images.unsplash.com/photo-1536584754829-12214d404f32?q=80&w=2574&auto=format&fit=crop&ixlib.rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     content: () => <p>Let the continuous, gentle sound of a flowing stream wash away your stress. This track is ideal for creating a peaceful environment for studying, working, or unwinding after a long day.</p>,
   },
   {
@@ -60,7 +60,7 @@ const staticTracks: Track[] = [
     category: 'Instrumental',
     duration: '4:21',
     url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-4.mp3?alt=media&token=7d0b8e9a-7a54-4c46-888e-6704b2b1a473',
-    src: 'https://images.unsplash.com/photo-1520444453472-ac53c516450a?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    src: 'https://images.unsplash.com/photo-1520444453472-ac53c516450a?q=80&w=2670&auto=format&fit=crop&ixlib.rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     content: () => <p>A beautiful and simple piano melody to help you find your center. The minimalist composition provides a backdrop of calm without being distracting, encouraging a state of mindfulness.</p>,
   },
   {
@@ -105,6 +105,8 @@ export default function AudioPlaylistPage() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [volume, setVolume] = useState(1);
+    const [isMuted, setIsMuted] = useState(false);
+    const volumeRef = useRef(1);
     const [currentTime, setCurrentTime] = useState('0:00');
     const [duration, setDuration] = useState('0:00');
     const [isLooping, setIsLooping] = useState(false);
@@ -164,10 +166,17 @@ export default function AudioPlaylistPage() {
         if (!currentTrack) return;
         const playlist = isShuffled ? shuffledTracks : staticTracks;
         const currentIndex = playlist.findIndex(t => t.id === currentTrack.id);
-        const newIndex = direction === 'forward'
+        if (currentIndex === -1) return;
+        
+        let newIndex = direction === 'forward'
             ? (currentIndex + 1) % playlist.length
             : (currentIndex - 1 + playlist.length) % playlist.length;
-        handlePlayPause(playlist[newIndex]);
+        
+        const newTrack = playlist[newIndex];
+        if (newTrack) {
+            handlePlayPause(newTrack);
+        }
+
     }, [currentTrack, isShuffled, shuffledTracks, handlePlayPause]);
 
     const handleTrackEnded = useCallback(() => {
@@ -175,6 +184,7 @@ export default function AudioPlaylistPage() {
             handleSkip('forward');
         }
     }, [isLooping, handleSkip]);
+
 
     useEffect(() => {
         const audio = audioRef.current;
@@ -198,12 +208,13 @@ export default function AudioPlaylistPage() {
           audio.removeEventListener('ended', handleTrackEnded);
         };
     }, [currentTrack, handleTrackEnded]);
-
+    
     useEffect(() => {
         if (audioRef.current) {
             audioRef.current.volume = volume;
+            audioRef.current.muted = isMuted;
         }
-    }, [volume]);
+    }, [volume, isMuted]);
     
     useEffect(() => {
         if (audioRef.current) {
@@ -215,12 +226,37 @@ export default function AudioPlaylistPage() {
         setIsShuffled(prev => {
             const newShuffleState = !prev;
             if (newShuffleState) {
-                // Shuffle logic: sort randomly
                 const shuffled = [...staticTracks].sort(() => Math.random() - 0.5);
                 setShuffledTracks(shuffled);
             }
             return newShuffleState;
         });
+    };
+
+    const handleMuteToggle = () => {
+        setIsMuted(prev => {
+            const newMutedState = !prev;
+            if (newMutedState) {
+                // Muting
+                volumeRef.current = volume;
+                setVolume(0);
+            } else {
+                // Unmuting
+                setVolume(volumeRef.current > 0 ? volumeRef.current : 0.5);
+            }
+            return newMutedState;
+        });
+    };
+
+    const handleVolumeChange = (value: number[]) => {
+        const newVolume = value[0];
+        setVolume(newVolume);
+        volumeRef.current = newVolume;
+        if (newVolume > 0 && isMuted) {
+            setIsMuted(false);
+        } else if (newVolume === 0 && !isMuted) {
+            setIsMuted(true);
+        }
     };
       
     return (
@@ -419,12 +455,14 @@ export default function AudioPlaylistPage() {
                                         </Button>
                                     </div>
                                     <div className="w-1/3 flex items-center justify-end gap-2">
-                                        <Volume2 className="h-5 w-5 text-gray-400" />
+                                         <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white rounded-full" onClick={handleMuteToggle}>
+                                            {isMuted || volume === 0 ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                                         </Button>
                                         <Slider 
                                             value={[volume]}
                                             max={1} 
                                             step={0.01} 
-                                            onValueChange={(value) => setVolume(value[0])}
+                                            onValueChange={handleVolumeChange}
                                             className="w-20 [&>span:first-child]:h-1.5 [&>span>span]:h-1.5 [&>span>span]:bg-green-500"
                                         />
                                     </div>
