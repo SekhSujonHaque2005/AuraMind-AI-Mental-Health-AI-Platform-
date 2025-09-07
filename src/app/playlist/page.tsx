@@ -505,6 +505,13 @@ export default function AudioPlaylistPage() {
         });
     }
 
+    const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            handleAiSearch();
+        }
+    };
+
     useEffect(() => {
         if (aiRecommendedTrackId) {
             const timer = setTimeout(() => setAiRecommendedTrackId(null), 3000);
@@ -528,6 +535,7 @@ export default function AudioPlaylistPage() {
                             className="bg-transparent border-none text-white focus-visible:ring-0 focus-visible:ring-offset-0"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={handleSearchKeyDown}
                         />
                         <Button
                            onClick={handleAiSearch}
