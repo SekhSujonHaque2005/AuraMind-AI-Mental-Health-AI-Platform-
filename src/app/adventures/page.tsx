@@ -136,6 +136,7 @@ export default function AdventuresPage() {
             setCurrentXp(newXp);
             update(userRef, { xp: newXp });
             setShowConfettiAnimation(true);
+            setTimeout(() => setShowConfettiAnimation(false), 4000);
         }
     };
     
@@ -239,11 +240,6 @@ export default function AdventuresPage() {
                     <DotLottieReact
                         src="https://lottie.host/4f9b5a34-754d-4e94-8178-384784917094/tLhM8MBSz4.json"
                         autoplay
-                        onEvent={(event) => {
-                            if (event === 'complete') {
-                                setShowConfettiAnimation(false);
-                            }
-                        }}
                     />
                 </div>
             )}
