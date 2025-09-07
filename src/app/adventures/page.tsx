@@ -194,6 +194,8 @@ export default function AdventuresPage() {
 
     const handleCloseBadge = () => {
         setShowBadge(null);
+        setShowConfettiAnimation(true);
+        setTimeout(() => setShowConfettiAnimation(false), 4000);
     }
     
     const questsWithLiveStatus = useMemo(() => {
