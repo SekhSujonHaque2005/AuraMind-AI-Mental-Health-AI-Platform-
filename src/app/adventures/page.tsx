@@ -205,8 +205,13 @@ export default function AdventuresPage() {
     useEffect(() => {
         const checkAllQuestsCompleted = async () => {
             const allDone = questsWithLiveStatus.length > 0 && questsWithLiveStatus.every(q => q.status === 'completed' || q.status === 'failed');
+            
             if (allDone) {
+                // Always show the badge if all quests are done.
+                setShowBadge('daily_complete');
+
                 const todayStr = formatISO(startOfToday(), { representation: 'date' });
+                // Only update streak and date if it hasn't been done today.
                 if (lastCompletionDate !== todayStr) {
                     let newStreak = 1;
                     if (lastCompletionDate && isYesterday(new Date(lastCompletionDate))) {
@@ -216,14 +221,13 @@ export default function AdventuresPage() {
                     setStreak(newStreak);
                     setLastCompletionDate(todayStr);
                     await update(userRef, { streak: newStreak, lastCompletionDate: todayStr });
-
-                    if (!showBadge) setShowBadge('daily_complete');
                 }
             }
         };
+
         checkAllQuestsCompleted();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [questsWithLiveStatus, lastCompletionDate, streak, userRef]);
+    }, [questsWithLiveStatus, lastCompletionDate, streak]);
 
     
     const totalDailyXp = questsWithLiveStatus.reduce((sum, quest) => sum + quest.xp, 0);
