@@ -16,7 +16,7 @@ import { db } from '@/lib/firebase';
 import { ref, update, get, push, set, remove } from 'firebase/database';
 import { getAIGeneratedQuest } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
-import Confetti from 'react-confetti';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { isToday, isYesterday, formatISO, startOfToday } from 'date-fns';
 import TimerModal from '@/components/adventures/timer-modal';
 import BadgeDialog from '@/components/adventures/badge-dialog';
@@ -51,7 +51,7 @@ export default function AdventuresPage() {
     const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
     const [newQuestInfo, setNewQuestInfo] = useState<NewQuestInfo>({ title: "", description: "A custom goal to improve my well-being.", duration: null });
     const [isGeneratingAi, startTransition] = useTransition();
-    const [celebrating, setCelebrating] = useState(false);
+    const [showConfettiAnimation, setShowConfettiAnimation] = useState(false);
     const [activeTimerQuest, setActiveTimerQuest] = useState<QuestWithStatus | null>(null);
 
     const { toast } = useToast();
@@ -135,6 +135,7 @@ export default function AdventuresPage() {
             const newXp = currentXp + xp;
             setCurrentXp(newXp);
             update(userRef, { xp: newXp });
+            setShowConfettiAnimation(true);
         }
     };
     
@@ -192,7 +193,6 @@ export default function AdventuresPage() {
 
     const handleCloseBadge = () => {
         setShowBadge(null);
-        setCelebrating(true); // Keep celebrating even after closing the badge
     }
     
     const questsWithLiveStatus = useMemo(() => {
@@ -234,9 +234,13 @@ export default function AdventuresPage() {
 
     return (
         <>
-            {celebrating && (
-                <div className="fixed inset-0 z-[9999] pointer-events-none">
-                    <Confetti recycle={true} numberOfPieces={600} />
+            {showConfettiAnimation && (
+                <div className="fixed inset-0 z-[9999] pointer-events-none flex items-center justify-center">
+                    <DotLottieReact
+                        src="https://lottie.host/4f9b5a34-754d-4e94-8178-384784917094/tLhM8MBSz4.json"
+                        autoplay
+                        onComplete={() => setShowConfettiAnimation(false)}
+                    />
                 </div>
             )}
             <div className="relative min-h-screen p-4 md:p-8 overflow-x-hidden">
