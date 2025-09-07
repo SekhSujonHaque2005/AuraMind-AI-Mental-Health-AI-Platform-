@@ -1,26 +1,18 @@
 
 'use client';
 
-import { useState, useRef, useEffect, useCallback, useId, useMemo } from 'react';
+import { useState, useRef, useEffect, useCallback, useId, useMemo, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Pause, Music, Volume2, X, SkipForward, SkipBack, Repeat, Shuffle, VolumeX } from 'lucide-react';
+import { Play, Pause, Music, Volume2, X, SkipForward, SkipBack, Repeat, Shuffle, VolumeX, Search, Wand2, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useOutsideClick } from '@/hooks/use-outside-click';
 import { Slider } from '@/components/ui/slider';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-
-
-interface Track {
-  id: number;
-  title: string;
-  category: string;
-  duration: string;
-  url: string;
-  description: string;
-  src: string;
-  content: () => React.ReactNode;
-}
+import { Input } from '@/components/ui/input';
+import { findTrackWithAI } from '@/app/actions';
+import { useToast } from '@/hooks/use-toast';
+import type { Track } from '@/app/playlist/types';
 
 const staticTracks: Track[] = [
   // Ambient (10 tracks)
@@ -269,8 +261,8 @@ const staticTracks: Track[] = [
   { id: 904, title: 'Walking Meditation Guide', category: 'Meditation', duration: '10:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Mindfulness in motion.', src: 'https://images.unsplash.com/photo-1509384313239-00171a547a46?q=80&w=2670&auto=format&fit=crop', content: () => <p>A guided walking meditation to help you practice mindfulness while in motion.</p> },
   { id: 905, title: 'Zen Garden Ambience', category: 'Meditation', duration: '20:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Sounds of a peaceful Zen garden.', src: 'https://images.unsplash.com/photo-1540998145399-a5442795b3a5?q=80&w=2574&auto=format&fit=crop', content: () => <p>An unguided soundscape of a Japanese Zen garden for long meditation sessions.</p> },
   { id: 906, title: 'Gratitude Meditation', category: 'Meditation', duration: '8:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Focus on what you are thankful for.', src: 'https://images.unsplash.com/photo-1518432031354-7b6a4808a388?q=80&w=2670&auto=format&fit=crop', content: () => <p>A guided meditation to help you cultivate a sense of gratitude and appreciation.</p> },
-  { id: 907, title: 'Silent Meditation Timer', category: 'Meditation', duration: '30:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'A timer with bells for unguided practice.', src: 'https://images.unsplash.com/photo-1508213639515-e0b04c59a35f?q=80&w=2670&auto=format&fit=crop', content: () => <p>A 30-minute timer with gentle bells at the beginning, middle, and end for your own practice.</p> },
-  { id: 908, title: 'Chakra Balancing Sounds', category: 'Meditation', duration: '14:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Tones for each of the 7 chakras.', src: 'https://images.unsplash.com/photo-1558537348-434a45934988?q=80&w=2670&auto=format&fit=crop', content: () => <p>A sequence of sounds and frequencies designed to help align and balance your chakras.</p> },
+  { id: 907, title: 'Silent Meditation Timer', category: 'Meditation', duration: '30:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'A timer with bells for unguided practice.', src: 'https://images.unsplash.com/photo-1508213639515-e0b04c59a3b4?q=80&w=2670&auto=format&fit=crop', content: () => <p>A 30-minute timer with gentle bells at the beginning, middle, and end for your own practice.</p> },
+  { id: 908, title: 'Chakra Balancing Sounds', category: 'Meditation', duration: '14:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Tones for each of the 7 chakras.', src: 'https://images.unsplash.com/photo-1558537348-434a485c2b65745d?q=80&w=2670&auto=format&fit=crop', content: () => <p>A sequence of sounds and frequencies designed to help align and balance your chakras.</p> },
 ];
 
 
@@ -312,8 +304,11 @@ export default function AudioPlaylistPage() {
     const [isShuffled, setIsShuffled] = useState(false);
     const [shuffledTracks, setShuffledTracks] = useState<Track[]>([]);
     const [activeFilter, setActiveFilter] = useState('All');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isAiSearching, startAiSearchTransition] = useTransition();
+    const [aiRecommendedTrackId, setAiRecommendedTrackId] = useState<number | null>(null);
 
-
+    const { toast } = useToast();
     const audioRef = useRef<HTMLAudioElement>(null);
     const expandableCardRef = useRef<HTMLDivElement>(null);
     const id = useId();
@@ -323,9 +318,22 @@ export default function AudioPlaylistPage() {
     const categories = useMemo(() => ['All', ...Array.from(new Set(staticTracks.map(t => t.category)))], []);
     
     const filteredTracks = useMemo(() => {
-        if (activeFilter === 'All') return staticTracks;
-        return staticTracks.filter(t => t.category === activeFilter);
-    }, [activeFilter]);
+        let tracks = staticTracks;
+
+        if (activeFilter !== 'All') {
+            tracks = tracks.filter(t => t.category === activeFilter);
+        }
+
+        if (searchQuery) {
+            const lowerCaseQuery = searchQuery.toLowerCase();
+            tracks = tracks.filter(t => 
+                t.title.toLowerCase().includes(lowerCaseQuery) || 
+                t.description.toLowerCase().includes(lowerCaseQuery)
+            );
+        }
+        
+        return tracks;
+    }, [activeFilter, searchQuery]);
 
     useEffect(() => {
         function onKeyDown(event: KeyboardEvent) {
@@ -465,6 +473,45 @@ export default function AudioPlaylistPage() {
         }
     };
       
+    const handleAiSearch = () => {
+        if (!searchQuery.trim()) {
+            toast({ variant: 'destructive', title: 'Empty Search', description: 'Please enter what you want to search for.' });
+            return;
+        }
+        startAiSearchTransition(async () => {
+            const trackMetada = staticTracks.map(({ id, title, description }) => ({ id, title, description }));
+            const result = await findTrackWithAI({ query: searchQuery, tracks: trackMetada });
+
+            if (result.error) {
+                toast({ variant: 'destructive', title: 'AI Search Failed', description: result.error });
+                setAiRecommendedTrackId(null);
+            } else if (result.trackId) {
+                setAiRecommendedTrackId(result.trackId);
+                const recommendedTrack = staticTracks.find(t => t.id === result.trackId);
+                if (recommendedTrack) {
+                    setActiveFilter(recommendedTrack.category);
+                    toast({ title: 'AI Recommendation', description: `Found "${recommendedTrack.title}" for you.` });
+
+                    // Scroll to the recommended card
+                    setTimeout(() => {
+                        const cardElement = document.getElementById(`card-${recommendedTrack.title}-${id}`);
+                        cardElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                }
+            } else {
+                 toast({ title: 'No specific match found', description: 'Try refining your search query.' });
+                 setAiRecommendedTrackId(null);
+            }
+        });
+    }
+
+    useEffect(() => {
+        if (aiRecommendedTrackId) {
+            const timer = setTimeout(() => setAiRecommendedTrackId(null), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [aiRecommendedTrackId]);
+
     return (
         <>
             <div className="flex flex-col items-center min-h-screen p-4 md:p-8">
@@ -473,6 +520,26 @@ export default function AudioPlaylistPage() {
                     <p className="text-lg max-w-2xl mx-auto text-gray-400">A curated selection of sounds for focus, relaxation, and mindfulness.</p>
                 </div>
                 
+                <div className="w-full max-w-xl mb-8 sticky top-4 z-20 px-2">
+                    <div className="relative flex items-center gap-2 bg-gray-900/60 backdrop-blur-xl border border-green-500/20 p-2 rounded-xl shadow-lg">
+                        <Search className="h-5 w-5 text-gray-400 ml-2"/>
+                        <Input 
+                            placeholder="Search for sounds or ask AI (e.g., 'sound for focus')..."
+                            className="bg-transparent border-none text-white focus-visible:ring-0 focus-visible:ring-offset-0"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <Button
+                           onClick={handleAiSearch}
+                           className="bg-green-600 hover:bg-green-500 text-white rounded-lg flex-shrink-0"
+                           disabled={isAiSearching}
+                        >
+                            {isAiSearching ? <Loader2 className="h-5 w-5 animate-spin" /> : <Wand2 className="h-5 w-5"/>}
+                            <span className="ml-2 hidden md:inline">Search with AI</span>
+                        </Button>
+                    </div>
+                </div>
+
                 <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
                     {categories.map(category => (
                         <Button
@@ -491,14 +558,13 @@ export default function AudioPlaylistPage() {
                     ))}
                 </div>
 
-
                 <AnimatePresence>
                     {activeCard && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/20 h-full w-full z-10"
+                        className="fixed inset-0 bg-black/20 h-full w-full z-30"
                     />
                     )}
                 </AnimatePresence>
@@ -574,6 +640,7 @@ export default function AudioPlaylistPage() {
                     <AnimatePresence>
                         {filteredTracks.map((track) => (
                         <motion.div
+                            id={`card-${track.title}-${id}`}
                             layout
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -581,7 +648,10 @@ export default function AudioPlaylistPage() {
                             transition={{ duration: 0.3 }}
                             key={`card-${track.title}-${id}`}
                             onClick={() => setActiveCard(track)}
-                            className="p-4 flex flex-col md:flex-row justify-between items-center bg-gray-900/50 hover:bg-gray-800/70 rounded-xl cursor-pointer border border-green-500/10 hover:border-green-500/30 transition-colors"
+                            className={cn(
+                                "p-4 flex flex-col md:flex-row justify-between items-center bg-gray-900/50 hover:bg-gray-800/70 rounded-xl cursor-pointer border border-green-500/10 hover:border-green-500/30 transition-all",
+                                aiRecommendedTrackId === track.id && 'border-green-400 ring-2 ring-green-400/50'
+                            )}
                         >
                             <div className="flex gap-4 flex-col md:flex-row items-center w-full">
                             <motion.div layoutId={`image-${track.title}-${id}`}>
@@ -706,4 +776,3 @@ export default function AudioPlaylistPage() {
         </>
     );
 }
-

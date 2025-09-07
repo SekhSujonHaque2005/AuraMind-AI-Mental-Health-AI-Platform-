@@ -7,8 +7,10 @@ import { translateWelcomeMessage } from '@/ai/flows/translate-welcome-message';
 import { TranslateWelcomeMessageInput, TranslateWelcomeMessageOutput } from '@/contexts/ChatContext';
 import { generateSelfCareQuest, GenerateSelfCareQuestInput, GenerateSelfCareQuestOutput } from '@/ai/flows/generate-self-care-quest';
 import { generateQuiz } from '@/ai/flows/generate-quiz';
+import { findMusic } from '@/ai/flows/find-music-flow';
 import { z } from 'zod';
 import { GenerateQuizInput, GenerateQuizOutput } from './quizzes/types';
+import type { FindMusicInput, FindMusicOutput } from './playlist/types';
 
 
 const chatActionInputSchema = z.object({
@@ -107,5 +109,19 @@ export async function getAIGeneratedQuiz(input: GenerateQuizInput): Promise<{ qu
     console.error("Error in getAIGeneratedQuiz:", error);
     const errorMessage = error instanceof Error ? error.message : 'An unknown server error occurred.';
     return { error: `Failed to generate AI quiz: ${errorMessage}` };
+  }
+}
+
+export async function findTrackWithAI(input: FindMusicInput): Promise<FindMusicOutput | { error: string }> {
+  try {
+    const result = await findMusic(input);
+    if (!result) {
+      return { error: 'The AI could not find a matching track. Please try a different search.' };
+    }
+    return result;
+  } catch (error) {
+      console.error("Error in findTrackWithAI:", error);
+      const errorMessage = error instanceof Error ? error.message : 'An unknown server error occurred.';
+      return { error: `Failed to find track with AI: ${errorMessage}` };
   }
 }
