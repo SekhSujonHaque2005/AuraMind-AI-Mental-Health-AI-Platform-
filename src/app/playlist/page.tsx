@@ -526,7 +526,7 @@ export default function AudioPlaylistPage() {
                     <p className="text-lg max-w-2xl mx-auto text-gray-400">A curated selection of sounds for focus, relaxation, and mindfulness.</p>
                 </div>
                 
-                <div className="w-full max-w-xl mb-8 sticky top-4 z-20 px-2">
+                <div className="w-full max-w-4xl mx-auto mb-8 sticky top-4 z-20 px-2">
                     <div className="relative flex items-center gap-2 bg-gray-900/60 backdrop-blur-xl border border-green-500/20 p-2 rounded-xl shadow-lg">
                         <Search className="h-5 w-5 text-gray-400 ml-2"/>
                         <Input 
@@ -643,7 +643,7 @@ export default function AudioPlaylistPage() {
                     ) : null}
                 </AnimatePresence>
                 
-                <motion.ul layout className="w-full max-w-2xl mx-auto gap-4 flex flex-col">
+                <motion.ul layout className="w-full max-w-4xl mx-auto gap-4 flex flex-col">
                     <AnimatePresence>
                         {filteredTracks.map((track) => (
                         <motion.div
