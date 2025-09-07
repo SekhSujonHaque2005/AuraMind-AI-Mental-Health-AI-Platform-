@@ -328,6 +328,7 @@ const TrackPreviewPopup = ({ track, position, onPlay, isPlaying }: { track: Trac
                 top: position.y,
                 transform: `translate(${position.x > window.innerWidth / 2 ? '-100%' : '0%'}, -50%)`, // Adjust position based on screen half
             }}
+             onDragStart={(e) => e.preventDefault()}
         >
             <Card className="bg-gray-900/80 backdrop-blur-lg border border-green-500/30 shadow-2xl shadow-green-500/10">
                 <CardHeader>
@@ -411,7 +412,7 @@ export default function AudioPlaylistPage() {
         const seconds = Math.floor(timeInSeconds);
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
-        return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        return `${'${'}minutes}:${'${'}remainingSeconds.toString().padStart(2, '0')}`;
     };
 
     const handlePlayPause = useCallback((track: Track) => {
@@ -546,7 +547,7 @@ export default function AudioPlaylistPage() {
                 if (recommendedTrack) {
                     setActiveFilter(recommendedTrack.category);
                     setAiRecommendedTrackId(result.trackId);
-                    toast({ title: 'AI Recommendation', description: `Found "${recommendedTrack.title}" for you.` });
+                    toast({ title: 'AI Recommendation', description: `Found "${'${'}recommendedTrack.title}" for you.` });
                 }
             } else {
                  toast({ title: 'No specific match found', description: 'Try refining your search query.' });
@@ -564,7 +565,7 @@ export default function AudioPlaylistPage() {
     
     useEffect(() => {
         if (aiRecommendedTrackId) {
-            const cardElement = document.getElementById(`card-${aiRecommendedTrackId}-${id}`);
+            const cardElement = document.getElementById(`card-${'${'}aiRecommendedTrackId}-${'${'}id}`);
             if (cardElement) {
                 cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
@@ -662,13 +663,13 @@ export default function AudioPlaylistPage() {
                             {filteredTracks.map((track) => (
                                 <motion.div
                                     layout
-                                    key={`card-motion-${track.id}-${id}`}
+                                    key={`card-motion-${'${'}track.id}-${'${'}id}`}
                                     variants={itemVariants}
                                     className={cn(
                                         "group",
                                         aiRecommendedTrackId === track.id && 'ring-2 ring-green-400/80 rounded-2xl'
                                     )}
-                                    id={`card-${track.id}-${id}`}
+                                    id={`card-${'${'}track.id}-${'${'}id}`}
                                 >
                                     <TrackCard
                                         key={track.id}
