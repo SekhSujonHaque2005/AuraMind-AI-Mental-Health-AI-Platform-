@@ -535,7 +535,7 @@ export default function AudioPlaylistPage() {
 
     return (
         <>
-            <div className="flex flex-col min-h-screen p-4 md:p-8">
+            <div className="flex flex-col min-h-screen p-4 md:p-8 overflow-x-hidden">
                  <div className="absolute inset-0 -z-10 h-full w-full">
                     <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
                     <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#22c55e33,transparent)]"></div>
@@ -653,7 +653,7 @@ export default function AudioPlaylistPage() {
 
                 <motion.div 
                     layout 
-                    className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl mx-auto"
+                    className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 w-full max-w-7xl mx-auto"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
@@ -669,6 +669,7 @@ export default function AudioPlaylistPage() {
                                 "group cursor-pointer",
                                 aiRecommendedTrackId === track.id && 'ring-2 ring-green-400/80 rounded-2xl'
                             )}
+                            id={`card-${track.id}-${id}`}
                         >
                           <Card
                             className={cn("flex flex-col h-full bg-black/30 backdrop-blur-md border hover:border-green-400/50 transition-all duration-300 transform hover:-translate-y-1 rounded-2xl overflow-hidden group")}
