@@ -377,7 +377,7 @@ export default function AudioPlaylistPage() {
 
     const { toast } = useToast();
     const audioRef = useRef<HTMLAudioElement>(null);
-    const id = useId();
+    const pageId = useId();
     
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
@@ -565,14 +565,14 @@ export default function AudioPlaylistPage() {
     
     useEffect(() => {
         if (aiRecommendedTrackId) {
-            const cardElement = document.getElementById(`card-${'${'}aiRecommendedTrackId}-${'${'}id}`);
+            const cardElement = document.getElementById(`card-${'${'}aiRecommendedTrackId}`);
             if (cardElement) {
                 cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
             const timer = setTimeout(() => setAiRecommendedTrackId(null), 3000);
             return () => clearTimeout(timer);
         }
-    }, [aiRecommendedTrackId, id]);
+    }, [aiRecommendedTrackId]);
 
      const containerVariants = {
         hidden: { opacity: 0 },
@@ -663,13 +663,13 @@ export default function AudioPlaylistPage() {
                             {filteredTracks.map((track) => (
                                 <motion.div
                                     layout
-                                    key={`card-motion-${'${'}track.id}`}
+                                    key={track.id}
                                     variants={itemVariants}
                                     className={cn(
                                         "group",
                                         aiRecommendedTrackId === track.id && 'ring-2 ring-green-400/80 rounded-2xl'
                                     )}
-                                    id={`card-${'${'}track.id}-${'${'}id}`}
+                                    id={`card-${'${'}track.id}`}
                                 >
                                     <TrackCard
                                         track={track}
