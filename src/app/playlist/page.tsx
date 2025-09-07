@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import { findTrackWithAI } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import type { Track } from '@/app/playlist/types';
+import { Card, CardContent } from '@/components/ui/card';
 
 const staticTracks: Track[] = [
   // Ambient (10 tracks)
@@ -260,7 +261,7 @@ const staticTracks: Track[] = [
   { id: 903, title: 'Loving-Kindness Meditation', category: 'Meditation', duration: '12:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Cultivate compassion for self and others.', src: 'https://images.unsplash.com/photo-1593181827448-9b8e8a69a3b4?q=80&w=2670&auto=format&fit=crop', content: () => <p>A guided meditation focused on developing feelings of goodwill, kindness, and warmth.</p> },
   { id: 904, title: 'Walking Meditation Guide', category: 'Meditation', duration: '10:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Mindfulness in motion.', src: 'https://images.unsplash.com/photo-1509384313239-00171a547a46?q=80&w=2670&auto=format&fit=crop', content: () => <p>A guided walking meditation to help you practice mindfulness while in motion.</p> },
   { id: 905, title: 'Zen Garden Ambience', category: 'Meditation', duration: '20:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Sounds of a peaceful Zen garden.', src: 'https://images.unsplash.com/photo-1540998145399-a5442795b3a5?q=80&w=2574&auto=format&fit=crop', content: () => <p>An unguided soundscape of a Japanese Zen garden for long meditation sessions.</p> },
-  { id: 906, title: 'Gratitude Meditation', category: 'Meditation', duration: '8:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Focus on what you are thankful for.', src: 'https://images.unsplash.com/photo-1518432031354-7b6a4808a388?q=80&w=2670&auto=format&fit=crop', content: () => <p>A guided meditation to help you cultivate a sense of gratitude and appreciation.</p> },
+  { id: 906, title: 'Gratitude Meditation', category: 'Meditation', duration: '8:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Focus on what you are thankful for.', src: 'https://images.unsplash.com/photo-1518432031354-7b6a4808a3b4?q=80&w=2670&auto=format&fit=crop', content: () => <p>A guided meditation to help you cultivate a sense of gratitude and appreciation.</p> },
   { id: 907, title: 'Silent Meditation Timer', category: 'Meditation', duration: '30:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'A timer with bells for unguided practice.', src: 'https://images.unsplash.com/photo-1508213639515-e0b04c59a3b4?q=80&w=2670&auto=format&fit=crop', content: () => <p>A 30-minute timer with gentle bells at the beginning, middle, and end for your own practice.</p> },
   { id: 908, title: 'Chakra Balancing Sounds', category: 'Meditation', duration: '14:00', url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841', description: 'Tones for each of the 7 chakras.', src: 'https://images.unsplash.com/photo-1558537348-4359cb3a514d?q=80&w=2670&auto=format&fit=crop', content: () => <p>A sequence of sounds and frequencies designed to help align and balance your chakras.</p> },
 ];
@@ -517,10 +518,28 @@ export default function AudioPlaylistPage() {
         }
     }, [aiRecommendedTrackId, id]);
 
+     const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.05 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
+    };
+
 
     return (
         <>
-            <div className="flex flex-col items-center min-h-screen p-4 md:p-8">
+            <div className="flex flex-col min-h-screen p-4 md:p-8">
+                 <div className="absolute inset-0 -z-10 h-full w-full">
+                    <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+                    <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#22c55e33,transparent)]"></div>
+                </div>
+
                 <div className="text-center my-12">
                     <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-br from-green-400 to-emerald-600">Audio Playlist</h1>
                     <p className="text-lg max-w-2xl mx-auto text-gray-400">A curated selection of sounds for focus, relaxation, and mindfulness.</p>
@@ -571,129 +590,99 @@ export default function AudioPlaylistPage() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/20 h-full w-full z-30"
+                        className="fixed inset-0 bg-black/80 backdrop-blur-sm h-full w-full z-30"
                     />
                     )}
                 </AnimatePresence>
-
+                
                 <AnimatePresence>
-                    {activeCard ? (
-                    <div className="fixed inset-0 grid place-items-center z-[100]">
-                        <motion.button
-                            key={`button-close-${activeCard.title}-${id}`}
-                            className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
-                            onClick={() => setActiveCard(null)}
+                {activeCard && (
+                    <div className="fixed inset-0 grid place-items-center z-[100]" onClick={(e) => e.stopPropagation()}>
+                    <motion.button
+                        key={`button-close-${activeCard.title}-${id}`}
+                        layoutId={`close-button-${activeCard.id}-${id}`}
+                        className="flex absolute top-4 right-4 z-50 items-center justify-center bg-white/20 backdrop-blur-md rounded-full h-8 w-8 border border-white/20"
+                        onClick={() => setActiveCard(null)}
+                    >
+                        <X className="h-5 w-5 text-white" />
+                    </motion.button>
+
+                    <div className="w-full max-w-md" ref={expandableCardRef}>
+                        <Card
+                        className={cn("flex flex-col h-full bg-black/30 backdrop-blur-lg border border-green-500/20 rounded-2xl overflow-hidden shadow-2xl shadow-green-500/10")}
                         >
-                            <CloseIcon />
-                        </motion.button>
-                        <motion.div
-                        layoutId={`card-${activeCard.id}-${id}`}
-                        ref={expandableCardRef}
-                        className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-gray-900 sm:rounded-3xl overflow-hidden"
-                        >
-                        <motion.div layoutId={`image-${activeCard.id}-${id}`}>
-                            <Image
-                                width={500}
-                                height={320}
+                            <motion.div className="relative w-full h-64" layoutId={`image-${activeCard.id}-${id}`}>
+                                <Image
                                 src={activeCard.src}
                                 alt={activeCard.title}
-                                className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
+                                fill
+                                className="object-cover"
                                 data-ai-hint="calm nature"
-                            />
-                        </motion.div>
-
-                        <div>
-                            <div className="flex justify-between items-start p-4">
-                            <div className="">
-                                <motion.h3
-                                layoutId={`title-${activeCard.id}-${id}`}
-                                className="font-bold text-neutral-200"
-                                >
-                                {activeCard.title}
-                                </motion.h3>
-                                <motion.p
-                                layoutId={`description-${activeCard.id}-${id}`}
-                                className="text-neutral-400"
-                                >
-                                {activeCard.description}
-                                </motion.p>
-                            </div>
-
-                            <motion.div layoutId={`button-${activeCard.id}-${id}`}>
-                                <Button size="icon" className="bg-green-600 hover:bg-green-500 rounded-full w-12 h-12" onClick={() => handlePlayPause(activeCard)}>
-                                    {(isPlaying && currentTrack?.id === activeCard.id) ? <Pause className="h-6 w-6"/> : <Play className="h-6 w-6"/>}
-                                </Button>
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                             </motion.div>
-
-                            </div>
-                            <div className="pt-4 relative px-4">
-                                <motion.div
-                                    layout
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="text-neutral-400 text-xs md:text-sm lg:text-base h-40 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
-                                >
-                                    {activeCard.content()}
+                            <CardContent className="p-6 flex flex-col flex-grow">
+                                <motion.h3 layoutId={`title-${activeCard.id}-${id}`} className="text-2xl font-bold text-green-300">{activeCard.title}</motion.h3>
+                                <motion.p layoutId={`description-${activeCard.id}-${id}`} className="text-gray-400 mt-2 flex-grow mb-4">{activeCard.description}</motion.p>
+                                <motion.div layoutId={`content-${activeCard.id}-${id}`} className="text-gray-300 text-sm">{activeCard.content()}</motion.div>
+                                <motion.div layoutId={`play-button-${activeCard.id}-${id}`} className="mt-6">
+                                <Button onClick={(e) => {e.stopPropagation(); handlePlayPause(activeCard)}} className="w-full bg-green-600 hover:bg-green-500 transition-all group">
+                                    {isPlaying && currentTrack?.id === activeCard.id ? <Pause className="mr-2 h-5 w-5"/> : <Play className="mr-2 h-5 w-5"/>}
+                                    {isPlaying && currentTrack?.id === activeCard.id ? 'Pause' : 'Play'}
+                                </Button>
                                 </motion.div>
-                            </div>
-                        </div>
-                        </motion.div>
+                            </CardContent>
+                        </Card>
                     </div>
-                    ) : null}
+                    </div>
+                )}
                 </AnimatePresence>
-                
-                <motion.ul layout className="w-full max-w-4xl mx-auto gap-4 flex flex-col">
+
+                <motion.div 
+                    layout 
+                    className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl mx-auto"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
                     <AnimatePresence>
                         {filteredTracks.map((track) => (
                         <motion.div
-                            id={`card-${track.id}-${id}`}
                             layoutId={`card-${track.id}-${id}`}
-                            key={`card-${track.id}-${id}`}
+                            key={`card-motion-${track.id}-${id}`}
+                            variants={itemVariants}
                             onClick={() => setActiveCard(track)}
                             className={cn(
-                                "p-4 flex flex-col md:flex-row justify-between items-center bg-gray-900/50 hover:bg-gray-800/70 rounded-xl cursor-pointer border border-green-500/10 hover:border-green-500/30 transition-all",
-                                aiRecommendedTrackId === track.id && 'border-green-400 ring-2 ring-green-400/50'
+                                "group cursor-pointer",
+                                aiRecommendedTrackId === track.id && 'ring-2 ring-green-400/80 rounded-2xl'
                             )}
                         >
-                            <div className="flex gap-4 flex-col md:flex-row items-center w-full">
-                            <motion.div layoutId={`image-${track.id}-${id}`}>
-                                <Image
-                                    width={56}
-                                    height={56}
-                                    src={track.src}
-                                    alt={track.title}
-                                    className="h-20 w-20 md:h-14 md:w-14 rounded-lg object-cover object-top"
-                                    data-ai-hint="calm nature"
-                                />
-                            </motion.div>
-                            <div className="flex-grow">
-                                <motion.h3
-                                layoutId={`title-${track.id}-${id}`}
-                                className="font-medium text-neutral-200 text-center md:text-left"
-                                >
-                                {track.title}
-                                </motion.h3>
-                                <motion.p
-                                layoutId={`description-${track.id}-${id}`}
-                                className="text-neutral-400 text-center md:text-left text-sm"
-                                >
-                                {track.description}
-                                </motion.p>
-                            </div>
-                            <motion.div
-                                layoutId={`button-${track.id}-${id}`}
-                                className="mt-4 md:mt-0 flex-shrink-0"
+                          <Card
+                            className={cn("flex flex-col h-full bg-black/30 backdrop-blur-md border hover:border-green-400/50 transition-all duration-300 transform hover:-translate-y-1 rounded-2xl overflow-hidden group")}
+                            style={{ borderColor: activeCard?.id === track.id ? 'hsl(var(--primary))' : 'hsla(var(--border))' }}
                             >
-                                <Button size="icon" className="bg-green-600 hover:bg-green-500 rounded-full" onClick={(e) => { e.stopPropagation(); handlePlayPause(track); }}>
-                                    {(isPlaying && currentTrack?.id === track.id) ? <Pause className="h-5 w-5"/> : <Play className="h-5 w-5"/>}
-                                </Button>
-                            </motion.div>
-                            </div>
-                        </motion.div>
-                        ))}
+                                <motion.div className="relative w-full h-40 overflow-hidden" layoutId={`image-${track.id}-${id}`}>
+                                    <Image
+                                        src={track.src}
+                                        alt={track.title}
+                                        fill
+                                        className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+                                        data-ai-hint="calm nature"
+                                    />
+                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+
+                                     <motion.div className="absolute bottom-4 left-4" layoutId={`title-${track.id}-${id}`}>
+                                        <h3 className="text-xl font-bold text-white tracking-tight">{track.title}</h3>
+                                     </motion.div>
+                                </motion.div>
+                                <CardContent className="p-4">
+                                     <motion.p layoutId={`description-${track.id}-${id}`} className="text-sm text-gray-400 line-clamp-2">{track.description}</motion.p>
+                                </CardContent>
+                            </Card>
+                      </motion.div>
+                    ))}
                     </AnimatePresence>
-                </motion.ul>
+                </motion.div>
 
                 <audio ref={audioRef} />
             </div>
@@ -779,3 +768,5 @@ export default function AudioPlaylistPage() {
         </>
     );
 }
+
+    
