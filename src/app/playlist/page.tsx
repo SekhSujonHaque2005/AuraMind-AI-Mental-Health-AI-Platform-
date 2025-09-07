@@ -23,6 +23,7 @@ interface Track {
 }
 
 const staticTracks: Track[] = [
+  // Ambient
   {
     id: 1,
     title: 'Peaceful Morning',
@@ -30,9 +31,30 @@ const staticTracks: Track[] = [
     category: 'Ambient',
     duration: '5:01',
     url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-1.mp3?alt=media&token=e9e6b8a8-8e6d-4d7a-8b83-2d2b512c9b4e',
-    src: 'https://images.unsplash.com/photo-1476820865390-c52aeebb9891?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    src: 'https://images.unsplash.com/photo-1476820865390-c52aeebb9891?q=80&w=2670&auto=format&fit=crop',
     content: () => <p>Ease into your day with this calming ambient track. Perfect for meditation, yoga, or simply enjoying a quiet cup of coffee as the sun rises. Let the gentle tones wash over you, clearing your mind for the day ahead.</p>,
   },
+  {
+    id: 12,
+    title: 'Floating Through Space',
+    description: 'Cosmic sounds for deep relaxation.',
+    category: 'Ambient',
+    duration: '6:30',
+    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-12.mp3?alt=media&token=e9e6b8a8-8e6d-4d7a-8b83-2d2b512c9b4e',
+    src: 'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2671&auto=format&fit=crop',
+    content: () => <p>Drift away into the cosmos with this ethereal ambient track. The deep, resonant tones and subtle electronic textures create a feeling of weightlessness and serenity, ideal for deep meditation or unwinding.</p>,
+  },
+  {
+    id: 13,
+    title: 'Dreamy Vistas',
+    description: 'Lush soundscapes for imagination.',
+    category: 'Ambient',
+    duration: '7:15',
+    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-13.mp3?alt=media&token=e9e6b8a8-8e6d-4d7a-8b83-2d2b512c9b4e',
+    src: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2532&auto=format&fit=crop',
+    content: () => <p>Let your mind wander through beautiful, imaginary landscapes with this lush and dreamy ambient track. Perfect for creative work, journaling, or simply letting your imagination soar.</p>,
+  },
+  // Nature
   {
     id: 2,
     title: 'Forest Walk',
@@ -40,9 +62,20 @@ const staticTracks: Track[] = [
     category: 'Nature',
     duration: '4:49',
     url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-2.mp3?alt=media&token=c27f7f90-1c64-4e2b-9c2b-23218e888496',
-    src: 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    src: 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2670&auto=format&fit=crop',
     content: () => <p>Immerse yourself in the serene soundscape of a forest. The gentle rustling of leaves, distant bird calls, and the soft whisper of the wind create a perfect atmosphere for focus and relaxation.</p>,
   },
+  {
+    id: 11,
+    title: 'Chirping Birds',
+    description: 'A cheerful morning chorus.',
+    category: 'Nature',
+    duration: '3:50',
+    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-11.mp3?alt=media&token=c27f7f90-1c64-4e2b-9c2b-23218e888496',
+    src: 'https://images.unsplash.com/photo-1528926938361-9f3a6159044a?q=80&w=2670&auto=format&fit=crop',
+    content: () => <p>Wake up to the happy and uplifting sounds of birds chirping. This track is perfect for starting your day with a positive and energetic vibe, connecting you with the beauty of nature.</p>,
+  },
+  // Water Sounds
   {
     id: 3,
     title: 'Gentle Stream',
@@ -50,38 +83,8 @@ const staticTracks: Track[] = [
     category: 'Water Sounds',
     duration: '5:27',
     url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-3.mp3?alt=media&token=3b3d9d37-2a4c-4e89-8d76-880479132104',
-    src: 'https://images.unsplash.com/photo-1536584754829-12214d404f32?q=80&w=2574&auto=format&fit=crop&ixlib.rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    src: 'https://images.unsplash.com/photo-1536584754829-12214d404f32?q=80&w=2574&auto=format&fit=crop',
     content: () => <p>Let the continuous, gentle sound of a flowing stream wash away your stress. This track is ideal for creating a peaceful environment for studying, working, or unwinding after a long day.</p>,
-  },
-  {
-    id: 4,
-    title: 'Mindful Piano',
-    description: 'A soft, instrumental piece.',
-    category: 'Instrumental',
-    duration: '4:21',
-    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-4.mp3?alt=media&token=7d0b8e9a-7a54-4c46-888e-6704b2b1a473',
-    src: 'https://images.unsplash.com/photo-1520444453472-ac53c516450a?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    content: () => <p>A beautiful and simple piano melody to help you find your center. The minimalist composition provides a backdrop of calm without being distracting, encouraging a state of mindfulness.</p>,
-  },
-  {
-    id: 5,
-    title: 'Deep Focus (50Hz)',
-    description: 'Binaural beats for concentration.',
-    category: 'Binaural',
-    duration: '6:12',
-    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-5.mp3?alt=media&token=2d1a3c6f-7c1c-4b5a-9b1a-28952044810f',
-    src: 'https://images.unsplash.com/photo-1517842645767-c6f9c49505b8?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    content: () => <p>Utilize the power of binaural beats to enhance your focus and concentration. This track is designed to help you enter a flow state, making it perfect for complex tasks and creative work. Use headphones for the best effect.</p>,
-  },
-  {
-    id: 6,
-    title: 'Rainy Day Cafe',
-    description: 'Cozy ambiance of rain and coffee.',
-    category: 'Soundscape',
-    duration: '7:30',
-    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-6.mp3?alt=media&token=8d48a04b-3c48-4334-a151-dd2199127814',
-    src: 'https://images.unsplash.com/photo-1515542706-9ab635001a47?q=80&w=2670&auto=format&fit=crop&ixlib.rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    content: () => <p>The comforting sound of rain tapping on a window pane, mixed with the subtle, warm ambiance of a quiet coffee shop. Ideal for reading, studying, or simply relaxing on a cozy afternoon.</p>,
   },
   {
     id: 7,
@@ -90,28 +93,61 @@ const staticTracks: Track[] = [
     category: 'Water Sounds',
     duration: '8:05',
     url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-7.mp3?alt=media&token=83a0e5b3-3a7a-428a-867c-1eda7f4d2f83',
-    src: 'https://images.unsplash.com/photo-1507525428034-b723a9ce6890?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    src: 'https://images.unsplash.com/photo-1507525428034-b723a9ce6890?q=80&w=2670&auto=format&fit=crop',
     content: () => <p>Transport yourself to a serene beach with the calming, rhythmic sounds of ocean waves. This track is perfect for falling asleep, meditating, or creating a peaceful backdrop for your day.</p>,
   },
+  // Instrumental
   {
-    id: 8,
-    title: 'Lofi Study Beats',
-    description: 'Chill instrumental hip hop.',
-    category: 'Lofi',
-    duration: '4:55',
-    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-8.mp3?alt=media&token=7c1f1f94-734d-4e94-817a-59b9e592750e',
-    src: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    content: () => <p>A smooth, instrumental lofi hip hop track to help you study, work, or relax. The chill beats and simple melodies create a productive and stress-free atmosphere.</p>,
+    id: 4,
+    title: 'Mindful Piano',
+    description: 'A soft, instrumental piece.',
+    category: 'Instrumental',
+    duration: '4:21',
+    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-4.mp3?alt=media&token=7d0b8e9a-7a54-4c46-888e-6704b2b1a473',
+    src: 'https://images.unsplash.com/photo-1520444453472-ac53c516450a?q=80&w=2670&auto=format&fit=crop',
+    content: () => <p>A beautiful and simple piano melody to help you find your center. The minimalist composition provides a backdrop of calm without being distracting, encouraging a state of mindfulness.</p>,
   },
   {
-    id: 9,
-    title: 'Tibetan Singing Bowls',
-    description: 'Meditative and healing tones.',
-    category: 'Meditation',
-    duration: '9:15',
-    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841',
-    src: 'https://images.unsplash.com/photo-1544928140-65c382185a6a?q=80&w=2670&auto=format&fit=crop&ixlib.rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    content: () => <p>The resonant, healing sounds of Tibetan singing bowls. This track is designed for deep meditation, helping to balance your chakras and promote a sense of inner peace and clarity.</p>,
+    id: 14,
+    title: 'Acoustic Guitar Serenity',
+    description: 'Warm and gentle guitar strings.',
+    category: 'Instrumental',
+    duration: '5:55',
+    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-14.mp3?alt=media&token=7d0b8e9a-7a54-4c46-888e-6704b2b1a473',
+    src: 'https://images.unsplash.com/photo-1499999958309-a3b6d77a3644?q=80&w=2670&auto=format&fit=crop',
+    content: () => <p>Unwind with the warm, gentle tones of an acoustic guitar. This simple, melodic piece is perfect for a quiet evening, reading, or creating a peaceful and intimate atmosphere.</p>,
+  },
+  // Binaural
+  {
+    id: 5,
+    title: 'Deep Focus (50Hz)',
+    description: 'Binaural beats for concentration.',
+    category: 'Binaural',
+    duration: '6:12',
+    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-5.mp3?alt=media&token=2d1a3c6f-7c1c-4b5a-9b1a-28952044810f',
+    src: 'https://images.unsplash.com/photo-1517842645767-c6f9c49505b8?q=80&w=2670&auto=format&fit=crop',
+    content: () => <p>Utilize the power of binaural beats to enhance your focus and concentration. This track is designed to help you enter a flow state, making it perfect for complex tasks and creative work. Use headphones for the best effect.</p>,
+  },
+  {
+    id: 15,
+    title: 'Alpha Wave Relaxation',
+    description: '8-12Hz beats for calm awareness.',
+    category: 'Binaural',
+    duration: '7:45',
+    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-15.mp3?alt=media&token=2d1a3c6f-7c1c-4b5a-9b1a-28952044810f',
+    src: 'https://images.unsplash.com/photo-1558985250-2d85b34210de?q=80&w=2670&auto=format&fit=crop',
+    content: () => <p>Gently guide your brain into an alpha state with these 8-12Hz binaural beats. This frequency is associated with relaxed, peaceful awareness, making it ideal for stress reduction and light meditation. Use headphones for the best effect.</p>,
+  },
+  // Soundscape
+  {
+    id: 6,
+    title: 'Rainy Day Cafe',
+    description: 'Cozy ambiance of rain and coffee.',
+    category: 'Soundscape',
+    duration: '7:30',
+    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-6.mp3?alt=media&token=8d48a04b-3c48-4334-a151-dd2199127814',
+    src: 'https://images.unsplash.com/photo-1515542706-9ab635001a47?q=80&w=2670&auto=format&fit=crop',
+    content: () => <p>The comforting sound of rain tapping on a window pane, mixed with the subtle, warm ambiance of a quiet coffee shop. Ideal for reading, studying, or simply relaxing on a cozy afternoon.</p>,
   },
   {
     id: 10,
@@ -120,20 +156,53 @@ const staticTracks: Track[] = [
     category: 'Soundscape',
     duration: '6:40',
     url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-10.mp3?alt=media&token=7d0b8e9a-7a54-4c46-888e-6704b2b1a473',
-    src: 'https://images.unsplash.com/photo-1542382257-80dedb7c7a84?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    src: 'https://images.unsplash.com/photo-1542382257-80dedb7c7a84?q=80&w=2670&auto=format&fit=crop',
     content: () => <p>The warm, crackling sound of a fireplace. Create a cozy and inviting atmosphere, perfect for relaxing with a book on a cold night or finding comfort and warmth.</p>,
   },
-   {
-    id: 11,
-    title: 'Chirping Birds',
-    description: 'A cheerful morning chorus.',
-    category: 'Nature',
-    duration: '3:50',
-    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-11.mp3?alt=media&token=c27f7f90-1c64-4e2b-9c2b-23218e888496',
-    src: 'https://images.unsplash.com/photo-1528926938361-9f3a6159044a?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    content: () => <p>Wake up to the happy and uplifting sounds of birds chirping. This track is perfect for starting your day with a positive and energetic vibe, connecting you with the beauty of nature.</p>,
+  // Lofi
+  {
+    id: 8,
+    title: 'Lofi Study Beats',
+    description: 'Chill instrumental hip hop.',
+    category: 'Lofi',
+    duration: '4:55',
+    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-8.mp3?alt=media&token=7c1f1f94-734d-4e94-817a-59b9e592750e',
+    src: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=2670&auto=format&fit=crop',
+    content: () => <p>A smooth, instrumental lofi hip hop track to help you study, work, or relax. The chill beats and simple melodies create a productive and stress-free atmosphere.</p>,
+  },
+  {
+    id: 16,
+    title: 'Midnight Drive',
+    description: 'Melancholic lofi for late nights.',
+    category: 'Lofi',
+    duration: '5:10',
+    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-16.mp3?alt=media&token=7c1f1f94-734d-4e94-817a-59b9e592750e',
+    src: 'https://images.unsplash.com/photo-1526749837599-b428b1b51754?q=80&w=2574&auto=format&fit=crop',
+    content: () => <p>Perfect for late-night drives or quiet contemplation. This lofi track features melancholic melodies and a steady beat, creating a reflective and calming mood.</p>,
+  },
+  // Meditation
+  {
+    id: 9,
+    title: 'Tibetan Singing Bowls',
+    description: 'Meditative and healing tones.',
+    category: 'Meditation',
+    duration: '9:15',
+    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841',
+    src: 'https://images.unsplash.com/photo-1544928140-65c382185a6a?q=80&w=2670&auto=format&fit=crop',
+    content: () => <p>The resonant, healing sounds of Tibetan singing bowls. This track is designed for deep meditation, helping to balance your chakras and promote a sense of inner peace and clarity.</p>,
+  },
+  {
+    id: 17,
+    title: 'Guided Breath Meditation',
+    description: 'A voice-guided breathing exercise.',
+    category: 'Meditation',
+    duration: '10:00',
+    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-9.mp3?alt=media&token=d1d8a39a-7c9e-4e4b-9723-5e865f12e841',
+    src: 'https://images.unsplash.com/photo-1506126613408-4e61f3ee836a?q=80&w=2574&auto=format&fit=crop',
+    content: () => <p>Follow a calm voice as it guides you through a simple but powerful breathing exercise. Perfect for beginners or anyone looking to anchor themselves in the present moment.</p>,
   },
 ];
+
 
 const CloseIcon = () => {
     return (
@@ -246,13 +315,12 @@ export default function AudioPlaylistPage() {
         }
 
     }, [currentTrack, isShuffled, shuffledTracks, handlePlayPause]);
-
+    
     const handleTrackEnded = useCallback(() => {
         if (!isLooping) {
             handleSkip('forward');
         }
     }, [isLooping, handleSkip]);
-
 
     useEffect(() => {
         const audio = audioRef.current;
