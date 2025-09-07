@@ -127,9 +127,10 @@ export default function AudioPlaylistPage() {
         return () => window.removeEventListener("keydown", onKeyDown);
     }, [activeCard]);
 
-    const formatTime = (seconds: number) => {
+    const formatTime = (timeInSeconds: number) => {
+        const seconds = Math.floor(timeInSeconds);
         const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = Math.floor(seconds % 60);
+        const remainingSeconds = seconds % 60;
         return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
     
@@ -141,10 +142,15 @@ export default function AudioPlaylistPage() {
             setProgress((audio.currentTime / audio.duration) * 100);
             setCurrentTime(formatTime(audio.currentTime));
         };
-        const setAudioData = () => setDuration(formatTime(audio.duration));
+        const setAudioData = () => {
+            if (isFinite(audio.duration)) {
+                setDuration(formatTime(audio.duration));
+            }
+        };
         const handleEnded = () => {
             setIsPlaying(false);
-            setCurrentTrack(null);
+            // Optional: Play next song or reset player
+            // For now, just stopping
         };
     
         audio.addEventListener('timeupdate', updateProgress);
@@ -156,7 +162,7 @@ export default function AudioPlaylistPage() {
           audio.removeEventListener('loadedmetadata', setAudioData);
           audio.removeEventListener('ended', handleEnded);
         };
-    }, []);
+    }, [currentTrack]); // Rerun when track changes
 
     useEffect(() => {
         if (audioRef.current) {
@@ -365,4 +371,3 @@ export default function AudioPlaylistPage() {
         </>
     );
 }
-
