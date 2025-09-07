@@ -3,7 +3,7 @@
 
 import { useState, useRef, useEffect, useCallback, useId } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Pause, Music, Volume2, X } from 'lucide-react';
+import { Play, Pause, Music, Volume2, X, SkipForward, SkipBack } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useOutsideClick } from '@/hooks/use-outside-click';
 import { Slider } from '@/components/ui/slider';
@@ -68,7 +68,7 @@ const staticTracks: Track[] = [
     category: 'Binaural',
     duration: '6:12',
     url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-5.mp3?alt=media&token=2d1a3c6f-7c1c-4b5a-9b1a-28952044810f',
-    src: 'https://images.unsplash.com/photo-1517842645767-c6f9c49505b8?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    src: 'https://images.unsplash.com/photo-1517842645767-c6f9c49505b8?q=80&w=2670&auto=format&fit=crop&ixlib.rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     content: () => <p>Utilize the power of binaural beats to enhance your focus and concentration. This track is designed to help you enter a flow state, making it perfect for complex tasks and creative work. Use headphones for the best effect.</p>,
   },
 ];
@@ -128,48 +128,13 @@ export default function AudioPlaylistPage() {
     }, [activeCard]);
 
     const formatTime = (timeInSeconds: number) => {
+        if (isNaN(timeInSeconds)) return '0:00';
         const seconds = Math.floor(timeInSeconds);
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
         return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
     
-    useEffect(() => {
-        const audio = audioRef.current;
-        if (!audio) return;
-        
-        const updateProgress = () => {
-            setProgress((audio.currentTime / audio.duration) * 100);
-            setCurrentTime(formatTime(audio.currentTime));
-        };
-        const setAudioData = () => {
-            if (isFinite(audio.duration)) {
-                setDuration(formatTime(audio.duration));
-            }
-        };
-        const handleEnded = () => {
-            setIsPlaying(false);
-            // Optional: Play next song or reset player
-            // For now, just stopping
-        };
-    
-        audio.addEventListener('timeupdate', updateProgress);
-        audio.addEventListener('loadedmetadata', setAudioData);
-        audio.addEventListener('ended', handleEnded);
-    
-        return () => {
-          audio.removeEventListener('timeupdate', updateProgress);
-          audio.removeEventListener('loadedmetadata', setAudioData);
-          audio.removeEventListener('ended', handleEnded);
-        };
-    }, [currentTrack]); // Rerun when track changes
-
-    useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.volume = volume;
-        }
-    }, [volume]);
-      
     const handlePlayPause = useCallback((track: Track) => {
         if (currentTrack?.id === track.id) {
             if (isPlaying) {
@@ -189,6 +154,52 @@ export default function AudioPlaylistPage() {
         }
     }, [currentTrack, isPlaying]);
 
+    const handleTrackEnded = useCallback(() => {
+        if(currentTrack) {
+            const currentIndex = staticTracks.findIndex(t => t.id === currentTrack.id);
+            const nextIndex = (currentIndex + 1) % staticTracks.length;
+            handlePlayPause(staticTracks[nextIndex]);
+        }
+    }, [currentTrack, handlePlayPause]);
+
+    const handleSkip = (direction: 'forward' | 'backward') => {
+        if (!currentTrack) return;
+        const currentIndex = staticTracks.findIndex(t => t.id === currentTrack.id);
+        const newIndex = direction === 'forward'
+            ? (currentIndex + 1) % staticTracks.length
+            : (currentIndex - 1 + staticTracks.length) % staticTracks.length;
+        handlePlayPause(staticTracks[newIndex]);
+    };
+
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        const updateProgress = () => {
+            setProgress((audio.currentTime / audio.duration) * 100 || 0);
+            setCurrentTime(formatTime(audio.currentTime));
+        };
+        const setAudioData = () => {
+            setDuration(formatTime(audio.duration));
+        };
+        
+        audio.addEventListener('timeupdate', updateProgress);
+        audio.addEventListener('loadedmetadata', setAudioData);
+        audio.addEventListener('ended', handleTrackEnded);
+
+        return () => {
+          audio.removeEventListener('timeupdate', updateProgress);
+          audio.removeEventListener('loadedmetadata', setAudioData);
+          audio.removeEventListener('ended', handleTrackEnded);
+        };
+    }, [currentTrack, handleTrackEnded]);
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.volume = volume;
+        }
+    }, [volume]);
+      
     return (
         <>
             <div className="flex flex-col items-center min-h-screen p-4 md:p-8">
@@ -230,6 +241,7 @@ export default function AudioPlaylistPage() {
                                 src={activeCard.src}
                                 alt={activeCard.title}
                                 className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
+                                data-ai-hint="calm nature"
                             />
                         </motion.div>
 
@@ -290,6 +302,7 @@ export default function AudioPlaylistPage() {
                                 src={track.src}
                                 alt={track.title}
                                 className="h-20 w-20 md:h-14 md:w-14 rounded-lg object-cover object-top"
+                                data-ai-hint="calm nature"
                             />
                         </motion.div>
                         <div className="">
@@ -320,50 +333,73 @@ export default function AudioPlaylistPage() {
                 </ul>
 
                 <audio ref={audioRef} />
-
             </div>
 
              <AnimatePresence>
                 {currentTrack && (
                     <motion.div
-                        initial={{ y: 100, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: 100, opacity: 0 }}
-                        transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-                        className="fixed bottom-4 left-4 right-4 md:bottom-8 md:left-auto md:w-96 z-50"
-                        style={{ right: 'calc(50% - 12rem)'}}
+                        initial={{ y: "110%" }}
+                        animate={{ y: 0 }}
+                        exit={{ y: "110%" }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                        className="fixed bottom-4 left-4 right-4 md:bottom-6 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-md z-50"
                     >
-                        <div className="bg-gray-900/80 backdrop-blur-xl border border-green-500/30 p-4 rounded-xl shadow-2xl flex items-center gap-4">
-                            <Button size="icon" className="bg-green-600 hover:bg-green-500 rounded-full flex-shrink-0" onClick={() => handlePlayPause(currentTrack)}>
-                                {isPlaying ? <Pause className="h-5 w-5"/> : <Play className="h-5 w-5"/>}
-                            </Button>
-                            <div className="flex-grow overflow-hidden">
-                                <p className="text-white font-semibold truncate">{currentTrack.title}</p>
-                                <div className="flex items-center gap-2 text-xs text-gray-400 mt-1">
-                                    <span>{currentTime}</span>
+                        <div className="relative bg-gray-900/60 backdrop-blur-xl border border-green-500/20 p-4 rounded-xl shadow-2xl overflow-hidden">
+                           <div className="absolute inset-0 z-0 opacity-20">
+                             <Image src={currentTrack.src} alt="Now playing background" fill className="object-cover" data-ai-hint="blurry music" />
+                             <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent"></div>
+                           </div>
+                           <div className="relative z-10 flex flex-col gap-3">
+                               <div className="flex items-center gap-4">
+                                  <Image src={currentTrack.src} alt={currentTrack.title} width={56} height={56} className="rounded-md w-14 h-14 object-cover flex-shrink-0" data-ai-hint="music album" />
+                                  <div className="flex-grow overflow-hidden">
+                                       <p className="text-white font-semibold truncate">{currentTrack.title}</p>
+                                       <p className="text-gray-400 text-sm truncate">{currentTrack.category}</p>
+                                  </div>
+                                  <button onClick={() => setCurrentTrack(null)} className="text-gray-400 hover:text-white flex-shrink-0 p-1">
+                                    <X className="h-5 w-5" />
+                                  </button>
+                               </div>
+
+                               <div className="flex flex-col gap-1">
                                     <Slider 
                                         value={[progress]} 
                                         max={100} 
                                         step={1} 
-                                        className="[&>span:first-child]:h-1 [&>span>span]:h-1 [&>span>span]:bg-green-500"
+                                        className="[&>span:first-child]:h-1.5 [&>span>span]:h-1.5 [&>span>span]:bg-green-500"
                                         onValueChange={(value) => { if (audioRef.current) { audioRef.current.currentTime = (value[0] / 100) * audioRef.current.duration; }}}
                                     />
-                                    <span>{duration}</span>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <Volume2 className="h-4 w-4 text-gray-400" />
-                                <Slider 
-                                    defaultValue={[1]}
-                                    max={1} 
-                                    step={0.01} 
-                                    onValueChange={(value) => setVolume(value[0])}
-                                    className="w-20 [&>span:first-child]:h-1 [&>span>span]:h-1 [&>span>span]:bg-green-500"
-                                />
-                            </div>
-                             <button onClick={() => setCurrentTrack(null)} className="text-gray-400 hover:text-white">
-                                <X className="h-4 w-4" />
-                            </button>
+                                    <div className="flex justify-between text-xs text-gray-400">
+                                        <span>{currentTime}</span>
+                                        <span>{duration}</span>
+                                    </div>
+                               </div>
+
+                               <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2 w-1/3">
+                                        <Volume2 className="h-5 w-5 text-gray-400" />
+                                        <Slider 
+                                            value={[volume]}
+                                            max={1} 
+                                            step={0.01} 
+                                            onValueChange={(value) => setVolume(value[0])}
+                                            className="w-full [&>span:first-child]:h-1.5 [&>span>span]:h-1.5 [&>span>span]:bg-green-500"
+                                        />
+                                    </div>
+                                    <div className="flex items-center gap-2 justify-center w-1/3">
+                                        <Button variant="ghost" size="icon" className="text-white rounded-full" onClick={() => handleSkip('backward')}>
+                                           <SkipBack className="h-5 w-5" />
+                                        </Button>
+                                        <Button size="icon" className="bg-green-600 hover:bg-green-500 rounded-full w-12 h-12" onClick={() => handlePlayPause(currentTrack)}>
+                                            {isPlaying ? <Pause className="h-6 w-6"/> : <Play className="h-6 w-6"/>}
+                                        </Button>
+                                        <Button variant="ghost" size="icon" className="text-white rounded-full" onClick={() => handleSkip('forward')}>
+                                           <SkipForward className="h-5 w-5" />
+                                        </Button>
+                                    </div>
+                                    <div className="w-1/3"></div>
+                               </div>
+                           </div>
                         </div>
                     </motion.div>
                 )}
