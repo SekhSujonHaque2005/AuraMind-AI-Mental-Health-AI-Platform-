@@ -663,7 +663,7 @@ export default function AudioPlaylistPage() {
                             {filteredTracks.map((track) => (
                                 <motion.div
                                     layout
-                                    key={`card-motion-${'${'}track.id}-${'${'}id}`}
+                                    key={`card-motion-${'${'}track.id}`}
                                     variants={itemVariants}
                                     className={cn(
                                         "group",
@@ -672,7 +672,6 @@ export default function AudioPlaylistPage() {
                                     id={`card-${'${'}track.id}-${'${'}id}`}
                                 >
                                     <TrackCard
-                                        key={track.id}
                                         track={track}
                                         onMouseEnter={setHoveredTrack}
                                         onMouseLeave={() => setHoveredTrack(null)}
