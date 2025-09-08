@@ -581,7 +581,7 @@ export default function AudioPlaylistPage() {
         );
     };
 
-    const showToggleButton = filteredTracks.length > INITIAL_VISIBLE_TRACKS;
+    const showToggleButton = filteredTracks.length > INITIAL_visible_TRACKS;
     const isExpanded = visibleCount === filteredTracks.length;
 
      const containerVariants = {
@@ -711,7 +711,7 @@ export default function AudioPlaylistPage() {
                 </div>
                 
                  <AnimatePresence>
-                    {hoveredTrack && !currentTrack && (
+                    {hoveredTrack && (
                         <TrackPreviewPopup 
                             track={hoveredTrack}
                             position={mousePosition}
@@ -732,7 +732,7 @@ export default function AudioPlaylistPage() {
                         animate={{ y: 0 }}
                         exit={{ y: "110%" }}
                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                        className="fixed bottom-0 left-0 right-0 z-50"
+                        className="fixed bottom-0 left-0 right-0 w-full z-50"
                     >
                         <div className="relative bg-gray-900/60 backdrop-blur-xl border-t border-green-500/20 p-4 shadow-2xl overflow-hidden">
                            <div className="absolute inset-0 z-0 opacity-20">
