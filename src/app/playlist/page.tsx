@@ -732,71 +732,64 @@ export default function AudioPlaylistPage() {
                         animate={{ y: 0 }}
                         exit={{ y: "110%" }}
                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                        className="fixed bottom-4 left-4 right-4 md:bottom-6 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-md z-50"
+                        className="fixed bottom-0 left-0 right-0 z-50"
                     >
-                        <div className="relative bg-gray-900/60 backdrop-blur-xl border border-green-500/20 p-4 rounded-xl shadow-2xl overflow-hidden">
+                        <div className="relative bg-gray-900/60 backdrop-blur-xl border-t border-green-500/20 p-4 shadow-2xl overflow-hidden">
                            <div className="absolute inset-0 z-0 opacity-20">
                              <Image src={currentTrack.src} alt="Now playing background" fill className="object-cover" data-ai-hint="blurry music" />
                              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent"></div>
                            </div>
-                           <div className="relative z-10 flex flex-col gap-3">
+                           <div className="relative z-10 flex flex-col gap-3 max-w-7xl mx-auto">
                                <div className="flex items-center gap-4">
                                   <Image src={currentTrack.src} alt={currentTrack.title} width={56} height={56} className="rounded-md w-14 h-14 object-cover flex-shrink-0" data-ai-hint="music album" />
                                   <div className="flex-grow overflow-hidden">
                                        <p className="text-white font-semibold truncate">{currentTrack.title}</p>
                                        <p className="text-gray-400 text-sm truncate">{currentTrack.category}</p>
                                   </div>
-                                  <button onClick={() => setCurrentTrack(null)} className="text-gray-400 hover:text-white flex-shrink-0 p-1">
-                                    <X className="h-5 w-5" />
-                                  </button>
+                                  <div className="flex-grow flex items-center justify-center gap-2">
+                                     <Button variant="ghost" size="icon" className={cn("text-gray-400 hover:text-white rounded-full", isShuffled && "text-green-500")} onClick={toggleShuffle}>
+                                        <Shuffle className="h-5 w-5" />
+                                     </Button>
+                                     <Button variant="ghost" size="icon" className="text-white rounded-full" onClick={() => handleSkip('backward')}>
+                                        <SkipBack className="h-5 w-5" />
+                                     </Button>
+                                     <Button size="icon" className="bg-green-600 hover:bg-green-500 rounded-full w-12 h-12" onClick={() => handlePlayPause(currentTrack)}>
+                                         {isPlaying ? <Pause className="h-6 w-6"/> : <Play className="h-6 w-6"/>}
+                                     </Button>
+                                     <Button variant="ghost" size="icon" className="text-white rounded-full" onClick={() => handleSkip('forward')}>
+                                        <SkipForward className="h-5 w-5" />
+                                     </Button>
+                                      <Button variant="ghost" size="icon" className={cn("text-gray-400 hover:text-white rounded-full", isLooping && "text-green-500")} onClick={() => setIsLooping(prev => !prev)}>
+                                        <Repeat className="h-5 w-5" />
+                                     </Button>
+                                  </div>
+                                  <div className="flex-grow flex items-center justify-end gap-2">
+                                        <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white rounded-full" onClick={handleMuteToggle}>
+                                           {isMuted || volume === 0 ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                                        </Button>
+                                       <Slider 
+                                           value={[volume]}
+                                           max={1} 
+                                           step={0.01} 
+                                           onValueChange={handleVolumeChange}
+                                           className="w-24 [&>span:first-child]:h-1.5 [&>span>span]:h-1.5 [&>span>span]:bg-green-500"
+                                       />
+                                       <button onClick={() => setCurrentTrack(null)} className="text-gray-400 hover:text-white flex-shrink-0 p-1 ml-4">
+                                         <X className="h-5 w-5" />
+                                       </button>
+                                  </div>
                                </div>
 
-                               <div className="flex flex-col gap-1">
+                               <div className="flex items-center gap-4">
+                                    <span className="text-xs text-gray-400">{currentTime}</span>
                                     <Slider 
                                         value={[progress]} 
                                         max={100} 
                                         step={1} 
-                                        className="[&>span:first-child]:h-1.5 [&>span>span]:h-1.5 [&>span>span]:bg-green-500"
+                                        className="flex-grow [&>span:first-child]:h-1.5 [&>span>span]:h-1.5 [&>span>span]:bg-green-500"
                                         onValueChange={(value) => { if (audioRef.current) { audioRef.current.currentTime = (value[0] / 100) * audioRef.current.duration; }}}
                                     />
-                                    <div className="flex justify-between text-xs text-gray-400">
-                                        <span>{currentTime}</span>
-                                        <span>{duration}</span>
-                                    </div>
-                               </div>
-
-                               <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2 w-1/3">
-                                        <Button variant="ghost" size="icon" className={cn("text-gray-400 hover:text-white rounded-full", isShuffled && "text-green-500")} onClick={toggleShuffle}>
-                                           <Shuffle className="h-5 w-5" />
-                                        </Button>
-                                         <Button variant="ghost" size="icon" className={cn("text-gray-400 hover:text-white rounded-full", isLooping && "text-green-500")} onClick={() => setIsLooping(prev => !prev)}>
-                                           <Repeat className="h-5 w-5" />
-                                        </Button>
-                                    </div>
-                                    <div className="flex items-center gap-2 justify-center w-1/3">
-                                        <Button variant="ghost" size="icon" className="text-white rounded-full" onClick={() => handleSkip('backward')}>
-                                           <SkipBack className="h-5 w-5" />
-                                        </Button>
-                                        <Button size="icon" className="bg-green-600 hover:bg-green-500 rounded-full w-12 h-12" onClick={() => handlePlayPause(currentTrack)}>
-                                            {isPlaying ? <Pause className="h-6 w-6"/> : <Play className="h-6 w-6"/>}
-                                        </Button>
-                                        <Button variant="ghost" size="icon" className="text-white rounded-full" onClick={() => handleSkip('forward')}>
-                                           <SkipForward className="h-5 w-5" />
-                                        </Button>
-                                    </div>
-                                    <div className="w-1/3 flex items-center justify-end gap-2">
-                                         <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white rounded-full" onClick={handleMuteToggle}>
-                                            {isMuted || volume === 0 ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-                                         </Button>
-                                        <Slider 
-                                            value={[volume]}
-                                            max={1} 
-                                            step={0.01} 
-                                            onValueChange={handleVolumeChange}
-                                            className="w-20 [&>span:first-child]:h-1.5 [&>span>span]:h-1.5 [&>span>span]:bg-green-500"
-                                        />
-                                    </div>
+                                    <span className="text-xs text-gray-400">{duration}</span>
                                </div>
                            </div>
                         </div>
