@@ -19,12 +19,12 @@ const staticTracks: Track[] = [
   // Ambient (10 tracks)
   {
     id: 1,
-    title: 'Peaceful Morning',
+    title: 'Azure Twilight',
     description: 'A gentle start to your day.',
     category: 'Ambient',
     duration: '5:01',
     url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-1.mp3?alt=media&token=e9e6b8a8-8e6d-4d7a-8b83-2d2b512c9b4e',
-    src: 'https://images.unsplash.com/photo-1476820865390-c52aeebb9891?q=80&w=2670&auto=format&fit=crop',
+    src: 'https://images.pexels.com/photos/1486974/pexels-photo-1486974.jpeg?cs=srgb&dl=pexels-souvenirpixels-1486974.jpg&fm=jpg',
     content: () => <p>Ease into your day with this calming ambient track. Perfect for meditation, yoga, or simply enjoying a quiet cup of coffee as the sun rises. Let the gentle tones wash over you, clearing your mind for the day ahead.</p>,
   },
   {
@@ -153,7 +153,7 @@ const staticTracks: Track[] = [
     category: 'Binaural',
     duration: '6:12',
     url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/SoundHelix-Song-5.mp3?alt=media&token=2d1a3c6f-7c1c-4b5a-9b1a-28952044810f',
-    src: 'https://static.vecteezy.com/system/resources/previews/069/529/424/non_2x/closeup-of-a-reptile-eye-reflecting-a-vibrant-landscape-free-photo.jpg',
+    src: 'https://images.unsplash.com/photo-1453728013993-6d66e9c9123a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Zm9jdXN8ZW58MHx8MHx8fDA%3D',
     content: () => <p>Utilize the power of binaural beats to enhance your focus and concentration. This track is designed to help you enter a flow state, making it perfect for complex tasks and creative work. Use headphones for the best effect.</p>,
   },
   {
