@@ -221,6 +221,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.firstforwomen.com',
+        port: '',
+        pathname: '/**',
+      },
     ]
   }
 }
