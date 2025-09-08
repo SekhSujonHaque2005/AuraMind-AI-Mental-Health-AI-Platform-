@@ -711,7 +711,7 @@ export default function AudioPlaylistPage() {
                 </div>
                 
                  <AnimatePresence>
-                    {hoveredTrack && (
+                    {hoveredTrack && !currentTrack && (
                         <TrackPreviewPopup 
                             track={hoveredTrack}
                             position={mousePosition}
