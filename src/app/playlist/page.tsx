@@ -19,11 +19,11 @@ const staticTracks: Track[] = [
   // Ambient (10 tracks)
   {
     id: 1,
-    title: 'Azure Twilight',
+    title: 'Peaceful Morning',
     description: 'A gentle start to your day.',
     category: 'Ambient',
     duration: '5:01',
-    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/Azure%20Twilight.mp3?alt=media&token=ec4a6b03-749d-4200-a1df-31be5c93519a',
+    url: 'https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/Peaceful%20Morning.mp3?alt=media&token=96b0a75a-c321-4250-b4a7-ed1d86aad64d',
     src: 'https://images.pexels.com/photos/1486974/pexels-photo-1486974.jpeg?cs=srgb&dl=pexels-souvenirpixels-1486974.jpg&fm=jpg',
     content: () => <p>Ease into your day with this calming ambient track. Perfect for meditation, yoga, or simply enjoying a quiet cup of coffee as the sun rises. Let the gentle tones wash over you, clearing your mind for the day ahead.</p>,
   },
@@ -581,7 +581,7 @@ export default function AudioPlaylistPage() {
         );
     };
 
-    const showToggleButton = filteredTracks.length > INITIAL_visible_TRACKS;
+    const showToggleButton = filteredTracks.length > INITIAL_VISIBLE_TRACKS;
     const isExpanded = visibleCount === filteredTracks.length;
 
      const containerVariants = {
