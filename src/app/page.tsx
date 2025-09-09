@@ -17,7 +17,7 @@ import React from 'react';
 import Image from 'next/image';
 import ScrollFloat from '@/components/scroll-float';
 import { Navbar, NavBody, NavItems, NavbarLogo, NavbarButton, MobileNav, MobileNavHeader, MobileNavToggle, MobileNavMenu } from '@/components/ui/resizable-navbar';
-import Prism from '@/components/prism';
+import Ballpit from '@/components/ballpit';
 
 
 const features = [
@@ -168,7 +168,7 @@ export default function LandingPage() {
                             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
                         >
                            <div className="relative w-full h-[400px] max-w-lg mx-auto bg-gray-900/80 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl shadow-blue-500/10 overflow-hidden">
-                                <Prism />
+                                <Ballpit />
                            </div>
                         </motion.div>
                      </div>
@@ -222,4 +222,5 @@ export default function LandingPage() {
             </footer>
         </div>
     );
-}
+
+    
