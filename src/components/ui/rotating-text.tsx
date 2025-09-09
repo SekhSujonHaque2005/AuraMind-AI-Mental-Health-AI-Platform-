@@ -82,10 +82,10 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
       const currentText: string = texts[currentTextIndex];
       switch (splitBy) {
         case 'characters':
-          const words = currentText.split(/(\s+)/); // Split by space, keeping the space
-          return words.map(word => ({
+          const words = currentText.split(' '); // Split by space
+          return words.map((word, i) => ({
             characters: splitIntoCharacters(word),
-            needsSpace: false, 
+            needsSpace: i !== words.length - 1, 
           }));
         case 'words':
           return currentText.split(' ').map((word, i, arr) => ({
