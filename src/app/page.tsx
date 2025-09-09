@@ -180,7 +180,7 @@ export default function LandingPage() {
                         >
                             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
                                 A New Path to
-                                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 mt-2 h-20">
+                                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 mt-2">
                                     <RotatingText texts={rotatingTexts} staggerDuration={0.03} />
                                 </span>
                             </h1>
