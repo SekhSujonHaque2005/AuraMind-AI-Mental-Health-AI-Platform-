@@ -19,6 +19,7 @@ import ScrollFloat from '@/components/scroll-float';
 import Link from 'next/link';
 import TextType from '@/components/ui/text-type';
 import { Navbar, NavBody, NavItems, NavbarLogo, NavbarButton, MobileNav, MobileNavHeader, MobileNavToggle, MobileNavMenu } from '@/components/ui/resizable-navbar';
+import RotatingText from '@/components/ui/rotating-text';
 
 
 const AnimatedCodeBlock = () => {
@@ -121,6 +122,8 @@ export default function LandingPage() {
       },
     ];
 
+    const rotatingTexts = ['Mental Wellness', 'Inner Peace', 'Clarity', 'Strength'];
+
     return (
         <div className="flex flex-col min-h-screen bg-black text-white overflow-x-hidden">
              {/* Header */}
@@ -176,9 +179,9 @@ export default function LandingPage() {
                             transition={{ duration: 0.8, ease: 'easeOut' }}
                         >
                             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
-                                A New Path to 
-                                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 mt-2">
-                                     Mental Wellness
+                                A New Path to
+                                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 mt-2 h-20">
+                                    <RotatingText texts={rotatingTexts} staggerDuration={0.03} />
                                 </span>
                             </h1>
                             <p className="mt-6 max-w-xl text-base md:text-lg text-gray-300">
