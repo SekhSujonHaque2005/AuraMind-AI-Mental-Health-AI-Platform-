@@ -17,6 +17,7 @@ import React from 'react';
 import Image from 'next/image';
 import ScrollFloat from '@/components/scroll-float';
 import { Navbar, NavBody, NavItems, NavbarLogo, NavbarButton, MobileNav, MobileNavHeader, MobileNavToggle, MobileNavMenu } from '@/components/ui/resizable-navbar';
+import Prism from '@/components/prism';
 
 
 const features = [
@@ -166,16 +167,8 @@ export default function LandingPage() {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
                         >
-                           <div className="relative w-full max-w-lg mx-auto bg-gray-900/80 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl shadow-blue-500/10 overflow-hidden">
-                                <video
-                                    src="https://firebasestorage.googleapis.com/v0/b/auramind-14qmq.firebasestorage.app/o/pexels-lente-ot-18698944%20(1080p).mp4?alt=media&token=8e952674-2b74-4b53-a555-523c5d64234c"
-                                    autoPlay
-                                    loop
-                                    muted
-                                    playsInline
-                                    className="rounded-xl object-cover w-full h-full"
-                                    data-ai-hint="abstract calm"
-                                />
+                           <div className="relative w-full h-[400px] max-w-lg mx-auto bg-gray-900/80 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl shadow-blue-500/10 overflow-hidden">
+                                <Prism />
                            </div>
                         </motion.div>
                      </div>
