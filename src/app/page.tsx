@@ -18,6 +18,8 @@ import dynamic from 'next/dynamic';
 import ScrollFloat from '@/components/scroll-float';
 import Link from 'next/link';
 import TextType from '@/components/ui/text-type';
+import { Navbar, NavBody, NavItems, NavbarLogo, NavbarButton, MobileNav, MobileNavHeader, MobileNavToggle, MobileNavMenu } from '@/components/ui/resizable-navbar';
+
 
 const AnimatedCodeBlock = () => {
     const code = `
@@ -97,35 +99,66 @@ const features = [
 
 export default function LandingPage() {
     const router = useRouter();
+    const [isOpen, setIsOpen] = React.useState(false);
+
 
     const handleGetStarted = () => {
         router.push('/chat');
     };
 
+    const navItems = [
+      {
+        name: "Features",
+        link: "#features",
+      },
+      {
+        name: "Chat",
+        link: "/chat",
+      },
+      {
+        name: "Resources",
+        link: "/resources",
+      },
+    ];
+
     return (
         <div className="flex flex-col min-h-screen bg-black text-white overflow-x-hidden">
              {/* Header */}
-            <header className="absolute top-0 left-0 right-0 z-20">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-20">
-                        <Link href="/" className="flex items-center gap-2 font-bold text-xl">
+             <Navbar>
+                <NavBody>
+                    <NavbarLogo>
+                         <div className="flex items-center gap-2 font-bold text-xl">
                             <MessageSquare className="h-7 w-7 text-blue-400" />
-                            <span>AuraMind</span>
-                        </Link>
-                        <nav className="hidden md:flex items-center gap-8">
-                             <Link href="#features" className="text-gray-300 hover:text-white transition-colors">Features</Link>
-                        </nav>
-                        <div className="flex items-center gap-4">
-                            <Button
-                                onClick={handleGetStarted}
-                                className="bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-5 py-2.5 font-semibold"
-                            >
-                                Get Started
-                            </Button>
+                            <span className='dark:text-white'>AuraMind</span>
                         </div>
-                    </div>
-                </div>
-            </header>
+                    </NavbarLogo>
+                    <NavItems items={navItems} />
+                    <NavbarButton onClick={handleGetStarted} className="bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-5 py-2.5 font-semibold">
+                         Get Started
+                    </NavbarButton>
+                </NavBody>
+                <MobileNav>
+                    <MobileNavHeader>
+                        <NavbarLogo>
+                            <div className="flex items-center gap-2 font-bold text-xl">
+                                <MessageSquare className="h-7 w-7 text-blue-400" />
+                                <span className='dark:text-white'>AuraMind</span>
+                            </div>
+                        </NavbarLogo>
+                        <MobileNavToggle isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+                    </MobileNavHeader>
+                    <MobileNavMenu isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                        {navItems.map((item, idx) => (
+                        <a href={item.link} key={`mobile-nav-${idx}`} className='text-black dark:text-white'>
+                            {item.name}
+                        </a>
+                        ))}
+                        <NavbarButton onClick={handleGetStarted} className="bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-5 py-2.5 font-semibold w-full">
+                            Get Started
+                        </NavbarButton>
+                    </MobileNavMenu>
+                </MobileNav>
+            </Navbar>
             
             {/* Hero Section */}
             <section className="relative flex items-center h-[90vh] md:h-screen pt-20">
