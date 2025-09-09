@@ -14,48 +14,9 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import React from 'react';
-import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import ScrollFloat from '@/components/scroll-float';
-import Link from 'next/link';
-import TextType from '@/components/ui/text-type';
 import { Navbar, NavBody, NavItems, NavbarLogo, NavbarButton, MobileNav, MobileNavHeader, MobileNavToggle, MobileNavMenu } from '@/components/ui/resizable-navbar';
-
-
-const AnimatedCodeBlock = () => {
-    const code = `
-import { getAuraResponse } from '@/ai/flows';
-
-// Get a personalized and empathetic response
-const { response, gifUrl } = await getAuraResponse({ 
-  message: "I'm feeling a bit overwhelmed today.",
-  conversationHistory,
-  language: 'English',
-});
-
-console.log(response);
-    `;
-
-    return (
-        <div className="relative w-full max-w-lg mx-auto bg-gray-900/80 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl shadow-blue-500/10">
-            <div className="flex items-center gap-2 p-3 border-b border-white/10">
-                <span className="h-3.5 w-3.5 rounded-full bg-red-500"></span>
-                <span className="h-3.5 w-3.5 rounded-full bg-yellow-500"></span>
-                <span className="h-3.5 w-3.5 rounded-full bg-green-500"></span>
-                <p className="ml-4 text-sm text-gray-400">Aura AI Response</p>
-            </div>
-            <div className="p-4">
-                 <TextType
-                    as="pre"
-                    text={code}
-                    typingSpeed={25}
-                    loop={true}
-                    className="text-sm !whitespace-pre-wrap"
-                    showCursor={false}
-                 />
-            </div>
-        </div>
-    );
-};
 
 
 const features = [
@@ -175,7 +136,7 @@ export default function LandingPage() {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8, ease: 'easeOut' }}
                         >
-                            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
+                             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
                                 A New Path to
                                 <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 mt-2">
                                     Mental Wellness
@@ -205,7 +166,16 @@ export default function LandingPage() {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
                         >
-                           <AnimatedCodeBlock />
+                           <div className="relative w-full max-w-lg mx-auto bg-gray-900/80 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl shadow-blue-500/10">
+                                <Image
+                                    src="https://picsum.photos/1280/720"
+                                    alt="Calm abstract image"
+                                    width={1280}
+                                    height={720}
+                                    className="rounded-xl object-cover"
+                                    data-ai-hint="abstract calm"
+                                />
+                           </div>
                         </motion.div>
                      </div>
                 </div>
