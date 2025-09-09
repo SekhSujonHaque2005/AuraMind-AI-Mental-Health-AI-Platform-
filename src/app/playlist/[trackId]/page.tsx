@@ -6,7 +6,7 @@ import { staticTracks } from '@/app/playlist/page';
 import type { Track } from '@/app/playlist/types';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Pause, SkipBack, SkipForward, Repeat, Shuffle, Volume2, VolumeX, ListMusic, Calendar, User, Info, ArrowLeft } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Repeat, Shuffle, Volume2, VolumeX, ListMusic, Calendar, User, Info, ArrowLeft, Tags, Clock } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -270,6 +270,20 @@ export default function TrackDetailPage() {
                                     <p>{currentTrack.artist}</p>
                                 </div>
                             </div>
+                             <div className="flex items-start gap-4">
+                                <Tags className="h-5 w-5 mt-1 text-green-400 flex-shrink-0" />
+                                <div>
+                                    <h3 className="font-semibold text-white">Category</h3>
+                                    <p>{currentTrack.category}</p>
+                                </div>
+                            </div>
+                             <div className="flex items-start gap-4">
+                                <Clock className="h-5 w-5 mt-1 text-green-400 flex-shrink-0" />
+                                <div>
+                                    <h3 className="font-semibold text-white">Duration</h3>
+                                    <p>{currentTrack.duration}</p>
+                                </div>
+                            </div>
                             <div className="flex items-start gap-4">
                                 <Calendar className="h-5 w-5 mt-1 text-green-400 flex-shrink-0" />
                                 <div>
@@ -285,3 +299,4 @@ export default function TrackDetailPage() {
         </div>
     );
 }
+
