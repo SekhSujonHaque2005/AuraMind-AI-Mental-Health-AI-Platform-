@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useMemo, useRef, ReactNode, RefObject } from 'react';
@@ -16,6 +17,7 @@ interface ScrollFloatProps {
   scrollStart?: string;
   scrollEnd?: string;
   stagger?: number;
+  as?: React.ElementType;
 }
 
 const ScrollFloat: React.FC<ScrollFloatProps> = ({
@@ -27,7 +29,8 @@ const ScrollFloat: React.FC<ScrollFloatProps> = ({
   ease = 'back.inOut(2)',
   scrollStart = 'center bottom+=50%',
   scrollEnd = 'bottom bottom-=40%',
-  stagger = 0.03
+  stagger = 0.03,
+  as: Component = 'div',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -78,14 +81,17 @@ const ScrollFloat: React.FC<ScrollFloatProps> = ({
     );
     
     return () => {
+        if (animation.scrollTrigger) {
+            animation.scrollTrigger.kill();
+        }
         animation.kill();
     }
   }, [children, scrollContainerRef, animationDuration, ease, scrollStart, scrollEnd, stagger]);
 
   return (
-    <div ref={containerRef} className={containerClassName}>
+    <Component ref={containerRef} className={containerClassName}>
       <span className={textClassName}>{splitText}</span>
-    </div>
+    </Component>
   );
 };
 
