@@ -114,9 +114,7 @@ export default function LandingPage() {
                             {item.name}
                         </a>
                         ))}
-                        <NavbarButton onClick={handleGetStarted} className="bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-5 py-2.5 font-semibold w-full">
-                            Get Started
-                        </NavbarButton>
+                        <NavbarButton onClick={handleGetStarted} className="bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-5 py-2.5 font-semibold w-full"/>
                     </MobileNavMenu>
                 </MobileNav>
             </Navbar>
@@ -130,10 +128,10 @@ export default function LandingPage() {
                 </div>
 
                 <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                     <div className="grid md:grid-cols-2 gap-12 items-center">
+                     <div className="text-center">
                         <motion.div 
-                            initial={{ opacity: 0, x: -50 }}
-                            animate={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: -50 }}
+                            animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, ease: 'easeOut' }}
                         >
                              <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
@@ -142,10 +140,10 @@ export default function LandingPage() {
                                     Mental Wellness
                                 </span>
                             </h1>
-                            <p className="mt-6 max-w-xl text-base md:text-lg text-gray-300">
+                            <p className="mt-6 max-w-xl mx-auto text-base md:text-lg text-gray-300">
                                AuraMind is your personal AI companion for self-discovery. Explore tools designed to bring you calm, clarity, and strength on your mental wellness journey.
                             </p>
-                            <div className="mt-10 flex items-center gap-4">
+                            <div className="mt-10 flex items-center justify-center gap-4">
                                 <Button 
                                     onClick={handleGetStarted}
                                     className="px-6 py-5 text-base font-semibold bg-blue-600 text-white hover:bg-blue-500 transition-transform hover:scale-105 rounded-lg"
@@ -160,14 +158,6 @@ export default function LandingPage() {
                                    Meet the AI Team
                                 </Button>
                             </div>
-                        </motion.div>
-                        <motion.div
-                             initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-                        >
-                           <div className="relative w-full h-[400px] max-w-lg mx-auto bg-gray-900/80 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl shadow-blue-500/10 overflow-hidden">
-                           </div>
                         </motion.div>
                      </div>
                 </div>
@@ -222,3 +212,4 @@ export default function LandingPage() {
     );
 
     
+
