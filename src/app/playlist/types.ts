@@ -4,12 +4,14 @@ import { z } from 'zod';
 export interface Track {
   id: number;
   title: string;
+  artist: string;
+  releaseDate: string;
   category: string;
   duration: string;
   url: string;
   description: string;
   src: string;
-  content: () => React.ReactNode;
+  reasonToListen: React.ReactNode;
 }
 
 export const TrackSchema = z.object({
