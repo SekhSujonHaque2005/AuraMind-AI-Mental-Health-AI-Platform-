@@ -12,11 +12,8 @@ import {
   FileQuestion,
   Music,
   ArrowRight,
-  Home as HomeIcon,
-  Check,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import React from 'react';
 import dynamic from 'next/dynamic';
 import ScrollFloat from '@/components/scroll-float';
@@ -60,7 +57,6 @@ export default function LandingPage() {
     const router = useRouter();
 
     const handleGetStarted = () => {
-        // Navigate to the first "real" page of the app, e.g., the chat page.
         router.push('/chat');
     };
 
@@ -139,6 +135,14 @@ export default function LandingPage() {
                     </div>
                 </div>
             </section>
+
+             {/* Footer Section */}
+            <footer className="py-8 bg-gray-900/50 border-t border-white/10 px-4">
+                <div className="max-w-6xl mx-auto text-center text-gray-500">
+                    <p>&copy; {new Date().getFullYear()} AuraMind. All Rights Reserved.</p>
+                    <p className="text-xs mt-2">Your mental wellness companion.</p>
+                </div>
+            </footer>
         </div>
     );
 }
