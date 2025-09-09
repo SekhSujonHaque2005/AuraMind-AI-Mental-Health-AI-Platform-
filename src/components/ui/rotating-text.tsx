@@ -82,24 +82,27 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
       const currentText: string = texts[currentTextIndex];
       switch (splitBy) {
         case 'characters':
-          const words = currentText.split(' '); // Split by space
-          return words.map((word, i) => ({
-            characters: splitIntoCharacters(word),
-            needsSpace: i !== words.length - 1, 
+          const words = currentText.split(/(\s+)/); // Split by space, keeping the space
+          return words.map((word) => ({
+            characters: word.trim() ? splitIntoCharacters(word) : [],
+            isSpace: /^\s+$/.test(word),
           }));
         case 'words':
           return currentText.split(' ').map((word, i, arr) => ({
             characters: [word],
+            isSpace: false,
             needsSpace: i !== arr.length - 1,
           }));
         case 'lines':
           return currentText.split('\n').map((line, i, arr) => ({
             characters: [line],
+            isSpace: false,
             needsSpace: i !== arr.length - 1,
           }));
         default:
           return currentText.split(splitBy).map((part, i, arr) => ({
             characters: [part],
+            isSpace: false,
             needsSpace: i !== arr.length - 1,
           }));
       }
@@ -193,10 +196,14 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
             layout
             aria-hidden="true"
           >
-            {elements.map((wordObj, wordIndex, array) => {
-              const previousCharsCount = array
+            {elements.map((wordObj, wordIndex) => {
+              if (wordObj.isSpace) {
+                return <span key={wordIndex} className="whitespace-pre"> </span>;
+              }
+              const previousCharsCount = elements
                 .slice(0, wordIndex)
                 .reduce((sum, word) => sum + word.characters.length, 0);
+
               return (
                 <span key={wordIndex} className={cn('inline-flex', splitLevelClassName)}>
                   {wordObj.characters.map((char, charIndex) => (
@@ -209,7 +216,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
                         ...transition,
                         delay: getStaggerDelay(
                           previousCharsCount + charIndex,
-                          array.reduce((sum, word) => sum + word.characters.length, 0)
+                          elements.reduce((sum, word) => sum + word.characters.length, 0)
                         )
                       }}
                       className={cn('inline-block', elementLevelClassName)}
@@ -217,7 +224,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
                       {char}
                     </motion.span>
                   ))}
-                  {wordObj.needsSpace && <span className="whitespace-pre"> </span>}
+                  {(wordObj as any).needsSpace && <span className="whitespace-pre"> </span>}
                 </span>
               );
             })}
