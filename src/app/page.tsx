@@ -46,7 +46,7 @@ console.log(response);
                     as="pre"
                     text={code}
                     typingSpeed={25}
-                    loop={false}
+                    loop={true}
                     className="text-sm !whitespace-pre-wrap"
                     showCursor={false}
                  />
