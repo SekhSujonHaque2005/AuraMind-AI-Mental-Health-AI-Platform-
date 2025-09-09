@@ -28,15 +28,12 @@ function AppContent({ children }: { children: React.ReactNode }) {
              <div
                 onMouseEnter={() => setSidebarExpanded(true)}
                 onMouseLeave={() => setSidebarExpanded(false)}
+                className="z-50"
             >
                 <Sidebar isExpanded={isSidebarExpanded} />
             </div>
             
             <div className="flex-1 flex flex-col relative bg-background">
-                <div className="absolute inset-0 z-0">
-                   {/* Ballpit removed for a cleaner look */}
-                </div>
-
                 <motion.main
                     initial={false}
                     animate={isSidebarExpanded ? 'expanded' : 'collapsed'}
