@@ -114,13 +114,15 @@ export default function LandingPage() {
                             {item.name}
                         </a>
                         ))}
-                        <NavbarButton onClick={handleGetStarted} className="bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-5 py-2.5 font-semibold w-full"/>
+                        <NavbarButton onClick={handleGetStarted} className="bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-5 py-2.5 font-semibold w-full">
+                          Get Started
+                        </NavbarButton>
                     </MobileNavMenu>
                 </MobileNav>
             </Navbar>
             
             {/* Hero Section */}
-            <section className="relative flex items-center h-[90vh] md:h-screen pt-20">
+            <section className="relative flex items-center h-[90vh] md:h-screen">
                 <div className="absolute inset-0 z-0">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#111827] via-black to-black"></div>
                      <div className="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,255,255,0.05),rgba(255,255,255,0))]"></div>
@@ -212,7 +214,4 @@ export default function LandingPage() {
         </div>
     );
 
-    
-
-
-
+}
