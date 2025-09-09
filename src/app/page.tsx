@@ -12,6 +12,7 @@ import {
   FileQuestion,
   Music,
   ArrowRight,
+  Home as HomeIcon,
 } from 'lucide-react';
 import TextType from '@/components/ui/text-type';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -76,35 +77,30 @@ const colorVariants = {
         shadow: 'hover:shadow-[0_0_35px_rgba(59,130,246,0.3)]',
         border: 'border-blue-500/20 hover:border-blue-500/60',
         iconText: 'text-blue-300',
-        button: 'bg-blue-600 hover:bg-blue-500',
     },
     purple: {
         gradient: 'from-purple-400 to-fuchsia-500',
         shadow: 'hover:shadow-[0_0_35px_rgba(192,132,252,0.3)]',
         border: 'border-purple-500/20 hover:border-purple-500/60',
         iconText: 'text-purple-300',
-        button: 'bg-purple-600 hover:bg-purple-500',
     },
     amber: {
         gradient: 'from-amber-400 to-orange-500',
         shadow: 'hover:shadow-[0_0_35px_rgba(251,191,36,0.3)]',
         border: 'border-amber-500/20 hover:border-amber-500/60',
         iconText: 'text-amber-300',
-        button: 'bg-amber-600 hover:bg-amber-500',
     },
     violet: {
         gradient: 'from-violet-400 to-purple-600',
         shadow: 'hover:shadow-[0_0_35px_rgba(167,139,250,0.25)]',
         border: 'border-violet-500/20 hover:border-violet-500/60',
         iconText: 'text-violet-300',
-        button: 'bg-violet-600 hover:bg-violet-500',
     },
     green: {
         gradient: 'from-green-400 to-emerald-600',
         shadow: 'hover:shadow-[0_0_35px_rgba(74,222,128,0.25)]',
         border: 'border-green-500/20 hover:border-green-500/60',
         iconText: 'text-green-300',
-        button: 'bg-green-600 hover:bg-green-500',
     }
 };
 
@@ -163,31 +159,32 @@ export default function Home() {
         {features.map((feature) => {
             const colors = colorVariants[feature.color as keyof typeof colorVariants] || colorVariants.blue;
             return (
-                <motion.div key={feature.href} variants={itemVariants}>
+                <motion.div 
+                    key={feature.href} 
+                    variants={itemVariants}
+                    onClick={() => router.push(feature.href)}
+                >
                     <Card
-                    className={cn(
-                        "flex flex-col h-full bg-gray-900/50 border transition-all duration-300 transform hover:-translate-y-2 rounded-2xl overflow-hidden group",
-                        colors.border,
-                        colors.shadow
-                    )}
+                        className={cn(
+                            "flex flex-col h-full bg-gray-900/50 border cursor-pointer transition-all duration-300 transform hover:-translate-y-2 rounded-2xl overflow-hidden group",
+                            colors.border,
+                            colors.shadow
+                        )}
                     >
-                    <CardHeader className="p-6">
-                        <div className="flex items-center justify-between mb-4">
-                            <feature.icon className={cn("h-8 w-8", colors.iconText)} />
-                             <Button
-                                size="sm"
-                                className={cn("text-white transition-all group/button text-xs py-1 px-3 h-auto", colors.button)}
-                                onClick={() => router.push(feature.href)}
-                            >
-                                Explore
-                                <ArrowRight className="h-3 w-3 ml-1.5 opacity-0 -translate-x-1 group-hover/button:opacity-100 group-hover/button:translate-x-0 transition-all duration-300" />
-                            </Button>
-                        </div>
-                        <CardTitle className={cn("text-xl", colors.iconText)}>{feature.label}</CardTitle>
-                        <CardDescription className="text-gray-400 pt-2 text-sm">
-                        {feature.description}
-                        </CardDescription>
-                    </CardHeader>
+                        <CardHeader className="p-6 flex-grow">
+                            <div className="flex items-start justify-between mb-4">
+                                <div className={cn("p-3 rounded-lg bg-black/20 border", colors.border)}>
+                                    <feature.icon className={cn("h-6 w-6", colors.iconText)} />
+                                </div>
+                                <div className="flex items-center text-xs text-gray-400 group-hover:text-white transition-colors">
+                                    Explore <ArrowRight className="h-3 w-3 ml-1.5 transition-transform group-hover:translate-x-1" />
+                                </div>
+                            </div>
+                            <CardTitle className={cn("text-xl pt-2", colors.iconText)}>{feature.label}</CardTitle>
+                            <CardDescription className="text-gray-400 pt-2 text-sm">
+                            {feature.description}
+                            </CardDescription>
+                        </CardHeader>
                     </Card>
               </motion.div>
             )
