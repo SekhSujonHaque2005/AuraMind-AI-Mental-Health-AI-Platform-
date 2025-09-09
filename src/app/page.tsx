@@ -137,9 +137,9 @@ export default function LandingPage() {
                             transition={{ duration: 0.8, ease: 'easeOut' }}
                             className="flex flex-col items-center"
                         >
-                             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
-                                A New Path to
-                                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 mt-2">
+                            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
+                                A New Path to{' '}
+                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
                                     Mental Wellness
                                 </span>
                             </h1>
