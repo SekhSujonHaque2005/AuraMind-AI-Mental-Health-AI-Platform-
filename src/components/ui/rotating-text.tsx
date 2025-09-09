@@ -1,3 +1,4 @@
+
 'use client';
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import {
@@ -190,7 +191,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
       >
         <span className="sr-only">{texts[currentTextIndex]}</span>
         <AnimatePresence mode={animatePresenceMode} initial={animatePresenceInitial}>
-          <motion.span
+          <motion.div
             key={currentTextIndex}
             className={cn(splitBy === 'lines' ? 'flex flex-col w-full' : 'flex flex-wrap whitespace-pre-wrap relative')}
             layout
@@ -205,7 +206,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
                 .reduce((sum, word) => sum + word.characters.length, 0);
 
               return (
-                <span key={wordIndex} className={cn('inline-flex', splitLevelClassName)}>
+                <React.Fragment key={wordIndex}>
                   {wordObj.characters.map((char, charIndex) => (
                     <motion.span
                       key={charIndex}
@@ -225,10 +226,10 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
                     </motion.span>
                   ))}
                   {(wordObj as any).needsSpace && <span className="whitespace-pre"> </span>}
-                </span>
+                </React.Fragment>
               );
             })}
-          </motion.span>
+          </motion.div>
         </AnimatePresence>
       </motion.span>
     );
