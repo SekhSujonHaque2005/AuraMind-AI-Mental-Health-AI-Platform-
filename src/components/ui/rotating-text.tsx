@@ -80,30 +80,29 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
 
     const elements = useMemo(() => {
       const currentText: string = texts[currentTextIndex];
-      if (splitBy === 'characters') {
-        const words = currentText.split(' ');
-        return words.map((word, i) => ({
-          characters: splitIntoCharacters(word),
-          needsSpace: i !== words.length - 1
-        }));
+      switch (splitBy) {
+        case 'characters':
+          const words = currentText.split(/(\s+)/); // Split by space, keeping the space
+          return words.map(word => ({
+            characters: splitIntoCharacters(word),
+            needsSpace: false, 
+          }));
+        case 'words':
+          return currentText.split(' ').map((word, i, arr) => ({
+            characters: [word],
+            needsSpace: i !== arr.length - 1,
+          }));
+        case 'lines':
+          return currentText.split('\n').map((line, i, arr) => ({
+            characters: [line],
+            needsSpace: i !== arr.length - 1,
+          }));
+        default:
+          return currentText.split(splitBy).map((part, i, arr) => ({
+            characters: [part],
+            needsSpace: i !== arr.length - 1,
+          }));
       }
-      if (splitBy === 'words') {
-        return currentText.split(' ').map((word, i, arr) => ({
-          characters: [word],
-          needsSpace: i !== arr.length - 1
-        }));
-      }
-      if (splitBy === 'lines') {
-        return currentText.split('\n').map((line, i, arr) => ({
-          characters: [line],
-          needsSpace: i !== arr.length - 1
-        }));
-      }
-
-      return currentText.split(splitBy).map((part, i, arr) => ({
-        characters: [part],
-        needsSpace: i !== arr.length - 1
-      }));
     }, [texts, currentTextIndex, splitBy]);
 
     const getStaggerDelay = useCallback(
