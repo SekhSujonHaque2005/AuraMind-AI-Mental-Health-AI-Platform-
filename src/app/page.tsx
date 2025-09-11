@@ -128,7 +128,7 @@ export default function LandingPage() {
             {/* Hero Section */}
             <section className="relative flex items-center h-[90vh] md:h-screen">
                 <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#111827] via-black to-black"></div>
+                    <div className="absolute inset-0 bg-black"></div>
                      <div className="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,255,255,0.05),rgba(255,255,255,0))]"></div>
                     <div className="absolute bottom-[-40%] right-[-30%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(59,130,246,0.1),rgba(255,255,255,0))]"></div>
                 </div>
