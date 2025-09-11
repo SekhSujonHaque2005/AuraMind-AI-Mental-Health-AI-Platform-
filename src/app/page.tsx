@@ -162,17 +162,19 @@ export default function LandingPage() {
                             transition={{ duration: 0.8, ease: 'easeOut' }}
                             className="flex flex-col items-center"
                         >
-                             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
-                                A New Path to{' '}
-                                <TextType 
-                                    as="span"
-                                    text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
-                                    className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
-                                    typingSpeed={100}
-                                    deletingSpeed={50}
-                                    pauseDuration={1500}
-                                    loop
-                                />
+                            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
+                                <span className="inline-block">
+                                    A New Path to{' '}
+                                    <TextType 
+                                        as="span"
+                                        text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
+                                        className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
+                                        typingSpeed={100}
+                                        deletingSpeed={50}
+                                        pauseDuration={1500}
+                                        loop
+                                    />
+                                </span>
                             </h1>
                             <p className="mt-6 max-w-xl mx-auto text-base md:text-lg text-gray-300">
                                AuraMind is your personal AI companion for self-discovery. Explore tools designed to bring you calm, clarity, and strength on your mental wellness journey.
