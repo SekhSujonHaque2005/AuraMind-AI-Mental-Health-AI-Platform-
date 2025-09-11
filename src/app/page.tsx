@@ -20,6 +20,7 @@ import React from 'react';
 import Image from 'next/image';
 import ScrollFloat from '@/components/scroll-float';
 import { Navbar, NavBody, NavItems, NavbarLogo, NavbarButton, MobileNav, MobileNavHeader, MobileNavToggle, MobileNavMenu } from '@/components/ui/resizable-navbar';
+import TextType from '@/components/ui/text-type';
 
 
 const features = [
@@ -161,11 +162,17 @@ export default function LandingPage() {
                             transition={{ duration: 0.8, ease: 'easeOut' }}
                             className="flex flex-col items-center"
                         >
-                            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
+                             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
                                 A New Path to{' '}
-                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                                    Mental Wellness
-                                </span>
+                                <TextType 
+                                    as="span"
+                                    text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
+                                    className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
+                                    typingSpeed={100}
+                                    deletingSpeed={50}
+                                    pauseDuration={1500}
+                                    loop
+                                />
                             </h1>
                             <p className="mt-6 max-w-xl mx-auto text-base md:text-lg text-gray-300">
                                AuraMind is your personal AI companion for self-discovery. Explore tools designed to bring you calm, clarity, and strength on your mental wellness journey.
