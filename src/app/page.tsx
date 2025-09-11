@@ -107,7 +107,7 @@ export default function LandingPage() {
                         <NavbarLogo>
                             <div className="flex items-center gap-2 font-bold text-xl">
                                 <MessageSquare className="h-7 w-7 text-blue-400" />
-                                <span className='dark-text-white'>AuraMind</span>
+                                <span className='dark:text-white'>AuraMind</span>
                             </div>
                         </NavbarLogo>
                         <MobileNavToggle isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
