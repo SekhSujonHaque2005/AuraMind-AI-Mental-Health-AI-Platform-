@@ -22,6 +22,7 @@ import ScrollFloat from '@/components/scroll-float';
 import { Navbar, NavBody, NavItems, NavbarLogo, NavbarButton, MobileNav, MobileNavHeader, MobileNavToggle, MobileNavMenu } from '@/components/ui/resizable-navbar';
 import TextType from '@/components/ui/text-type';
 import audioData from '@/lib/placeholder-audio.json';
+import { SparklesCore } from '@/components/ui/sparkles';
 
 
 const features = [
@@ -156,10 +157,16 @@ export default function LandingPage() {
             
             {/* Hero Section */}
             <section className="relative flex items-center h-[90vh] md:h-screen">
-                <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-black"></div>
-                     <div className="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,255,255,0.05),rgba(255,255,255,0))]"></div>
-                    <div className="absolute bottom-[-40%] right-[-30%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(59,130,246,0.1),rgba(255,255,255,0))]"></div>
+                <div className="absolute inset-0 z-0 h-full w-full">
+                   <SparklesCore
+                        id="tsparticles"
+                        background="transparent"
+                        minSize={0.6}
+                        maxSize={1.4}
+                        particleDensity={100}
+                        className="h-full w-full"
+                        particleColor="#FFFFFF"
+                    />
                 </div>
 
                 <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center items-center">
@@ -209,15 +216,15 @@ export default function LandingPage() {
                         >
                             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
                                 <span className="inline-block">A New Path to&nbsp;</span>
-                                    <TextType 
-                                        as="span"
-                                        text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
-                                        className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
-                                        typingSpeed={100}
-                                        deletingSpeed={50}
-                                        pauseDuration={1500}
-                                        loop
-                                    />
+                                <TextType 
+                                    as="span"
+                                    text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
+                                    className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
+                                    typingSpeed={100}
+                                    deletingSpeed={50}
+                                    pauseDuration={1500}
+                                    loop
+                                />
                             </h1>
                             <p className="mt-6 max-w-xl mx-auto text-base md:text-lg text-gray-300">
                                AuraMind is your personal AI companion for self-discovery. Explore tools designed to bring you calm, clarity, and strength on your mental wellness journey.
