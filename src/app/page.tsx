@@ -190,15 +190,15 @@ export default function LandingPage() {
                     >
                         <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl backdrop-blur-md border border-white/10 overflow-hidden">
                              <Image src="https://picsum.photos/seed/1/400/400" alt="card" fill className="object-cover rounded-xl blur-[2px] group-hover:blur-0 transition-all duration-500" data-ai-hint="abstract art" />
-                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                             <div className="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl transition-opacity duration-500"></div>
+                             <div className="absolute bottom-4 left-4 text-white transition-opacity duration-500">
                                 <h4 className="font-bold">Mindful Moments</h4>
                                 <p className="text-xs text-gray-300">Calm Your Mind</p>
                              </div>
-                             <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                             <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full transition-opacity duration-500">
                                 <Heart className="h-4 w-4 text-pink-400" />
                              </div>
-                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                             <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-500">
                                 <div className="bg-black/50 rounded-full p-3">
                                     {playingAudio === 'mindful_moments' ? <Pause className="h-8 w-8 text-white"/> : <Play className="h-8 w-8 text-white"/>}
                                 </div>
@@ -215,18 +215,20 @@ export default function LandingPage() {
                         >
                             <div className="flex justify-center">
                                  <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white flex items-center">
-                                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                                        A New Path to&nbsp;
-                                    </span>
-                                    <TextType 
-                                        as="span"
-                                        text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
-                                        className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
-                                        typingSpeed={100}
-                                        deletingSpeed={50}
-                                        pauseDuration={1500}
-                                        loop
-                                    />
+                                    <div className="flex items-center">
+                                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                                            A New Path to&nbsp;
+                                        </span>
+                                        <TextType 
+                                            as="span"
+                                            text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
+                                            className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
+                                            typingSpeed={100}
+                                            deletingSpeed={50}
+                                            pauseDuration={1500}
+                                            loop
+                                        />
+                                    </div>
                                 </h1>
                             </div>
                             <p className="mt-6 max-w-xl mx-auto text-base md:text-lg text-gray-300">
@@ -268,15 +270,15 @@ export default function LandingPage() {
                     >
                          <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl backdrop-blur-md border border-white/10 overflow-hidden">
                              <Image src="https://picsum.photos/seed/2/400/400" alt="card" fill className="object-cover rounded-xl blur-[2px] group-hover:blur-0 transition-all duration-500" data-ai-hint="astronaut space" />
-                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                             <div className="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl transition-opacity duration-500"></div>
+                             <div className="absolute bottom-4 left-4 text-white transition-opacity duration-500">
                                 <h4 className="font-bold">Inner Journey</h4>
                                 <p className="text-xs text-gray-300">Explore Your Thoughts</p>
                              </div>
-                             <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                             <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full transition-opacity duration-500">
                                 <Brain className="h-4 w-4 text-blue-300" />
                              </div>
-                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                             <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-500">
                                 <div className="bg-black/50 rounded-full p-3">
                                     {playingAudio === 'inner_journey' ? <Pause className="h-8 w-8 text-white"/> : <Play className="h-8 w-8 text-white"/>}
                                 </div>
@@ -355,3 +357,5 @@ export default function LandingPage() {
     );
 
 }
+
+    
