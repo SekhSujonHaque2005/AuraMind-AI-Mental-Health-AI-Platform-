@@ -139,7 +139,7 @@ export default function LandingPage() {
                         initial={{ opacity: 0, x: -100, rotate: -25 }}
                         animate={{ opacity: 1, x: 0, rotate: -15 }}
                         transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
-                        className="absolute left-0 md:left-10 lg:left-20 w-56 h-64 md:w-64 md:h-72 hidden lg:block"
+                        className="absolute left-0 md:left-10 lg:-left-12 w-56 h-72 md:w-64 md:h-72 hidden lg:block"
                     >
                         <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl backdrop-blur-md border border-white/10">
                              <Image src="https://picsum.photos/seed/1/400/400" alt="card" fill className="object-cover rounded-xl" data-ai-hint="abstract art" />
@@ -193,7 +193,7 @@ export default function LandingPage() {
                         initial={{ opacity: 0, x: 100, rotate: 25 }}
                         animate={{ opacity: 1, x: 0, rotate: 15 }}
                         transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
-                        className="absolute right-0 md:right-10 lg:right-20 w-56 h-64 md:w-64 md:h-72 hidden lg:block"
+                        className="absolute right-0 md:right-10 lg:-right-12 w-56 h-72 md:w-64 md:h-72 hidden lg:block"
                     >
                          <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl backdrop-blur-md border border-white/10">
                              <Image src="https://picsum.photos/seed/2/400/400" alt="card" fill className="object-cover rounded-xl" data-ai-hint="astronaut space" />
