@@ -206,26 +206,28 @@ export default function LandingPage() {
                         </div>
                     </motion.div>
 
-                     <div className="text-center max-w-2xl">
+                     <div className="text-center max-w-4xl">
                         <motion.div 
                             initial={{ opacity: 0, y: -50 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, ease: 'easeOut' }}
                             className="flex flex-col items-center"
                         >
-                            <h1 className="flex flex-wrap justify-center text-4xl md:text-6xl font-bold tracking-tighter text-white">
-                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                                    A New Path to&nbsp;
-                                </span>
-                                <TextType 
-                                    as="span"
-                                    text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
-                                    className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
-                                    typingSpeed={100}
-                                    deletingSpeed={50}
-                                    pauseDuration={1500}
-                                    loop
-                                />
+                             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
+                                <div className="flex justify-center">
+                                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                                        A New Path to&nbsp;
+                                    </span>
+                                    <TextType 
+                                        as="span"
+                                        text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
+                                        className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
+                                        typingSpeed={100}
+                                        deletingSpeed={50}
+                                        pauseDuration={1500}
+                                        loop
+                                    />
+                                </div>
                             </h1>
                             <p className="mt-6 max-w-xl mx-auto text-base md:text-lg text-gray-300">
                                AuraMind is your personal AI companion for self-discovery. Explore tools designed to bring you calm, clarity, and strength on your mental wellness journey.
