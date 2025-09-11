@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -137,9 +136,19 @@ export default function LandingPage() {
                     
                     {/* Left Tilted Card */}
                     <motion.div
-                        initial={{ opacity: 0, x: -100, rotate: -25 }}
-                        animate={{ opacity: 1, x: 0, rotate: -15 }}
-                        transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
+                        initial={{ opacity: 0, x: -100, rotate: -25, y: 0 }}
+                        animate={{ 
+                            opacity: 1, 
+                            x: 0, 
+                            rotate: -15,
+                            y: ["0rem", "-1.5rem", "0rem"],
+                        }}
+                        transition={{ 
+                            opacity: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
+                            x: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
+                            rotate: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
+                            y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 } 
+                        }}
                         className="absolute left-0 md:left-10 lg:-left-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block"
                     >
                         <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl backdrop-blur-md border border-white/10">
@@ -199,9 +208,19 @@ export default function LandingPage() {
 
                       {/* Right Tilted Card */}
                     <motion.div
-                        initial={{ opacity: 0, x: 100, rotate: 25 }}
-                        animate={{ opacity: 1, x: 0, rotate: 15 }}
-                        transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
+                        initial={{ opacity: 0, x: 100, rotate: 25, y: 0 }}
+                        animate={{ 
+                            opacity: 1, 
+                            x: 0, 
+                            rotate: 15,
+                            y: ["0rem", "1.5rem", "0rem"],
+                        }}
+                         transition={{ 
+                            opacity: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
+                            x: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
+                            rotate: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
+                            y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 } 
+                        }}
                         className="absolute right-0 md:right-10 lg:-right-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block"
                     >
                          <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl backdrop-blur-md border border-white/10">
