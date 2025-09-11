@@ -11,6 +11,9 @@ import {
   FileQuestion,
   Music,
   ArrowRight,
+  Play,
+  Heart,
+  Brain,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import React from 'react';
@@ -103,7 +106,7 @@ export default function LandingPage() {
                         <NavbarLogo>
                             <div className="flex items-center gap-2 font-bold text-xl">
                                 <MessageSquare className="h-7 w-7 text-blue-400" />
-                                <span className='dark:text-white'>AuraMind</span>
+                                <span className='dark-text-white'>AuraMind</span>
                             </div>
                         </NavbarLogo>
                         <MobileNavToggle isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
@@ -129,8 +132,29 @@ export default function LandingPage() {
                     <div className="absolute bottom-[-40%] right-[-30%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(59,130,246,0.1),rgba(255,255,255,0))]"></div>
                 </div>
 
-                <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                     <div className="text-center">
+                <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center items-center">
+                    
+                    {/* Left Tilted Card */}
+                    <motion.div
+                        initial={{ opacity: 0, x: -100, rotate: -25 }}
+                        animate={{ opacity: 1, x: 0, rotate: -15 }}
+                        transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
+                        className="absolute left-0 md:left-10 lg:left-20 w-48 h-48 md:w-56 md:h-56 hidden lg:block"
+                    >
+                        <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl backdrop-blur-md border border-white/10">
+                             <Image src="https://picsum.photos/seed/1/400/400" alt="card" fill className="object-cover rounded-xl" data-ai-hint="abstract art" />
+                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl"></div>
+                             <div className="absolute bottom-4 left-4 text-white">
+                                <h4 className="font-bold">Mindful Moments</h4>
+                                <p className="text-xs text-gray-300">Calm Your Mind</p>
+                             </div>
+                             <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full">
+                                <Heart className="h-4 w-4 text-pink-400" />
+                             </div>
+                        </div>
+                    </motion.div>
+
+                     <div className="text-center max-w-2xl">
                         <motion.div 
                             initial={{ opacity: 0, y: -50 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -163,6 +187,26 @@ export default function LandingPage() {
                             </div>
                         </motion.div>
                      </div>
+
+                      {/* Right Tilted Card */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 100, rotate: 25 }}
+                        animate={{ opacity: 1, x: 0, rotate: 15 }}
+                        transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
+                        className="absolute right-0 md:right-10 lg:right-20 w-48 h-48 md:w-56 md:h-56 hidden lg:block"
+                    >
+                         <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl backdrop-blur-md border border-white/10">
+                             <Image src="https://picsum.photos/seed/2/400/400" alt="card" fill className="object-cover rounded-xl" data-ai-hint="astronaut space" />
+                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl"></div>
+                             <div className="absolute bottom-4 left-4 text-white">
+                                <h4 className="font-bold">Inner Journey</h4>
+                                <p className="text-xs text-gray-300">Explore Your Thoughts</p>
+                             </div>
+                             <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full">
+                                <Brain className="h-4 w-4 text-blue-300" />
+                             </div>
+                        </div>
+                    </motion.div>
                 </div>
             </section>
             
