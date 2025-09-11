@@ -174,7 +174,7 @@ export default function LandingPage() {
                     
                     {/* Left Tilted Card */}
                     <motion.div
-                        initial={{ opacity: 0, x: -100, rotate: -25, y: 0 }}
+                        initial={{ opacity: 0, x: -100, rotate: -25 }}
                         animate={{ 
                             opacity: 1, 
                             x: 0, 
@@ -182,9 +182,7 @@ export default function LandingPage() {
                             y: ["0rem", "-1.5rem", "0rem"],
                         }}
                         transition={{ 
-                            opacity: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
-                            x: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
-                            rotate: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
+                            duration: 0.8, ease: 'easeOut', delay: 0.3,
                             y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 } 
                         }}
                         className="absolute left-0 md:left-10 lg:-left-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group"
@@ -216,18 +214,16 @@ export default function LandingPage() {
                             className="flex flex-col items-center"
                         >
                             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
-                                <span className="inline-block">
-                                    <span className="inline-block bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500">A New Path to&nbsp;</span>
-                                    <TextType 
-                                        as="span"
-                                        text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
-                                        className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
-                                        typingSpeed={100}
-                                        deletingSpeed={50}
-                                        pauseDuration={1500}
-                                        loop
-                                    />
-                                </span>
+                                <span className="bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500">A New Path to&nbsp;</span>
+                                <TextType 
+                                    as="span"
+                                    text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
+                                    className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
+                                    typingSpeed={100}
+                                    deletingSpeed={50}
+                                    pauseDuration={1500}
+                                    loop
+                                />
                             </h1>
                             <p className="mt-6 max-w-xl mx-auto text-base md:text-lg text-gray-300">
                                AuraMind is your personal AI companion for self-discovery. Explore tools designed to bring you calm, clarity, and strength on your mental wellness journey.
@@ -252,7 +248,7 @@ export default function LandingPage() {
 
                       {/* Right Tilted Card */}
                     <motion.div
-                        initial={{ opacity: 0, x: 100, rotate: 25, y: 0 }}
+                        initial={{ opacity: 0, x: 100, rotate: 25 }}
                         animate={{ 
                             opacity: 1, 
                             x: 0, 
@@ -260,9 +256,7 @@ export default function LandingPage() {
                             y: ["0rem", "1.5rem", "0rem"],
                         }}
                          transition={{ 
-                            opacity: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
-                            x: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
-                            rotate: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
+                            duration: 0.8, ease: 'easeOut', delay: 0.3,
                             y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 } 
                         }}
                         className="absolute right-0 md:right-10 lg:-right-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group"
@@ -317,10 +311,7 @@ export default function LandingPage() {
                         {features.map((feature, i) => (
                              <motion.div
                                 key={feature.title}
-                                initial={{ opacity: 0, y: 50 }}
                                 animate={{ y: ["0rem", "-0.75rem", "0rem"] }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, amount: 0.3 }}
                                 transition={{
                                     y: {
                                         duration: 3 + i * 0.5,
@@ -329,11 +320,6 @@ export default function LandingPage() {
                                         ease: "easeInOut",
                                         delay: 1 + i * 0.2, 
                                     },
-                                    opacity: {
-                                        duration: 0.6,
-                                        delay: i * 0.1,
-                                        ease: "easeOut"
-                                    }
                                 }}
                                 onClick={() => router.push(feature.href)}
                                 className="cursor-pointer group flex flex-col gap-4 p-6 rounded-2xl bg-gray-900/50 border border-white/10 hover:border-blue-500/50"
@@ -365,5 +351,7 @@ export default function LandingPage() {
     );
 
 }
+
+    
 
     
