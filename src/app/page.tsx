@@ -188,7 +188,7 @@ export default function LandingPage() {
                         className="absolute left-0 md:left-10 lg:-left-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group"
                          onClick={() => toggleAudio('mindful_moments')}
                     >
-                        <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl backdrop-blur-md border border-white/10">
+                        <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl shadow-blue-500/20 backdrop-blur-md border border-white/10">
                              <Image src="https://picsum.photos/seed/1/400/400" alt="card" fill className="object-cover rounded-xl" data-ai-hint="abstract art" />
                              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl"></div>
                              <div className="absolute bottom-4 left-4 text-white">
@@ -213,8 +213,8 @@ export default function LandingPage() {
                             transition={{ duration: 0.8, ease: 'easeOut' }}
                             className="flex flex-col items-center"
                         >
-                             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
-                                <div className="flex justify-center">
+                            <div className="flex justify-center">
+                                 <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
                                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
                                         A New Path to&nbsp;
                                     </span>
@@ -227,8 +227,8 @@ export default function LandingPage() {
                                         pauseDuration={1500}
                                         loop
                                     />
-                                </div>
-                            </h1>
+                                </h1>
+                            </div>
                             <p className="mt-6 max-w-xl mx-auto text-base md:text-lg text-gray-300">
                                AuraMind is your personal AI companion for self-discovery. Explore tools designed to bring you calm, clarity, and strength on your mental wellness journey.
                             </p>
@@ -266,7 +266,7 @@ export default function LandingPage() {
                         className="absolute right-0 md:right-10 lg:-right-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group"
                         onClick={() => toggleAudio('inner_journey')}
                     >
-                         <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl backdrop-blur-md border border-white/10">
+                         <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl shadow-purple-500/20 backdrop-blur-md border border-white/10">
                              <Image src="https://picsum.photos/seed/2/400/400" alt="card" fill className="object-cover rounded-xl" data-ai-hint="astronaut space" />
                              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl"></div>
                              <div className="absolute bottom-4 left-4 text-white">
@@ -355,5 +355,3 @@ export default function LandingPage() {
     );
 
 }
-
-    
