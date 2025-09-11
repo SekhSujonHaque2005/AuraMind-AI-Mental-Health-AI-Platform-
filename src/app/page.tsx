@@ -238,9 +238,25 @@ export default function LandingPage() {
                                 initial={{ opacity: 0, y: 50 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, amount: 0.3 }}
-                                transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
+                                transition={{
+                                    y: {
+                                        duration: 3 + i * 0.5,
+                                        repeat: Infinity,
+                                        repeatType: "reverse",
+                                        ease: "easeInOut",
+                                        delay: 1 + i * 0.2, 
+                                    },
+                                    opacity: {
+                                        duration: 0.6,
+                                        delay: i * 0.1,
+                                        ease: "easeOut"
+                                    }
+                                }}
+                                animate={{
+                                    y: ["0rem", "-0.75rem", "0rem"],
+                                }}
                                 onClick={() => router.push(feature.href)}
-                                className="cursor-pointer group flex flex-col gap-4 p-6 rounded-2xl bg-gray-900/50 border border-white/10 hover:border-blue-500/50 transition-all hover:-translate-y-1"
+                                className="cursor-pointer group flex flex-col gap-4 p-6 rounded-2xl bg-gray-900/50 border border-white/10 hover:border-blue-500/50"
                             >
                                 <div className="flex items-center gap-4">
                                      <div className="p-3 rounded-lg bg-gray-800 border border-white/10 group-hover:border-blue-500/50 transition-colors">
