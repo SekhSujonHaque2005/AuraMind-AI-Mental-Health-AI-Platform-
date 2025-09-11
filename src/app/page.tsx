@@ -185,20 +185,20 @@ export default function LandingPage() {
                             duration: 0.8, ease: 'easeOut', delay: 0.3,
                             y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 } 
                         }}
-                        className="absolute left-0 md:left-10 lg:-left-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group"
+                        className="absolute left-0 md:left-10 lg:-left-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group shadow-2xl shadow-blue-500/20"
                          onClick={() => toggleAudio('mindful_moments')}
                     >
-                        <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl shadow-blue-500/20 backdrop-blur-md border border-white/10">
-                             <Image src="https://picsum.photos/seed/1/400/400" alt="card" fill className="object-cover rounded-xl" data-ai-hint="abstract art" />
-                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl"></div>
-                             <div className="absolute bottom-4 left-4 text-white">
+                        <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl backdrop-blur-md border border-white/10 overflow-hidden">
+                             <Image src="https://picsum.photos/seed/1/400/400" alt="card" fill className="object-cover rounded-xl blur-lg group-hover:blur-0 transition-all duration-500" data-ai-hint="abstract art" />
+                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                             <div className="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                 <h4 className="font-bold">Mindful Moments</h4>
                                 <p className="text-xs text-gray-300">Calm Your Mind</p>
                              </div>
-                             <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full">
+                             <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                 <Heart className="h-4 w-4 text-pink-400" />
                              </div>
-                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                 <div className="bg-black/50 rounded-full p-3">
                                     {playingAudio === 'mindful_moments' ? <Pause className="h-8 w-8 text-white"/> : <Play className="h-8 w-8 text-white"/>}
                                 </div>
@@ -263,20 +263,20 @@ export default function LandingPage() {
                             duration: 0.8, ease: 'easeOut', delay: 0.3,
                             y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 } 
                         }}
-                        className="absolute right-0 md:right-10 lg:-right-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group"
+                        className="absolute right-0 md:right-10 lg:-right-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group shadow-2xl shadow-purple-500/20"
                         onClick={() => toggleAudio('inner_journey')}
                     >
-                         <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl shadow-purple-500/20 backdrop-blur-md border border-white/10">
-                             <Image src="https://picsum.photos/seed/2/400/400" alt="card" fill className="object-cover rounded-xl" data-ai-hint="astronaut space" />
-                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl"></div>
-                             <div className="absolute bottom-4 left-4 text-white">
+                         <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl backdrop-blur-md border border-white/10 overflow-hidden">
+                             <Image src="https://picsum.photos/seed/2/400/400" alt="card" fill className="object-cover rounded-xl blur-lg group-hover:blur-0 transition-all duration-500" data-ai-hint="astronaut space" />
+                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                             <div className="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                 <h4 className="font-bold">Inner Journey</h4>
                                 <p className="text-xs text-gray-300">Explore Your Thoughts</p>
                              </div>
-                             <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full">
+                             <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                 <Brain className="h-4 w-4 text-blue-300" />
                              </div>
-                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                 <div className="bg-black/50 rounded-full p-3">
                                     {playingAudio === 'inner_journey' ? <Pause className="h-8 w-8 text-white"/> : <Play className="h-8 w-8 text-white"/>}
                                 </div>
