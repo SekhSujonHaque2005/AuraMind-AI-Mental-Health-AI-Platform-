@@ -13,6 +13,7 @@ import {
   Play,
   Heart,
   Brain,
+  Pause,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import React from 'react';
@@ -20,6 +21,7 @@ import Image from 'next/image';
 import ScrollFloat from '@/components/scroll-float';
 import { Navbar, NavBody, NavItems, NavbarLogo, NavbarButton, MobileNav, MobileNavHeader, MobileNavToggle, MobileNavMenu } from '@/components/ui/resizable-navbar';
 import TextType from '@/components/ui/text-type';
+import audioData from '@/lib/placeholder-audio.json';
 
 
 const features = [
@@ -64,6 +66,8 @@ const features = [
 export default function LandingPage() {
     const router = useRouter();
     const [isOpen, setIsOpen] = React.useState(false);
+    const [playingAudio, setPlayingAudio] = React.useState<string | null>(null);
+    const audioRef = React.useRef<HTMLAudioElement>(null);
 
 
     const handleGetStarted = () => {
@@ -84,6 +88,21 @@ export default function LandingPage() {
         link: "/resources",
       },
     ];
+
+    const toggleAudio = (audioKey: string) => {
+        if (playingAudio === audioKey) {
+            audioRef.current?.pause();
+            setPlayingAudio(null);
+        } else {
+            const audioInfo = audioData[audioKey as keyof typeof audioData];
+            if (audioRef.current && audioInfo) {
+                audioRef.current.src = audioInfo.url;
+                audioRef.current.play();
+                setPlayingAudio(audioKey);
+            }
+        }
+    };
+
 
     return (
         <div className="flex flex-col min-h-screen bg-black text-white overflow-x-hidden">
@@ -149,7 +168,8 @@ export default function LandingPage() {
                             rotate: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
                             y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 } 
                         }}
-                        className="absolute left-0 md:left-10 lg:-left-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block"
+                        className="absolute left-0 md:left-10 lg:-left-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group"
+                         onClick={() => toggleAudio('mindful_moments')}
                     >
                         <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl backdrop-blur-md border border-white/10">
                              <Image src="https://picsum.photos/seed/1/400/400" alt="card" fill className="object-cover rounded-xl" data-ai-hint="abstract art" />
@@ -160,6 +180,11 @@ export default function LandingPage() {
                              </div>
                              <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full">
                                 <Heart className="h-4 w-4 text-pink-400" />
+                             </div>
+                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div className="bg-black/50 rounded-full p-3">
+                                    {playingAudio === 'mindful_moments' ? <Pause className="h-8 w-8 text-white"/> : <Play className="h-8 w-8 text-white"/>}
+                                </div>
                              </div>
                         </div>
                     </motion.div>
@@ -221,7 +246,8 @@ export default function LandingPage() {
                             rotate: { duration: 0.8, ease: 'easeOut', delay: 0.3 },
                             y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 } 
                         }}
-                        className="absolute right-0 md:right-10 lg:-right-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block"
+                        className="absolute right-0 md:right-10 lg:-right-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group"
+                        onClick={() => toggleAudio('inner_journey')}
                     >
                          <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl shadow-2xl backdrop-blur-md border border-white/10">
                              <Image src="https://picsum.photos/seed/2/400/400" alt="card" fill className="object-cover rounded-xl" data-ai-hint="astronaut space" />
@@ -232,6 +258,11 @@ export default function LandingPage() {
                              </div>
                              <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full">
                                 <Brain className="h-4 w-4 text-blue-300" />
+                             </div>
+                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div className="bg-black/50 rounded-full p-3">
+                                    {playingAudio === 'inner_journey' ? <Pause className="h-8 w-8 text-white"/> : <Play className="h-8 w-8 text-white"/>}
+                                </div>
                              </div>
                         </div>
                     </motion.div>
@@ -255,6 +286,7 @@ export default function LandingPage() {
                              <motion.div
                                 key={feature.title}
                                 initial={{ opacity: 0, y: 50 }}
+                                animate={{ y: ["0rem", "-0.75rem", "0rem"] }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, amount: 0.3 }}
                                 transition={{
@@ -270,9 +302,6 @@ export default function LandingPage() {
                                         delay: i * 0.1,
                                         ease: "easeOut"
                                     }
-                                }}
-                                animate={{
-                                    y: ["0rem", "-0.75rem", "0rem"],
                                 }}
                                 onClick={() => router.push(feature.href)}
                                 className="cursor-pointer group flex flex-col gap-4 p-6 rounded-2xl bg-gray-900/50 border border-white/10 hover:border-blue-500/50"
@@ -299,6 +328,7 @@ export default function LandingPage() {
                     <p className="text-xs mt-2">Your mental wellness companion.</p>
                 </div>
             </footer>
+            <audio ref={audioRef} onEnded={() => setPlayingAudio(null)} />
         </div>
     );
 
