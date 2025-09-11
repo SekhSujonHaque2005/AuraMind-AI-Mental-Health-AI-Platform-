@@ -63,6 +63,17 @@ const features = [
   },
 ];
 
+const techLogos = [
+  { alt: 'Next.js', src: 'https://www.svgrepo.com/show/354113/nextjs-icon.svg' },
+  { alt: 'React', src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1150px-React-icon.svg.png' },
+  { alt: 'TypeScript', src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/2048px-Typescript_logo_2020.svg.png' },
+  { alt: 'Tailwind CSS', src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/2560px-Tailwind_CSS_Logo.svg.png' },
+  { alt: 'Genkit', src: 'https://developers-dot-devsite-v2-prod.appspot.com/solutions/learn/agentic-barista/external-assets/firebase-genkit.svg' },
+  { alt: 'Firebase', src: 'https://www.svgrepo.com/show/303670/firebase-1-logo.svg' },
+  { alt: 'Google', src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png' },
+  { alt: 'ShadCN UI', src: 'https://avatars.githubusercontent.com/u/139895814?v=4' },
+];
+
 export default function LandingPage() {
     const router = useRouter();
     const [isOpen, setIsOpen] = React.useState(false);
@@ -266,6 +277,19 @@ export default function LandingPage() {
                              </div>
                         </div>
                     </motion.div>
+                </div>
+                <div className="absolute bottom-10 left-0 w-full max-w-full overflow-x-hidden z-20 mt-8">
+                    <div className="group relative w-full overflow-hidden bg-transparent" style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)' }}>
+                        <div className="flex animate-marquee-slow hover:[animation-play-state:paused]">
+                            {[...techLogos, ...techLogos].map((logo, index) => (
+                                <span key={index} className="inline-block px-8">
+                                    <span className="flex h-16 w-32 items-center justify-center text-muted-foreground grayscale transition-all duration-300 hover:grayscale-0 hover:text-foreground">
+                                        <Image alt={logo.alt} loading="lazy" width="40" height="40" decoding="async" className="object-contain" src={logo.src} style={{ color: 'transparent' }} />
+                                    </span>
+                                </span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </section>
             
