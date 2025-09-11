@@ -189,7 +189,7 @@ export default function LandingPage() {
                          onClick={() => toggleAudio('mindful_moments')}
                     >
                         <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl backdrop-blur-md border border-white/10 overflow-hidden">
-                             <Image src="https://picsum.photos/seed/1/400/400" alt="card" fill className="object-cover rounded-xl blur-sm group-hover:blur-0 transition-all duration-500" data-ai-hint="abstract art" />
+                             <Image src="https://picsum.photos/seed/1/400/400" alt="card" fill className="object-cover rounded-xl blur-[2px] group-hover:blur-0 transition-all duration-500" data-ai-hint="abstract art" />
                              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                              <div className="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                 <h4 className="font-bold">Mindful Moments</h4>
@@ -214,7 +214,7 @@ export default function LandingPage() {
                             className="flex flex-col items-center"
                         >
                             <div className="flex justify-center">
-                                 <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
+                                 <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white flex items-center">
                                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
                                         A New Path to&nbsp;
                                     </span>
@@ -267,7 +267,7 @@ export default function LandingPage() {
                         onClick={() => toggleAudio('inner_journey')}
                     >
                          <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl backdrop-blur-md border border-white/10 overflow-hidden">
-                             <Image src="https://picsum.photos/seed/2/400/400" alt="card" fill className="object-cover rounded-xl blur-sm group-hover:blur-0 transition-all duration-500" data-ai-hint="astronaut space" />
+                             <Image src="https://picsum.photos/seed/2/400/400" alt="card" fill className="object-cover rounded-xl blur-[2px] group-hover:blur-0 transition-all duration-500" data-ai-hint="astronaut space" />
                              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                              <div className="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                 <h4 className="font-bold">Inner Journey</h4>
