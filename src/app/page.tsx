@@ -218,20 +218,20 @@ export default function LandingPage() {
                             className="flex flex-col items-center"
                         >
                             <div className="flex justify-center">
-                                <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white flex items-center">
+                                <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
                                     <div className="flex items-center">
                                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
                                             A New Path to&nbsp;
+                                            <TextType 
+                                                as="span"
+                                                text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
+                                                className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
+                                                typingSpeed={100}
+                                                deletingSpeed={50}
+                                                pauseDuration={1500}
+                                                loop
+                                            />
                                         </span>
-                                        <TextType 
-                                            as="span"
-                                            text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
-                                            className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
-                                            typingSpeed={100}
-                                            deletingSpeed={50}
-                                            pauseDuration={1500}
-                                            loop
-                                        />
                                     </div>
                                 </h1>
                             </div>
@@ -245,13 +245,14 @@ export default function LandingPage() {
                                 >
                                     Explore Tools <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
-                                 <Button 
-                                    variant="outline"
-                                    onClick={() => router.push('/consultant')}
-                                    className="px-8 py-4 text-lg font-bold bg-transparent border-2 border-gray-500 text-gray-300 rounded-full hover:bg-gray-800/50 hover:border-purple-500 hover:text-white transform transition-all duration-300"
-                                >
-                                   AI Wellness Consultant
-                                </Button>
+                                 <a href="https://github.com/firebase/studio-extra-sessions/tree/main/AuraMind" target="_blank" rel="noopener noreferrer">
+                                    <Button 
+                                        variant="outline"
+                                        className="px-8 py-4 text-lg font-bold bg-transparent border-2 border-gray-500 text-gray-300 rounded-full hover:bg-gray-800/50 hover:border-purple-500 hover:text-white transform transition-all duration-300"
+                                    >
+                                    View Project on GitHub
+                                    </Button>
+                                 </a>
                             </div>
                         </motion.div>
                      </div>
