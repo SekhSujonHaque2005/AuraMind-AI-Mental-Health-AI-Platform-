@@ -15,6 +15,9 @@ import {
   Heart,
   Brain,
   Pause,
+  List,
+  Search,
+  CheckCircle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import React from 'react';
@@ -77,6 +80,24 @@ const features = [
     src: "https://picsum.photos/seed/feature6/1000/1000",
     category: "Audio Experience"
   },
+];
+
+const howItWorksSteps = [
+    {
+        icon: MessageSquare,
+        title: "Start a Conversation",
+        description: "Begin by chatting with Aura. Share what's on your mind in a safe, non-judgmental space. It's the first step to understanding your feelings."
+    },
+    {
+        icon: Sparkles,
+        title: "Explore Wellness Tools",
+        description: "Discover a suite of features designed for your well-being, including the Calm Room, AI-guided Self-Care Adventures, and curated audio Playlists."
+    },
+    {
+        icon: CheckCircle,
+        title: "Track Your Progress",
+        description: "Engage with daily quests and quizzes to build healthy habits, gain self-awareness, and watch your mental wellness journey unfold."
+    }
 ];
 
 const techLogos = [
@@ -362,14 +383,45 @@ export default function LandingPage() {
             </div>
 
              {/* Features Section */}
-            <section className="bg-black px-4">
+            <section className="bg-black px-4 py-20 md:py-32">
                 <div className="max-w-7xl mx-auto">
                     <Carousel items={cards} />
                 </div>
             </section>
 
+             {/* How It Works Section */}
+            <section className="py-20 md:py-32 bg-gray-900/50">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-4">
+                            Your Journey to a Calmer Mind
+                        </h2>
+                        <p className="text-lg max-w-3xl mx-auto text-gray-400">
+                            Getting started with AuraMind is simple. Here’s how you can begin to transform your mental wellness today.
+                        </p>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-8 md:gap-12 relative">
+                         <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent -translate-y-1/2 hidden md:block"></div>
+                        {howItWorksSteps.map((step, index) => (
+                            <div key={index} className="relative text-center p-8 bg-black/30 backdrop-blur-md border border-blue-500/20 rounded-2xl shadow-lg hover:shadow-blue-500/10 transform hover:-translate-y-2 transition-all duration-300">
+                                <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-gray-900 rounded-full p-2 border-2 border-blue-500/30">
+                                    <div className="bg-blue-600 text-white rounded-full h-12 w-12 flex items-center justify-center font-bold text-xl">
+                                        {index + 1}
+                                    </div>
+                                </div>
+                                <div className="mt-10">
+                                    <step.icon className="h-10 w-10 text-blue-400 mx-auto mb-4" />
+                                    <h3 className="text-2xl font-bold text-white mb-2">{step.title}</h3>
+                                    <p className="text-gray-400">{step.description}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
              {/* Footer Section */}
-            <footer className="py-8 bg-gray-900/50 border-t border-white/10 px-4">
+            <footer className="py-8 bg-black border-t border-white/10 px-4">
                 <div className="max-w-6xl mx-auto text-center text-gray-500">
                     <p>&copy; {new Date().getFullYear()} AuraMind. All Rights Reserved.</p>
                     <p className="text-xs mt-2">Your mental wellness companion.</p>
@@ -380,3 +432,5 @@ export default function LandingPage() {
     );
 
 }
+
+    
