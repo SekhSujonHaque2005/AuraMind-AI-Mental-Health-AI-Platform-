@@ -341,32 +341,29 @@ export default function LandingPage() {
             </section>
             
             {/* Lamp Section */}
-            <LampContainer>
-              <motion.h1
-                initial={{ opacity: 0.5, y: 100 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{
-                  delay: 0.3,
-                  duration: 0.8,
-                  ease: "easeInOut",
-                }}
-                className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
-              >
-                Discover a new way <br /> to find your calm
-              </motion.h1>
-            </LampContainer>
+            <div id="features">
+              <LampContainer>
+                <motion.h1
+                  initial={{ opacity: 0.5, y: 100 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{
+                    delay: 0.3,
+                    duration: 0.8,
+                    ease: "easeInOut",
+                  }}
+                  className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
+                >
+                  A Toolkit for a Calmer Mind
+                  <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-400 font-normal">
+                    Discover features designed to support your well-being, from quiet reflection to guided growth.
+                  </p>
+                </motion.h1>
+              </LampContainer>
+            </div>
 
              {/* Features Section */}
-            <section id="features" className="py-20 md:py-32 bg-black px-4">
+            <section className="py-20 md:py-32 bg-black px-4">
                 <div className="max-w-7xl mx-auto">
-                     <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-5xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-gray-200 to-gray-600">
-                           A Toolkit for a Calmer Mind
-                        </h2>
-                         <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-400">
-                           Discover features designed to support your well-being, from quiet reflection to guided growth.
-                        </p>
-                    </div>
                     <Carousel items={cards} />
                 </div>
             </section>
