@@ -25,6 +25,7 @@ import TextType from '@/components/ui/text-type';
 import audioData from '@/lib/placeholder-audio.json';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
+import { LampContainer } from "@/components/ui/lamp";
 
 
 const features = [
@@ -339,6 +340,22 @@ export default function LandingPage() {
                 </div>
             </section>
             
+            {/* Lamp Section */}
+            <LampContainer>
+              <motion.h1
+                initial={{ opacity: 0.5, y: 100 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: 0.3,
+                  duration: 0.8,
+                  ease: "easeInOut",
+                }}
+                className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
+              >
+                Discover a new way <br /> to find your calm
+              </motion.h1>
+            </LampContainer>
+
              {/* Features Section */}
             <section id="features" className="py-20 md:py-32 bg-black px-4">
                 <div className="max-w-7xl mx-auto">

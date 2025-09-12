@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 import {fontFamily} from 'tailwindcss/defaultTheme';
 
@@ -17,6 +18,9 @@ export default {
       },
     },
     extend: {
+      backgroundImage: {
+        'gradient-conic': 'conic-gradient(var(--tw-gradient-stops))',
+      },
       fontFamily: {
         sans: ['"Times New Roman"', 'Times', 'serif', ...fontFamily.sans],
       },
