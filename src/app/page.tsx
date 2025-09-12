@@ -97,8 +97,12 @@ export default function LandingPage() {
         link: "/chat",
       },
       {
-        name: "Resources",
-        link: "/resources",
+        name: "Consultant",
+        link: "/consultant",
+      },
+      {
+        name: "Calm Room",
+        link: "/calm",
       },
     ];
 
@@ -357,5 +361,3 @@ export default function LandingPage() {
     );
 
 }
-
-    
