@@ -351,7 +351,7 @@ export default function LandingPage() {
                     duration: 0.8,
                     ease: "easeInOut",
                   }}
-                  className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
+                  className="mt-8 bg-gradient-to-br from-purple-400 to-blue-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
                 >
                   A Toolkit for a Calmer Mind
                 </motion.h1>
@@ -362,7 +362,7 @@ export default function LandingPage() {
             </div>
 
              {/* Features Section */}
-            <section className="bg-black px-4">
+            <section className="bg-black px-4 pt-0">
                 <div className="max-w-7xl mx-auto">
                     <Carousel items={cards} />
                 </div>
@@ -380,3 +380,5 @@ export default function LandingPage() {
     );
 
 }
+
+    
