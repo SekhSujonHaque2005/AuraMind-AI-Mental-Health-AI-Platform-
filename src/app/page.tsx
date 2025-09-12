@@ -343,12 +343,12 @@ export default function LandingPage() {
             <section id="features" className="py-20 md:py-32 bg-black px-4">
                 <div className="max-w-7xl mx-auto">
                      <div className="text-center mb-16">
-                        <ScrollFloat as="h2" className="text-3xl md:text-5xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-gray-200 to-gray-600">
+                        <h2 className="text-3xl md:text-5xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-gray-200 to-gray-600">
                            A Toolkit for a Calmer Mind
-                        </ScrollFloat>
-                         <ScrollFloat as="p" className="mt-4 max-w-2xl mx-auto text-lg text-gray-400">
+                        </h2>
+                         <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-400">
                            Discover features designed to support your well-being, from quiet reflection to guided growth.
-                        </ScrollFloat>
+                        </p>
                     </div>
                     <Carousel items={cards} />
                 </div>
