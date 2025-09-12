@@ -156,7 +156,7 @@ export default function LandingPage() {
 
 
     return (
-        <div className="flex flex-col min-h-screen bg-black text-white overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-black text-white">
              {/* Header */}
              <Navbar>
                 <NavBody>
@@ -325,7 +325,7 @@ export default function LandingPage() {
                         </div>
                     </motion.div>
                 </div>
-                <div className="absolute bottom-10 left-0 w-full max-w-full overflow-x-hidden z-20 mt-8">
+                <div className="absolute bottom-10 left-0 w-full max-w-full z-20 mt-8">
                     <div className="group relative w-full overflow-hidden bg-transparent" style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)' }}>
                         <div className="flex animate-marquee-slow hover:[animation-play-state:paused]">
                             {[...techLogos, ...techLogos].map((logo, index) => (
@@ -362,8 +362,8 @@ export default function LandingPage() {
             </div>
 
              {/* Features Section */}
-            <section className="bg-black px-4 pt-0">
-                <div className="max-w-7xl mx-auto py-10 md:py-20">
+            <section className="bg-black px-4">
+                <div className="max-w-7xl mx-auto">
                     <Carousel items={cards} />
                 </div>
             </section>
@@ -380,6 +380,3 @@ export default function LandingPage() {
     );
 
 }
-
-    
-    
