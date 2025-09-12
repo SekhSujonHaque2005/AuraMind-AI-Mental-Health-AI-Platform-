@@ -344,10 +344,10 @@ export default function LandingPage() {
                 <div className="max-w-7xl mx-auto">
                      <div className="text-center mb-16">
                         <ScrollFloat as="h2" className="text-3xl md:text-5xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-gray-200 to-gray-600">
-                           All The Tools You Need
+                           A Toolkit for a Calmer Mind
                         </ScrollFloat>
                          <ScrollFloat as="p" className="mt-4 max-w-2xl mx-auto text-lg text-gray-400">
-                           From guided meditations to personalized support, AuraMind offers a comprehensive suite of features.
+                           Discover features designed to support your well-being, from quiet reflection to guided growth.
                         </ScrollFloat>
                     </div>
                     <Carousel items={cards} />
