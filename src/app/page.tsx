@@ -24,6 +24,7 @@ import { Navbar, NavBody, NavItems, NavbarLogo, NavbarButton, MobileNav, MobileN
 import TextType from '@/components/ui/text-type';
 import audioData from '@/lib/placeholder-audio.json';
 import { SparklesCore } from '@/components/ui/sparkles';
+import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
 
 
 const features = [
@@ -31,37 +32,49 @@ const features = [
     icon: MessageSquare,
     title: "Empathetic Chat",
     description: "Talk about your feelings in a safe, non-judgmental space with Aura, your AI companion.",
-    href: "/chat"
+    href: "/chat",
+    src: "https://picsum.photos/seed/feature1/1000/1000",
+    category: "AI Conversation"
   },
   {
     icon: Users,
     title: "AI Consultant",
     description: "Engage in simulated video calls with specialized AI personas for focused support.",
-    href: "/consultant"
+    href: "/consultant",
+    src: "https://picsum.photos/seed/feature2/1000/1000",
+    category: "Virtual Support"
   },
   {
     icon: Sparkles,
     title: "Calm Room",
     description: "Immerse yourself in tranquil 3D scenes with calming audio to find your peace.",
-    href: "/calm"
+    href: "/calm",
+    src: "https://picsum.photos/seed/feature3/1000/1000",
+    category: "Immersive Relaxation"
   },
    {
     icon: ShieldCheck,
     title: "Self-Care Adventures",
     description: "Embark on daily quests to build healthy habits and improve your well-being.",
-    href: "/adventures"
+    href: "/adventures",
+    src: "https://picsum.photos/seed/feature4/1000/1000",
+    category: "Gamified Wellness"
   },
   {
     icon: FileQuestion,
     title: "Mind Quizzes",
     description: "Gain insights into your mind with quizzes on CBT, mindfulness, and more.",
-    href: "/quizzes"
+    href: "/quizzes",
+    src: "https://picsum.photos/seed/feature5/1000/1000",
+    category: "Self-Discovery"
   },
   {
     icon: Music,
     title: "Curated Playlists",
     description: "Listen to sounds and music designed for focus, relaxation, and meditation.",
-    href: "/playlist"
+    href: "/playlist",
+    src: "https://picsum.photos/seed/feature6/1000/1000",
+    category: "Audio Experience"
   },
 ];
 
@@ -119,6 +132,26 @@ export default function LandingPage() {
             }
         }
     };
+    
+    const cards = features.map((feature, index) => (
+        <Card
+            key={feature.title}
+            card={{
+                src: feature.src,
+                title: feature.title,
+                category: feature.category,
+                content: (
+                <div onClick={() => router.push(feature.href)} className="cursor-pointer">
+                    <p className="text-gray-600 dark:text-gray-400 text-base md:text-lg mb-4">{feature.description}</p>
+                    <Button className="bg-blue-600 hover:bg-blue-500 text-white">
+                        Explore {feature.title} <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                </div>
+                ),
+            }}
+            index={index}
+        />
+    ));
 
 
     return (
@@ -308,8 +341,8 @@ export default function LandingPage() {
             
              {/* Features Section */}
             <section id="features" className="py-20 md:py-32 bg-black px-4">
-                <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-16">
+                <div className="max-w-7xl mx-auto">
+                     <div className="text-center mb-16">
                         <ScrollFloat as="h2" className="text-3xl md:text-5xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-gray-200 to-gray-600">
                            All The Tools You Need
                         </ScrollFloat>
@@ -317,36 +350,7 @@ export default function LandingPage() {
                            From guided meditations to personalized support, AuraMind offers a comprehensive suite of features.
                         </ScrollFloat>
                     </div>
-
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {features.map((feature, i) => (
-                             <motion.div
-                                key={feature.title}
-                                animate={{ y: ["0rem", "-0.75rem", "0rem"] }}
-                                transition={{
-                                    y: {
-                                        duration: 3 + i * 0.5,
-                                        repeat: Infinity,
-                                        repeatType: "reverse",
-                                        ease: "easeInOut",
-                                        delay: 1 + i * 0.2, 
-                                    },
-                                }}
-                                onClick={() => router.push(feature.href)}
-                                className="cursor-pointer group flex flex-col gap-4 p-6 rounded-2xl bg-gray-900/50 border border-white/10 hover:border-blue-500/50"
-                            >
-                                <div className="flex items-center gap-4">
-                                     <div className="p-3 rounded-lg bg-gray-800 border border-white/10 group-hover:border-blue-500/50 transition-colors">
-                                         <feature.icon className="w-6 h-6 text-blue-400" />
-                                     </div>
-                                     <h3 className="text-xl font-semibold text-gray-100">{feature.title}</h3>
-                                </div>
-                                <p className="text-gray-400">
-                                    {feature.description}
-                                </p>
-                            </motion.div>
-                        ))}
-                    </div>
+                    <Carousel items={cards} />
                 </div>
             </section>
 
@@ -362,5 +366,3 @@ export default function LandingPage() {
     );
 
 }
-
-    
