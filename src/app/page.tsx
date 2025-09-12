@@ -363,7 +363,7 @@ export default function LandingPage() {
 
              {/* Features Section */}
             <section className="bg-black px-4 pt-0">
-                <div className="max-w-7xl mx-auto">
+                <div className="max-w-7xl mx-auto py-10 md:py-20">
                     <Carousel items={cards} />
                 </div>
             </section>
@@ -381,4 +381,5 @@ export default function LandingPage() {
 
 }
 
+    
     
