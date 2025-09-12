@@ -218,7 +218,7 @@ export default function LandingPage() {
                             className="flex flex-col items-center"
                         >
                             <div className="flex justify-center">
-                                 <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white flex items-center">
+                                <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white flex items-center">
                                     <div className="flex items-center">
                                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
                                             A New Path to&nbsp;
@@ -241,14 +241,14 @@ export default function LandingPage() {
                             <div className="mt-10 flex items-center justify-center gap-4">
                                 <Button 
                                     onClick={handleGetStarted}
-                                    className="px-6 py-5 text-base font-semibold bg-blue-600 text-white hover:bg-blue-500 transition-transform hover:scale-105 rounded-lg"
+                                    className="px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300"
                                 >
                                     Explore Tools <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
                                  <Button 
                                     variant="outline"
                                     onClick={() => router.push('/consultant')}
-                                    className="px-6 py-5 text-base font-semibold bg-transparent border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg"
+                                    className="px-8 py-4 text-lg font-bold bg-transparent border-2 border-gray-500 text-gray-300 rounded-full hover:bg-gray-800/50 hover:border-purple-500 hover:text-white transform transition-all duration-300"
                                 >
                                    Meet the AI Team
                                 </Button>
