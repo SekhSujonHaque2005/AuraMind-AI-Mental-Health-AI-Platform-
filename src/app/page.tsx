@@ -354,10 +354,10 @@ export default function LandingPage() {
                   className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
                 >
                   A Toolkit for a Calmer Mind
-                  <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-400 font-normal">
-                    Discover features designed to support your well-being, from quiet reflection to guided growth.
-                  </p>
                 </motion.h1>
+                <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-400 font-normal">
+                    A suite of tools to help you find calm, clarity, and strength.
+                </p>
               </LampContainer>
             </div>
 
