@@ -362,7 +362,7 @@ export default function LandingPage() {
             </div>
 
              {/* Features Section */}
-            <section className="py-20 md:py-32 bg-black px-4">
+            <section className="pb-20 md:pb-32 bg-black px-4">
                 <div className="max-w-7xl mx-auto">
                     <Carousel items={cards} />
                 </div>
