@@ -29,6 +29,7 @@ import audioData from '@/lib/placeholder-audio.json';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
 import { LampContainer } from "@/components/ui/lamp";
+import { StickyScroll } from '@/components/ui/sticky-scroll-reveal';
 
 
 const features = [
@@ -84,19 +85,68 @@ const features = [
 
 const howItWorksSteps = [
     {
-        icon: MessageSquare,
         title: "Start a Conversation",
-        description: "Begin by chatting with Aura. Share what's on your mind in a safe, non-judgmental space. It's the first step to understanding your feelings."
+        description: "Begin by chatting with Aura. Share what's on your mind in a safe, non-judgmental space. It's the first step to understanding your feelings.",
+        content: (
+          <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(to_bottom_right,var(--cyan-500),var(--emerald-500))] text-white">
+            <Image
+                src="https://i.pravatar.cc/300?img=1"
+                width={300}
+                height={300}
+                className="h-full w-full object-cover"
+                alt="Start a conversation"
+                data-ai-hint="woman smiling"
+            />
+          </div>
+        ),
     },
     {
-        icon: Sparkles,
         title: "Explore Wellness Tools",
-        description: "Discover a suite of features designed for your well-being, including the Calm Room, AI-guided Self-Care Adventures, and curated audio Playlists."
+        description: "Discover a suite of features designed for your well-being, including the Calm Room, AI-guided Self-Care Adventures, and curated audio Playlists.",
+        content: (
+          <div className="flex h-full w-full  items-center justify-center text-white">
+            <Image
+              src="https://miro.medium.com/v2/resize:fit:1400/1*87rtELiYihvrNL3Ew-DKSw.jpeg"
+              width={300}
+              height={300}
+              className="h-full w-full object-cover"
+              alt="Explore wellness tools"
+              data-ai-hint="nature wellness"
+            />
+          </div>
+        ),
     },
     {
-        icon: CheckCircle,
         title: "Track Your Progress",
-        description: "Engage with daily quests and quizzes to build healthy habits, gain self-awareness, and watch your mental wellness journey unfold."
+        description: "Engage with daily quests and quizzes to build healthy habits, gain self-awareness, and watch your mental wellness journey unfold.",
+        content: (
+          <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(to_bottom_right,var(--orange-500),var(--yellow-500))] text-white">
+             <Image
+              src="https://burst.shopifycdn.com/photos/person-holds-a-book-over-a-cup-of-coffee.jpg?width=1000&format=pjpg&exif=0&iptc=0"
+              width={300}
+              height={300}
+              className="h-full w-full object-cover"
+              alt="Track your progress"
+              data-ai-hint="journal progress"
+            />
+          </div>
+        ),
+    },
+     {
+        title: "Find Your Calm",
+        description: "Immerse yourself in our Calm Room with 3D scenes and soothing audio, or find the perfect track in our curated Playlists to relax and focus.",
+        content: (
+            <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(to_bottom_right,var(--cyan-500),var(--emerald-500))] text-white">
+                 <Image
+                  src="https://thumbs.dreamstime.com/b/meditation-concept-spiritual-metaphysical-meditation-woman-silhouette-lotus-pose-rays-light-chakras-spirituality-59187997.jpg"
+                  width={300}
+                  height={300}
+                  className="h-full w-full object-cover"
+                  alt="Find your calm"
+                    data-ai-hint="meditation spiritual"
+                />
+            </div>
+        ),
     }
 ];
 
@@ -362,7 +412,7 @@ export default function LandingPage() {
             </section>
             
             {/* Lamp Section */}
-            <div id="features">
+            <div id="features" className="py-20 md:py-0">
               <LampContainer>
                 <motion.h1
                   initial={{ opacity: 0.5, y: 100 }}
@@ -383,14 +433,14 @@ export default function LandingPage() {
             </div>
 
              {/* Features Section */}
-            <section className="bg-black px-4 py-20 md:py-32">
+            <section className="bg-black px-4">
                 <div className="max-w-7xl mx-auto">
                     <Carousel items={cards} />
                 </div>
             </section>
 
              {/* How It Works Section */}
-            <section className="py-20 md:py-32 bg-gray-900/50">
+            <section className="py-20 md:py-32 bg-black">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-4">
@@ -400,23 +450,7 @@ export default function LandingPage() {
                             Getting started with AuraMind is simple. Here’s how you can begin to transform your mental wellness today.
                         </p>
                     </div>
-                    <div className="grid md:grid-cols-3 gap-8 md:gap-12 relative">
-                         <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent -translate-y-1/2 hidden md:block"></div>
-                        {howItWorksSteps.map((step, index) => (
-                            <div key={index} className="relative text-center p-8 bg-black/30 backdrop-blur-md border border-blue-500/20 rounded-2xl shadow-lg hover:shadow-blue-500/10 transform hover:-translate-y-2 transition-all duration-300">
-                                <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-gray-900 rounded-full p-2 border-2 border-blue-500/30">
-                                    <div className="bg-blue-600 text-white rounded-full h-12 w-12 flex items-center justify-center font-bold text-xl">
-                                        {index + 1}
-                                    </div>
-                                </div>
-                                <div className="mt-10">
-                                    <step.icon className="h-10 w-10 text-blue-400 mx-auto mb-4" />
-                                    <h3 className="text-2xl font-bold text-white mb-2">{step.title}</h3>
-                                    <p className="text-gray-400">{step.description}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                     <StickyScroll content={howItWorksSteps} />
                 </div>
             </section>
 
@@ -432,5 +466,3 @@ export default function LandingPage() {
     );
 
 }
-
-    
