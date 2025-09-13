@@ -3,6 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const StickyScroll = ({
   content,
@@ -17,14 +21,69 @@ export const StickyScroll = ({
 }) => {
   const [activeCard, setActiveCard] = useState(0);
   const ref = useRef<any>(null);
+  const { scrollYProgress } = useScroll({
+    container: ref,
+    offset: ["start start", "end end"],
+  });
   const cardLength = content.length;
 
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const cardsBreakpoints = content.map((_, index) => index / cardLength);
+    const closestBreakpointIndex = cardsBreakpoints.reduce(
+      (acc, breakpoint, index) => {
+        const distance = Math.abs(latest - breakpoint);
+        if (distance < Math.abs(latest - cardsBreakpoints[acc])) {
+          return index;
+        }
+        return acc;
+      },
+      0
+    );
+    setActiveCard(closestBreakpointIndex);
+  });
+  
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveCard((prevActiveCard) => (prevActiveCard + 1) % cardLength);
-    }, 3000); // Change card every 3 seconds
+    const container = ref.current;
+    if (!container) return;
 
-    return () => clearInterval(interval);
+    const timeline = gsap.timeline({
+        repeat: -1,
+        yoyo: true, // Go back and forth
+        defaults: { ease: "power1.inOut", duration: 5 }
+    });
+
+    timeline.to(container, {
+        scrollTo: { y: "max" },
+        duration: cardLength * 3, // Adjust duration based on content length
+    }).to(container, {
+        scrollTo: { y: 0 },
+        duration: cardLength * 3,
+        delay: 2 // Pause at the end before scrolling back up
+    });
+
+    const st = ScrollTrigger.create({
+        trigger: container,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1,
+    });
+    
+    // Pause GSAP animation on user interaction
+    const onUserScroll = () => {
+        if(timeline.isActive()) {
+            timeline.pause();
+        }
+    };
+    container.addEventListener('wheel', onUserScroll);
+    container.addEventListener('touchmove', onUserScroll);
+
+
+    return () => {
+      st.kill();
+      timeline.kill();
+      container.removeEventListener('wheel', onUserScroll);
+      container.removeEventListener('touchmove', onUserScroll);
+    };
   }, [cardLength]);
 
   const backgroundColors = [
