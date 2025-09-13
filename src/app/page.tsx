@@ -441,7 +441,7 @@ export default function LandingPage() {
 
              {/* How It Works Section */}
             <section className="py-20 md:py-32 bg-black">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-4">
                             Your Journey to a Calmer Mind
