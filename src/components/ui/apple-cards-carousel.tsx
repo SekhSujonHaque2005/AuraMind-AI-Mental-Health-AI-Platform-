@@ -42,7 +42,6 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
     if (carouselRef.current) {
@@ -50,29 +49,6 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
       checkScrollability();
     }
   }, [initialScroll]);
-
-   useEffect(() => {
-    const carousel = carouselRef.current;
-    if (!carousel) return;
-
-    let scrollInterval: NodeJS.Timeout;
-
-    const startScrolling = () => {
-      scrollInterval = setInterval(() => {
-        if (!isHovering) {
-            if (carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth) {
-                carousel.scrollTo({ left: 0, behavior: 'smooth' });
-            } else {
-                carousel.scrollBy({ left: 1, behavior: 'auto' });
-            }
-        }
-      }, 25); // Adjust speed here
-    };
-
-    startScrolling();
-
-    return () => clearInterval(scrollInterval);
-  }, [isHovering]);
 
   const checkScrollability = () => {
     if (carouselRef.current) {
@@ -113,11 +89,9 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
     >
       <div 
         className="relative w-full"
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
       >
         <div
-          className="flex w-full overflow-x-auto [scrollbar-width:none] md:py-20"
+          className="flex w-full overflow-x-auto [scrollbar-width:none] py-10 md:py-20"
           ref={carouselRef}
           onScroll={checkScrollability}
         >
