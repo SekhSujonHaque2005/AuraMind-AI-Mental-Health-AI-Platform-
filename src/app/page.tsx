@@ -496,7 +496,6 @@ export default function LandingPage() {
                         <div className="mt-4 flex flex-col justify-center space-y-4">
                         <span className="font-semibold text-foreground">Social</span>
                         <a target="__blank" className="hover:text-foreground/80 text-foreground/60 transition-colors" href="https://github.com/firebase/studio-extra-sessions/tree/main/AuraMind">GitHub</a>
-                        <a target="__blank" className="hover:text-foreground/80 text-foreground/60 transition-colors" href="https://firebase.google.com/">Firebase</a>
                         </div>
                     </div>
                 </div>
@@ -508,4 +507,5 @@ export default function LandingPage() {
 
 }
 
+    
     
