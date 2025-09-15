@@ -51,6 +51,9 @@ const videoQueries = [
       bn: "নতুনদের জন্য ১০ মিনিটের নির্দেশিত ধ্যান",
       pt: "meditação guiada de 10 minutos para iniciantes",
       ru: "10-минутная управляемая медитация для начинающих",
+      de: "10-minütige geführte Meditation für Anfänger",
+      it: "meditazione guidata di 10 minuti per principianti",
+      ja: "初心者向け10分間のガイド付き瞑想",
     }
   },
   { 
@@ -64,6 +67,9 @@ const videoQueries = [
         bn: "দৈনিক মানসিক স্বাস্থ্য টিপস",
         pt: "dicas diárias de saúde mental",
         ru: "ежедневные советы по психическому здоровью",
+        de: "tägliche Tipps zur psychischen Gesundheit",
+        it: "consigli quotidiani sulla salute mentale",
+        ja: "毎日のメンタルヘルスに関するヒント",
     }
   },
   { 
@@ -77,6 +83,9 @@ const videoQueries = [
         bn: "উদ্বেগের জন্য মননশীলতা ব্যায়াম",
         pt: "exercícios de mindfulness para ansiedade",
         ru: "упражнения на осознанность при тревоге",
+        de: "Achtsamkeitsübungen bei Angst",
+        it: "esercizi di mindfulness per l'ansia",
+        ja: "不安のためのマインドフルネスエクササイズ",
     }
   },
   { 
@@ -90,6 +99,9 @@ const videoQueries = [
         bn: "শিথিলকরণ এবং মানসিক চাপ মুক্তির জন্য যোগব্যায়াম",
         pt: "ioga para relaxamento e alívio do estresse",
         ru: "йога для расслабления и снятия стресса",
+        de: "Yoga zur Entspannung und zum Stressabbau",
+        it: "yoga per il rilassamento e la riduzione dello stress",
+        ja: "リラクゼーションとストレス解消のためのヨガ",
     }
   },
   { 
@@ -103,6 +115,9 @@ const videoQueries = [
         bn: "আত্ম-প্রেমের জন্য ইতিবাচক உறுதி",
         pt: "afirmações positivas para o amor-próprio",
         ru: "позитивные аффирмации для любви к себе",
+        de: "positive Affirmationen für Selbstliebe",
+        it: "affermazioni positive per l'amore di sé",
+        ja: "自己愛のためのポジティブなアファメーション",
     }
   },
   { 
@@ -116,6 +131,9 @@ const videoQueries = [
         bn: "চাপের জন্য ৫ মিনিটের শ্বাস-প্রশ্বাসের ব্যায়াম",
         pt: "exercício de respiração de 5 minutos para o estresse",
         ru: "5-минутное дыхательное упражнение от стресса",
+        de: "5-minütige Atemübung gegen Stress",
+        it: "esercizio di respirazione di 5 minuti per lo stress",
+        ja: "ストレスのための5分間の呼吸法",
     }
   },
 ];
@@ -125,6 +143,9 @@ const languages = [
     { value: 'hi', label: 'Hindi' },
     { value: 'es', label: 'Spanish' },
     { value: 'fr', label: 'French' },
+    { value: 'de', label: 'German' },
+    { value: 'it', label: 'Italian' },
+    { value: 'ja', label: 'Japanese' },
     { value: 'ar', label: 'Arabic' },
     { value: 'bn', label: 'Bengali' },
     { value: 'pt', label: 'Portuguese' },
@@ -378,3 +399,5 @@ export default function ResourcesPage() {
     </>
   );
 }
+
+    

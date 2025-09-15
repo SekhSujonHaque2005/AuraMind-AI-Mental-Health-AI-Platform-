@@ -37,6 +37,126 @@ export const translations: Record<string, Translation> = {
         { label: "मुझे बस अपनी भड़ास निकालनी है 😤", value: "मुझे बस एक मिनट के लिए अपनी भड़ास निकालनी है।" },
     ]
   },
+  'es': {
+    languageName: 'Spanish',
+    welcomeMessage: "¡Hola! Soy Aura, tu compañera de IA empática. Estoy aquí para escucharte sin juzgar. Para empezar, ¿qué tienes en mente hoy? ☀️",
+    suggestedQuestions: [
+        { label: "¡Me siento feliz! 😊", value: "¡Hoy me siento feliz!" },
+        { label: "Me siento triste 😔", value: "Me siento un poco triste" },
+        { label: "Me siento ansioso 😟", value: "Me siento ansioso" },
+        { label: "Estoy teniendo un día difícil ⛈️", value: "Estoy teniendo un día difícil" },
+        { label: "¡Estoy celebrando una pequeña victoria! 🎉", value: "¡Hoy estoy celebrando una pequeña victoria!" },
+        { label: "Me siento abrumado 🤯", value: "Me siento abrumado en este momento." },
+        { label: "Me siento un poco solo 🫂", value: "Me siento un poco solo." },
+        { label: "Estoy estresado por el trabajo/la escuela 😫", value: "Estoy estresado por el trabajo/la escuela." },
+        { label: "Solo necesito desahogarme 😤", value: "Solo necesito desahogarme un minuto." },
+    ]
+  },
+  'fr': {
+    languageName: 'French',
+    welcomeMessage: "Bonjour ! Je suis Aura, votre compagnon IA empathique. Je suis là pour écouter sans jugement. Pour commencer, qu'avez-vous en tête aujourd'hui ? ☀️",
+    suggestedQuestions: [
+        { label: "Je me sens heureux ! 😊", value: "Je me sens heureux aujourd'hui !" },
+        { label: "Je me sens triste 😔", value: "Je me sens un peu triste" },
+        { label: "Je me sens anxieux 😟", value: "Je me sens anxieux" },
+        { label: "Je passe une journée difficile ⛈️", value: "Je passe une journée difficile" },
+        { label: "Je célèbre une petite victoire ! 🎉", value: "Je célèbre une petite victoire aujourd'hui !" },
+        { label: "Je me sens dépassé 🤯", value: "Je me sens dépassé en ce moment." },
+        { label: "Je me sens un peu seul 🫂", value: "Je me sens un peu seul." },
+        { label: "Je suis stressé par le travail/l'école 😫", value: "Je suis stressé par le travail/l'école." },
+        { label: "J'ai juste besoin de me défouler 😤", value: "J'ai juste besoin de me défouler une minute." },
+    ]
+  },
+  'de': {
+    languageName: 'German',
+    welcomeMessage: "Hallo! Ich bin Aura, dein empathischer KI-Begleiter. Ich bin hier, um ohne zu urteilen zuzuhören. Was beschäftigt dich heute? ☀️",
+    suggestedQuestions: [
+        { label: "Ich fühle mich glücklich! 😊", value: "Ich fühle mich heute glücklich!" },
+        { label: "Ich fühle mich traurig 😔", value: "Ich fühle mich ein wenig traurig" },
+        { label: "Ich fühle mich ängstlich 😟", value: "Ich fühle mich ängstlich" },
+        { label: "Ich habe einen schweren Tag ⛈️", value: "Ich habe einen schweren Tag" },
+        { label: "Ich feiere einen kleinen Sieg! 🎉", value: "Ich feiere heute einen kleinen Sieg!" },
+        { label: "Ich fühle mich überfordert 🤯", value: "Ich fühle mich im Moment überfordert." },
+        { label: "Ich fühle mich ein wenig einsam 🫂", value: "Ich fühle mich ein wenig einsam." },
+        { label: "Ich bin gestresst von der Arbeit/Schule 😫", value: "Ich bin gestresst von der Arbeit/Schule." },
+        { label: "Ich muss einfach mal Dampf ablassen 😤", value: "Ich muss einfach mal eine Minute Dampf ablassen." },
+    ]
+  },
+  'it': {
+    languageName: 'Italian',
+    welcomeMessage: "Ciao! Sono Aura, la tua compagna AI empatica. Sono qui per ascoltare senza giudicare. Per iniziare, cosa ti passa per la testa oggi? ☀️",
+    suggestedQuestions: [
+        { label: "Mi sento felice! 😊", value: "Oggi mi sento felice!" },
+        { label: "Mi sento triste 😔", value: "Mi sento un po' triste" },
+        { label: "Mi sento ansioso 😟", value: "Mi sento ansioso" },
+        { label: "Sto passando una giornata difficile ⛈️", value: "Sto passando una giornata difficile" },
+        { label: "Sto festeggiando una piccola vittoria! 🎉", value: "Oggi sto festeggiando una piccola vittoria!" },
+        { label: "Mi sento sopraffatto 🤯", value: "In questo momento mi sento sopraffatto." },
+        { label: "Mi sento un po' solo 🫂", value: "Mi sento un po' solo." },
+        { label: "Sono stressato per il lavoro/la scuola 😫", value: "Sono stressato per il lavoro/la scuola." },
+        { label: "Ho solo bisogno di sfogarmi 😤", value: "Ho solo bisogno di sfogarmi per un minuto." },
+    ]
+  },
+  'ja': {
+    languageName: 'Japanese',
+    welcomeMessage: "こんにちは！私はあなたの共感的なAIコンパニオン、Auraです。批判することなく話を聞くためにここにいます。まず、今日はどんなことを考えていますか？☀️",
+    suggestedQuestions: [
+        { label: "幸せな気分です！😊", value: "今日は幸せな気分です！" },
+        { label: "少し悲しいです 😔", value: "少し悲しいです" },
+        { label: "不安です 😟", value: "不安です" },
+        { label: "大変な一日です ⛈️", value: "大変な一日です" },
+        { label: "小さな勝利を祝っています！🎉", value: "今日は小さな勝利を祝っています！" },
+        { label: "圧倒されています 🤯", value: "今、圧倒されています。" },
+        { label: "少し寂しいです 🫂", value: "少し寂しいです。" },
+        { label: "仕事/学校のことでストレスを感じています 😫", value: "仕事/学校のことでストレスを感じています。" },
+        { label: "ちょっと愚痴を言いたいです 😤", value: "ちょっと愚痴を言いたいです。" },
+    ]
+  },
+  'ar': {
+    languageName: 'Arabic',
+    welcomeMessage: "مرحباً! أنا أورا، رفيقك الذكاء الاصطناعي المتعاطف. أنا هنا للاستماع دون إصدار أحكام. للبدء، ما الذي يدور في ذهنك اليوم؟ ☀️",
+    suggestedQuestions: [
+        { label: "أشعر بالسعادة! 😊", value: "أشعر بالسعادة اليوم!" },
+        { label: "أشعر بالحزن 😔", value: "أشعر ببعض الحزن" },
+        { label: "أشعر بالقلق 😟", value: "أشعر بالقلق" },
+        { label: "أمر بيوم صعب ⛈️", value: "أمر بيوم صعب" },
+        { label: "أحتفل بفوز صغير! 🎉", value: "أحتفل اليوم بفوز صغير!" },
+        { label: "أشعر بالإرهاق 🤯", value: "أشعر بالإرهاق الآن." },
+        { label: "أشعر بالوحدة قليلاً 🫂", value: "أشعر بالوحدة قليلاً." },
+        { label: "أنا متوتر بسبب العمل/المدرسة 😫", value: "أنا متوتر بسبب العمل/المدرسة." },
+        { label: "أحتاج فقط إلى التنفيس 😤", value: "أحتاج فقط إلى التنفيس لمدة دقيقة." },
+    ]
+  },
+  'pt': {
+    languageName: 'Portuguese',
+    welcomeMessage: "Olá! Eu sou a Aura, sua companheira de IA empática. Estou aqui para ouvir sem julgar. Para começar, o que está em sua mente hoje? ☀️",
+    suggestedQuestions: [
+        { label: "Estou me sentindo feliz! 😊", value: "Hoje estou me sentindo feliz!" },
+        { label: "Estou me sentindo triste 😔", value: "Estou me sentindo um pouco triste" },
+        { label: "Estou me sentindo ansioso 😟", value: "Estou me sentindo ansioso" },
+        { label: "Estou tendo um dia difícil ⛈️", value: "Estou tendo um dia difícil" },
+        { label: "Estou comemorando uma pequena vitória! 🎉", value: "Hoje estou comemorando uma pequena vitória!" },
+        { label: "Estou me sentindo sobrecarregado 🤯", value: "Estou me sentindo sobrecarregado agora." },
+        { label: "Sinto-me um pouco solitário 🫂", value: "Sinto-me um pouco solitário." },
+        { label: "Estou estressado com o trabalho/escola 😫", value: "Estou estressado com o trabalho/escola." },
+        { label: "Eu só preciso desabafar 😤", value: "Eu só preciso desabafar por um minuto." },
+    ]
+  },
+  'ru': {
+    languageName: 'Russian',
+    welcomeMessage: "Привет! Я Аура, ваш эмпатичный ИИ-компаньон. Я здесь, чтобы выслушать без осуждения. Для начала, что у вас на уме сегодня? ☀️",
+    suggestedQuestions: [
+        { label: "Я чувствую себя счастливым! 😊", value: "Сегодня я чувствую себя счастливым!" },
+        { label: "Мне немного грустно 😔", value: "Мне немного грустно" },
+        { label: "Я чувствую тревогу 😟", value: "Я чувствую тревогу" },
+        { label: "У меня тяжелый день ⛈️", value: "У меня тяжелый день" },
+        { label: "Я праздную маленькую победу! 🎉", value: "Сегодня я праздную маленькую победу!" },
+        { label: "Я чувствую себя перегруженным 🤯", value: "Я сейчас чувствую себя перегруженным." },
+        { label: "Мне немного одиноко 🫂", value: "Мне немного одиноко." },
+        { label: "Я в стрессе из-за работы/учебы 😫", value: "Я в стрессе из-за работы/учебы." },
+        { label: "Мне просто нужно выговориться 😤", value: "Мне просто нужно выговориться на минуту." },
+    ]
+  },
   'bn-IN': {
     languageName: 'Bengali',
     welcomeMessage: "নমস্কার! আমি অরা, আপনার সহানুভূতিশীল এআই সঙ্গী। আমি এখানে কোনো বিচার ছাড়াই শোনার জন্য আছি। শুরু করতে, আজ আপনার মনে কী আছে? ☀️",
@@ -76,7 +196,7 @@ export const translations: Record<string, Translation> = {
         { label: "मला चिंता वाटत आहे 😟", value: "मला चिंता वाटत आहे" },
         { label: "माझा दिवस कठीण जात आहे ⛈️", value: "माझा दिवस कठीण जात आहे" },
         { label: "मी एक छोटा विजय साजरा करत आहे! 🎉", value: "मी आज एक छोटा विजय साजरा करत आहे!" },
-        { label: "मी भारावून गेलो आहे 🤯", value: "मी आता भारावून गेलो आहे." },
+        { label: "मी भारावून गेलो आहे 🤯", value: "मी आता भारावून गelo आहे." },
         { label: "मला थोडे एकटे वाटत आहे 🫂", value: "मला थोडे एकटे वाटत आहे." },
         { label: "मी कामामुळे/शाळेमुळे तणावात आहे 😫", value: "मी कामामुळे/शाळेमुळे तणावात आहे." },
         { label: "मला फक्त मन मोकळं करायचं आहे 😤", value: "मला फक्त एका मिनिटासाठी मन मोकळं करायचं आहे." },

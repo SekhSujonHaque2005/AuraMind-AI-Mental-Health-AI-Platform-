@@ -25,7 +25,15 @@ import { Input } from '@/components/ui/input';
 const languages = [
     { value: 'en-US', label: 'English' },
     { value: 'hi-IN', label: 'Hindi' },
+    { value: 'es', label: 'Spanish' },
+    { value: 'fr', label: 'French' },
+    { value: 'de', label: 'German' },
+    { value: 'it', label: 'Italian' },
+    { value: 'ja', label: 'Japanese' },
+    { value: 'ar', label: 'Arabic' },
     { value: 'bn-IN', label: 'Bengali' },
+    { value: 'pt', label: 'Portuguese' },
+    { value: 'ru', label: 'Russian' },
     { value: 'te-IN', label: 'Telugu' },
     { value: 'mr-IN', label: 'Marathi' },
     { value: 'ta-IN', label: 'Tamil' },
@@ -314,3 +322,5 @@ export default function ChatInterface() {
     </div>
   );
 }
+
+    
