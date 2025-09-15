@@ -2,7 +2,7 @@
 'use client';
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { ExternalLink, Clapperboard, PlayCircle, VideoIcon, Languages } from "lucide-react";
+import { ExternalLink, Clapperboard, PlayCircle, VideoIcon, Languages, Music } from "lucide-react";
 import { getVideos } from "./actions";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -14,6 +14,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
 import type { YouTubeVideo } from "@/contexts/ChatContext";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 
 const staticResources = [
@@ -109,7 +111,7 @@ const NoVideosFound = () => (
         <VideoIcon className="mx-auto h-12 w-12 text-blue-400" />
         <h3 className="mt-4 text-xl font-semibold text-white">No Videos Found</h3>
         <p className="mt-2 text-gray-400">
-            There may be an issue with loading videos. Please ensure the YouTube API key is correctly configured.
+            There may be an issue with loading videos for the selected language. Please ensure the YouTube API key is correctly configured or try another language.
         </p>
     </div>
 )
@@ -197,17 +199,17 @@ export default function ResourcesPage() {
         <div className="text-center my-16 flex flex-col items-center">
             <TextType
               as="h1"
-              text="Resources for Your Well-being"
+              text="Psychoeducational Resource Hub"
               typingSpeed={60}
               loop={false}
               className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-4"
             />
             <TextType
-                text="Support is available. Explore videos and hotlines to help you on your journey."
+                text="Explore videos, relaxation audio, and guides to support your mental wellness journey."
                 typingSpeed={20}
                 initialDelay={1500}
                 loop={false}
-                className="text-lg max-w-2xl mx-auto bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500"
+                className="text-lg max-w-3xl mx-auto text-gray-400"
             />
         </div>
 
@@ -236,6 +238,29 @@ export default function ResourcesPage() {
         ) : (
             <NoVideosFound />
         )}
+
+        <div className="mt-16 mb-16">
+            <h2 className="text-3xl font-bold text-blue-300 mb-6 flex items-center">
+                <Music className="mr-3 h-8 w-8 text-blue-400" /> Relaxation Audio
+            </h2>
+            <Card className="flex flex-col md:flex-row items-center bg-black/30 backdrop-blur-md border border-blue-500/20 hover:border-blue-400/50 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_0_40px_-10px_rgba(59,130,246,0.3)] rounded-2xl overflow-hidden group">
+                <div className="relative w-full md:w-1/3 h-48 md:h-full">
+                    <Image src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=2670" alt="Playlist" fill className="object-cover" data-ai-hint="music abstract" />
+                </div>
+                <div className="p-8">
+                    <CardTitle className="text-2xl text-blue-300">Curated Playlists</CardTitle>
+                    <CardDescription className="text-gray-400 mt-2">
+                        Find the perfect soundtrack for focus, relaxation, or meditation. Our extensive audio library includes ambient music, nature sounds, lofi beats, and guided meditations.
+                    </CardDescription>
+                    <Link href="/playlist" passHref>
+                        <Button className="mt-4 bg-blue-600 hover:bg-blue-500">
+                            Explore Audio Library
+                        </Button>
+                    </Link>
+                </div>
+            </Card>
+        </div>
+
 
         <div className="mt-20">
             <h2 className="text-3xl font-bold text-blue-300 mb-6 text-center">Immediate Support Hotlines</h2>
@@ -280,5 +305,3 @@ export default function ResourcesPage() {
     </>
   );
 }
-
-    

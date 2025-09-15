@@ -31,6 +31,9 @@ export async function getVideos(query: string, language: string = 'en'): Promise
         // The YouTube API response can be complex. We need to safely parse it.
         // The `zod` schema is helpful here, but since we moved it to prevent 'use server' issues,
         // we'll proceed with careful manual mapping.
+        if (!response.data.items) {
+          return [];
+        }
         const videos = response.data.items.map((item: any): YouTubeVideo => ({
             id: {
                 videoId: item.id.videoId,
