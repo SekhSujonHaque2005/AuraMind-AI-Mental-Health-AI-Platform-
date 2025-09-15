@@ -266,7 +266,7 @@ export default function LandingPage() {
             </Navbar>
             
             {/* Hero Section */}
-            <div className="overflow-x-hidden">
+            <div className="relative overflow-x-hidden">
                 <section className="relative flex items-center h-[90vh] md:h-screen">
                     <div className="absolute inset-0 z-0 h-full w-full">
                     <SparklesCore
@@ -435,7 +435,7 @@ export default function LandingPage() {
             </div>
 
              {/* Features Section */}
-             <div className="overflow-x-hidden">
+             <div className="relative overflow-x-hidden">
                 <section className="bg-black px-4">
                     <div className="max-w-7xl mx-auto">
                         <Carousel items={cards} />
