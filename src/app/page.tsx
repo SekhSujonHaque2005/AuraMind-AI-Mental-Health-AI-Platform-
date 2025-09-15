@@ -227,7 +227,7 @@ export default function LandingPage() {
 
 
     return (
-        <div className="flex flex-col min-h-screen bg-black text-white overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-black text-white">
              {/* Header */}
              <Navbar>
                 <NavBody>
@@ -266,150 +266,152 @@ export default function LandingPage() {
             </Navbar>
             
             {/* Hero Section */}
-            <section className="relative flex items-center h-[90vh] md:h-screen">
-                <div className="absolute inset-0 z-0 h-full w-full">
-                   <SparklesCore
-                        id="tsparticles"
-                        background="transparent"
-                        minSize={0.6}
-                        maxSize={1.4}
-                        particleDensity={100}
-                        className="h-full w-full"
-                        particleColor="#FFFFFF"
-                    />
-                </div>
+            <div className="overflow-x-hidden">
+                <section className="relative flex items-center h-[90vh] md:h-screen">
+                    <div className="absolute inset-0 z-0 h-full w-full">
+                    <SparklesCore
+                            id="tsparticles"
+                            background="transparent"
+                            minSize={0.6}
+                            maxSize={1.4}
+                            particleDensity={100}
+                            className="h-full w-full"
+                            particleColor="#FFFFFF"
+                        />
+                    </div>
 
-                <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center items-center">
-                    
-                    {/* Left Tilted Card */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -100, rotate: -25 }}
-                        animate={{ 
-                            opacity: 1, 
-                            x: 0, 
-                            rotate: -15,
-                            y: ["0rem", "-1.5rem", "0rem"],
-                        }}
-                        transition={{ 
-                            duration: 0.8, ease: 'easeOut', delay: 0.3,
-                            y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 } 
-                        }}
-                        className="absolute left-0 md:left-10 lg:-left-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group shadow-2xl shadow-blue-500/20"
-                         onClick={() => toggleAudio('mindful_moments')}
-                    >
-                        <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl backdrop-blur-md border border-white/10 overflow-hidden">
-                             <Image src="https://picsum.photos/seed/1/400/400" alt="card" fill className="object-cover rounded-xl blur-[2px] group-hover:blur-0 transition-all duration-500" data-ai-hint="abstract art" />
-                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl"></div>
-                             <div className="absolute bottom-4 left-4 text-white">
-                                <h4 className="font-bold">Mindful Moments</h4>
-                                <p className="text-xs text-gray-300">Calm Your Mind</p>
-                             </div>
-                             <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full">
-                                <Heart className="h-4 w-4 text-pink-400" />
-                             </div>
-                             <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="bg-black/50 rounded-full p-3">
-                                    {playingAudio === 'mindful_moments' ? <Pause className="h-8 w-8 text-white"/> : <Play className="h-8 w-8 text-white"/>}
-                                </div>
-                             </div>
-                        </div>
-                    </motion.div>
-
-                     <div className="text-center max-w-4xl">
-                        <motion.div 
-                            initial={{ opacity: 0, y: -50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, ease: 'easeOut' }}
-                            className="flex flex-col items-center"
+                    <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center items-center">
+                        
+                        {/* Left Tilted Card */}
+                        <motion.div
+                            initial={{ opacity: 0, x: -100, rotate: -25 }}
+                            animate={{ 
+                                opacity: 1, 
+                                x: 0, 
+                                rotate: -15,
+                                y: ["0rem", "-1.5rem", "0rem"],
+                            }}
+                            transition={{ 
+                                duration: 0.8, ease: 'easeOut', delay: 0.3,
+                                y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 } 
+                            }}
+                            className="absolute left-0 md:left-10 lg:-left-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group shadow-2xl shadow-blue-500/20"
+                            onClick={() => toggleAudio('mindful_moments')}
                         >
-                            <div className="flex justify-center">
-                                <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
-                                    <div className="flex items-center">
-                                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                                            A New Path to&nbsp;
-                                            <TextType 
-                                                as="span"
-                                                text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
-                                                className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
-                                                typingSpeed={100}
-                                                deletingSpeed={50}
-                                                pauseDuration={1500}
-                                                loop
-                                            />
-                                        </span>
+                            <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl backdrop-blur-md border border-white/10 overflow-hidden">
+                                <Image src="https://picsum.photos/seed/1/400/400" alt="card" fill className="object-cover rounded-xl blur-[2px] group-hover:blur-0 transition-all duration-500" data-ai-hint="abstract art" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl"></div>
+                                <div className="absolute bottom-4 left-4 text-white">
+                                    <h4 className="font-bold">Mindful Moments</h4>
+                                    <p className="text-xs text-gray-300">Calm Your Mind</p>
+                                </div>
+                                <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full">
+                                    <Heart className="h-4 w-4 text-pink-400" />
+                                </div>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="bg-black/50 rounded-full p-3">
+                                        {playingAudio === 'mindful_moments' ? <Pause className="h-8 w-8 text-white"/> : <Play className="h-8 w-8 text-white"/>}
                                     </div>
-                                </h1>
-                            </div>
-                            <p className="mt-6 max-w-xl mx-auto text-base md:text-lg text-gray-300">
-                               AuraMind is your personal AI companion for self-discovery. Explore tools designed to bring you calm, clarity, and strength on your mental wellness journey.
-                            </p>
-                            <div className="mt-10 flex items-center justify-center gap-4">
-                                <Button 
-                                    onClick={handleGetStarted}
-                                    className="px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300"
-                                >
-                                    Explore Tools <ArrowRight className="ml-2 h-5 w-5" />
-                                </Button>
-                                 <a href="https://github.com/firebase/studio-extra-sessions/tree/main/AuraMind" target="_blank" rel="noopener noreferrer">
-                                    <Button 
-                                        variant="outline"
-                                        className="px-8 py-4 text-lg font-bold bg-transparent border-2 border-gray-500 text-gray-300 rounded-full hover:bg-gray-800/50 hover:border-purple-500 hover:text-white transform transition-all duration-300"
-                                    >
-                                    View Project on GitHub
-                                    </Button>
-                                 </a>
+                                </div>
                             </div>
                         </motion.div>
-                     </div>
 
-                      {/* Right Tilted Card */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 100, rotate: 25 }}
-                        animate={{ 
-                            opacity: 1, 
-                            x: 0, 
-                            rotate: 15,
-                            y: ["0rem", "1.5rem", "0rem"],
-                        }}
-                         transition={{ 
-                            duration: 0.8, ease: 'easeOut', delay: 0.3,
-                            y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 } 
-                        }}
-                        className="absolute right-0 md:right-10 lg:-right-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group shadow-2xl shadow-purple-500/20"
-                        onClick={() => toggleAudio('inner_journey')}
-                    >
-                         <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl backdrop-blur-md border border-white/10 overflow-hidden">
-                             <Image src="https://picsum.photos/seed/2/400/400" alt="card" fill className="object-cover rounded-xl blur-[2px] group-hover:blur-0 transition-all duration-500" data-ai-hint="astronaut space" />
-                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl"></div>
-                             <div className="absolute bottom-4 left-4 text-white">
-                                <h4 className="font-bold">Inner Journey</h4>
-                                <p className="text-xs text-gray-300">Explore Your Thoughts</p>
-                             </div>
-                             <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full">
-                                <Brain className="h-4 w-4 text-blue-300" />
-                             </div>
-                             <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="bg-black/50 rounded-full p-3">
-                                    {playingAudio === 'inner_journey' ? <Pause className="h-8 w-8 text-white"/> : <Play className="h-8 w-8 text-white"/>}
+                        <div className="text-center max-w-4xl">
+                            <motion.div 
+                                initial={{ opacity: 0, y: -50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, ease: 'easeOut' }}
+                                className="flex flex-col items-center"
+                            >
+                                <div className="flex justify-center">
+                                    <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
+                                        <div className="flex items-center">
+                                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                                                A New Path to&nbsp;
+                                                <TextType 
+                                                    as="span"
+                                                    text={["Mental Wellness", "Clarity", "Strength", "Peace"]}
+                                                    className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
+                                                    typingSpeed={100}
+                                                    deletingSpeed={50}
+                                                    pauseDuration={1500}
+                                                    loop
+                                                />
+                                            </span>
+                                        </div>
+                                    </h1>
                                 </div>
-                             </div>
+                                <p className="mt-6 max-w-xl mx-auto text-base md:text-lg text-gray-300">
+                                AuraMind is your personal AI companion for self-discovery. Explore tools designed to bring you calm, clarity, and strength on your mental wellness journey.
+                                </p>
+                                <div className="mt-10 flex items-center justify-center gap-4">
+                                    <Button 
+                                        onClick={handleGetStarted}
+                                        className="px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300"
+                                    >
+                                        Explore Tools <ArrowRight className="ml-2 h-5 w-5" />
+                                    </Button>
+                                    <a href="https://github.com/firebase/studio-extra-sessions/tree/main/AuraMind" target="_blank" rel="noopener noreferrer">
+                                        <Button 
+                                            variant="outline"
+                                            className="px-8 py-4 text-lg font-bold bg-transparent border-2 border-gray-500 text-gray-300 rounded-full hover:bg-gray-800/50 hover:border-purple-500 hover:text-white transform transition-all duration-300"
+                                        >
+                                        View Project on GitHub
+                                        </Button>
+                                    </a>
+                                </div>
+                            </motion.div>
                         </div>
-                    </motion.div>
-                </div>
-                <div className="absolute bottom-10 left-0 w-full max-w-full z-20 mt-8">
-                    <div className="group relative w-full overflow-hidden bg-transparent" style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)' }}>
-                        <div className="flex animate-marquee-slow hover:[animation-play-state:paused]">
-                            {[...techLogos, ...techLogos].map((logo, index) => (
-                                <span key={index} className="inline-block px-8">
-                                    <span className="flex h-16 w-32 items-center justify-center text-muted-foreground grayscale transition-all duration-300 hover:grayscale-0 hover:text-foreground">
-                                        <Image alt={logo.alt} loading="lazy" width="40" height="40" decoding="async" className="object-contain" src={logo.src} style={{ color: 'transparent' }} />
+
+                        {/* Right Tilted Card */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 100, rotate: 25 }}
+                            animate={{ 
+                                opacity: 1, 
+                                x: 0, 
+                                rotate: 15,
+                                y: ["0rem", "1.5rem", "0rem"],
+                            }}
+                            transition={{ 
+                                duration: 0.8, ease: 'easeOut', delay: 0.3,
+                                y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 } 
+                            }}
+                            className="absolute right-0 md:right-10 lg:-right-12 w-56 h-80 md:w-64 md:h-80 hidden lg:block cursor-pointer group shadow-2xl shadow-purple-500/20"
+                            onClick={() => toggleAudio('inner_journey')}
+                        >
+                            <div className="relative w-full h-full p-4 bg-gray-900/50 rounded-2xl backdrop-blur-md border border-white/10 overflow-hidden">
+                                <Image src="https://picsum.photos/seed/2/400/400" alt="card" fill className="object-cover rounded-xl blur-[2px] group-hover:blur-0 transition-all duration-500" data-ai-hint="astronaut space" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl"></div>
+                                <div className="absolute bottom-4 left-4 text-white">
+                                    <h4 className="font-bold">Inner Journey</h4>
+                                    <p className="text-xs text-gray-300">Explore Your Thoughts</p>
+                                </div>
+                                <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full">
+                                    <Brain className="h-4 w-4 text-blue-300" />
+                                </div>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="bg-black/50 rounded-full p-3">
+                                        {playingAudio === 'inner_journey' ? <Pause className="h-8 w-8 text-white"/> : <Play className="h-8 w-8 text-white"/>}
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                    <div className="absolute bottom-10 left-0 w-full max-w-full z-20 mt-8">
+                        <div className="group relative w-full overflow-hidden bg-transparent" style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)' }}>
+                            <div className="flex animate-marquee-slow hover:[animation-play-state:paused]">
+                                {[...techLogos, ...techLogos].map((logo, index) => (
+                                    <span key={index} className="inline-block px-8">
+                                        <span className="flex h-16 w-32 items-center justify-center text-muted-foreground grayscale transition-all duration-300 hover:grayscale-0 hover:text-foreground">
+                                            <Image alt={logo.alt} loading="lazy" width="40" height="40" decoding="async" className="object-contain" src={logo.src} style={{ color: 'transparent' }} />
+                                        </span>
                                     </span>
-                                </span>
-                            ))}
+                                ))}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
             
             {/* Lamp Section */}
             <div id="features" className="py-20 md:py-0">
@@ -433,11 +435,13 @@ export default function LandingPage() {
             </div>
 
              {/* Features Section */}
-            <section className="bg-black px-4">
-                <div className="max-w-7xl mx-auto">
-                    <Carousel items={cards} />
-                </div>
-            </section>
+             <div className="overflow-x-hidden">
+                <section className="bg-black px-4">
+                    <div className="max-w-7xl mx-auto">
+                        <Carousel items={cards} />
+                    </div>
+                </section>
+            </div>
 
              {/* How It Works Section */}
             <section className="py-20 md:py-32 bg-black">
