@@ -28,7 +28,7 @@ function AppContent({ children }: { children: React.ReactNode }) {
     }
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen overflow-x-hidden">
              {!isHomePage && (
                  <div
                     onMouseEnter={() => setSidebarExpanded(true)}
