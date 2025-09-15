@@ -268,6 +268,7 @@ export default function LandingPage() {
             
             {/* Hero Section */}
             <div className="relative overflow-x-hidden">
+                <div className="relative overflow-x-hidden">
                 <section className="relative flex items-center h-[90vh] md:h-screen">
                     <div className="absolute inset-0 z-0 h-full w-full">
                     <SparklesCore
@@ -412,6 +413,7 @@ export default function LandingPage() {
                         </div>
                     </div>
                 </section>
+                </div>
             </div>
             
             {/* Lamp Section */}
@@ -476,7 +478,7 @@ export default function LandingPage() {
                             </div>
                         </a>
                         </div>
-                        <div>A project by the Firebase team.</div>
+                        <div className="max-w-xs">AuraMind is your personal AI companion for self-discovery. Explore tools designed to bring you calm, clarity, and strength on your mental wellness journey.</div>
                     </div>
                     <div className="mt-10 grid grid-cols-2 md:grid-cols-3 items-start gap-10 md:mt-0">
                         <div className="mt-4 flex flex-col justify-center space-y-4">
@@ -505,3 +507,5 @@ export default function LandingPage() {
     );
 
 }
+
+    
