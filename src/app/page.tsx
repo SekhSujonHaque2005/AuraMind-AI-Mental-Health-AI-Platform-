@@ -18,6 +18,7 @@ import {
   List,
   Search,
   CheckCircle,
+  BookUser,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import React from 'react';
@@ -458,17 +459,49 @@ export default function LandingPage() {
                 </div>
             </section>
 
-             {/* Footer Section */}
-            <footer className="py-8 bg-black border-t border-white/10 px-4">
-                <div className="max-w-6xl mx-auto text-center text-gray-500">
-                    <p>&copy; {new Date().getFullYear()} AuraMind. All Rights Reserved.</p>
-                    <p className="text-xs mt-2">Your mental wellness companion.</p>
+            {/* Footer Section */}
+            <footer className="py-8 bg-black border-t border-white/10">
+                <div className="container mx-auto flex max-w-7xl flex-col items-start justify-between text-sm text-neutral-500 sm:flex-row p-6">
+                    <div>
+                        <div className="mr-4 mb-4 md:flex">
+                        <a className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600 dark:text-gray-100 selection:bg-emerald-500 mr-10 py-0" href="/">
+                            <div className="relative h-8 w-8 md:h-6 md:w-6 bg-card border border-border text-primary flex items-center justify-center rounded-md text-sm antialiased">
+                            <div className="absolute h-10 w-full bg-primary/20 -top-10 inset-x-0 rounded-full blur-xl"></div>
+                            <div className="text-sm text-primary relative z-20">
+                                <MessageSquare className="h-4 w-4" />
+                            </div>
+                            </div>
+                            <div className="flex flex-col">
+                            <h1 className="text-black dark:text-white font-sans text-lg">AuraMind</h1>
+                            </div>
+                        </a>
+                        </div>
+                        <div>A project by the Firebase team.</div>
+                    </div>
+                    <div className="mt-10 grid grid-cols-2 md:grid-cols-3 items-start gap-10 md:mt-0">
+                        <div className="mt-4 flex flex-col justify-center space-y-4">
+                        <span className="font-semibold text-foreground">Features</span>
+                        <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="/chat">Chatbot</a>
+                        <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="/consultant">AI Consultant</a>
+                        <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="/calm">Calm Room</a>
+                        <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="/playlist">Playlist</a>
+                        </div>
+                        <div className="mt-4 flex flex-col justify-center space-y-4">
+                        <span className="font-semibold text-foreground">Legal</span>
+                        <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="#">Privacy Policy</a>
+                        <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="#">Terms of Service</a>
+                        </div>
+                        <div className="mt-4 flex flex-col justify-center space-y-4">
+                        <span className="font-semibold text-foreground">Social</span>
+                        <a target="__blank" className="hover:text-foreground/80 text-foreground/60 transition-colors" href="https://github.com/firebase/studio-extra-sessions/tree/main/AuraMind">GitHub</a>
+                        <a target="__blank" className="hover:text-foreground/80 text-foreground/60 transition-colors" href="https://firebase.google.com/">Firebase</a>
+                        </div>
+                    </div>
                 </div>
+                <div className="container text-center text-muted-foreground text-sm border-t border-white/10 pt-4">© {new Date().getFullYear()} AuraMind. All rights reserved.</div>
             </footer>
             <audio ref={audioRef} onEnded={() => setPlayingAudio(null)} />
         </div>
     );
 
 }
-
-    
