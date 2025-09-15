@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { ExternalLink, Clapperboard, PlayCircle, VideoIcon, Languages, Music } from "lucide-react";
 import { getVideos } from "./actions";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import VideoPlayerModal from "@/components/video-player-modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import VideoCard from "@/components/video-card";
@@ -40,12 +40,84 @@ const staticResources = [
 ];
 
 const videoQueries = [
-  { title: "Guided Meditations", query: "10 minute guided meditation for beginners" },
-  { title: "Mental Health Tips", query: "daily mental health tips" },
-  { title: "Mindfulness Exercises", query: "mindfulness exercises for anxiety" },
-  { title: "Yoga for Relaxation", query: "yoga for relaxation and stress relief" },
-  { title: "Positive Affirmations", query: "positive affirmations for self-love" },
-  { title: "Breathing Exercises", query: "5 minute breathing exercise for stress" },
+  { 
+    title: "Guided Meditations", 
+    queries: {
+      en: "10 minute guided meditation for beginners",
+      hi: "10 मिनट का ध्यान शुरुआती लोगों के लिए",
+      es: "meditación guiada de 10 minutos para principiantes",
+      fr: "méditation guidée de 10 minutes pour débutants",
+      ar: "تأمل موجه لمدة 10 دقائق للمبتدئين",
+      bn: "নতুনদের জন্য ১০ মিনিটের নির্দেশিত ধ্যান",
+      pt: "meditação guiada de 10 minutos para iniciantes",
+      ru: "10-минутная управляемая медитация для начинающих",
+    }
+  },
+  { 
+    title: "Mental Health Tips", 
+    queries: {
+        en: "daily mental health tips",
+        hi: "दैनिक मानसिक स्वास्थ्य युक्तियाँ",
+        es: "consejos diarios de salud mental",
+        fr: "conseils quotidiens sur la santé mentale",
+        ar: "نصائح يومية للصحة النفسية",
+        bn: "দৈনিক মানসিক স্বাস্থ্য টিপস",
+        pt: "dicas diárias de saúde mental",
+        ru: "ежедневные советы по психическому здоровью",
+    }
+  },
+  { 
+    title: "Mindfulness Exercises", 
+    queries: {
+        en: "mindfulness exercises for anxiety",
+        hi: "चिंता के लिए माइंडफुलनेस व्यायाम",
+        es: "ejercicios de mindfulness para la ansiedad",
+        fr: "exercices de pleine conscience pour l'anxiété",
+        ar: "تمارين اليقظة للتعامل مع القلق",
+        bn: "উদ্বেগের জন্য মননশীলতা ব্যায়াম",
+        pt: "exercícios de mindfulness para ansiedade",
+        ru: "упражнения на осознанность при тревоге",
+    }
+  },
+  { 
+    title: "Yoga for Relaxation", 
+    queries: {
+        en: "yoga for relaxation and stress relief",
+        hi: "विश्राम और तनाव से राहत के लिए योग",
+        es: "yoga para relajación y alivio del estrés",
+        fr: "yoga pour la relaxation et le soulagement du stress",
+        ar: "يوجا للاسترخاء وتخفيف التوتر",
+        bn: "শিথিলকরণ এবং মানসিক চাপ মুক্তির জন্য যোগব্যায়াম",
+        pt: "ioga para relaxamento e alívio do estresse",
+        ru: "йога для расслабления и снятия стресса",
+    }
+  },
+  { 
+    title: "Positive Affirmations", 
+    queries: {
+        en: "positive affirmations for self-love",
+        hi: "आत्म-प्रेम के लिए सकारात्मक पुष्टि",
+        es: "afirmaciones positivas para el amor propio",
+        fr: "affirmations positives pour l'amour de soi",
+        ar: "تأكيدات إيجابية لحب الذات",
+        bn: "আত্ম-প্রেমের জন্য ইতিবাচক உறுதி",
+        pt: "afirmações positivas para o amor-próprio",
+        ru: "позитивные аффирмации для любви к себе",
+    }
+  },
+  { 
+    title: "Breathing Exercises", 
+    queries: {
+        en: "5 minute breathing exercise for stress",
+        hi: "तनाव के लिए 5 मिनट का साँस लेने का व्यायाम",
+        es: "ejercicio de respiración de 5 minutos para el estrés",
+        fr: "exercice de respiration de 5 minutes contre le stress",
+        ar: "تمرين تنفس لمدة 5 دقائق للتوتر",
+        bn: "চাপের জন্য ৫ মিনিটের শ্বাস-প্রশ্বাসের ব্যায়াম",
+        pt: "exercício de respiração de 5 minutos para o estresse",
+        ru: "5-минутное дыхательное упражнение от стресса",
+    }
+  },
 ];
 
 const languages = [
@@ -129,8 +201,9 @@ export default function ResourcesPage() {
     const fetchVideos = async () => {
       setIsLoading(true);
       const data = await Promise.all(
-        videoQueries.map(async ({ title, query }) => {
-          const videos = await getVideos(query, selectedLanguage);
+        videoQueries.map(async ({ title, queries }) => {
+          const queryForLang = queries[selectedLanguage as keyof typeof queries] || queries.en;
+          const videos = await getVideos(queryForLang, selectedLanguage);
           return { title, videos };
         })
       );
