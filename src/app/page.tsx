@@ -266,7 +266,7 @@ export default function LandingPage() {
                 </MobileNav>
             </Navbar>
             
-            <div className="relative overflow-x-hidden">
+            <div className="overflow-x-hidden relative">
                 <section className="relative flex items-center h-[90vh] md:h-screen">
                     <div className="absolute inset-0 z-0 h-full w-full">
                     <SparklesCore
@@ -283,7 +283,7 @@ export default function LandingPage() {
                     <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center items-center">
                         
                         <motion.div
-                            initial={{ opacity: 0, x: -100, rotate: -25 }}
+                            initial={{ opacity: 0, x: 100, rotate: 25 }}
                             animate={{ 
                                 opacity: 1, 
                                 x: 0, 
@@ -363,7 +363,7 @@ export default function LandingPage() {
                         </div>
 
                         <motion.div
-                            initial={{ opacity: 0, x: 100, rotate: 25 }}
+                            initial={{ opacity: 0, x: -100, rotate: -25 }}
                             animate={{ 
                                 opacity: 1, 
                                 x: 0, 
@@ -481,8 +481,8 @@ export default function LandingPage() {
                         </div>
                         <div className="mt-4 flex flex-col justify-center space-y-4">
                         <span className="font-semibold text-foreground">Legal</span>
-                        <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="#">Privacy Policy</a>
-                        <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="#">Terms of Service</a>
+                        <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="/privacy-policy">Privacy Policy</a>
+                        <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="/terms-of-service">Terms of Service</a>
                         </div>
                         <div className="mt-4 flex flex-col justify-center space-y-4">
                         <span className="font-semibold text-foreground">Social</span>
