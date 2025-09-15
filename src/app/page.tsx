@@ -266,9 +266,7 @@ export default function LandingPage() {
                 </MobileNav>
             </Navbar>
             
-            {/* Hero Section */}
             <div className="relative overflow-x-hidden">
-                <div className="relative overflow-x-hidden">
                 <section className="relative flex items-center h-[90vh] md:h-screen">
                     <div className="absolute inset-0 z-0 h-full w-full">
                     <SparklesCore
@@ -284,7 +282,6 @@ export default function LandingPage() {
 
                     <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center items-center">
                         
-                        {/* Left Tilted Card */}
                         <motion.div
                             initial={{ opacity: 0, x: -100, rotate: -25 }}
                             animate={{ 
@@ -365,7 +362,6 @@ export default function LandingPage() {
                             </motion.div>
                         </div>
 
-                        {/* Right Tilted Card */}
                         <motion.div
                             initial={{ opacity: 0, x: 100, rotate: 25 }}
                             animate={{ 
@@ -413,10 +409,8 @@ export default function LandingPage() {
                         </div>
                     </div>
                 </section>
-                </div>
             </div>
             
-            {/* Lamp Section */}
             <div id="features" className="py-20 md:py-0">
               <LampContainer>
                 <motion.h1
@@ -437,8 +431,7 @@ export default function LandingPage() {
               </LampContainer>
             </div>
 
-             {/* Features Section */}
-             <div className="relative overflow-x-hidden">
+            <div className="relative overflow-x-hidden">
                 <section className="bg-black px-4">
                     <div className="max-w-7xl mx-auto">
                         <Carousel items={cards} />
@@ -446,7 +439,6 @@ export default function LandingPage() {
                 </section>
             </div>
 
-             {/* How It Works Section */}
             <section className="py-20 md:py-32 bg-black">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
@@ -461,7 +453,6 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            {/* Footer Section */}
             <footer className="py-8 bg-black border-t border-white/10">
                 <div className="container mx-auto flex max-w-7xl flex-col items-start justify-between text-sm text-neutral-500 sm:flex-row p-6">
                     <div>
@@ -478,7 +469,7 @@ export default function LandingPage() {
                             </div>
                         </a>
                         </div>
-                        <div className="max-w-xs">AuraMind is your personal AI companion for self-discovery. Explore tools designed to bring you calm, clarity, and strength on your mental wellness journey.</div>
+                        <div>AuraMind is your personal AI companion for self-discovery. Explore tools designed to bring you calm, clarity, and strength on your mental wellness journey.</div>
                     </div>
                     <div className="mt-10 grid grid-cols-2 md:grid-cols-3 items-start gap-10 md:mt-0">
                         <div className="mt-4 flex flex-col justify-center space-y-4">
@@ -506,6 +497,3 @@ export default function LandingPage() {
     );
 
 }
-
-    
-    
