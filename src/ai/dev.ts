@@ -8,8 +8,8 @@ import '@/ai/flows/translate-welcome-message.ts';
 import '@/ai/flows/generate-self-care-quest.ts';
 import '@/ai/flows/generate-quiz.ts';
 import '@/ai/flows/find-music-flow.ts';
-// Tenor tool is no longer used.
-// import '@/ai/tools/tenor.ts';
+// Tenor tool is now used.
+import '@/ai/tools/tenor.ts';
 
 
     
