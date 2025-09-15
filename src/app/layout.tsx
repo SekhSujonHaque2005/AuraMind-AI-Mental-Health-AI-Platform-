@@ -14,7 +14,7 @@ import { usePathname } from 'next/navigation';
 function AppContent({ children }: { children: React.ReactNode }) {
     const [isSidebarExpanded, setSidebarExpanded] = React.useState(false);
     const pathname = usePathname();
-    const isHomePage = pathname === '/';
+    const isSidebarHidden = pathname === '/' || pathname === '/privacy-policy' || pathname === '/terms-of-service';
 
     const mainContentVariants = {
       expanded: { paddingLeft: '240px', transition: { duration: 0.3, ease: 'easeInOut' } },
@@ -23,13 +23,13 @@ function AppContent({ children }: { children: React.ReactNode }) {
     };
 
     const getAnimationState = () => {
-        if (isHomePage) return 'full';
+        if (isSidebarHidden) return 'full';
         return isSidebarExpanded ? 'expanded' : 'collapsed';
     }
 
     return (
         <div className="flex min-h-screen">
-             {!isHomePage && (
+             {!isSidebarHidden && (
                  <div
                     onMouseEnter={() => setSidebarExpanded(true)}
                     onMouseLeave={() => setSidebarExpanded(false)}
@@ -68,7 +68,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning className="dark">
-      <body className={cn('min-h-screen bg-background font-sans antialiased')}>
+      <body className={cn('min-h-screen bg-background font-sans antialiased overflow-x-hidden')}>
         <ChatProvider>
             <AppContent>{children}</AppContent>
         </ChatProvider>

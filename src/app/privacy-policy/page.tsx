@@ -1,15 +1,20 @@
 
-import { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Privacy Policy - AuraMind',
-  description: 'Privacy Policy for the AuraMind application.',
-};
+import { Metadata } from 'next';
+import { Button } from '@/components/ui/button';
+import { Home } from 'lucide-react';
+import Link from 'next/link';
 
 const PrivacyPolicyPage = () => {
   return (
     <div className="bg-background text-foreground min-h-screen">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative">
+        <Link href="/" passHref>
+            <Button variant="ghost" className="absolute top-8 left-4 sm:left-6 lg:left-8 text-white bg-black/30 backdrop-blur-md border border-white/10 hover:bg-white/10">
+                <Home className="mr-2 h-5 w-5" /> Back to Home
+            </Button>
+        </Link>
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500">
             Privacy Policy
@@ -79,5 +84,3 @@ const PrivacyPolicyPage = () => {
 };
 
 export default PrivacyPolicyPage;
-
-    
