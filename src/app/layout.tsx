@@ -46,7 +46,9 @@ function AppContent({ children }: { children: React.ReactNode }) {
                     variants={mainContentVariants}
                     className="flex-1 relative z-10"
                 >
-                    {children}
+                    <div className="overflow-x-hidden">
+                        {children}
+                    </div>
                 </motion.main>
             </div>
             <Toaster />
@@ -66,7 +68,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning className="dark">
-      <body className={cn('min-h-screen bg-background font-sans antialiased overflow-x-hidden')}>
+      <body className={cn('min-h-screen bg-background font-sans antialiased')}>
         <ChatProvider>
             <AppContent>{children}</AppContent>
         </ChatProvider>
