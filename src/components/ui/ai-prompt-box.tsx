@@ -365,26 +365,24 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
 
   // Defer initialization of SpeechRecognition to the client side
   React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (SpeechRecognition) {
-        const recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.interimResults = false;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
 
-        recognition.onresult = (event: any) => {
-            const transcript = event.results[0][0].transcript;
-            setInput(transcript);
-        };
-        recognition.onend = () => {
-            setIsListening(false);
-        };
-        recognition.onerror = (event: any) => {
-            console.error("Speech recognition error:", event.error);
-            setIsListening(false);
-        };
-        recognitionRef.current = recognition;
-      }
+      recognition.onresult = (event: any) => {
+          const transcript = event.results[0][0].transcript;
+          setInput(transcript);
+      };
+      recognition.onend = () => {
+          setIsListening(false);
+      };
+      recognition.onerror = (event: any) => {
+          console.error("Speech recognition error:", event.error);
+          setIsListening(false);
+      };
+      recognitionRef.current = recognition;
     }
   }, []);
 

@@ -1,37 +1,481 @@
-"use client";
+'use client';
+import React from "react";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { ArrowUp, Paperclip, Square, X, StopCircle, Mic, Globe, BrainCog, FolderCode } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
-import { useLayoutEffect, useRef } from "react";
-import type { ComponentProps } from "react";
+// Embedded CSS for minimal custom styles
+const styles = `
+  *:focus-visible {
+    outline-offset: 0 !important;
+    --ring-offset: 0 !important;
+  }
+  textarea::-webkit-scrollbar {
+    width: 6px;
+  }
+  textarea::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  textarea::-webkit-scrollbar-thumb {
+    background-color: #444444;
+    border-radius: 3px;
+  }
+  textarea::-webkit-scrollbar-thumb:hover {
+    background-color: #555555;
+  }
+`;
 
-export function useTextareaResize(
-	value: ComponentProps<"textarea">["value"],
-	rows = 1,
-) {
-	const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-	useLayoutEffect(() => {
-		const textArea = textareaRef.current;
-
-		if (textArea) {
-			// Get the line height to calculate minimum height based on rows
-			const computedStyle = window.getComputedStyle(textArea);
-			const lineHeight = Number.parseInt(computedStyle.lineHeight, 10) || 20;
-			const padding =
-				Number.parseInt(computedStyle.paddingTop, 10) +
-				Number.parseInt(computedStyle.paddingBottom, 10);
-
-			// Calculate minimum height based on rows
-			const minHeight = lineHeight * rows + padding;
-
-			// Reset height to auto first to get the correct scrollHeight
-			textArea.style.height = "0px";
-			const scrollHeight = Math.max(textArea.scrollHeight, minHeight);
-
-			// Set the final height
-			textArea.style.height = `${scrollHeight + 2}px`;
-		}
-	}, [textareaRef, value, rows]);
-
-	return textareaRef;
+// Inject styles into document
+if (typeof window !== 'undefined') {
+  const styleSheet = document.createElement("style");
+  styleSheet.innerText = styles;
+  document.head.appendChild(styleSheet);
 }
+
+
+// Textarea Component
+interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  className?: string;
+}
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, ...props }, ref) => (
+  <textarea
+    className={cn(
+      "flex w-full rounded-md border-none bg-transparent px-3 py-2.5 text-base text-gray-100 placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 min-h-[44px] resize-none scrollbar-thin scrollbar-thumb-[#444444] scrollbar-track-transparent hover:scrollbar-thumb-[#555555]",
+      className
+    )}
+    ref={ref}
+    rows={1}
+    {...props}
+  />
+));
+Textarea.displayName = "Textarea";
+
+// Tooltip Components
+const TooltipProvider = TooltipPrimitive.Provider;
+const Tooltip = TooltipPrimitive.Root;
+const TooltipTrigger = TooltipPrimitive.Trigger;
+const TooltipContent = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+  <TooltipPrimitive.Content
+    ref={ref}
+    sideOffset={sideOffset}
+    className={cn(
+      "z-50 overflow-hidden rounded-md border border-[#333333] bg-[#1F2023] px-3 py-1.5 text-sm text-white shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+      className
+    )}
+    {...props}
+  />
+));
+TooltipContent.displayName = TooltipPrimitive.Content.displayName;
+
+// Dialog Components
+const Dialog = DialogPrimitive.Root;
+const DialogPortal = DialogPrimitive.Portal;
+const DialogOverlay = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Overlay
+    ref={ref}
+    className={cn(
+      "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      className
+    )}
+    {...props}
+  />
+));
+DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
+
+const DialogContent = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <DialogPortal>
+    <DialogOverlay />
+    <DialogPrimitive.Content
+      ref={ref}
+      className={cn(
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-[90vw] md:max-w-[800px] translate-x-[-50%] translate-y-[-50%] gap-4 border border-[#333333] bg-[#1F2023] p-0 shadow-xl duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 rounded-2xl",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <DialogPrimitive.Close className="absolute right-4 top-4 z-10 rounded-full bg-[#2E3033]/80 p-2 hover:bg-[#2E3033] transition-all">
+        <X className="h-5 w-5 text-gray-200 hover:text-white" />
+        <span className="sr-only">Close</span>
+      </DialogPrimitive.Close>
+    </DialogPrimitive.Content>
+  </DialogPortal>
+));
+DialogContent.displayName = DialogPrimitive.Content.displayName;
+
+const DialogTitle = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Title
+    ref={ref}
+    className={cn("text-lg font-semibold leading-none tracking-tight text-gray-100", className)}
+    {...props}
+  />
+));
+DialogTitle.displayName = DialogPrimitive.Title.displayName;
+
+// Button Component
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "default" | "outline" | "ghost";
+  size?: "default" | "sm" | "lg" | "icon";
+}
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = "default", size = "default", ...props }, ref) => {
+    const variantClasses = {
+      default: "bg-white hover:bg-white/80 text-black",
+      outline: "border border-[#444444] bg-transparent hover:bg-[#3A3A40]",
+      ghost: "bg-transparent hover:bg-[#3A3A40]",
+    };
+    const sizeClasses = {
+      default: "h-10 px-4 py-2",
+      sm: "h-8 px-3 text-sm",
+      lg: "h-12 px-6",
+      icon: "h-8 w-8 rounded-full aspect-[1/1]",
+    };
+    return (
+      <button
+        className={cn(
+          "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
+          variantClasses[variant],
+          sizeClasses[size],
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
+Button.displayName = "Button";
+
+// ImageViewDialog Component
+interface ImageViewDialogProps {
+  imageUrl: string | null;
+  onClose: () => void;
+}
+const ImageViewDialog: React.FC<ImageViewDialogProps> = ({ imageUrl, onClose }) => {
+  if (!imageUrl) return null;
+  return (
+    <Dialog open={!!imageUrl} onOpenChange={onClose}>
+      <DialogContent className="p-0 border-none bg-transparent shadow-none max-w-[90vw] md:max-w-[800px]">
+        <DialogTitle className="sr-only">Image Preview</DialogTitle>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className="relative bg-[#1F2023] rounded-2xl overflow-hidden shadow-2xl"
+        >
+          <img
+            src={imageUrl}
+            alt="Full preview"
+            className="w-full max-h-[80vh] object-contain rounded-2xl"
+          />
+        </motion.div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+// PromptInput Context and Components
+interface PromptInputContextType {
+  isLoading: boolean;
+  value: string;
+  setValue: (value: string) => void;
+  maxHeight: number | string;
+  onSubmit?: () => void;
+  disabled?: boolean;
+}
+const PromptInputContext = React.createContext<PromptInputContextType>({
+  isLoading: false,
+  value: "",
+  setValue: () => {},
+  maxHeight: 240,
+  onSubmit: undefined,
+  disabled: false,
+});
+function usePromptInput() {
+  const context = React.useContext(PromptInputContext);
+  if (!context) throw new Error("usePromptInput must be used within a PromptInput");
+  return context;
+}
+
+interface PromptInputProps {
+  isLoading?: boolean;
+  value?: string;
+  onValueChange?: (value: string) => void;
+  maxHeight?: number | string;
+  onSubmit?: () => void;
+  children: React.ReactNode;
+  className?: string;
+  disabled?: boolean;
+}
+const PromptInput = React.forwardRef<HTMLDivElement, PromptInputProps>(
+  (
+    {
+      className,
+      isLoading = false,
+      maxHeight = 240,
+      value,
+      onValueChange,
+      onSubmit,
+      children,
+      disabled = false,
+    },
+    ref
+  ) => {
+    const [internalValue, setInternalValue] = React.useState(value || "");
+    const handleChange = (newValue: string) => {
+      setInternalValue(newValue);
+      onValueChange?.(newValue);
+    };
+    return (
+      <TooltipProvider>
+        <PromptInputContext.Provider
+          value={{
+            isLoading,
+            value: value ?? internalValue,
+            setValue: onValueChange ?? handleChange,
+            maxHeight,
+            onSubmit,
+            disabled,
+          }}
+        >
+          <div
+            ref={ref}
+            className={cn(
+              "rounded-3xl border border-[#444444] bg-[#1F2023] p-2 shadow-[0_8px_30px_rgba(0,0,0,0.24)] transition-all duration-300",
+              isLoading && "border-red-500/70",
+              className
+            )}
+          >
+            {children}
+          </div>
+        </PromptInputContext.Provider>
+      </TooltipProvider>
+    );
+  }
+);
+PromptInput.displayName = "PromptInput";
+
+interface PromptInputTextareaProps {
+  disableAutosize?: boolean;
+  placeholder?: string;
+}
+const PromptInputTextarea: React.FC<PromptInputTextareaProps & React.ComponentProps<typeof Textarea>> = ({
+  className,
+  onKeyDown,
+  disableAutosize = false,
+  placeholder,
+  ...props
+}) => {
+  const { value, setValue, maxHeight, onSubmit, disabled } = usePromptInput();
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  React.useEffect(() => {
+    if (disableAutosize || !textareaRef.current) return;
+    textareaRef.current.style.height = "auto";
+    textareaRef.current.style.height =
+      typeof maxHeight === "number"
+        ? `${Math.min(textareaRef.current.scrollHeight, maxHeight)}px`
+        : `min(${textareaRef.current.scrollHeight}px, ${maxHeight})`;
+  }, [value, maxHeight, disableAutosize]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      onSubmit?.();
+    }
+    onKeyDown?.(e);
+  };
+
+  return (
+    <Textarea
+      ref={textareaRef}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      onKeyDown={handleKeyDown}
+      className={cn("text-base", className)}
+      disabled={disabled}
+      placeholder={placeholder}
+      {...props}
+    />
+  );
+};
+
+interface PromptInputActionsProps extends React.HTMLAttributes<HTMLDivElement> {}
+const PromptInputActions: React.FC<PromptInputActionsProps> = ({ children, className, ...props }) => (
+  <div className={cn("flex items-center gap-2", className)} {...props}>
+    {children}
+  </div>
+);
+
+interface PromptInputActionProps extends React.ComponentProps<typeof Tooltip> {
+  tooltip: React.ReactNode;
+  children: React.ReactNode;
+  side?: "top" | "bottom" | "left" | "right";
+}
+const PromptInputAction: React.FC<PromptInputActionProps> = ({
+  tooltip,
+  children,
+  className,
+  side = "top",
+  ...props
+}) => {
+  const { disabled } = usePromptInput();
+  return (
+    <Tooltip {...props}>
+      <TooltipTrigger asChild disabled={disabled}>
+        {children}
+      </TooltipTrigger>
+      <TooltipContent side={side} className={className}>
+        {tooltip}
+      </TooltipContent>
+    </Tooltip>
+  );
+};
+
+
+// Main PromptInputBox Component
+interface PromptInputBoxProps {
+  onSend?: (message: string, files?: File[]) => void;
+  isLoading?: boolean;
+  placeholder?: string;
+  className?: string;
+  onLanguageChange?: (language: string) => void;
+  selectedLanguage?: string;
+}
+export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref: React.Ref<HTMLDivElement>) => {
+  const { onSend = () => {}, isLoading = false, placeholder = "Type your message here...", className, onLanguageChange, selectedLanguage } = props;
+  const [input, setInput] = React.useState("");
+  const [isListening, setIsListening] = React.useState(false);
+  const recognitionRef = React.useRef<any>(null);
+
+  // Defer initialization of SpeechRecognition to the client side
+  React.useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.onresult = (event: any) => {
+          const transcript = event.results[0][0].transcript;
+          setInput(transcript);
+      };
+      recognition.onend = () => {
+          setIsListening(false);
+      };
+      recognition.onerror = (event: any) => {
+          console.error("Speech recognition error:", event.error);
+          setIsListening(false);
+      };
+      recognitionRef.current = recognition;
+    }
+  }, []);
+
+  const handleMicClick = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      return;
+    }
+
+    if (!recognitionRef.current) {
+      alert("Your browser does not support Speech Recognition. Please try Chrome or Safari.");
+      return;
+    }
+    
+    recognitionRef.current.lang = selectedLanguage || 'en-US';
+    recognitionRef.current.start();
+    setIsListening(true);
+  };
+
+
+  const handleSubmit = () => {
+    if (input.trim()) {
+      onSend(input);
+      setInput("");
+    }
+  };
+
+  const hasContent = input.trim() !== "";
+
+  return (
+    <>
+      <PromptInput
+        value={input}
+        onValueChange={setInput}
+        isLoading={isLoading}
+        onSubmit={handleSubmit}
+        className={cn(
+          "w-full bg-[#1F2023] border-[#444444] shadow-[0_8px_30px_rgba(0,0,0,0.24)] transition-all duration-300 ease-in-out",
+          className
+        )}
+        disabled={isLoading}
+        ref={ref}
+      >
+        <div className="flex items-center gap-2 p-1">
+             <PromptInputAction tooltip={isListening ? "Stop listening" : "Use microphone"}>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleMicClick}
+                    className={cn("text-gray-400 hover:text-white", isListening && "text-red-500 animate-pulse")}
+                >
+                    {isListening ? <StopCircle className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+                </Button>
+            </PromptInputAction>
+            {/* We will add language selection here in a moment */}
+        </div>
+
+        <div className="flex items-start justify-between w-full">
+            <PromptInputTextarea
+                placeholder={placeholder}
+                className="text-base flex-1"
+            />
+            <PromptInputAction
+                tooltip={
+                isLoading
+                    ? "Stop generation"
+                    : "Send message"
+                }
+            >
+                <Button
+                variant="default"
+                size="icon"
+                className={cn(
+                    "h-8 w-8 rounded-full transition-all duration-200 bg-white hover:bg-white/80 text-[#1F2023] ml-2 mt-1",
+                    !hasContent && "opacity-50 cursor-not-allowed"
+                )}
+                onClick={() => {
+                    if (hasContent) handleSubmit();
+                }}
+                disabled={isLoading || !hasContent}
+                >
+                {isLoading ? (
+                    <Square className="h-4 w-4 fill-[#1F2023] animate-pulse" />
+                ) : (
+                    <ArrowUp className="h-4 w-4 text-[#1F2023]" />
+                )}
+                </Button>
+            </PromptInputAction>
+        </div>
+
+      </PromptInput>
+    </>
+  );
+});
+PromptInputBox.displayName = "PromptInputBox";
