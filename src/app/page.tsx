@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -18,18 +19,23 @@ import {
   Search,
   CheckCircle,
   BookUser,
+  Send,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import ScrollFloat from '@/components/scroll-float';
 import { Navbar, NavBody, NavItems, NavbarLogo, NavbarButton, MobileNav, MobileNavHeader, MobileNavToggle, MobileNavMenu } from '@/components/ui/resizable-navbar';
 import TextType from '@/components/ui/text-type';
 import audioData from '@/lib/placeholder-audio.json';
 import { SparklesCore } from '@/components/ui/sparkles';
-import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
+import { Carousel, Card as AppleCard } from "@/components/ui/apple-cards-carousel";
 import { LampContainer } from "@/components/ui/lamp";
 import { StickyScroll } from '@/components/ui/sticky-scroll-reveal';
+import { TinderCards } from '@/components/ui/tinder-cards';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
 
 
 const features = [
@@ -161,12 +167,85 @@ const techLogos = [
   { alt: 'ShadCN UI', src: 'https://avatars.githubusercontent.com/u/139895814?v=4' },
 ];
 
+const FeedbackForm = () => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Feedback submitted:", formData);
+    toast({
+      title: "Feedback Sent!",
+      description: "Thank you for helping us improve AuraMind.",
+    });
+    setFormData({ name: '', email: '', message: '' });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <h3 className="text-xl font-bold text-foreground">Tell us what you think!</h3>
+      <p className="text-muted-foreground text-sm">Your feedback helps us improve AuraMind.</p>
+      <div className="flex flex-col gap-3 mt-2">
+        <Input
+          name="name"
+          type="text"
+          placeholder="Your Name"
+          value={formData.name}
+          onChange={handleChange}
+          className="bg-background/50 border-border/70"
+          required
+        />
+        <Input
+          name="email"
+          type="email"
+          placeholder="Your Email"
+          value={formData.email}
+          onChange={handleChange}
+          className="bg-background/50 border-border/70"
+          required
+        />
+        <Textarea
+          name="message"
+          placeholder="Your message..."
+          value={formData.message}
+          onChange={handleChange}
+          className="min-h-[120px] bg-background/50 border-border/70"
+          required
+        />
+      </div>
+      <Button type="submit" className="mt-2 bg-primary text-primary-foreground w-full">
+        Submit Feedback
+      </Button>
+    </form>
+  );
+};
+
 export default function LandingPage() {
     const router = useRouter();
     const [isOpen, setIsOpen] = React.useState(false);
     const [playingAudio, setPlayingAudio] = React.useState<string | null>(null);
     const audioRef = React.useRef<HTMLAudioElement>(null);
 
+    const contactCards = [
+      <FeedbackForm key="feedback" />,
+      <div key="feature" className="flex flex-col gap-4">
+        <h3 className="text-xl font-bold text-foreground">Feature Request</h3>
+        <p className="text-muted-foreground text-sm">
+          Have an idea for a new feature? We&apos;d love to hear it! Please use the feedback form on the previous card to share your thoughts.
+        </p>
+      </div>,
+      <div key="hello" className="flex flex-col gap-4">
+        <h3 className="text-xl font-bold text-foreground">Say Hello</h3>
+        <p className="text-muted-foreground text-sm">
+          Just want to connect? We&apos;re happy to hear from you. Find us on social media or send us a message.
+        </p>
+      </div>,
+    ];
 
     const handleGetStarted = () => {
         router.push('/chat');
@@ -206,7 +285,7 @@ export default function LandingPage() {
     };
     
     const cards = features.map((feature, index) => (
-        <Card
+        <AppleCard
             key={feature.title}
             card={{
                 src: feature.src,
@@ -452,6 +531,20 @@ export default function LandingPage() {
                 </div>
             </section>
 
+             <section className="py-20 md:py-32 bg-black">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-4">
+                            Have Feedback?
+                        </h2>
+                        <p className="text-lg max-w-3xl mx-auto text-gray-400">
+                           We&apos;d love to hear from you. Swipe through the cards to let us know what you think.
+                        </p>
+                    </div>
+                    <TinderCards cards={contactCards} />
+                </div>
+            </section>
+
             <footer className="py-8 bg-black border-t border-white/10">
                 <div className="container mx-auto flex max-w-7xl flex-col items-start justify-between text-sm text-neutral-500 sm:flex-row p-6">
                     <div>
@@ -497,3 +590,5 @@ export default function LandingPage() {
     );
 
 }
+
+    
