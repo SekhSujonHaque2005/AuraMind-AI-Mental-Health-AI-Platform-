@@ -22,7 +22,7 @@ import {
   Send,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import ScrollFloat from '@/components/scroll-float';
 import { Navbar, NavBody, NavItems, NavbarLogo, NavbarButton, MobileNav, MobileNavHeader, MobileNavToggle, MobileNavMenu } from '@/components/ui/resizable-navbar';
@@ -230,6 +230,12 @@ export default function LandingPage() {
     const [isOpen, setIsOpen] = React.useState(false);
     const [playingAudio, setPlayingAudio] = React.useState<string | null>(null);
     const audioRef = React.useRef<HTMLAudioElement>(null);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
 
     const contactCards = [
       <FeedbackForm key="feedback" />,
@@ -531,7 +537,7 @@ export default function LandingPage() {
                 </div>
             </section>
 
-             <section className="py-20 md:py-32 bg-black">
+             {isMounted && <section className="py-20 md:py-32 bg-black">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-purple-500 mb-4">
@@ -543,7 +549,7 @@ export default function LandingPage() {
                     </div>
                     <TinderCards cards={contactCards} />
                 </div>
-            </section>
+            </section>}
 
             <footer className="py-8 bg-black border-t border-white/10">
                 <div className="container mx-auto flex max-w-7xl flex-col items-start justify-between text-sm text-neutral-500 sm:flex-row p-6">
@@ -592,3 +598,4 @@ export default function LandingPage() {
 }
 
     
+
