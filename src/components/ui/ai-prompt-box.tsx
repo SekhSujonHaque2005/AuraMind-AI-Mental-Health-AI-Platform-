@@ -289,8 +289,8 @@ const PromptInputTextarea: React.FC<PromptInputTextareaProps & React.ComponentPr
     textareaRef.current.style.height = "auto";
     textareaRef.current.style.height =
       typeof maxHeight === "number"
-        ? `${'${'}Math.min(textareaRef.current.scrollHeight, maxHeight)}px`
-        : `min(${'${'}textareaRef.current.scrollHeight}px, ${'${'}maxHeight})`;
+        ? `${Math.min(textareaRef.current.scrollHeight, maxHeight)}px`
+        : `min(${textareaRef.current.scrollHeight}px, ${maxHeight})`;
   }, [value, maxHeight, disableAutosize]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -363,24 +363,14 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
   const [isListening, setIsListening] = React.useState(false);
   const recognitionRef = React.useRef<any>(null);
 
-  const handleMicClick = () => {
-    if (isListening) {
-      recognitionRef.current?.stop();
-      setIsListening(false);
-      return;
-    }
-
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      alert("Your browser does not support Speech Recognition. Please try Chrome or Safari.");
-      return;
-    }
-
-    if (!recognitionRef.current) {
+  // Defer initialization of SpeechRecognition to the client side
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
         recognition.continuous = false;
         recognition.interimResults = false;
-        recognition.lang = selectedLanguage || 'en-US';
 
         recognition.onresult = (event: any) => {
             const transcript = event.results[0][0].transcript;
@@ -394,6 +384,20 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
             setIsListening(false);
         };
         recognitionRef.current = recognition;
+      }
+    }
+  }, []);
+
+  const handleMicClick = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      return;
+    }
+
+    if (!recognitionRef.current) {
+      alert("Your browser does not support Speech Recognition. Please try Chrome or Safari.");
+      return;
     }
     
     recognitionRef.current.lang = selectedLanguage || 'en-US';
