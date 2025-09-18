@@ -110,7 +110,7 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
       {
-        protocol: 'https',
+        protocol: 'https,"hostname":"burst.shopifycdn.com","port":"","pathname":"/**"},{protocol:"https","hostname":"thumbs.dreamstime.com","port":"","pathname":"/**"},{protocol:"https","hostname":"res.cloudinary.com","port":"","pathname":"/**"},{protocol:"https","hostname":"static.vecteezy.com","port":"","pathname":"/**"},{protocol:"https","hostname":"anmolmehta.s3.amazonaws.com","port":"","pathname":"/**"},{protocol:"https","hostname":"www.heart.org","port":"","pathname":"/**"},{protocol:"https","hostname":"assets.vogue.in","port":"","pathname":"/**"},{protocol:"https","hostname":"highcountryoxygen.com","port":"","pathname":"/**"},{protocol:"https`,'
         hostname: 'burst.shopifycdn.com',
         port: '',
         pathname: '/**',
