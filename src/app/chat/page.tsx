@@ -1,8 +1,17 @@
 
+'use client';
+
 import Ballpit from '@/components/ballpit';
 import ChatInterface from '@/components/chat-interface';
+import { useState, useEffect } from 'react';
 
 export default function ChatPage() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <div className="relative flex flex-col h-screen w-full overflow-hidden">
         <div className="absolute inset-0 -z-10 h-full w-full">
@@ -10,7 +19,7 @@ export default function ChatPage() {
             <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#3b82f633,transparent)]"></div>
         </div>
         <div className="absolute inset-0 z-0">
-            <Ballpit />
+            {isMounted && <Ballpit />}
         </div>
         <div className="relative z-10 flex flex-col h-full">
             <ChatInterface />
