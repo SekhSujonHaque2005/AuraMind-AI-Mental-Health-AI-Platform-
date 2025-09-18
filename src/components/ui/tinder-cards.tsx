@@ -121,7 +121,7 @@ export const Card = ({
     });
 
     return () => {
-      unsubscribeX.destroy();
+      unsubscribeX();
     };
   }, [x]);
   return (
@@ -195,5 +195,3 @@ export const Card = ({
     </motion.div>
   );
 };
-
-    
