@@ -6,9 +6,10 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { Star } from 'lucide-react';
+import { Star, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import axios from 'axios';
 
 export default function FeedbackPage() {
   const router = useRouter();
@@ -16,18 +17,45 @@ export default function FeedbackPage() {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [feedback, setFeedback] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = () => {
-    // In a real application, you would send the feedback (rating and text) to a server here.
-    console.log('Feedback Submitted:', { rating, feedback });
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
     
-    toast({
-      title: 'Feedback Submitted',
-      description: "Thank you for helping us improve!",
-    });
-    
-    // Redirect the user after submission
-    router.push('/consultant/persona');
+    const formData = {
+      access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
+      rating: rating,
+      feedback: feedback,
+      subject: "New Feedback from AuraMind Consultant",
+    };
+
+    try {
+      const res = await axios.post("https://api.web3forms.com/submit", formData);
+
+      if (res.data.success) {
+        toast({
+          title: 'Feedback Submitted',
+          description: "Thank you for helping us improve!",
+        });
+        router.push('/consultant/persona');
+      } else {
+        console.error("Web3Forms submission error:", res.data.message);
+        toast({
+          variant: 'destructive',
+          title: 'Submission Failed',
+          description: res.data.message || 'There was an error sending your feedback.',
+        });
+      }
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      toast({
+        variant: 'destructive',
+        title: 'Submission Error',
+        description: 'An unexpected error occurred. Please try again later.',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -73,6 +101,7 @@ export default function FeedbackPage() {
                     value={feedback}
                     onChange={(e) => setFeedback(e.target.value)}
                     className="min-h-[120px] bg-gray-800/60 border-blue-500/30 text-gray-200 focus:ring-blue-500"
+                    disabled={isSubmitting}
                 />
             </div>
           </div>
@@ -80,9 +109,16 @@ export default function FeedbackPage() {
           <Button
             className="w-full mt-8 text-lg py-6 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:text-gray-400 transition-all"
             onClick={handleSubmit}
-            disabled={rating === 0}
+            disabled={rating === 0 || isSubmitting}
           >
-            Submit Feedback
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                Submitting...
+              </>
+            ) : (
+              'Submit Feedback'
+            )}
           </Button>
         </CardContent>
       </Card>
