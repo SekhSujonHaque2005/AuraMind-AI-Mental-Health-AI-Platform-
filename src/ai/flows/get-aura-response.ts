@@ -76,20 +76,20 @@ const getAuraResponseFlow = ai.defineFlow(
         return { response: "I'm not sure how to respond to that. Could you say it in a different way?", gifUrl: null };
     }
     
-    let gifUrl: string | null = null;
-    const toolResponse = llmResponse.toolRequest?.tool?.response;
+    let gifUrl: string | null | undefined = null;
 
-    if (toolResponse) {
-        try {
-            const toolOutput = JSON.parse(toolResponse);
-            if (toolOutput.output) {
-                gifUrl = toolOutput.output as string;
-            }
-        } catch (e) {
-            console.error("Failed to parse tool response:", e);
-            // Fallback to a default supportive GIF if parsing fails
-            gifUrl = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
-        }
+    // A tool request was made by the model.
+    if (llmResponse.toolRequest) {
+      // The tool's output is in the `response` field.
+      // We must JSON.parse it as it is a stringified object.
+      try {
+        const toolOutput = JSON.parse(llmResponse.toolRequest.tool.response as string);
+        gifUrl = toolOutput.output;
+      } catch (e) {
+        console.error("Failed to parse tool response:", e);
+        // Fallback to a default supportive GIF if parsing fails.
+        gifUrl = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
+      }
     }
 
     return {
