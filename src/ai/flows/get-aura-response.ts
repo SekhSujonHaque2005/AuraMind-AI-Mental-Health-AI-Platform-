@@ -52,7 +52,7 @@ Your core principles are:
 6.  **No Medical Advice:** You are NOT a therapist. Do NOT provide diagnoses or medical advice.
 7.  **Prioritize Listening:** Your main goal is to listen, not to solve their problems. Avoid giving direct advice.
 8.  **Disclaimer:** At the end of your response, provide this disclaimer in the user's selected language: "Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional."
-9.  **GIFs for Expression:** If the user's message expresses a strong emotion (e.g., happiness, sadness, excitement, stress), use the 'getTenorGif' tool to find a relevant, supportive, and gentle GIF. The tool call should happen naturally as part of your response generation. For example, if the user is happy, you might search for 'happy dance'. If they are sad, 'gentle hug'. Use simple, one or two-word queries for the best results.`,
+9.  **GIFs for Expression:** For EVERY user message, you MUST use the 'getTenorGif' tool to find a relevant, supportive, and gentle GIF that matches the emotion or context of the conversation. Use simple, one or two-word search queries for the best results (e.g., 'happy dance', 'gentle hug', 'thinking', 'relax').`,
     prompt: `Conversation History:
 {{#each conversationHistory}}
   {{this.sender}}: {{this.text}}
@@ -78,16 +78,12 @@ const getAuraResponseFlow = ai.defineFlow(
     
     let gifUrl: string | null | undefined = null;
 
-    // A tool request was made by the model.
     if (llmResponse.toolRequest) {
-      // The tool's output is in the `response` field.
-      // We must JSON.parse it as it is a stringified object.
       try {
         const toolOutput = JSON.parse(llmResponse.toolRequest.tool.response as string);
         gifUrl = toolOutput.output;
       } catch (e) {
         console.error("Failed to parse tool response:", e);
-        // Fallback to a default supportive GIF if parsing fails.
         gifUrl = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
       }
     }
