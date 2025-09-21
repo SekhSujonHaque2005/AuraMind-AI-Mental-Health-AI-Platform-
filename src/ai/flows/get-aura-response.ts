@@ -38,7 +38,6 @@ export async function getAuraResponse(input: GetAuraResponseInput): Promise<GetA
 const auraPrompt = ai.definePrompt({
     name: 'auraPrompt',
     input: { schema: GetAuraResponseInputSchema },
-    output: { schema: GetAuraResponseOutputSchema },
     model: 'googleai/gemini-1.5-flash',
     tools: [getTenorGif],
     system: `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
@@ -70,28 +69,20 @@ const getAuraResponseFlow = ai.defineFlow(
   },
   async (input) => {
     const llmResponse = await auraPrompt(input);
-    const textResponse = llmResponse.output?.response;
+    const textResponse = llmResponse.text;
     
     if (!textResponse) {
         return { response: "I'm not sure how to respond to that. Could you say it in a different way?", gifUrl: null };
     }
     
-    let gifUrl: string | null | undefined = null;
+    let gifUrl: string | null = null;
+    const toolResponse = llmResponse.toolRequest?.tool?.response;
 
-    if (llmResponse.toolRequest) {
-        const toolResponse = await llmResponse.toolRequest.tool.fn(llmResponse.toolRequest.input);
-        
-        // Robustly handle tool output: it could be a string or an object with a 'url' property
-        if (typeof toolResponse === 'string') {
-            gifUrl = toolResponse;
-        } else if (typeof toolResponse === 'object' && toolResponse !== null && 'url' in toolResponse && typeof toolResponse.url === 'string') {
-            gifUrl = toolResponse.url;
-        } else {
-             gifUrl = null;
-        }
+    if (toolResponse && typeof toolResponse === 'string') {
+      gifUrl = toolResponse;
     }
-
-    // Provide a fallback GIF if no GIF was found by the tool
+    
+    // Provide a fallback GIF if no GIF was found by the tool or it failed
     if (!gifUrl) {
         gifUrl = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
     }
