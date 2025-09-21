@@ -79,15 +79,19 @@ const getAuraResponseFlow = ai.defineFlow(
     let gifUrl: string | null | undefined = null;
 
     if (llmResponse.toolRequest) {
-      try {
-        const toolOutput = JSON.parse(llmResponse.toolRequest.tool.response as string);
-        gifUrl = toolOutput.output;
-      } catch (e) {
-        console.error("Failed to parse tool response:", e);
-        gifUrl = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
-      }
+        // The AI has requested to use a tool.
+        // We will now execute that tool with the provided arguments.
+        const toolResponse = await llmResponse.toolRequest.tool.fn(llmResponse.toolRequest.input);
+
+        // The 'getTenorGif' tool returns a string URL or null.
+        gifUrl = toolResponse;
     }
 
+    // Fallback if the tool call failed or returned nothing
+    if (!gifUrl) {
+        gifUrl = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
+    }
+    
     return {
       response: textResponse,
       gifUrl: gifUrl,
