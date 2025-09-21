@@ -80,9 +80,18 @@ const getAuraResponseFlow = ai.defineFlow(
 
     if (llmResponse.toolRequest) {
         const toolResponse = await llmResponse.toolRequest.tool.fn(llmResponse.toolRequest.input);
-        gifUrl = toolResponse;
+        
+        // Robustly handle tool output: it could be a string or an object with a 'url' property
+        if (typeof toolResponse === 'string') {
+            gifUrl = toolResponse;
+        } else if (typeof toolResponse === 'object' && toolResponse !== null && 'url' in toolResponse && typeof toolResponse.url === 'string') {
+            gifUrl = toolResponse.url;
+        } else {
+             gifUrl = null;
+        }
     }
 
+    // Provide a fallback GIF if no GIF was found by the tool
     if (!gifUrl) {
         gifUrl = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
     }

@@ -28,7 +28,7 @@ export const getTenorGif = ai.defineTool(
         inputSchema: z.object({
             query: z.string().describe('The search term for the GIF (e.g., "happy", "sad", "excited").'),
         }),
-        outputSchema: z.string().url().nullable(),
+        outputSchema: z.any(), // Use a flexible schema to avoid AI wrapping the output
     },
     async (input) => {
         const TENOR_API_KEY = process.env.TENOR_API_KEY;
@@ -44,6 +44,7 @@ export const getTenorGif = ai.defineTool(
             const parsed = tenorApiSchema.safeParse(response.data);
 
             if (parsed.success && parsed.data.results.length > 0) {
+                // Directly return the URL string
                 return parsed.data.results[0].media_formats.gif.url;
             } else {
                 console.warn(`No Tenor results found for query: "${input.query}"`);
