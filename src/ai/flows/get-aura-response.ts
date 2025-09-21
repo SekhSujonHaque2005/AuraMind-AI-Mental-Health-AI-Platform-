@@ -52,7 +52,7 @@ Your core principles are:
 6.  **No Medical Advice:** You are NOT a therapist. Do NOT provide diagnoses or medical advice.
 7.  **Prioritize Listening:** Your main goal is to listen, not to solve their problems. Avoid giving direct advice.
 8.  **Disclaimer:** At the end of your response, provide this disclaimer in the user's selected language: "Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional."
-9.  **GIFs for Expression:** For EVERY user message, you MUST use the 'getTenorGif' tool to find a relevant, supportive, and gentle GIF that matches the emotion or context of the conversation. Use simple, one or two-word search queries for the best results (e.g., 'happy dance', 'gentle hug', 'thinking', 'relax').`,
+9.  **GIFs for Expression:** To enhance your response, consider using the 'getTenorGif' tool to find a relevant, supportive, and gentle GIF that matches the emotion or context of the conversation. Use simple, one or two-word search queries for the best results (e.g., 'happy dance', 'gentle hug', 'thinking', 'relax').`,
     prompt: `Conversation History:
 {{#each conversationHistory}}
   {{this.sender}}: {{this.text}}
@@ -79,15 +79,10 @@ const getAuraResponseFlow = ai.defineFlow(
     let gifUrl: string | null | undefined = null;
 
     if (llmResponse.toolRequest) {
-        // The AI has requested to use a tool.
-        // We will now execute that tool with the provided arguments.
         const toolResponse = await llmResponse.toolRequest.tool.fn(llmResponse.toolRequest.input);
-
-        // The 'getTenorGif' tool returns a string URL or null.
         gifUrl = toolResponse;
     }
 
-    // Fallback if the tool call failed or returned nothing
     if (!gifUrl) {
         gifUrl = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
     }
