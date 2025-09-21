@@ -35,20 +35,13 @@ export async function getAuraResponse(input: GetAuraResponseInput): Promise<GetA
 }
 
 
-// Simplified Output schema for a more reliable response.
-const SingleCallOutputSchema = z.object({
-  response: z.string().describe("The AI's empathetic and supportive text response. If a system prompt was provided, adhere to its instructions for persona and tone."),
-  gifSearchQuery: z.string().describe("A simple, one or two-word search query for Tenor to find a relevant GIF (e.g., 'happy dance', 'sad hug', 'calm breathing')."),
-});
-
-
 const auraPrompt = ai.definePrompt({
     name: 'auraPrompt',
     input: { schema: GetAuraResponseInputSchema },
-    output: { schema: SingleCallOutputSchema },
+    output: { schema: GetAuraResponseOutputSchema },
     model: 'googleai/gemini-1.5-flash',
     tools: [getTenorGif],
-    prompt: `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
+    system: `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
 
 Your core principles are:
 1.  **Empathy and Validation:** Always validate the user's feelings. Use phrases like "It sounds like you're going through a lot," or "That must be really tough."
@@ -59,11 +52,8 @@ Your core principles are:
 6.  **No Medical Advice:** You are NOT a therapist. Do NOT provide diagnoses or medical advice.
 7.  **Prioritize Listening:** Your main goal is to listen, not to solve their problems. Avoid giving direct advice.
 8.  **Disclaimer:** At the end of your response, provide this disclaimer in the user's selected language: "Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional."
-
-First, write your empathetic response to the user.
-Then, based on the user's message and your response, generate a simple, one or two-word search query for Tenor to find a relevant, supportive, and gentle GIF. Examples: 'happy dance', 'sad hug', 'calm breathing', 'gentle encouragement'.
-
-Conversation History:
+9.  **GIFs for Expression:** If the user's message expresses a strong emotion (e.g., happiness, sadness, excitement, stress), use the 'getTenorGif' tool to find a relevant, supportive, and gentle GIF. The tool call should happen naturally as part of your response generation. For example, if the user is happy, you might search for 'happy dance'. If they are sad, 'gentle hug'. Use simple, one or two-word queries for the best results.`,
+    prompt: `Conversation History:
 {{#each conversationHistory}}
   {{this.sender}}: {{this.text}}
 {{/each}}
@@ -79,30 +69,31 @@ const getAuraResponseFlow = ai.defineFlow(
     outputSchema: GetAuraResponseOutputSchema,
   },
   async (input) => {
-    // Step 1: Generate the text response and GIF search query.
-    const structuredResponse = await auraPrompt(input);
-    const { output } = structuredResponse;
-
-    if (!output) {
+    const llmResponse = await auraPrompt(input);
+    const textResponse = llmResponse.output?.response;
+    
+    if (!textResponse) {
         return { response: "I'm not sure how to respond to that. Could you say it in a different way?", gifUrl: null };
     }
-
-    const { response: auraText, gifSearchQuery } = output;
-
-    // Step 2: Use the search query with the Tenor tool to get a GIF.
+    
     let gifUrl: string | null = null;
-    try {
-        gifUrl = await getTenorGif({ query: gifSearchQuery });
-    } catch (e) {
-        console.error("Tenor tool failed:", e);
-        // Fallback to a default supportive GIF if Tenor fails
-        gifUrl = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
+    const toolResponse = llmResponse.toolRequest?.tool?.response;
+
+    if (toolResponse) {
+        try {
+            const toolOutput = JSON.parse(toolResponse);
+            if (toolOutput.output) {
+                gifUrl = toolOutput.output as string;
+            }
+        } catch (e) {
+            console.error("Failed to parse tool response:", e);
+            // Fallback to a default supportive GIF if parsing fails
+            gifUrl = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
+        }
     }
 
-
-    // Step 3: Return the final response.
     return {
-      response: auraText,
+      response: textResponse,
       gifUrl: gifUrl,
     };
   }
