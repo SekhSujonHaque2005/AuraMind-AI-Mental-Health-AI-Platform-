@@ -26,7 +26,7 @@ export type GetAuraResponseInput = z.infer<typeof GetAuraResponseInputSchema>;
 
 const GetAuraResponseOutputSchema = z.object({
   response: z.string().describe('The AI-generated response.'),
-  gifUrl: z.string().nullable().optional().describe('An optional URL to a relevant, supportive, and gentle GIF.'),
+  gifUrl: z.string().url().nullable().describe('An optional URL to a relevant, supportive, and gentle GIF.'),
 });
 export type GetAuraResponseOutput = z.infer<typeof GetAuraResponseOutputSchema>;
 
@@ -75,11 +75,12 @@ const getAuraResponseFlow = ai.defineFlow(
         return { response: "I'm not sure how to respond to that. Could you say it in a different way?", gifUrl: null };
     }
     
-    let gifUrl: string | null | undefined = null;
+    let gifUrl: string | null = null;
 
     // Check if the tool was called and if there is a valid response.
-    if (llmResponse.toolRequest?.tool?.response) {
-      gifUrl = llmResponse.toolRequest.tool.response;
+    const toolResponse = llmResponse.toolRequest?.tool?.response;
+    if (toolResponse) {
+      gifUrl = toolResponse;
     }
     
     // Provide a fallback GIF if no GIF was found by the tool or it failed

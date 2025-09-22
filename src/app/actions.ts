@@ -54,6 +54,7 @@ export async function getAIResponse(input: ChatActionInput) {
       return { error: 'Aura could not generate a response at this time. Please try again later.' };
     }
 
+    // This is the critical fix: ensure the gifUrl is passed back correctly.
     return { response: auraResult.response, gifUrl: auraResult.gifUrl };
   } catch (error) {
     console.error("Error in getAIResponse:", error);
