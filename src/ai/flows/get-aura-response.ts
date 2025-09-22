@@ -75,11 +75,11 @@ const getAuraResponseFlow = ai.defineFlow(
         return { response: "I'm not sure how to respond to that. Could you say it in a different way?", gifUrl: null };
     }
     
-    let gifUrl: string | null = null;
-    const toolResponse = llmResponse.toolRequest?.tool?.response;
+    let gifUrl: string | null | undefined = null;
 
-    if (toolResponse && typeof toolResponse === 'string') {
-      gifUrl = toolResponse;
+    // Check if the tool was called and if there is a valid response.
+    if (llmResponse.toolRequest?.tool?.response) {
+      gifUrl = llmResponse.toolRequest.tool.response;
     }
     
     // Provide a fallback GIF if no GIF was found by the tool or it failed
