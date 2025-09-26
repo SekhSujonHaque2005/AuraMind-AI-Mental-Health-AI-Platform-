@@ -77,10 +77,12 @@ const getAuraResponseFlow = ai.defineFlow(
     
     let gifUrl: string | null = null;
     
+    // Check if the tool was called and returned a response.
     if (llmResponse.toolRequest?.tool?.response) {
       gifUrl = llmResponse.toolRequest.tool.response;
     }
 
+    // If no GIF was returned by the tool, use a default fallback.
     if (!gifUrl) {
       gifUrl = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
     }
