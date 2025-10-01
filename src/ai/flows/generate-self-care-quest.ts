@@ -33,7 +33,7 @@ const prompt = ai.definePrompt({
   name: 'generateQuestPrompt',
   input: { schema: GenerateSelfCareQuestInputSchema },
   output: { schema: GenerateSelfCareQuestOutputSchema },
-  model: 'googleai/gemini-1.5-flash',
+  model: 'gemini-1.5-flash',
   prompt: `You are an AI assistant that helps users create personalized self-care quests. Your goal is to suggest a single, new, and creative quest that is not on the user's current list.
 
 The quest should be:

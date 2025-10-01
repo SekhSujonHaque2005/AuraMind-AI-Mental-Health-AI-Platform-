@@ -38,7 +38,7 @@ export async function getAuraResponse(input: GetAuraResponseInput): Promise<GetA
 const auraPrompt = ai.definePrompt({
     name: 'auraPrompt',
     input: { schema: GetAuraResponseInputSchema },
-    model: 'googleai/gemini-1.5-flash',
+    model: 'gemini-1.5-flash',
     tools: [getTenorGif],
     system: `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
 
@@ -77,9 +77,10 @@ const getAuraResponseFlow = ai.defineFlow(
     
     let gifUrl: string | null = null;
     
-    // Check if the tool was called and returned a response.
-    if (llmResponse.toolRequest?.tool?.response) {
-      gifUrl = llmResponse.toolRequest.tool.response;
+    const toolResponse = llmResponse.toolRequest?.tool?.response;
+
+    if (toolResponse && typeof toolResponse === 'string') {
+        gifUrl = toolResponse;
     }
 
     // If no GIF was returned by the tool, use a default fallback.
