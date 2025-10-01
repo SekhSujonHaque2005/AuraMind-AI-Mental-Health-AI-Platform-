@@ -21,7 +21,7 @@ const prompt = ai.definePrompt({
   name: 'findMusicPrompt',
   input: { schema: FindMusicInputSchema },
   output: { schema: FindMusicOutputSchema },
-  model: 'gemini-1.5-flash',
+  model: 'googleai/gemini-1.5-flash',
   prompt: `You are an expert at recommending music for specific moods and activities. Your task is to find the best track from the provided list that matches the user's request.
 
 Analyze the user's query: {{{query}}}

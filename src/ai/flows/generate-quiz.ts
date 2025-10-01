@@ -24,7 +24,7 @@ const prompt = ai.definePrompt({
   name: 'generateQuizPrompt',
   input: { schema: GenerateQuizInputSchema },
   output: { schema: GenerateQuizOutputSchema },
-  model: 'gemini-1.5-flash',
+  model: 'googleai/gemini-1.5-flash',
   prompt: `You are an AI assistant that creates engaging multiple-choice quizzes. Your task is to generate a 5-question quiz based on the provided topic.
 
 The quiz must have:
