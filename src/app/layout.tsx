@@ -14,7 +14,7 @@ import { usePathname } from 'next/navigation';
 function AppContent({ children }: { children: React.ReactNode }) {
     const [isSidebarExpanded, setSidebarExpanded] = React.useState(false);
     const pathname = usePathname();
-    const isSidebarHidden = pathname === '/' || pathname === '/privacy-policy' || pathname === '/terms-of-service' || pathname === '/counselor-connect';
+    const isSidebarHidden = pathname === '/' || pathname === '/privacy-policy' || pathname === '/terms-of-service';
 
     const mainContentVariants = {
       expanded: { paddingLeft: '240px', transition: { duration: 0.3, ease: 'easeInOut' } },
