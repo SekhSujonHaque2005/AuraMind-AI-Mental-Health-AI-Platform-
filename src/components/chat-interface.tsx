@@ -152,7 +152,7 @@ export default function ChatInterface() {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="inline-flex items-center gap-2 bg-black/40 text-gray-300 text-xs px-3 py-1.5 rounded-md cursor-pointer">
+                  <div className="inline-flex items-center gap-2 text-gray-400 text-xs cursor-pointer">
                       <Info className="h-3.5 w-3.5" />
                       <span>Due to API server issues, we are currently using our local model.</span>
                   </div>
