@@ -231,19 +231,19 @@ const QuestionCard = ({
         className="space-y-4"
         disabled={isAnswered}
       >
-        {question.options.map((option) => {
+        {question.options.map((option, index) => {
           const isCorrect = option === question.answer;
           const isSelected = option === selectedOption;
 
           return (
             <motion.div
-              key={option}
+              key={`${option}-${index}`}
               whileHover={{ scale: isAnswered ? 1 : 1.03 }}
               className="flex items-center space-x-3"
             >
-              <RadioGroupItem value={option} id={option} className="sr-only" />
+              <RadioGroupItem value={option} id={`${option}-${index}`} className="sr-only" />
               <Label
-                htmlFor={option}
+                htmlFor={`${option}-${index}`}
                 className={cn(
                   'flex-1 p-4 border rounded-lg transition-all duration-300 cursor-pointer text-base',
                   'bg-gray-800/50 border-violet-500/20 text-gray-300', // Default
