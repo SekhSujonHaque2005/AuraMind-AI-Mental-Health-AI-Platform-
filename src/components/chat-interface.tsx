@@ -1,8 +1,9 @@
+
 'use client';
 
 import { useRef, useEffect, useTransition, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Sparkles, Languages, PlusSquare, Check, Eye } from 'lucide-react';
+import { Loader2, Sparkles, Languages, PlusSquare, Check, Info } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatMessage from './chat-message';
 import { getAIResponse, getTranslatedWelcome } from '@/app/actions';
@@ -142,7 +143,7 @@ export default function ChatInterface() {
           </motion.div>
           <div className="mt-3 text-center">
             <div className="inline-flex items-center gap-2 bg-black/40 text-gray-300 text-xs px-3 py-1.5 rounded-md">
-                <Eye className="h-3.5 w-3.5" />
+                <Info className="h-3.5 w-3.5" />
                 <span>Due to API server issues, we are currently using our local model.</span>
             </div>
           </div>
