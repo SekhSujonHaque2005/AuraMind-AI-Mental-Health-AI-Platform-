@@ -11,6 +11,7 @@ import { findMusic } from '@/ai/flows/find-music-flow';
 import { z } from 'zod';
 import { GenerateQuizInput, GenerateQuizOutput } from './quizzes/types';
 import type { FindMusicInput, FindMusicOutput } from './playlist/types';
+import { localResponses, defaultResponse, defaultGif } from '@/lib/local-chat-data';
 
 
 const chatActionInputSchema = z.object({
@@ -40,7 +41,7 @@ export async function getAIResponse(input: ChatActionInput) {
 
     const { message, conversationHistory, region, language } = parsedInput.data;
 
-    // 1. Critical Safety Protocol
+    // 1. Critical Safety Protocol (Still important to keep this)
     const safetyInput: SafetyCheckInput = { message };
     const safetyResult = await checkSafetyAndRespond(safetyInput);
 
@@ -48,25 +49,24 @@ export async function getAIResponse(input: ChatActionInput) {
       return { response: safetyResult.response, gifUrl: undefined };
     }
 
-    // 2. Get Aura's regular response
-    // CORRECTLY map the conversation history to match the AI flow's input schema.
-    const auraInput: GetAuraResponseInput = { 
-      message, 
-      conversationHistory: conversationHistory.map(m => ({ sender: m.sender, text: m.text })), 
-      region, 
-      language 
-    };
-    const auraResult = await getAuraResponse(auraInput);
-
-    if (!auraResult || !auraResult.response) {
-      console.error("Aura response was empty or undefined.");
-      return { error: 'Aura could not generate a response at this time. Please try again later.' };
+    // 2. Use local response system instead of AI flow
+    const lowerCaseMessage = message.toLowerCase();
+    
+    let foundResponse = null;
+    for (const item of localResponses) {
+        if (item.keywords.some(keyword => lowerCaseMessage.includes(keyword))) {
+            foundResponse = item;
+            break;
+        }
     }
 
-    return { response: auraResult.response, gifUrl: auraResult.gifUrl };
+    const responseText = foundResponse ? foundResponse.response : defaultResponse;
+    const gifUrl = foundResponse ? foundResponse.gifUrl : defaultGif;
+
+    return { response: responseText, gifUrl: gifUrl };
+
   } catch (error) {
     console.error("Error in getAIResponse:", error);
-    // Provide a more specific error in development if possible
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
     return { error: `An unexpected error occurred: ${errorMessage}. Please try again.` };
   }
