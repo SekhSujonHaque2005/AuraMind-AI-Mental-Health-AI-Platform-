@@ -73,9 +73,6 @@ export default function CounselorConnectPage() {
                         <Button size="lg" className="bg-blue-600 hover:bg-blue-500 text-white text-lg py-7 px-8 rounded-full transition-transform transform hover:scale-105" onClick={handleComingSoon}>
                             Book a Session
                         </Button>
-                         <Button size="lg" variant="outline" className="bg-transparent border-2 border-gray-600 hover:border-white hover:bg-white/10 text-white text-lg py-7 px-8 rounded-full transition-transform transform hover:scale-105" onClick={handleComingSoon}>
-                            View Pricing
-                        </Button>
                     </div>
                 </motion.div>
             </section>
