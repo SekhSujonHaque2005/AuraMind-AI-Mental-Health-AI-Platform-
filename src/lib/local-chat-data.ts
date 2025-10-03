@@ -1,4 +1,5 @@
 
+
 export const defaultResponse = "That's interesting. Can you tell me more about that? I'm here to listen. Remember, I am an AI and not a substitute for a professional therapist.";
 export const defaultGif = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
 
@@ -10,14 +11,24 @@ export const localResponses = [
         gifUrl: "https://media.tenor.com/r3x7-q91-lYAAAAC/happy-dance-excited.gif"
     },
     {
-        keywords: ["proud", "accomplished"],
-        response: "You should be proud! It's a fantastic feeling to accomplish something you've worked for. I'm celebrating with you! 🎉",
+        keywords: ["proud", "accomplished", "small win"],
+        response: "You should be proud! It's a fantastic feeling to accomplish something, no matter how small. I'm celebrating with you! 🎉",
         gifUrl: "https://media.tenor.com/2m6mmJc5t90AAAAC/you-did-it-proud-of-you.gif"
     },
     {
         keywords: ["grateful", "thankful"],
         response: "Practicing gratitude is such a powerful way to shift perspective. It's lovely that you're taking a moment to appreciate the good things. What are you grateful for today? 🙏",
         gifUrl: "https://media.tenor.com/lDk-y5s-QnQAAAAC/thankful-grateful.gif"
+    },
+    {
+        keywords: ["hopeful", "optimistic"],
+        response: "Holding onto hope is a sign of incredible strength. It's wonderful that you're looking towards the future with optimism. What are you feeling hopeful about? ✨",
+        gifUrl: "https://media.tenor.com/jG_3HAm51qEAAAAC/looking-forward-to-it-excited.gif"
+    },
+     {
+        keywords: ["relaxed", "calm", "content", "peaceful"],
+        response: "It sounds like you've found a moment of peace, and that's beautiful. It's so important to have these times of calm. Enjoy the feeling. 😌",
+        gifUrl: "https://media.tenor.com/lEa-i5y53bIAAAAC/relax-take-it-easy.gif"
     },
 
     // --- Negative Feelings ---
@@ -42,7 +53,7 @@ export const localResponses = [
         gifUrl: "https://media.tenor.com/j5bI2f3t3E8AAAAC/come-here-for-a-hug-love.gif"
     },
     {
-        keywords: ["angry", "frustrated", "mad", "pissed", "irritated"],
+        keywords: ["angry", "frustrated", "mad", "pissed", "irritated", "vent"],
         response: "It's completely understandable that you feel angry. Your feelings are valid. It's important to allow yourself to feel that anger without judgment. What's causing this feeling? 😤",
         gifUrl: "https://media.tenor.com/kRXy40V332YAAAAC/inside-out-anger.gif"
     },
@@ -61,6 +72,21 @@ export const localResponses = [
         response: "Feeling numb or empty can be just as heavy as any other emotion. It's a protective response sometimes. You don't have to force yourself to feel anything. Just sitting with it is okay. I'm here with you in this quiet moment. 🌫️",
         gifUrl: "https://media.tenor.com/2T6AWaM9a6sAAAAC/sad-cloud.gif"
     },
+     {
+        keywords: ["guilty", "ashamed", "regret"],
+        response: "Guilt and shame are incredibly heavy feelings to carry. Remember that making mistakes is a part of being human. It doesn't define your worth. Be kind to yourself as you would to a friend in the same situation. ❤️‍🩹",
+        gifUrl: "https://media.tenor.com/y3AivFFg0KYAAAAC/friends-im-here-for-you.gif"
+    },
+    {
+        keywords: ["jealous", "insecure"],
+        response: "Those feelings of jealousy and insecurity are very human. It often points to something we value or a fear we have. It's okay to feel this way. Let's try to understand it without judgment.",
+        gifUrl: "https://media.tenor.com/A8oF_m-5-vEAAAAC/big-hero-there-there.gif"
+    },
+    {
+        keywords: ["confused", "lost", "don't know what to do"],
+        response: "Feeling lost or confused is a difficult place to be. It's okay not to have all the answers right now. Sometimes the most important step is just acknowledging that you're unsure. We can sit with this uncertainty together. 🧭",
+        gifUrl: "https://media.tenor.com/v_g0GNKCwVYAAAAC/finding-nemo-dory.gif"
+    },
 
     // --- Self-Image and Motivation ---
     {
@@ -69,9 +95,14 @@ export const localResponses = [
         gifUrl: "https://media.tenor.com/lP-AGt22aN4AAAAC/you-are-loved-you-are-important.gif"
     },
     {
-        keywords: ["motivation", "can't do anything", "stuck"],
+        keywords: ["motivation", "can't do anything", "stuck", "procrastinating"],
         response: "It's completely normal to have days where motivation is low. Don't pressure yourself to be productive. Sometimes, the most productive thing you can do is rest. What's one very small, tiny thing that feels possible right now? Maybe just stretching? ✨",
         gifUrl: "https://media.tenor.com/KCM5TMAaD8wAAAAC/take-a-break-snoopy.gif"
+    },
+    {
+        keywords: ["burnout", "burnt out"],
+        response: "Burnout is so real and so exhausting. It's a sign that you've been pushing yourself too hard for too long. Please give yourself permission to rest and recharge. You deserve it. 🔋",
+        gifUrl: "https://media.tenor.com/s0i6I8Ld1-0AAAAC/recharge-need-to-recharge.gif"
     },
 
     // --- Grief and Relationships ---
@@ -86,7 +117,7 @@ export const localResponses = [
         gifUrl: "https://media.tenor.com/y3AivFFg0KYAAAAC/friends-im-here-for-you.gif"
     },
 
-    // --- General Chat ---
+    // --- General Chat & Meta ---
     {
         keywords: ["thank you", "thanks"],
         response: "You're very welcome! I'm always here if you need to talk. Is there anything else on your mind? 😊",
@@ -106,5 +137,15 @@ export const localResponses = [
         keywords: ["good night", "night"],
         response: "Good night. 🌙 Thank you for sharing your day with me. May you have a peaceful and restorative rest. Let go of today's worries and know that tomorrow is a new beginning.",
         gifUrl: "https://media.tenor.com/fA7r_mPAe9wAAAAC/goodnight-sweet-dreams.gif"
+    },
+    {
+        keywords: ["how are you"],
+        response: "As an AI, I don't have feelings, but I'm fully here and ready to listen to you. How are you doing right now? That's what's most important. 🤖",
+        gifUrl: "https://media.tenor.com/2iGqI5t0hIAAAAAC/big-hero-6-baymax.gif"
+    },
+    {
+        keywords: ["i love you", "you are great"],
+        response: "Thank you for your kind words! My purpose is to be here and support you, and I'm glad I can be helpful. Remember to share some of that love with yourself, too. You deserve it! ❤️",
+        gifUrl: "https://media.tenor.com/vont5Gj33GMAAAAC/baymax-fist-bump.gif"
     }
 ];
