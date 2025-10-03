@@ -95,7 +95,7 @@ export default function CounselorConnectPage() {
                 </motion.div>
             </section>
 
-             <section className="py-20 px-4">
+             <section className="pt-0 pb-20 px-4">
                 <div className="max-w-6xl mx-auto text-center">
                     <h2 className="text-4xl font-bold text-center mb-4">How It Works</h2>
                     <p className="text-lg text-gray-400 mb-16 max-w-2xl mx-auto">A simple, confidential path to professional support.</p>
