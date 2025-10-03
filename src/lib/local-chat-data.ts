@@ -6,7 +6,7 @@ export const defaultGif = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gi
 export const localResponses = [
     // --- Positive Feelings ---
     {
-        keywords: ["happy", "great", "awesome", "fantastic", "good", "celebrating", "excited", "joyful"],
+        keywords: ["happy", "great", "awesome", "fantastic", "good", "celebrating", "joyful"],
         response: "That's wonderful to hear! ✨ I'm so glad you're feeling happy. What's making your day so bright? Remember to cherish these moments! 😊",
         gifUrl: "https://media.tenor.com/r3x7-q91-lYAAAAC/happy-dance-excited.gif"
     },
@@ -35,6 +35,16 @@ export const localResponses = [
         response: "That's fantastic! Creativity is a wonderful energy. Ride that wave of inspiration and see what you create. I'm excited for you! 🎨✨",
         gifUrl: "https://media.tenor.com/r3x7-q91-lYAAAAC/happy-dance-excited.gif"
     },
+    {
+        keywords: ["relieved", "relief"],
+        response: "That feeling of relief can be so powerful, like a weight has been lifted. I'm glad you're on the other side of whatever was causing you stress. Take a moment to just breathe and enjoy this feeling. 🌬️",
+        gifUrl: "https://media.tenor.com/J3o-32Z0iWwAAAAC/phew-sweat.gif"
+    },
+    {
+        keywords: ["excited", "can't wait"],
+        response: "That's so exciting! It's wonderful to have something to look forward to. What are you most excited about? The anticipation is half the fun! 🤩",
+        gifUrl: "https://media.tenor.com/y_roORi0YnEAAAAC/spongebob-laughing.gif"
+    },
 
     // --- Neutral Feelings ---
     {
@@ -46,6 +56,11 @@ export const localResponses = [
         keywords: ["bored", "nothing to do"],
         response: "Boredom can sometimes be a quiet moment for your mind to rest, or a doorway to creativity. Is there anything you've been wanting to try but haven't had the time for? Or maybe just enjoying the quiet is what you need right now. 🎨",
         gifUrl: "https://media.tenor.com/bmwT1h0b5aIAAAAC/spongebob-bored.gif"
+    },
+    {
+        keywords: ["nostalgic", "sentimental", "remember when"],
+        response: "Nostalgia can be such a warm, bittersweet feeling. It's nice to look back on good memories. What memory is on your mind right now? I'd love to hear about it. 🎞️",
+        gifUrl: "https://media.tenor.com/eF3y9j2iSrcAAAAC/nostalgia-inside-out.gif"
     },
 
     // --- Negative Feelings ---
@@ -114,6 +129,11 @@ export const localResponses = [
         response: "It feels incredibly lonely when you believe no one understands what you're going through. Thank you for trusting me with that feeling. I'm trying my best to understand. Can you tell me more about what feels misunderstood?",
         gifUrl: "https://media.tenor.com/gJjSgH50S2EAAAAC/hugs-sending-hugs.gif"
     },
+    {
+        keywords: ["stuck", "stagnant"],
+        response: "Feeling stuck is so frustrating, like you're spinning your wheels but not going anywhere. It's okay to feel this way. Sometimes these 'stuck' periods come right before a big change or realization. What does 'stuck' feel like for you right now?",
+        gifUrl: "https://media.tenor.com/8QjH0sAFmSYAAAAC/the-office-dwight-schrute.gif"
+    },
 
     // --- Self-Image and Motivation ---
     {
@@ -122,7 +142,7 @@ export const localResponses = [
         gifUrl: "https://media.tenor.com/lP-AGt22aN4AAAAC/you-are-loved-you-are-important.gif"
     },
     {
-        keywords: ["motivation", "can't do anything", "stuck", "procrastinating"],
+        keywords: ["motivation", "can't do anything", "procrastinating"],
         response: "It's completely normal to have days where motivation is low. Don't pressure yourself to be productive. Sometimes, the most productive thing you can do is rest. What's one very small, tiny thing that feels possible right now? Maybe just stretching? ✨",
         gifUrl: "https://media.tenor.com/KCM5TMAaD8wAAAAC/take-a-break-snoopy.gif"
     },
