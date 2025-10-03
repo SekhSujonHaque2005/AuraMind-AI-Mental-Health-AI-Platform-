@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useRef, useEffect, useTransition, useState, useCallback } from 'react';
@@ -39,7 +40,7 @@ const languages = [
     { value: 'gu-IN', label: 'Gujarati' },
     { value: 'pa-IN', label: 'Punjabi' },
     { value: 'bho-IN', label: 'Bhojpuri' },
-    { value: 'sat-IN', label: 'Santhali (Jharkhandi)' },
+    { value: 'sat-IN', label: 'Santhali' },
     { value: 'other', label: 'Other' },
 ];
 
