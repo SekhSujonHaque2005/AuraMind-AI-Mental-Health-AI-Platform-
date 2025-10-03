@@ -78,6 +78,16 @@ export const defaultResponses: Record<string, { response: string; gifUrl: string
 export const localResponses: Record<string, { keywords: string[]; response: string; gifUrl: string }[]> = {
     en: [
         {
+            keywords: ["love you"],
+            response: "That's so kind of you to say. I appreciate you sharing that with me. Sending warmth and positivity your way! ❤️",
+            gifUrl: "https://media.giphy.com/media/AJIsPfsKr3QO16KagW/giphy.gif"
+        },
+        {
+            keywords: ["hate you"],
+            response: "I hear that you're feeling a lot of anger and frustration right now, and it's directed at me. It's okay to feel that way. I'm here to listen if you want to talk about what's causing these strong feelings.",
+            gifUrl: "https://media.giphy.com/media/2ytlbPlOr6c028biPK/giphy.gif"
+        },
+        {
             keywords: ["happy", "great", "awesome", "fantastic", "good", "joyful"],
             response: "That's wonderful to hear! ✨ I'm so glad you're feeling happy. What's making your day so bright? Remember to cherish these moments! 😊",
             gifUrl: "https://media.giphy.com/media/wORSHzN5sGpRS/giphy.gif"
@@ -98,7 +108,7 @@ export const localResponses: Record<string, { keywords: string[]; response: stri
             gifUrl: "https://media.giphy.com/media/3kHz1oN8NfxJJgVgvL/giphy.gif"
         },
         {
-            keywords: ["stressed", "overwhelmed by tasks", "too much to do"],
+            keywords: ["stressed", "overwhelmed by tasks", "too much to do", "overwhelmed"],
             response: "It sounds incredibly stressful, like you're being pulled in a million directions. Remember to be kind to yourself. It's okay to not do everything at once. What's the one single thing that feels most urgent right now? Let's just focus on that. 😫",
             gifUrl: "https://media.giphy.com/media/XBRFAzaelJo0jaOsvR/giphy.gif"
         },
