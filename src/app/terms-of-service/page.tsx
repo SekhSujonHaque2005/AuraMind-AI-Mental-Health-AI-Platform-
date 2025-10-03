@@ -1,13 +1,19 @@
 
 'use client';
 
-import { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import { Home } from 'lucide-react';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 
 const TermsOfServicePage = () => {
+  const [date, setDate] = useState('');
+
+  useEffect(() => {
+    setDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
+  }, []);
+
   return (
     <div className="bg-background text-foreground min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative">
@@ -21,7 +27,7 @@ const TermsOfServicePage = () => {
             Terms of Service
           </h1>
           <p className="text-center text-muted-foreground mb-12">
-            Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            Last Updated: {date}
           </p>
           <div className="prose prose-lg prose-invert mx-auto text-gray-300">
             <p>
