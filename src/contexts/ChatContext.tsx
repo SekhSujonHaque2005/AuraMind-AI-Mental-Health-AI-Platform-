@@ -85,17 +85,14 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const [messages, setMessages] = useState<Message[]>([initialMessage]);
-  const [nextId, setNextId] = useState(1);
 
   const getNextMessageId = () => {
-    const id = nextId;
-    setNextId(prev => prev + 1);
-    return id;
+    // Combine timestamp with a random number to ensure uniqueness
+    return Date.now() + Math.random();
   };
 
   const startNewChat = () => {
     setMessages([initialMessage]);
-    setNextId(1);
   };
 
   return (
