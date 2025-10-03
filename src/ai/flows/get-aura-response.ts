@@ -81,12 +81,11 @@ const getAuraResponseFlow = ai.defineFlow(
     }
 
     let gifUrl: string | null = null;
-    const toolCalls = llmResponse.toolRequests();
+    const toolResponses = llmResponse.toolResponses();
     
     // Check if the getTenorGif tool was called and returned a result
-    if (toolCalls.length > 0 && toolCalls[0].tool.name === 'getTenorGif' && toolCalls[0].tool.response) {
-      // The response is a string URL, so we can cast it directly.
-      gifUrl = toolCalls[0].tool.response as string | null;
+    if (toolResponses.length > 0 && toolResponses[0]?.tool.name === 'getTenorGif' && toolResponses[0]?.tool.response) {
+      gifUrl = toolResponses[0].tool.response as string | null;
     }
 
     // If no GIF was returned by the tool, use a default fallback.
