@@ -30,6 +30,18 @@ export const localResponses = [
         response: "It sounds like you've found a moment of peace, and that's beautiful. It's so important to have these times of calm. Enjoy the feeling. 😌",
         gifUrl: "https://media.tenor.com/lEa-i5y53bIAAAAC/relax-take-it-easy.gif"
     },
+    {
+        keywords: ["creative", "inspired", "motivated to create"],
+        response: "That's fantastic! Creativity is a wonderful energy. Ride that wave of inspiration and see what you create. I'm excited for you! 🎨✨",
+        gifUrl: "https://media.tenor.com/r3x7-q91-lYAAAAC/happy-dance-excited.gif"
+    },
+
+    // --- Neutral Feelings ---
+    {
+        keywords: ["okay", "alright", "meh", "so-so", "fine"],
+        response: "It's okay to just feel 'okay'. Not every day has to be a peak or a valley. Thanks for sharing where you're at. Is there anything on your mind, or are you just resting in this neutral space? 😌",
+        gifUrl: "https://media.tenor.com/lEa-i5y53bIAAAAC/relax-take-it-easy.gif"
+    },
 
     // --- Negative Feelings ---
     {
@@ -87,6 +99,11 @@ export const localResponses = [
         response: "Feeling lost or confused is a difficult place to be. It's okay not to have all the answers right now. Sometimes the most important step is just acknowledging that you're unsure. We can sit with this uncertainty together. 🧭",
         gifUrl: "https://media.tenor.com/v_g0GNKCwVYAAAAC/finding-nemo-dory.gif"
     },
+    {
+        keywords: ["disappointed", "let down"],
+        response: "Disappointment is a really tough feeling, especially when you had your hopes up. I'm sorry you're going through that. It's okay to feel let down. Your feelings are valid. 💔",
+        gifUrl: "https://media.tenor.com/y0SjA5y3f-QAAAAC/sad-face-sad.gif"
+    },
 
     // --- Self-Image and Motivation ---
     {
@@ -114,6 +131,11 @@ export const localResponses = [
         response: "Not being able to sleep is so frustrating and can make everything feel harder. Lying in the dark with your thoughts can be tough. Have you tried any relaxation techniques, like deep breathing or listening to calming music? Sometimes just resting your body, even if you're not sleeping, can help. 🌙",
         gifUrl: "https://media.tenor.com/dK5nTe07h9wAAAAC/sheep-counting-sheep.gif"
     },
+    {
+        keywords: ["i feel stupid", "dumb", "idiot"],
+        response: "Hey, let's be kind to ourselves. You are not stupid. Everyone makes mistakes or has moments where they don't know something. It's a normal part of learning and being human. What's making you feel this way?",
+        gifUrl: "https://media.tenor.com/A8oF_m-5-vEAAAAC/big-hero-there-there.gif"
+    },
 
     // --- Grief and Relationships ---
     {
@@ -131,6 +153,17 @@ export const localResponses = [
         response: "Social situations can be really draining and intimidating. It's completely normal to feel anxious about them. Remember, it's okay to take breaks, to find a quiet corner, or to leave when you need to. You don't have to perform for anyone. Your comfort is important. 🌿",
         gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
     },
+    {
+        keywords: ["need a friend", "wish i had someone to talk to"],
+        response: "I can be a friend to you right now. Thank you for reaching out. I'm here to listen to anything and everything you want to share. You're not alone in this. 🫂",
+        gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
+    },
+    {
+        keywords: ["help", "i need help"],
+        response: "I'm here to help in any way I can by listening. What's on your mind? Remember, if you're in a crisis, it's very important to reach out to a professional or a helpline. For a safe place to talk, I'm all yours.",
+        gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
+    },
+
 
     // --- General Chat & Meta ---
     {
