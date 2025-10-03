@@ -38,8 +38,8 @@ import audioData from '@/lib/placeholder-audio.json';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { Carousel, Card as AppleCard } from "@/components/ui/apple-cards-carousel";
 import { LampContainer } from "@/components/ui/lamp";
-import { StickyScroll } from '@/components/ui/sticky-scroll-reveal';
-import { TinderCards } from '@/components/ui/tinder-cards';
+import { StickyScroll } from "@/components/ui/sticky-scroll-reveal";
+import { TinderCards } from "@/components/ui/tinder-cards";
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
@@ -640,6 +640,7 @@ export default function LandingPage() {
                         <span className="font-semibold text-foreground">Features</span>
                         <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="/chat">Chatbot</a>
                         <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="/consultant">AI Consultant</a>
+                        <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="/counselor-connect">Counselor Connect</a>
                         <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="/calm">Calm Room</a>
                         <a className="hover:text-foreground/80 text-foreground/60 transition-colors" href="/playlist">Playlist</a>
                         </div>
@@ -662,7 +663,5 @@ export default function LandingPage() {
     );
 
 }
-
-    
 
     
