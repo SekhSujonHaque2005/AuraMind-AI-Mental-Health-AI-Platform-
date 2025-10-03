@@ -1,7 +1,7 @@
 
 "use client";
 import { cn } from "@/lib/utils";
-import { IconMenu2, IconX } from "@tabler/icons-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import {
   motion,
   AnimatePresence,
@@ -145,20 +145,13 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
             <span className="relative z-20 flex items-center">
               {item.name}
               {item.dropdownContent && (
-                 <motion.svg
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: hovered === idx ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="ml-1 h-4 w-4"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+                <motion.div
+                    initial={{ rotate: 0 }}
+                    animate={{ rotate: hovered === idx ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </motion.svg>
+                    <ChevronDown className="ml-1 h-4 w-4" />
+                </motion.div>
               )}
             </span>
           </a>
@@ -169,7 +162,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -10, scale: 0.95 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50"
+                className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-[70]"
               >
                 <div className="w-[500px] rounded-2xl bg-neutral-900 border border-neutral-800 shadow-xl">
                   {item.dropdownContent}
@@ -262,9 +255,9 @@ export const MobileNavToggle = ({
   onClick: () => void;
 }) => {
   return isOpen ? (
-    <IconX className="text-black dark:text-white" onClick={onClick} />
+    <X className="text-black dark:text-white" onClick={onClick} />
   ) : (
-    <IconMenu2 className="text-black dark:text-white" onClick={onClick} />
+    <Menu className="text-black dark:text-white" onClick={onClick} />
   );
 };
 
