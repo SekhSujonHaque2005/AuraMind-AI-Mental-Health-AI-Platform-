@@ -8,6 +8,7 @@ import { personas } from '@/app/consultant/personas';
 import { Video, Mic, ArrowRight, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function PersonaSelectionPage() {
   const router = useRouter();
@@ -16,7 +17,7 @@ export default function PersonaSelectionPage() {
   const handleComingSoon = () => {
     toast({
       title: 'Coming Soon!',
-      description: 'This feature is under development and will be available shortly.',
+      description: 'Locked due to API issue. When the API server is fixed, it will unlock.',
     });
   };
 
@@ -73,22 +74,36 @@ export default function PersonaSelectionPage() {
                     </CardHeader>
                     <CardContent className="flex-grow"></CardContent>
                     <CardFooter className="flex flex-col gap-3 p-6 bg-black/20 mt-auto">
-                    <Button
-                        className="w-full text-base py-6 bg-gray-700/50 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-not-allowed"
-                        onClick={handleComingSoon}
-                        disabled
-                    >
-                        <Lock className="h-5 w-5" />
-                        Start Video Session
-                    </Button>
-                    <Button
-                        className="w-full text-base py-6 bg-gray-700/50 border border-blue-500/10 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-not-allowed"
-                        onClick={handleComingSoon}
-                        disabled
-                    >
-                        <Lock className="h-5 w-5" />
-                        Start Audio Session
-                    </Button>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            className="w-full text-base py-6 bg-gray-700/50 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-not-allowed"
+                            disabled
+                          >
+                            <Lock className="h-5 w-5" />
+                            Start Video Session
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Coming Soon: Locked due to API issue. When the API server is fixed, it will unlock.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                           <Button
+                              className="w-full text-base py-6 bg-gray-700/50 border border-blue-500/10 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-not-allowed"
+                              disabled
+                            >
+                              <Lock className="h-5 w-5" />
+                              Start Audio Session
+                            </Button>
+                        </TooltipTrigger>
+                         <TooltipContent>
+                          <p>Coming Soon: Locked due to API issue. When the API server is fixed, it will unlock.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                     </CardFooter>
                 </Card>
           </motion.div>
