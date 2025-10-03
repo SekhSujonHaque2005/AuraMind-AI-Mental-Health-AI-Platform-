@@ -1,7 +1,6 @@
 
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { useMotionValueEvent, useScroll } from "framer-motion";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -16,20 +15,17 @@ export const StickyScroll = ({
   }[];
   contentClassName?: string;
 }) => {
-  const [activeCard, setActiveCard] = React.useState(0);
+  const [activeCard, setActiveCard] = useState(0);
   const ref = useRef<any>(null);
-  const { scrollYProgress } = useScroll({
-    // uncomment line 22 and comment line 23 if you DONT want the scrolling component to start at the top of the page.
-    // target: ref,
-    container: ref,
-    offset: ["start start", "end start"],
-  });
   const cardLength = content.length;
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const cardsPerScreen = Math.floor(latest * cardLength);
-    setActiveCard(cardsPerScreen);
-  });
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveCard((prevActiveCard) => (prevActiveCard + 1) % cardLength);
+    }, 3000); // Change card every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [cardLength]);
 
   const backgroundColors = [
     "var(--slate-900)",
@@ -41,12 +37,13 @@ export const StickyScroll = ({
     "linear-gradient(to bottom right, var(--pink-500), var(--indigo-500))",
     "linear-gradient(to bottom right, var(--orange-500), var(--yellow-500))",
   ];
+
   return (
     <motion.div
       animate={{
         backgroundColor: backgroundColors[activeCard % backgroundColors.length],
       }}
-      className="relative flex h-[30rem] justify-center space-x-10 rounded-md p-10 overflow-y-auto no-scrollbar"
+      className="relative flex h-[30rem] justify-center space-x-10 rounded-md p-10"
       ref={ref}
     >
       <div className="div relative flex items-start px-4">
