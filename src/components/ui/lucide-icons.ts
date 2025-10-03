@@ -10,5 +10,10 @@ export {
   Wand2,
   Loader2,
   Trash2,
-  Plus
+  Plus,
+  LifeBuoy,
+  Clapperboard,
+  HeartHandshake
 } from 'lucide-react';
+
+    
