@@ -77,15 +77,13 @@ export default function PersonaSelectionPage() {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                           <div className="w-full">
-                                <Button
-                                    className="w-full text-base py-6 bg-gray-700/50 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-not-allowed"
-                                    disabled
-                                >
-                                    <Lock className="h-5 w-5" />
-                                    Start Video Session
-                                </Button>
-                           </div>
+                            <Button
+                                onClick={handleComingSoon}
+                                className="w-full text-base py-6 bg-gray-700/50 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-pointer"
+                            >
+                                <Lock className="h-5 w-5" />
+                                Start Video Session
+                            </Button>
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>Coming Soon: Locked due to API issue. When the API server is fixed, it will unlock.</p>
@@ -93,15 +91,13 @@ export default function PersonaSelectionPage() {
                       </Tooltip>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                           <div className="w-full">
-                               <Button
-                                  className="w-full text-base py-6 bg-gray-700/50 border border-blue-500/10 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-not-allowed"
-                                  disabled
-                                >
-                                  <Lock className="h-5 w-5" />
-                                  Start Audio Session
-                                </Button>
-                           </div>
+                            <Button
+                              onClick={handleComingSoon}
+                              className="w-full text-base py-6 bg-gray-700/50 border border-blue-500/10 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-pointer"
+                            >
+                              <Lock className="h-5 w-5" />
+                              Start Audio Session
+                            </Button>
                         </TooltipTrigger>
                          <TooltipContent>
                           <p>Coming Soon: Locked due to API issue. When the API server is fixed, it will unlock.</p>
