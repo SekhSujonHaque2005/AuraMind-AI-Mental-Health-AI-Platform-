@@ -126,35 +126,31 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
       )}
     >
       {items.map((item, idx) => (
-        <div
+        <a
           key={`link-${idx}`}
+          href={item.link}
+          onClick={onItemClick}
           onMouseEnter={() => setHovered(idx)}
-          className="relative group"
+          className="relative group px-4 py-2 text-neutral-600 dark:text-neutral-300 cursor-pointer"
         >
-          <a
-            onClick={onItemClick}
-            className="relative px-4 py-2 text-neutral-600 dark:text-neutral-300 cursor-pointer"
-            href={item.link}
-          >
-            {hovered === idx && (
+          {hovered === idx && (
+            <motion.div
+              layoutId="hovered"
+              className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-neutral-800"
+            />
+          )}
+          <span className="relative z-20 flex items-center">
+            {item.name}
+            {item.dropdownContent && (
               <motion.div
-                layoutId="hovered"
-                className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-neutral-800"
-              />
+                initial={{ rotate: 0 }}
+                animate={{ rotate: hovered === idx ? 180 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <ChevronDown className="ml-1 h-4 w-4" />
+              </motion.div>
             )}
-            <span className="relative z-20 flex items-center">
-              {item.name}
-              {item.dropdownContent && (
-                <motion.div
-                    initial={{ rotate: 0 }}
-                    animate={{ rotate: hovered === idx ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                >
-                    <ChevronDown className="ml-1 h-4 w-4" />
-                </motion.div>
-              )}
-            </span>
-          </a>
+          </span>
           <AnimatePresence>
             {hovered === idx && item.dropdownContent && (
               <motion.div
@@ -170,7 +166,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </a>
       ))}
     </motion.div>
   );
