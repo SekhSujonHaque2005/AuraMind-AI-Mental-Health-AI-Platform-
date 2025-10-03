@@ -339,7 +339,8 @@ export default function LandingPage() {
         name: "Resources",
         link: "/resources",
         dropdownContent: (
-            <div className="grid grid-cols-3 gap-x-8 gap-y-4 p-8 w-[650px]">
+          <div className="w-[650px] p-8">
+            <div className="grid grid-cols-3 gap-x-8">
                 <div className="flex flex-col gap-y-4">
                     <h3 className="text-sm font-semibold text-neutral-400">CRISIS SUPPORT</h3>
                     <a href="/resources" className="group flex items-start gap-3">
@@ -386,6 +387,7 @@ export default function LandingPage() {
                     </a>
                 </div>
             </div>
+          </div>
         )
       },
       {

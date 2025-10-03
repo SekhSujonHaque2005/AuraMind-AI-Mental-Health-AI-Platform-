@@ -162,7 +162,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
                         transition={{ duration: 0.2, ease: "easeOut" }}
                         className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-[70]"
                     >
-                        <div className="w-max rounded-2xl bg-neutral-900 border border-neutral-800 shadow-xl">
+                        <div className="rounded-2xl bg-neutral-900 border border-neutral-800 shadow-xl">
                         {item.dropdownContent}
                         </div>
                     </motion.div>
