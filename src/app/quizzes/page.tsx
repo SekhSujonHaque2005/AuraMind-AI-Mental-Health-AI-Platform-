@@ -242,11 +242,11 @@ export default function QuizzesPage() {
             
             {!creationMode ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
-                    <Button variant="outline" className="h-auto py-6 flex flex-col gap-2" onClick={() => setCreationMode('ai')}>
+                    <Button variant="outline" className="h-auto py-6 flex flex-col gap-2" onClick={() => {toast({title: "Coming Soon!", description: "AI quiz generation will be available in a future update."})}}>
                         <Wand2 className="h-6 w-6" />
                         Generate with AI
                     </Button>
-                    <Button variant="outline" className="h-auto py-6 flex flex-col gap-2" onClick={() => {toast({title: "Coming Soon!", description: "Manual quiz creation will be available in a future update."})}}>
+                    <Button variant="outline" className="h-auto py-6 flex flex-col gap-2" onClick={() => setCreationMode('manual')}>
                         <Puzzle className="h-6 w-6" />
                         Create Manually
                     </Button>
