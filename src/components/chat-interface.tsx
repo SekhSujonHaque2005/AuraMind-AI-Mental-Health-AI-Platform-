@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useRef, useEffect, useTransition, useState, useCallback } from 'react';
@@ -139,9 +138,11 @@ export default function ChatInterface() {
               isLoading={isPending || isTranslating}
               placeholder="Ask Aura anything..."
               className="flex-1"
-              selectedLanguage={'en-US'}
             />
           </motion.div>
+          <p className="text-xs text-center text-gray-500 mt-2">
+            Due to API server issues, we are currently using our local model.
+          </p>
         </div>
       </div>
     </div>
