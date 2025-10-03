@@ -49,6 +49,7 @@ export async function getAIResponse(input: ChatActionInput) {
     }
 
     // 2. Get Aura's regular response
+    // CORRECTLY map the conversation history to match the AI flow's input schema.
     const auraInput: GetAuraResponseInput = { 
       message, 
       conversationHistory: conversationHistory.map(m => ({ sender: m.sender, text: m.text })), 
