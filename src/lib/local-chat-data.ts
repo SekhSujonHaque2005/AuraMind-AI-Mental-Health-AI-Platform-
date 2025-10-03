@@ -83,6 +83,26 @@ export const localResponses = [
         response: "Feeling conflicted is completely normal when you're dealing with a complex situation. It's okay to hold two opposing feelings at once. There's no need to pick a side right away. Let's explore those different feelings if you're open to it. ⚖️",
         gifUrl: "https://media.tenor.com/7123pAYJt8cAAAAC/the-good-place-chidi.gif"
     },
+    {
+        keywords: ["um", "uh", "i guess", "maybe"],
+        response: "Take your time. There's no rush here. I'm listening whenever you're ready to share. It's okay if it takes a moment to find the right words. 🕰️",
+        gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
+    },
+    {
+        keywords: ["awful", "terrible"],
+        response: "That sounds incredibly difficult. 'Awful' is a strong word, and it tells me you're in a lot of pain right now. I'm so sorry you're going through this. Please know I'm here to listen to whatever you feel comfortable sharing. 🫂",
+        gifUrl: "https://media.tenor.com/S-l2aLff3BwAAAAC/hug-love.gif"
+    },
+    {
+        keywords: ["i like that", "i want that", "i choose"],
+        response: "It's great that you've identified something you like or want. Recognizing our own preferences is a wonderful form of self-awareness. What about that stands out to you? ✨",
+        gifUrl: "https://media.tenor.com/pYhV4b6t3JcAAAAC/youre-welcome-baymax.gif"
+    },
+    {
+        keywords: ["asdfghjkl", "random letters", "testing"],
+        response: "I see you're testing things out! It's good to be curious about how I work. I'm ready to listen to you about anything you want to talk about, whenever you're ready. 😊",
+        gifUrl: "https://media.tenor.com/2iGqI5t0hIAAAAAC/big-hero-6-baymax.gif"
+    },
 
     // --- Negative Feelings ---
     {
