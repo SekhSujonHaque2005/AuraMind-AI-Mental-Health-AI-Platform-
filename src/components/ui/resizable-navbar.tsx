@@ -8,9 +8,7 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
-
 import React, { useRef, useState } from "react";
-
 
 interface NavbarProps {
   children: React.ReactNode;
@@ -23,11 +21,14 @@ interface NavBodyProps {
   visible?: boolean;
 }
 
+interface NavItem {
+  name: string;
+  link: string;
+  dropdownContent?: React.ReactNode;
+}
+
 interface NavItemsProps {
-  items: {
-    name: string;
-    link: string;
-  }[];
+  items: NavItem[];
   className?: string;
   onItemClick?: () => void;
 }
@@ -125,21 +126,58 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
       )}
     >
       {items.map((item, idx) => (
-        <a
-          onMouseEnter={() => setHovered(idx)}
-          onClick={onItemClick}
-          className="relative px-4 py-2 text-neutral-600 dark:text-neutral-300"
+        <div
           key={`link-${idx}`}
-          href={item.link}
+          onMouseEnter={() => setHovered(idx)}
+          className="relative group"
         >
-          {hovered === idx && (
-            <motion.div
-              layoutId="hovered"
-              className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-neutral-800"
-            />
-          )}
-          <span className="relative z-20">{item.name}</span>
-        </a>
+          <a
+            onClick={onItemClick}
+            className="relative px-4 py-2 text-neutral-600 dark:text-neutral-300 cursor-pointer"
+            href={item.link}
+          >
+            {hovered === idx && (
+              <motion.div
+                layoutId="hovered"
+                className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-neutral-800"
+              />
+            )}
+            <span className="relative z-20 flex items-center">
+              {item.name}
+              {item.dropdownContent && (
+                 <motion.svg
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: hovered === idx ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="ml-1 h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </motion.svg>
+              )}
+            </span>
+          </a>
+          <AnimatePresence>
+            {hovered === idx && item.dropdownContent && (
+              <motion.div
+                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50"
+              >
+                <div className="w-[500px] rounded-2xl bg-neutral-900 border border-neutral-800 shadow-xl">
+                  {item.dropdownContent}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       ))}
     </motion.div>
   );

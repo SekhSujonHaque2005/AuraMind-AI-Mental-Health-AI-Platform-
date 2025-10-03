@@ -261,18 +261,33 @@ export default function LandingPage() {
       {
         name: "Features",
         link: "#features",
+        dropdownContent: (
+          <div className="grid grid-cols-2 gap-6 p-6">
+            {features.map((feature) => (
+              <a
+                key={feature.title}
+                href={feature.href}
+                className="group flex items-start gap-4 rounded-lg p-3 hover:bg-neutral-800 transition-colors duration-200"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-neutral-800/80 border border-neutral-700 group-hover:bg-blue-500/20 group-hover:border-blue-500/50">
+                   <feature.icon className="h-5 w-5 text-blue-400 group-hover:text-blue-300" />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-white">{feature.title}</h3>
+                  <p className="mt-1 text-sm text-neutral-400">{feature.description}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        ),
+      },
+       {
+        name: "Resources",
+        link: "/resources",
       },
       {
-        name: "Chat",
-        link: "/chat",
-      },
-      {
-        name: "Consultant",
-        link: "/consultant",
-      },
-      {
-        name: "Calm Room",
-        link: "/calm",
+        name: "Privacy",
+        link: "/privacy-policy",
       },
     ];
 
@@ -596,8 +611,3 @@ export default function LandingPage() {
     );
 
 }
-
-    
-
-
-    
