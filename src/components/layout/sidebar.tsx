@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MessageSquare, BookUser, Users, Sparkles, ShieldCheck, FileQuestion, Music, Home } from 'lucide-react';
+import { MessageSquare, BookUser, Users, Sparkles, ShieldCheck, FileQuestion, Music, Home, Handshake } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import React from 'react';
@@ -14,6 +14,7 @@ const navItems = [
   { href: '/chat', label: 'Chat', icon: MessageSquare },
   { href: '/resources', label: 'Resources', icon: BookUser },
   { href: '/consultant', label: 'AI Consultant', icon: Users },
+  { href: '/counselor-connect', label: 'Counselor Connect', icon: Handshake },
   { href: '/calm', label: 'Calm Room', icon: Sparkles },
   { href: '/adventures', label: 'Adventures', icon: ShieldCheck },
   { href: '/quizzes', label: 'Quizzes', icon: FileQuestion },
