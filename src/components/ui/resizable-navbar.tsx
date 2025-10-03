@@ -125,49 +125,52 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
         className,
       )}
     >
-      {items.map((item, idx) => (
-        <a
-          key={`link-${idx}`}
-          href={item.link}
-          onClick={onItemClick}
-          onMouseEnter={() => setHovered(idx)}
-          className="relative group px-4 py-2 text-neutral-600 dark:text-neutral-300 cursor-pointer"
-        >
-          {hovered === idx && (
-            <motion.div
-              layoutId="hovered"
-              className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-neutral-800"
-            />
-          )}
-          <span className="relative z-20 flex items-center">
-            {item.name}
-            {item.dropdownContent && (
-              <motion.div
-                initial={{ rotate: 0 }}
-                animate={{ rotate: hovered === idx ? 180 : 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <ChevronDown className="ml-1 h-4 w-4" />
-              </motion.div>
-            )}
-          </span>
-          <AnimatePresence>
-            {hovered === idx && item.dropdownContent && (
-              <motion.div
-                initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-[70]"
-              >
-                <div className="w-[500px] rounded-2xl bg-neutral-900 border border-neutral-800 shadow-xl">
-                  {item.dropdownContent}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </a>
-      ))}
+      {items.map((item, idx) => {
+        const NavLinkElement = item.dropdownContent ? "div" : "a";
+        return (
+            <NavLinkElement
+                key={`link-${idx}`}
+                href={item.dropdownContent ? undefined : item.link}
+                onClick={onItemClick}
+                onMouseEnter={() => setHovered(idx)}
+                className="relative group px-4 py-2 text-neutral-600 dark:text-neutral-300 cursor-pointer"
+            >
+                {hovered === idx && (
+                    <motion.div
+                    layoutId="hovered"
+                    className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-neutral-800"
+                    />
+                )}
+                <span className="relative z-20 flex items-center">
+                    {item.name}
+                    {item.dropdownContent && (
+                    <motion.div
+                        initial={{ rotate: 0 }}
+                        animate={{ rotate: hovered === idx ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        <ChevronDown className="ml-1 h-4 w-4" />
+                    </motion.div>
+                    )}
+                </span>
+                <AnimatePresence>
+                    {hovered === idx && item.dropdownContent && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-[70]"
+                    >
+                        <div className="w-[500px] rounded-2xl bg-neutral-900 border border-neutral-800 shadow-xl">
+                        {item.dropdownContent}
+                        </div>
+                    </motion.div>
+                    )}
+                </AnimatePresence>
+            </NavLinkElement>
+        )}
+      )}
     </motion.div>
   );
 };
