@@ -61,17 +61,17 @@ Your core principles are:
     // Map the conversation history to the format expected by the AI model.
     const history = input.conversationHistory.map(msg => ({
       role: msg.sender === 'user' ? 'user' : 'model',
-      content: msg.text, // Ensure content is a simple string
+      content: msg.text,
     }));
-
-    // The 'messages' array should contain the history AND the current user message.
+    
+    // The 'messages' array must contain the system prompt first, then the history, and finally the current user message.
     const llmResponse = await ai.generate({
       model: 'googleai/gemini-1.5-flash',
       prompt: {
-          system: systemPrompt,
           messages: [
+            { role: 'system', content: systemPrompt },
             ...history,
-            { role: 'user', content: input.message } // Ensure content is a simple string
+            { role: 'user', content: input.message }
           ],
       },
       tools: [getTenorGif],
