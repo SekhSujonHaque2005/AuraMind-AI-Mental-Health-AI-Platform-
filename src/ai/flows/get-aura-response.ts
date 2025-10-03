@@ -76,7 +76,7 @@ Your core principles are:
       tools: [getTenorGif],
     });
 
-    const textResponse = llmResponse.text();
+    const textResponse = llmResponse.text;
     
     // Fallback response in case the AI fails.
     if (!textResponse) {
@@ -84,7 +84,7 @@ Your core principles are:
     }
 
     let gifUrl: string | null = null;
-    const toolResponses = llmResponse.toolResponses();
+    const toolResponses = llmResponse.toolRequests;
     
     // Check if the tool was called and returned a response.
     if (toolResponses.length > 0 && toolResponses[0]?.tool.response) {
