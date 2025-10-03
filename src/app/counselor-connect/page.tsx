@@ -97,7 +97,7 @@ export default function CounselorConnectPage() {
                 <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#3b82f633,transparent)]"></div>
             </div>
 
-            <section className="relative flex flex-col items-center pt-32 md:pt-48 min-h-screen px-4">
+            <section className="relative flex flex-col items-center pt-32 md:pt-40 min-h-[90vh] px-4">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -157,7 +157,7 @@ export default function CounselorConnectPage() {
                 </div>
             </section>
 
-             <section className="py-20 px-4 bg-black/20">
+             <section className="pb-20 px-4 bg-black/20">
                 <div className="max-w-6xl mx-auto text-center">
                     <h2 className="text-4xl font-bold text-center mb-12">Why Choose Our Counselors</h2>
                     <motion.div 
