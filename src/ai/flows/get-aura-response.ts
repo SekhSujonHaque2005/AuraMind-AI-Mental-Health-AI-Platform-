@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -60,7 +61,7 @@ Your core principles are:
     // Map the conversation history to the format expected by the AI model.
     const history = input.conversationHistory.map(msg => ({
       role: msg.sender === 'user' ? 'user' : 'model',
-      content: msg.text,
+      content: msg.text, // Ensure content is a simple string
     }));
 
     // The 'messages' array should contain the history AND the current user message.
@@ -70,7 +71,7 @@ Your core principles are:
           system: systemPrompt,
           messages: [
             ...history,
-            { role: 'user', content: input.message }
+            { role: 'user', content: input.message } // Ensure content is a simple string
           ],
       },
       tools: [getTenorGif],
