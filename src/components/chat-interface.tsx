@@ -154,18 +154,14 @@ export default function ChatInterface() {
   useEffect(() => {
     const lastMessage = messages[messages.length - 1];
     if (lastMessage && lastMessage.sender === 'user') {
-      const conversationHistory = messages.slice(0, -1).map(msg => ({
-        sender: msg.sender,
-        text: msg.text,
-      }));
-
+      
       startTransition(async () => {
         const languageLabel = getLanguageLabel(selectedLanguage);
-
+        
         const result = await getAIResponse({
           message: lastMessage.text,
-          conversationHistory: conversationHistory,
-          region: selectedLanguage.split('-')[1], // 'IN'
+          conversationHistory: messages, // Pass the entire history
+          region: selectedLanguage.split('-')[1], // e.g., 'IN'
           language: languageLabel,
         });
 
@@ -322,5 +318,3 @@ export default function ChatInterface() {
     </div>
   );
 }
-
-    

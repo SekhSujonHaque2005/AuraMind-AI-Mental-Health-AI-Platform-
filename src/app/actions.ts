@@ -4,7 +4,7 @@
 import { checkSafetyAndRespond, SafetyCheckInput } from '@/ai/flows/critical-safety-protocol';
 import { getAuraResponse, GetAuraResponseInput } from '@/ai/flows/get-aura-response';
 import { translateWelcomeMessage } from '@/ai/flows/translate-welcome-message';
-import { TranslateWelcomeMessageInput, TranslateWelcomeMessageOutput } from '@/contexts/ChatContext';
+import { TranslateWelcomeMessageInput, TranslateWelcomeMessageOutput, Message } from '@/contexts/ChatContext';
 import { generateSelfCareQuest, GenerateSelfCareQuestInput, GenerateSelfCareQuestOutput } from '@/ai/flows/generate-self-care-quest';
 import { generateQuiz } from '@/ai/flows/generate-quiz';
 import { findMusic } from '@/ai/flows/find-music-flow';
@@ -16,8 +16,11 @@ import type { FindMusicInput, FindMusicOutput } from './playlist/types';
 const chatActionInputSchema = z.object({
   message: z.string().min(1, { message: "Message cannot be empty." }),
   conversationHistory: z.array(z.object({
+    id: z.number(),
     sender: z.enum(['user', 'bot']),
     text: z.string(),
+    gifUrl: z.string().optional(),
+    options: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
   })),
   region: z.string().optional(),
   language: z.string().optional(),
@@ -46,7 +49,12 @@ export async function getAIResponse(input: ChatActionInput) {
     }
 
     // 2. Get Aura's regular response
-    const auraInput: GetAuraResponseInput = { message, conversationHistory, region, language };
+    const auraInput: GetAuraResponseInput = { 
+      message, 
+      conversationHistory: conversationHistory.map(m => ({ sender: m.sender, text: m.text })), 
+      region, 
+      language 
+    };
     const auraResult = await getAuraResponse(auraInput);
 
     if (!auraResult || !auraResult.response) {
