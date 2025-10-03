@@ -246,7 +246,7 @@ export default function QuizzesPage() {
                         <Wand2 className="h-6 w-6" />
                         Generate with AI
                     </Button>
-                    <Button variant="outline" className="h-auto py-6 flex flex-col gap-2" onClick={() => setCreationMode('manual')}>
+                    <Button variant="outline" className="h-auto py-6 flex flex-col gap-2" onClick={() => {toast({title: "Coming Soon!", description: "Manual quiz creation will be available in a future update."})}}>
                         <Puzzle className="h-6 w-6" />
                         Create Manually
                     </Button>
@@ -290,3 +290,5 @@ export default function QuizzesPage() {
     </>
   );
 }
+
+    
