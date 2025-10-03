@@ -186,16 +186,7 @@ export default function AdventuresPage() {
     };
 
     const handleGenerateAiQuest = () => {
-        startTransition(async () => {
-            const existingQuests = allQuests.map(q => q.title);
-            const result = await getAIGeneratedQuest({ existingQuests });
-            if (result.error) {
-                toast({ variant: 'destructive', title: 'AI Generation Failed', description: result.error });
-            } else if (result.quest) {
-                setNewQuestInfo({ title: result.quest, duration: result.duration || null, description: 'An AI-suggested quest for a better day.' });
-                 toast({ title: 'AI Quest Generated!', description: 'Your new quest is ready to be added.' });
-            }
-        });
+        toast({title: "Coming Soon!", description: "AI quest generation will be available in a future update."});
     }
 
     const handleCloseBadge = () => {
@@ -393,6 +384,14 @@ export default function AdventuresPage() {
                                 className="bg-gray-800/60 border-amber-500/30 text-gray-200 focus:ring-amber-500"
                              />
                         </div>
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t border-gray-700"></span>
+                            </div>
+                        </div>
+                        <Button variant="outline" className="w-full bg-transparent border border-amber-500/40 hover:bg-amber-500/10 text-amber-300" onClick={handleGenerateAiQuest}>
+                            <Wand2 className="mr-2 h-4 w-4" /> Generate with AI
+                        </Button>
                     </div>
                     <DialogFooter>
                         <Button variant="ghost" onClick={() => setIsAddQuestOpen(false)}>Cancel</Button>
