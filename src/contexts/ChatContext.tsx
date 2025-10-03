@@ -69,7 +69,7 @@ const initialMessage: Message = {
     id: 0,
     sender: 'bot',
     text: englishContent.welcomeMessage,
-    gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    gifUrl: 'https://media.giphy.com/media/dw36yjtOAtuSZyxEJG/giphy.gif',
     options: englishContent.suggestedQuestions,
 };
 
