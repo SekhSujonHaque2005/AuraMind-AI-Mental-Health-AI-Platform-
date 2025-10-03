@@ -19,7 +19,7 @@ const chatActionInputSchema = z.object({
     id: z.number(),
     sender: z.enum(['user', 'bot']),
     text: z.string(),
-    gifUrl: z.string().optional(),
+    gifUrl: z.string().url().optional().nullable(),
     options: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
   })),
   region: z.string().optional(),

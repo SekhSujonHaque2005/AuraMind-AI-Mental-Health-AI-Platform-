@@ -92,5 +92,3 @@ export default function ChatMessage({ message, onOptionClick }: { message: Messa
     </div>
   );
 }
-
-    

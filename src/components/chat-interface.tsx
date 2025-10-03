@@ -158,9 +158,10 @@ export default function ChatInterface() {
       startTransition(async () => {
         const languageLabel = getLanguageLabel(selectedLanguage);
         
+        // Pass the entire message history to the server action
         const result = await getAIResponse({
           message: lastMessage.text,
-          conversationHistory: messages, // Pass the entire history
+          conversationHistory: messages, 
           region: selectedLanguage.split('-')[1], // e.g., 'IN'
           language: languageLabel,
         });
