@@ -117,6 +117,41 @@ export const localResponses: Record<string, { keywords: string[]; response: stri
             response: "Hi there! I'm Aura. I'm here to listen whenever you're ready to share. What's on your mind today? ✨",
             gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
         },
+        {
+            keywords: ["tired", "exhausted", "sleepy", "drained"],
+            response: "It sounds like you've had a long day. Rest is so important. Is there anything I can do to help you relax?",
+            gifUrl: "https://media.tenor.com/zV0regN5LqIAAAAC/sleepy-cat-sleeping.gif"
+        },
+        {
+            keywords: ["excited", "pumped", "can't wait"],
+            response: "That's amazing! I'm excited for you! Tell me more about it!",
+            gifUrl: "https://media.tenor.com/hM4C2FF2VBgAAAAC/so-excited-excitement.gif"
+        },
+        {
+            keywords: ["confused", "don't understand", "huh?"],
+            response: "It sounds a bit confusing. I'm here to help you sort through it. Can you explain it to me in a different way?",
+            gifUrl: "https://media.tenor.com/gka3T2pD3QkAAAAC/confused-thinking.gif"
+        },
+        {
+            keywords: ["lol", "funny", "haha", "laughing"],
+            response: "Haha, that's a good one! 😄 It's great to share a laugh.",
+            gifUrl: "https://media.tenor.com/b48-3i28wHQAAAAC/lol-laughing.gif"
+        },
+        {
+            keywords: ["agree", "yes", "nodding", "true", "exactly"],
+            response: "I completely agree. It's great that we're on the same page.",
+            gifUrl: "https://media.tenor.com/tL82A1j22-IAAAAC/nodding-agreement.gif"
+        },
+        {
+            keywords: ["thinking", "hmm", "let me think"],
+            response: "Take your time. It's good to think things through. I'm here when you're ready.",
+            gifUrl: "https://media.tenor.com/gka3T2pD3QkAAAAC/confused-thinking.gif"
+        },
+        {
+            keywords: ["angry", "mad", "frustrated", "pissed off"],
+            response: "It's completely understandable to feel that way. Your feelings are valid. If you want to talk about what's making you angry, I'm here to listen.",
+            gifUrl: "https://media.tenor.com/65xO5nAfA8sAAAAC/frustrated-mad.gif"
+        },
     ],
     hi: [
         {
