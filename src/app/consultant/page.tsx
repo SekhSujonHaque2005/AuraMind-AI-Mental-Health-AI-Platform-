@@ -78,7 +78,7 @@ export default function ConsentPage() {
               AI Wellness Consultant
             </CardTitle>
             <CardDescription className="text-gray-400 text-lg">
-              Before we begin, please review and accept the following terms to ensure a safe and supportive experience.
+              This is a simulated experience with an AI. Before we begin, please review and accept the following terms.
             </CardDescription>
           </motion.div>
         </CardHeader>
@@ -91,12 +91,12 @@ export default function ConsentPage() {
           >
             <motion.div variants={itemVariants}>
               <ConsentItem icon={ShieldCheck} id="consent1" checked={consent1} onCheckedChange={setConsent1}>
-                This is not medical advice. This is an AI wellness companion designed for supportive conversations.
+                This is not a real counselor and this is not medical advice. This is an AI wellness companion designed for supportive conversations.
               </ConsentItem>
             </motion.div>
              <motion.div variants={itemVariants}>
               <ConsentItem icon={Phone} id="consent2" checked={consent2} onCheckedChange={setConsent2}>
-                If you are in a crisis, please call emergency services or a helpline immediately.
+                If you are in a crisis, please call emergency services or a helpline immediately. This is not a crisis support service.
               </ConsentItem>
             </motion.div>
              <motion.div variants={itemVariants}>

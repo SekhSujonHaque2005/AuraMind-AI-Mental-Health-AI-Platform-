@@ -17,7 +17,7 @@ export default function PersonaSelectionPage() {
   const handleComingSoon = () => {
     toast({
       title: 'Coming Soon!',
-      description: 'Locked due to API issue. When the API server is fixed, it will unlock.',
+      description: 'This feature is currently under development.',
     });
   };
 
@@ -79,28 +79,28 @@ export default function PersonaSelectionPage() {
                         <TooltipTrigger asChild>
                             <Button
                                 onClick={handleComingSoon}
-                                className="w-full text-base py-6 bg-gray-700/50 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-pointer"
+                                className="w-full text-base py-6 bg-gray-700/50 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-not-allowed"
                             >
                                 <Lock className="h-5 w-5" />
                                 Start Video Session
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p>Coming Soon: Locked due to API issue. When the API server is fixed, it will unlock.</p>
+                          <p>This feature is coming soon.</p>
                         </TooltipContent>
                       </Tooltip>
                       <Tooltip>
                         <TooltipTrigger asChild>
                             <Button
                               onClick={handleComingSoon}
-                              className="w-full text-base py-6 bg-gray-700/50 border border-blue-500/10 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-pointer"
+                              className="w-full text-base py-6 bg-gray-700/50 border border-blue-500/10 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-not-allowed"
                             >
                               <Lock className="h-5 w-5" />
                               Start Audio Session
                             </Button>
                         </TooltipTrigger>
                          <TooltipContent>
-                          <p>Coming Soon: Locked due to API issue. When the API server is fixed, it will unlock.</p>
+                          <p>This feature is coming soon.</p>
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
