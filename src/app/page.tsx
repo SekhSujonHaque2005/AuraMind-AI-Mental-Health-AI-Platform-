@@ -554,7 +554,7 @@ export default function LandingPage() {
                                     >
                                         Explore Tools <ArrowRight className="ml-2 h-5 w-5" />
                                     </Button>
-                                    <a href="https://github.com/firebase/studio-extra-sessions/tree/main/AuraMind" target="_blank" rel="noopener noreferrer">
+                                    <a href="https://github.com/SekhSujonHaque2005/AuraMind-AI-Mental-Health-AI-Platform-.git" target="_blank" rel="noopener noreferrer">
                                         <Button 
                                             variant="outline"
                                             className="px-8 py-4 text-lg font-bold bg-transparent border-2 border-gray-500 text-gray-300 rounded-full hover:bg-gray-800/50 hover:border-purple-500 hover:text-white transform transition-all duration-300"
@@ -705,7 +705,7 @@ export default function LandingPage() {
                         </div>
                         <div className="mt-4 flex flex-col justify-center space-y-4">
                         <span className="font-semibold text-foreground">Social</span>
-                        <a target="__blank" className="hover:text-foreground/80 text-foreground/60 transition-colors" href="https://github.com/firebase/studio-extra-sessions/tree/main/AuraMind">GitHub</a>
+                        <a target="__blank" className="hover:text-foreground/80 text-foreground/60 transition-colors" href="https://github.com/SekhSujonHaque2005/AuraMind-AI-Mental-Health-AI-Platform-.git">GitHub</a>
                         <a target="__blank" className="hover:text-foreground/80 text-foreground/60 transition-colors" href="#">LinkedIn</a>
                         </div>
                     </div>
