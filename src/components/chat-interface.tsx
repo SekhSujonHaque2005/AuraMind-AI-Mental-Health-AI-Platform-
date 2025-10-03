@@ -159,7 +159,7 @@ export default function ChatInterface() {
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs text-center" side="top">
                   <p>
-                    Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional.
+                    Due to API server issues, we are currently using our local model. Full features will be restored when the API is available. Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional.
                   </p>
                 </TooltipContent>
               </Tooltip>
