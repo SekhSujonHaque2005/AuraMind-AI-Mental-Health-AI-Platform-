@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useRef, useEffect, useTransition, useState, useCallback } from 'react';
@@ -49,9 +48,7 @@ export default function ChatInterface() {
   const [isPending, startTransition] = useTransition();
   const [isTranslating, setIsTranslating] = useState(false);
   const { toast } = useToast();
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const [isAtBottom, setIsAtBottom] = useState(true);
   const [selectedLanguage, setSelectedLanguage] = useState('en-US');
   const [otherLanguage, setOtherLanguage] = useState('');
   const [showOtherLanguageInput, setShowOtherLanguageInput] = useState(false);
@@ -137,31 +134,32 @@ export default function ChatInterface() {
     }
   };
 
-  const handleScroll = () => {
-    if (viewportRef.current) {
-        const { scrollTop, scrollHeight, clientHeight } = viewportRef.current;
-        const atBottom = scrollHeight - scrollTop <= clientHeight + 5; // 5px tolerance
-        setIsAtBottom(atBottom);
-    }
-  };
-
   useEffect(() => {
-    if (isAtBottom) {
-      scrollToBottom();
-    }
-  }, [messages, isAtBottom]);
+    scrollToBottom();
+  }, [messages]);
 
-  useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-    if (lastMessage && lastMessage.sender === 'user') {
-      
-      startTransition(async () => {
+  const handleSubmit = async (messageText: string) => {
+    if (!messageText || messageText.trim() === '' || isPending || isTranslating) return;
+
+    if (selectedLanguage === 'other' && otherLanguage.trim() === '') {
+        toast({
+            variant: "destructive",
+            title: "Language not specified",
+            description: "Please enter the language you want to use.",
+        });
+        return;
+    }
+
+    const newUserMessage: Message = { id: getNextMessageId(), sender: 'user', text: messageText };
+    const currentMessages = [...messages, newUserMessage];
+    setMessages(currentMessages);
+
+    startTransition(async () => {
         const languageLabel = getLanguageLabel(selectedLanguage);
         
-        // Pass the entire message history to the server action
         const result = await getAIResponse({
-          message: lastMessage.text,
-          conversationHistory: messages, 
+          message: messageText,
+          conversationHistory: currentMessages, 
           region: selectedLanguage.split('-')[1], // e.g., 'IN'
           language: languageLabel,
         });
@@ -172,6 +170,7 @@ export default function ChatInterface() {
             title: "An error occurred",
             description: result.error,
           });
+          // Optional: remove the user message if AI fails, or add an error message from bot
         } else if (result.response) {
           const newBotMessage: Message = { 
             id: getNextMessageId(), 
@@ -181,35 +180,13 @@ export default function ChatInterface() {
           };
           setMessages((prev) => [...prev, newBotMessage]);
         }
-      });
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages]);
-
-
-  const handleOptionClick = (value: string) => {
-    const newUserMessage: Message = { id: getNextMessageId(), sender: 'user', text: value };
-    
-    setMessages((prev) => {
-      // Remove options from the message that was clicked
-      const newHistory = prev.map(m => ({ ...m, options: undefined }));
-      return [...newHistory, newUserMessage];
     });
   };
 
-  const handleSubmit = async (message: string) => {
-    if (!message || message.trim() === '' || isPending || isTranslating) return;
-    if (selectedLanguage === 'other' && otherLanguage.trim() === '') {
-        toast({
-            variant: "destructive",
-            title: "Language not specified",
-            description: "Please enter the language you want to use.",
-        });
-        return;
-    }
-
-    const newUserMessage: Message = { id: getNextMessageId(), sender: 'user', text: message };
-    setMessages((prev) => [...prev, newUserMessage]);
+  const handleOptionClick = (value: string) => {
+    const currentMessagesWithoutOptions = messages.map(m => ({ ...m, options: undefined }));
+    setMessages(currentMessagesWithoutOptions);
+    handleSubmit(value);
   };
 
   return (
@@ -221,10 +198,8 @@ export default function ChatInterface() {
             </Button>
         </div>
       <ScrollArea 
-        className="flex-1 p-4 sm:p-6 pt-16" 
-        ref={scrollAreaRef} 
+        className="flex-1 p-4 sm:p-6 pt-16"
         viewportRef={viewportRef}
-        onScroll={handleScroll}
       >
         <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full">
           {isTranslating ? (

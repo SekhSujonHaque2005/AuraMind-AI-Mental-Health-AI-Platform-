@@ -1,4 +1,3 @@
-
 'use client';
 
 import Ballpit from '@/components/ballpit';
