@@ -2,75 +2,75 @@
 
 export const defaultResponses: Record<string, { response: string; gifUrl: string }> = {
     en: {
-        response: "That's interesting. Can you tell me more about that? I'm here to listen. Remember, I am an AI and not a substitute for a professional therapist.",
+        response: "We have no data on this topic. I would love to answer you when I am trained on that. Remember, I am an AI and not a substitute for a professional therapist.",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     hi: {
-        response: "यह दिलचस्प है। क्या आप मुझे इसके बारे में और बता सकते हैं? मैं सुनने के लिए यहाँ हूँ। याद रखें, मैं एक एआई हूँ और एक पेशेवर चिकित्सक का विकल्प नहीं हूँ।",
+        response: "हमारे पास इस विषय पर कोई डेटा नहीं है। जब मुझे उस पर प्रशिक्षित किया जाएगा तो मुझे आपको उत्तर देना अच्छा लगेगा। याद रखें, मैं एक एआई हूं और एक पेशेवर चिकित्सक का विकल्प नहीं हूं।",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     es: {
-        response: "Eso es interesante. ¿Puedes contarme más sobre eso? Estoy aquí para escuchar. Recuerda, soy una IA y no un sustituto de un terapeuta profesional.",
+        response: "No tenemos datos sobre este tema. Me encantaría responderte cuando esté entrenado en eso. Recuerda, soy una IA y no un sustituto de un terapeuta profesional.",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     fr: {
-        response: "C'est intéressant. Pouvez-vous m'en dire plus à ce sujet ? Je suis là pour écouter. N'oubliez pas que je suis une IA et non un substitut à un thérapeute professionnel.",
+        response: "Nous n'avons aucune donnée sur ce sujet. J'adorerais vous répondre lorsque je serai formé à ce sujet. N'oubliez pas que je suis une IA et non un substitut à un thérapeute professionnel.",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     de: {
-        response: "Das ist interessant. Können Sie mir mehr darüber erzählen? Ich bin hier, um zuzuhören. Denken Sie daran, ich bin eine KI und kein Ersatz für einen professionellen Therapeuten.",
+        response: "Wir haben keine Daten zu diesem Thema. Ich würde Ihnen gerne antworten, wenn ich darin geschult bin. Denken Sie daran, ich bin eine KI und kein Ersatz für einen professionellen Therapeuten.",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     it: {
-        response: "È interessante. Puoi dirmi di più a riguardo? Sono qui per ascoltare. Ricorda, sono un'IA e non un sostituto di un terapeuta professionista.",
+        response: "Non abbiamo dati su questo argomento. Mi piacerebbe risponderti quando sarò addestrato su questo. Ricorda, sono un'IA e non un sostituto di un terapeuta professionista.",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     ja: {
-        response: "それは面白いですね。それについてもっと教えていただけますか？私は聞くためにここにいます。覚えておいてください、私はAIであり、プロのセラピストの代わりではありません。",
+        response: "このトピックに関するデータはありません。それについて訓練を受けたら、喜んでお答えします。覚えておいてください、私はAIであり、プロのセラピストの代わりではありません。",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     ar: {
-        response: "هذا مثير للاهتمام. هل يمكنك إخباري المزيد عن ذلك؟ أنا هنا للاستماع. تذكر، أنا ذكاء اصطناعي ولست بديلاً عن معالج محترف.",
+        response: "ليس لدينا بيانات حول هذا الموضوع. أحب أن أجيبك عندما أتدرب على ذلك. تذكر، أنا ذكاء اصطناعي ولست بديلاً عن معالج محترف.",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     pt: {
-        response: "Isso é interessante. Você pode me contar mais sobre isso? Estou aqui para ouvir. Lembre-se, sou uma IA e não um substituto para um terapeuta profissional.",
+        response: "Não temos dados sobre este tópico. Eu adoraria responder quando for treinado nisso. Lembre-se, sou uma IA e não um substituto para um terapeuta profissional.",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     ru: {
-        response: "Это интересно. Вы можете рассказать мне об этом больше? Я здесь, чтобы слушать. Помните, я ИИ, а не замена профессиональному терапевту.",
+        response: "У нас нет данных по этой теме. Я с удовольствием отвечу вам, когда меня этому обучат. Помните, я ИИ, а не замена профессиональному терапевту.",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     bn: {
-        response: "এটা আকর্ষণীয়। আপনি কি আমাকে এই সম্পর্কে আরও কিছু বলতে পারেন? আমি শোনার জন্য এখানে আছি। মনে রাখবেন, আমি একজন এআই এবং কোনও পেশাদার থেরাপিস্টের বিকল্প নই।",
+        response: "এই বিষয়ে আমাদের কাছে কোনো ডেটা নেই। আমি যখন এই বিষয়ে প্রশিক্ষিত হব তখন আপনাকে উত্তর দিতে আমার ভালো লাগবে। মনে রাখবেন, আমি একজন এআই এবং কোনো পেশাদার থেরাপিস্টের বিকল্প নই।",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     te: {
-        response: "అది ఆసక్తికరంగా ఉంది. దాని గురించి మీరు నాకు ఇంకా చెప్పగలరా? నేను వినడానికి ఇక్కడ ఉన్నాను. గుర్తుంచుకోండి, నేను ఒక AIని మరియు వృత్తిపరమైన చికిత్సకుడికి ప్రత్యామ్నాయం కాదు.",
+        response: "ఈ అంశంపై మా వద్ద డేటా లేదు. నేను దానిపై శిక్షణ పొందినప్పుడు మీకు సమాధానం ఇవ్వడానికి ఇష్టపడతాను. గుర్తుంచుకోండి, నేను ఒక AIని మరియు వృత్తిపరమైన చికిత్సకుడికి ప్రత్యామ్నాయం కాదు.",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     mr: {
-        response: "ते मनोरंजक आहे. तुम्ही मला त्याबद्दल अधिक सांगू शकाल का? मी ऐकण्यासाठी येथे आहे. लक्षात ठेवा, मी एक AI आहे आणि व्यावसायिक थेरपिस्टचा पर्याय नाही.",
+        response: "आमच्याकडे या विषयावर कोणताही डेटा नाही. जेव्हा मला त्यावर प्रशिक्षण दिले जाईल तेव्हा मला तुम्हाला उत्तर द्यायला आवडेल. लक्षात ठेवा, मी एक AI आहे आणि व्यावसायिक थेरपिस्टचा पर्याय नाही.",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     ta: {
-        response: "அது சுவாரஸ்யமாக இருக்கிறது. அதைப் பற்றி இன்னும் கொஞ்சம் சொல்ல முடியுமா? நான் கேட்பதற்கு இங்கே இருக்கிறேன். நினைவில் கொள்ளுங்கள், நான் ஒரு செயற்கை நுண்ணறிவு மற்றும் ஒரு தொழில்முறை சிகிச்சையாளருக்கு மாற்றாக இல்லை.",
+        response: "இந்த தலைப்பில் எங்களிடம் எந்த தரவும் இல்லை. நான் அதில் பயிற்சி பெற்றவுடன் உங்களுக்கு பதிலளிக்க விரும்புகிறேன். நினைவில் கொள்ளுங்கள், நான் ஒரு செயற்கை நுண்ணறிவு மற்றும் ஒரு தொழில்முறை சிகிச்சையாளருக்கு மாற்றாக இல்லை.",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     gu: {
-        response: "તે રસપ્રદ છે. તમે મને તે વિશે વધુ કહી શકો છો? હું સાંભળવા માટે અહીં છું. યાદ રાખો, હું એક AI છું અને વ્યાવસાયિક ચિકિત્સકનો વિકલ્પ નથી.",
+        response: "અમારી પાસે આ વિષય પર કોઈ ડેટા નથી. જ્યારે મને તેના પર તાલીમ આપવામાં આવશે ત્યારે મને તમને જવાબ આપવાનું ગમશે. યાદ રાખો, હું એક AI છું અને વ્યાવસાયિક ચિકિત્સકનો વિકલ્પ નથી.",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     pa: {
-        response: "ਇਹ ਦਿਲਚਸਪ ਹੈ। ਕੀ ਤੁਸੀਂ ਮੈਨੂੰ ਇਸ ਬਾਰੇ ਹੋਰ ਦੱਸ ਸਕਦੇ ਹੋ? ਮੈਂ ਸੁਣਨ ਲਈ ਇੱਥੇ ਹਾਂ। ਯਾਦ ਰੱਖੋ, ਮੈਂ ਇੱਕ AI ਹਾਂ ਅਤੇ ਇੱਕ ਪੇਸ਼ੇਵਰ ਥੈਰੇਪਿਸਟ ਦਾ ਬਦਲ ਨਹੀਂ ਹਾਂ।",
+        response: "ਸਾਡੇ ਕੋਲ ਇਸ ਵਿਸ਼ੇ 'ਤੇ ਕੋਈ ਡਾਟਾ ਨਹੀਂ ਹੈ। ਜਦੋਂ ਮੈਂ ਇਸ 'ਤੇ ਸਿਖਲਾਈ ਪ੍ਰਾਪਤ ਕਰਾਂਗਾ ਤਾਂ ਮੈਂ ਤੁਹਾਨੂੰ ਜਵਾਬ ਦੇਣਾ ਪਸੰਦ ਕਰਾਂਗਾ। ਯਾਦ ਰੱਖੋ, ਮੈਂ ਇੱਕ AI ਹਾਂ ਅਤੇ ਇੱਕ ਪੇਸ਼ੇਵਰ ਥੈਰੇਪਿਸਟ ਦਾ ਬਦਲ ਨਹੀਂ ਹਾਂ।",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     bho: {
-        response: "ई रोचक बा। का रउआ हमरा के एकरा बारे में अउरी बता सकत बानी? हम सुने खातिर इहाँ बानी। याद राखीं, हम एगो एआई हईं आ कौनों प्रोफेशनल थेरेपिस्ट के विकल्प ना हईं।",
+        response: "हमनी के पास एह बिसय पर कवनो डेटा नइखे। जब हमरा के ओह पर ट्रेनिंग दिहल जाई त हम रउआ के जवाब दिहल पसंद करब। याद राखीं, हम एगो एआई हईं आ कौनों प्रोफेशनल थेरेपिस्ट के विकल्प ना हईं।",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
     sat: {
-        response: "ᱱᱚᱣᱟ ᱫᱚ ᱨᱟᱹᱥᱠᱟᱹᱱᱟᱜ ᱠᱟᱱᱟ᱾ ᱪᱮᱫ ᱟᱢ ᱤᱧलाई ᱱᱚᱣᱟ ᱵᱟᱨᱮᱛᱮ ᱟᱨᱦᱚᱸ ᱞᱟᱹᱭ ᱫᱟᱲᱮᱭᱟᱜ-ᱟᱢ? ᱤᱧ ᱫᱚ ᱟᱸᱡᱚᱢ ᱞᱟᱹᱜᱤᱫ ᱱᱚక్కడᱮ ᱢᱤᱱᱟᱹᱧᱟ᱾ ᱫᱤᱥᱟᱹ ᱫᱚᱦᱚᱭ ᱢᱮ, ᱤᱧ ᱫᱚ ᱢᱤᱫ AI ᱠᱟᱹᱱᱟᱹᱧ ᱟᱨ ᱯᱮᱥᱟगत ቴራፒስት ᱨᱮᱭᱟᱜ ᱵᱚᱫᱚᱞ ᱫᱚ ᱵᱟᱝ ᱠᱟᱹᱱᱟᱹᱧ᱾",
+        response: "ᱱᱚᱣᱟ ᱵᱤᱥᱚᱭ ᱨᱮ ᱟᱞᱮ ᱴᱷᱮᱱ કોно ᱰੇᱴᱟ ᱵᱟᱹᱱᱩᱜ-ᱟ ᱾ ᱡᱚᱠᱷᱚᱱ ᱤᱧ ᱱᱚᱣᱟ ᱨᱮ ᱴᱮᱨᱱᱤᱝ ᱤᱧ ᱧᱟᱢᱟ, ᱩᱱ ᱡᱚᱠᱷᱚᱱ ᱟᱢलाई ޖަᱣᱟབ་ ᱮᱢ ᱞᱟᱹᱜᱤᱫ ᱤᱧ ᱠᱩᱥᱤᱭᱟᱜ-ᱟ ᱾ ᱫᱤᱥᱟᱹ ᱫᱚᱦᱚᱭ ᱢᱮ, ᱤᱧ ᱫᱚ ᱢᱤᱫ AI ᱠᱟᱹᱱᱟᱹᱧ ᱟᱨ ᱯᱮᱥᱟगत ቴራፒስት ᱨᱮᱭᱟᱜ ᱵᱚᱫᱚᱞ ᱫᱚ ᱵᱟᱝ ᱠᱟᱹᱱᱟᱹᱧ ᱾",
         gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
     },
 };

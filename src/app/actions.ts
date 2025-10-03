@@ -62,12 +62,13 @@ export async function getAIResponse(input: ChatActionInput) {
         }
     }
 
+    if (foundResponse) {
+        return { response: foundResponse.response, gifUrl: foundResponse.gifUrl };
+    }
+    
+    // If no specific response is found, use the default "I don't know" response for the language.
     const defaultResponseForLang = defaultResponses[langCode] || defaultResponses.en;
-
-    const responseText = foundResponse ? foundResponse.response : defaultResponseForLang.response;
-    const gifUrl = foundResponse ? foundResponse.gifUrl : defaultResponseForLang.gifUrl;
-
-    return { response: responseText, gifUrl: gifUrl };
+    return { response: defaultResponseForLang.response, gifUrl: defaultResponseForLang.gifUrl };
 
   } catch (error) {
     console.error("Error in getAIResponse:", error);
