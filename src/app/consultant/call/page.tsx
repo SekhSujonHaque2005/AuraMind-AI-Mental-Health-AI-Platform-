@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Mic, MicOff, Video, VideoOff, PhoneOff, Ear } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, Suspense } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { textToSpeech } from '@/app/consultant/actions';
@@ -65,7 +65,7 @@ const StatusIndicator = ({ status }: { status: 'listening' | 'speaking' | 'greet
     );
 }
 
-export default function CallPage() {
+function CallComponent() {
   const searchParams = useSearchParams();
   const personaId = searchParams.get('persona');
   const router = useRouter();
@@ -380,4 +380,12 @@ export default function CallPage() {
         </Card>
     </div>
   );
+}
+
+export default function CallPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <CallComponent />
+        </Suspense>
+    );
 }
