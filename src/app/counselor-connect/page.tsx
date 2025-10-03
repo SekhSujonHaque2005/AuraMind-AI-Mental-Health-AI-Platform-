@@ -48,12 +48,20 @@ export default function CounselorConnectPage() {
                     transition={{ duration: 0.8, ease: 'easeOut' }}
                     className="z-10"
                 >
-                    <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-300 mb-6">
-                        Talk to a Counselor Anytime, Anywhere.
-                    </h1>
-                    <p className="max-w-3xl mx-auto text-lg md:text-xl text-gray-400 mb-10">
-                        Get instant access to certified mental health professionals through secure chat, audio, or video sessions.
-                    </p>
+                    <TextType
+                        as="h1"
+                        text="Talk to a Counselor Anytime, Anywhere."
+                        typingSpeed={50}
+                        loop={false}
+                        className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-300 mb-6"
+                    />
+                    <TextType
+                        text="Get instant access to certified mental health professionals through secure chat, audio, or video sessions."
+                        typingSpeed={20}
+                        initialDelay={2500}
+                        loop={false}
+                        className="max-w-3xl mx-auto text-lg md:text-xl text-gray-400 mb-10"
+                    />
                     <div className="flex justify-center gap-4">
                         <Button size="lg" className="bg-blue-600 hover:bg-blue-500 text-white text-lg py-7 px-8 rounded-full transition-transform transform hover:scale-105" onClick={() => router.push('/consultant/persona')}>
                             Connect Now
@@ -222,5 +230,7 @@ export default function CounselorConnectPage() {
         </div>
     );
 }
+
+    
 
     
