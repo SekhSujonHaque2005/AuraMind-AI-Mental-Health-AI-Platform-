@@ -1,4 +1,3 @@
-
 'use server';
 
 /**
@@ -34,13 +33,7 @@ export async function getAuraResponse(input: GetAuraResponseInput): Promise<GetA
   return getAuraResponseFlow(input);
 }
 
-
-const auraPrompt = ai.definePrompt({
-    name: 'auraPrompt',
-    input: { schema: GetAuraResponseInputSchema },
-    model: 'googleai/gemini-1.5-flash',
-    tools: [getTenorGif],
-    system: `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
+const systemPrompt = `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
 
 Your core principles are:
 1.  **Empathy and Validation:** Always validate the user's feelings. Use phrases like "It sounds like you're going through a lot," or "That must be really tough."
@@ -51,15 +44,8 @@ Your core principles are:
 6.  **No Medical Advice:** You are NOT a therapist. Do NOT provide diagnoses or medical advice.
 7.  **Prioritize Listening:** Your main goal is to listen, not to solve their problems. Avoid giving direct advice.
 8.  **Disclaimer:** At the end of your response, provide this disclaimer in the user's selected language: "Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional."
-9.  **GIFs for Expression:** To enhance your response, consider using the 'getTenorGif' tool to find a relevant, supportive, and gentle GIF that matches the emotion or context of the conversation. Use simple, one or two-word search queries for the best results (e.g., 'happy dance', 'gentle hug', 'thinking', 'relax').`,
-    prompt: `Conversation History:
-{{#each conversationHistory}}
-  {{this.sender}}: {{this.text}}
-{{/each}}
+9.  **GIFs for Expression:** To enhance your response, consider using the 'getTenorGif' tool to find a relevant, supportive, and gentle GIF that matches the emotion or context of the conversation. Use simple, one or two-word search queries for the best results (e.g., 'happy dance', 'gentle hug', 'thinking', 'relax').`;
 
-User: {{message}}
-Aura:`,
-});
 
 const getAuraResponseFlow = ai.defineFlow(
   {
@@ -68,22 +54,38 @@ const getAuraResponseFlow = ai.defineFlow(
     outputSchema: GetAuraResponseOutputSchema,
   },
   async (input) => {
-    const llmResponse = await auraPrompt(input);
-    const textResponse = llmResponse.text;
+    
+    // Construct the prompt history for the model
+    const history = input.conversationHistory.map(msg => ({
+      role: msg.sender === 'user' ? 'user' : 'model',
+      content: [{ text: msg.text }],
+    }));
+
+    const llmResponse = await ai.generate({
+      model: 'googleai/gemini-1.5-flash',
+      prompt: {
+          system: systemPrompt
+                    .replace('{{language}}', input.language || 'English')
+                    .replace('{{region}}', input.region || 'your area'),
+          history: history,
+          messages: [{ role: 'user', content: [{ text: input.message }] }],
+      },
+      tools: [getTenorGif],
+    });
+
+    const textResponse = llmResponse.text();
     
     if (!textResponse) {
         return { response: "I'm not sure how to respond to that. Could you say it in a different way?", gifUrl: null };
     }
-    
+
     let gifUrl: string | null = null;
+    const toolCalls = llmResponse.toolRequests();
     
-    // Check if the tool was called and if it returned a valid URL
-    if (
-      llmResponse.toolRequest &&
-      llmResponse.toolRequest.tool?.response &&
-      typeof llmResponse.toolRequest.tool.response === 'string'
-    ) {
-        gifUrl = llmResponse.toolRequest.tool.response;
+    // Check if the getTenorGif tool was called and returned a result
+    if (toolCalls.length > 0 && toolCalls[0].tool.name === 'getTenorGif' && toolCalls[0].tool.response) {
+      // The response is a string URL, so we can cast it directly.
+      gifUrl = toolCalls[0].tool.response as string | null;
     }
 
     // If no GIF was returned by the tool, use a default fallback.
