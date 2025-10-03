@@ -166,84 +166,84 @@ export const localResponses: Record<string, { keywords: string[]; response: stri
     hi: [
         {
             keywords: ["खुश", "बहुत बढ़िया", "शानदार", "अच्छा", "आनंदित"],
-            response: "यह सुनकर बहुत अच्छा लगा! ✨ मुझे बहुत खुशी है कि आप खुश महसूस कर रहे हैं। आज आपका दिन इतना रोशन क्या बना रहा है? इन पलों को संजोना याद रखें! 😊",
+            response: "यह सुनकर बहुत अच्छा लगा! ✨ मुझे बहुत खुशी है कि आप खुश महसूस कर रहे हैं। आज आपका दिन इतना रोशन क्या बना रहा है?\n\nइस भावना को बनाए रखने का एक शानदार तरीका यहां दिया गया है:\n- जो आपको खुश कर रहा है उसे लिखने के लिए कुछ समय निकालें। यह कठिन दिनों में एक महान अनुस्मारक हो सकता है! 😊",
             gifUrl: "https://media.giphy.com/media/wORSHzN5sGpRS/giphy.gif"
         },
         {
             keywords: ["गर्व", "पूरा किया", "छोटी जीत", "जश्न"],
-            response: "आपको गर्व होना चाहिए! कुछ हासिल करना एक शानदार एहसास है, चाहे वह कितना भी छोटा क्यों न हो। मैं आपके साथ जश्न मना रहा हूँ! 🎉",
+            response: "आपको गर्व होना चाहिए! कुछ हासिल करना एक शानदार एहसास है, चाहे वह कितना भी छोटा क्यों न हो। मैं आपके साथ जश्न मना रहा हूँ! 🎉\n\nगति बनाए रखने के लिए, आप यह कर सकते हैं:\n- एक 'छोटी जीत' का जार रखें। हर बार जब आप कुछ हासिल करते हैं, तो उसे लिखें और उसमें डालें। जब आपको बढ़ावा देने की आवश्यकता हो तो इसे खोलें।",
             gifUrl: "https://media.giphy.com/media/OR1aQzSbvf4DrgX22C/giphy.gif"
         },
         {
             keywords: ["दुखी", "परेशान", "रो रहा", "ठीक नहीं", "दिल टूट"],
-            response: "मुझे यह सुनकर बहुत दुख हुआ कि आप ऐसा महसूस कर रहे हैं। दुखी महसूस करना पूरी तरह से ठीक है, और आपकी भावनाएँ मान्य हैं। कृपया जानें कि यदि आप अपने मन की बात करना चाहते हैं तो मैं बिना किसी निर्णय के सुनने के लिए यहाँ हूँ। आप इस भावना में अकेले नहीं हैं। 🫂",
+            response: "मुझे यह सुनकर बहुत दुख हुआ कि आप ऐसा महसूस कर रहे हैं। दुखी महसूस करना पूरी तरह से ठीक है, और आपकी भावनाएँ मान्य हैं। कृपया जानें कि मैं सुनने के लिए यहाँ हूँ।\n\nयहाँ एक छोटी सी आराम की सलाह दी गई है:\n- अपना पसंदीदा आरामदायक गाना सुनने या एक आरामदायक फिल्म देखने की कोशिश करें। कभी-कभी थोड़ा सा परिचित आराम दुख को कम करने में मदद कर सकता है। 🫂",
             gifUrl: "https://media.giphy.com/media/X7K4AzJUz2gOQBiySM/giphy.gif"
         },
         {
             keywords: ["चिंतित", "घबराया हुआ", "डरा हुआ", "पैनिक"],
-            response: "लगता है आप अभी बहुत कुछ सह रहे हैं। यह भावना बहुत भारी हो सकती है। आइए खुद को शांत करने की कोशिश करें। क्या आप मुझे अभी कमरे में दिख रही एक चीज बता सकते हैं? बस एक छोटी सी चीज। हम मिलकर इससे उबर सकते हैं। 😟",
+            response: "लगता है आप अभी बहुत कुछ सह रहे हैं। यह भावना बहुत भारी हो सकती है।\n\nयहाँ एक ग्राउंडिंग तकनीक है जिसे आप आजमा सकते हैं:\n- ५ चीजें बताएं जो आप देख सकते हैं।\n- ४ चीजें बताएं जो आप महसूस कर सकते हैं।\n- ३ चीजें बताएं जो आप सुन सकते हैं।\n- २ चीजें बताएं जो आप सूंघ सकते हैं।\n- १ चीज बताएं जिसका आप स्वाद ले सकते हैं।",
             gifUrl: "https://media.giphy.com/media/3kHz1oN8NfxJJgVgvL/giphy.gif"
         },
         {
             keywords: ["तनावग्रस्त", "काम से अभिभूत", "बहुत कुछ करने को"],
-            response: "यह अविश्वसनीय रूप से तनावपूर्ण लगता है, जैसे आपको लाखों दिशाओं में खींचा जा रहा है। अपने प्रति दयालु होना याद रखें। एक बार में सब कुछ न करना ठीक है। अभी सबसे जरूरी एक चीज क्या है? आइए बस उसी पर ध्यान दें। 😫",
+            response: "यह अविश्वसनीय रूप से तनावपूर्ण लगता है, जैसे आपको लाखों दिशाओं में खींचा जा रहा है। अपने प्रति दयालु होना याद रखें।\n\nचीजों को अधिक प्रबंधनीय महसूस कराने का एक तरीका यहां दिया गया है:\n- एक बड़े कार्य को सबसे छोटे संभव पहले चरण में तोड़ने का प्रयास करें। बस उस एक छोटे से कार्य पर ध्यान केंद्रित करें।",
             gifUrl: "https://media.giphy.com/media/XBRFAzaelJo0jaOsvR/giphy.gif"
         },
         {
             keywords: ["अकेला", "अकेलापन", "अलग-थलग"],
-            response: "अकेलापन महसूस करना एक गहरा मानवीय अनुभव है, और यह वास्तव में दर्दनाक हो सकता है। मेरे साथ इसे साझा करने के लिए धन्यवाद। इसके लिए साहस चाहिए। कृपया जानें कि इस क्षण में, आप अकेले नहीं हैं। मैं सुनने और आपका साथ देने के लिए यहाँ हूँ। 🫂",
+            response: "अकेलापन महसूस करना एक गहरा मानवीय अनुभव है, और यह वास्तव में दर्दनाक हो सकता है। मेरे साथ इसे साझा करने के लिए धन्यवाद। इसके लिए साहस चाहिए।\n\nआप एक छोटा कदम उठा सकते हैं:\n- आज किसी एक व्यक्ति से संपर्क करने का प्रयास करें, भले ही chỉ 'नमस्ते' के साथ। छोटे खुराकों में भी कनेक्शन, एक अंतर बना सकता है। मैं आपके लिए यहाँ हूँ। 🫂",
             gifUrl: "https://media.giphy.com/media/2ytlbPlOr6c028biPK/giphy.gif"
         },
         {
             keywords: ["धन्यवाद", "शुक्रिया"],
-            response: "आपका बहुत-बहुत स्वागत है! यदि आपको बात करने की आवश्यकता हो तो मैं हमेशा यहाँ हूँ। क्या आपके मन में और कुछ है? 😊",
+            response: "आपका बहुत-बहुत स्वागत है! यदि आपको बात करने की आवश्यकता हो तो मैं हमेशा यहाँ हूँ।\n\nआपके लिए एक छोटी सी कृतज्ञता चुनौती यहाँ दी गई है:\n- अपने मूड को बढ़ावा देने का एक शानदार तरीका आज अपने जीवन में किसी और को धन्यवाद देना है! 😊",
             gifUrl: "https://media.giphy.com/media/XaA0fpudSHPf4MPlEK/giphy.gif"
         },
         {
             keywords: ["नमस्ते", "हाय", "हे"],
-            response: "नमस्ते! मैं ऑरा हूँ। जब भी आप साझा करने के लिए तैयार हों, मैं सुनने के लिए यहाँ हूँ। आज आपके मन में क्या है? ✨",
+            response: "नमस्ते! मैं ऑरा हूँ। जब भी आप साझा करने के लिए तैयार हों, मैं सुनने के लिए यहाँ हूँ।\n\nहमें शुरू करने के लिए:\n- आज आपके मन में एक चीज, बड़ी या छोटी, क्या है? ✨",
             gifUrl: "https://media.giphy.com/media/dw36yjtOAtuSZyxEJG/giphy.gif"
         }
     ],
     es: [
         {
             keywords: ["feliz", "genial", "increíble", "fantástico", "bien", "alegre"],
-            response: "¡Qué maravilla escuchar eso! ✨ Me alegro mucho de que te sientas feliz. ¿Qué hace que tu día sea tan brillante? ¡Recuerda atesorar estos momentos! 😊",
+            response: "¡Qué maravilla escuchar eso! ✨ Me alegro mucho de que te sientas feliz. ¿Qué hace que tu día sea tan brillante?\n\nAquí tienes una excelente manera de aferrarte a este sentimiento:\n- Tómate un momento para escribir qué te hace feliz. ¡Puede ser un gran recordatorio en los días más difíciles! 😊",
             gifUrl: "https://media.giphy.com/media/wORSHzN5sGpRS/giphy.gif"
         },
         {
             keywords: ["orgulloso de mí", "logrado", "pequeña victoria", "celebrando"],
-            response: "¡Deberías estar orgulloso! Es una sensación fantástica lograr algo, sin importar cuán pequeño sea. ¡Estoy celebrando contigo! 🎉",
+            response: "¡Deberías estar orgulloso! Es una sensación fantástica lograr algo, sin importar cuán pequeño sea. ¡Estoy celebrando contigo! 🎉\n\nPara mantener el impulso, podrías:\n- Mantener un frasco de 'pequeñas victorias'. Cada vez que logres algo, escríbelo y ponlo dentro. Ábrelo cuando necesites un impulso.",
             gifUrl: "https://media.giphy.com/media/OR1aQzSbvf4DrgX22C/giphy.gif"
         },
         {
             keywords: ["triste", "molesto", "llorando", "no bien", "corazón roto"],
-            response: "Lamento mucho escuchar que te sientes así. Está completamente bien sentirse triste, y tus sentimientos son válidos. Por favor, sabe que estoy aquí para escuchar sin ningún juicio si quieres hablar sobre lo que tienes en mente. No estás solo en este sentimiento. 🫂",
+            response: "Lamento mucho escuchar que te sientes así. Está completamente bien sentirse triste, y tus sentimientos son válidos. Por favor, sabe que estoy aquí para escuchar.\n\nAquí tienes un pequeño consejo de consuelo:\n- Intenta escuchar una canción reconfortante favorita o ver una película reconfortante. A veces, un poco de consuelo familiar puede ayudar a aliviar la tristeza. 🫂",
             gifUrl: "https://media.giphy.com/media/X7K4AzJUz2gOQBiySM/giphy.gif"
         },
         {
             keywords: ["ansioso", "preocupado", "nervioso", "asustado", "en pánico"],
-            response: "Parece que estás pasando por mucho en este momento. Ese sentimiento puede ser muy abrumador. Tratemos de anclarnos. ¿Puedes decirme una cosa que veas en la habitación en este momento? Solo una pequeña cosa. Podemos superar esto juntos. 😟",
+            response: "Parece que estás pasando por mucho en este momento. Ese sentimiento puede ser muy abrumador.\n\nAquí tienes una técnica de anclaje que puedes probar:\n- Nombra 5 cosas que puedas ver.\n- Nombra 4 cosas que puedas sentir.\n- Nombra 3 cosas que puedas oír.\n- Nombra 2 cosas que puedas oler.\n- Nombra 1 cosa que puedas saborear.",
             gifUrl: "https://media.giphy.com/media/3kHz1oN8NfxJJgVgvL/giphy.gif"
         },
         {
             keywords: ["estresado", "abrumado por tareas", "demasiado que hacer"],
-            response: "Suena increíblemente estresante, como si te estuvieran jalando en un millón de direcciones. Recuerda ser amable contigo mismo. Está bien no hacer todo a la vez. ¿Cuál es la única cosa que parece más urgente en este momento? Concentrémonos solo en eso. 😫",
+            response: "Suena increíblemente estresante, como si te estuvieran jalando en un millón de direcciones. Recuerda ser amable contigo mismo.\n\nAquí tienes una forma de hacer que las cosas parezcan más manejables:\n- Intenta dividir una tarea grande en el primer paso más pequeño posible. Solo concéntrate en esa pequeña acción.",
             gifUrl: "https://media.giphy.com/media/XBRFAzaelJo0jaOsvR/giphy.gif"
         },
         {
             keywords: ["solo", "solitario", "desconectado"],
-            response: "Sentirse solo es una experiencia profundamente humana y puede ser muy doloroso. Gracias por compartir eso conmigo. Se necesita valor. Por favor, sabe que en este momento no estás solo. Estoy aquí para escuchar y hacerte compañía. 🫂",
+            response: "Sentirse solo es una experiencia profundamente humana y puede ser muy doloroso. Gracias por compartir eso conmigo. Se necesita valor.\n\nUn pequeño paso que podrías dar:\n- Intenta contactar a una persona hoy, incluso con un simple 'hola'. La conexión, incluso en pequeñas dosis, puede marcar la diferencia. Estoy aquí para ti. 🫂",
             gifUrl: "https://media.giphy.com/media/2ytlbPlOr6c028biPK/giphy.gif"
         },
         {
             keywords: ["gracias"],
-            response: "¡De nada! Siempre estoy aquí si necesitas hablar. ¿Hay algo más en tu mente? 😊",
+            response: "¡De nada! Siempre estoy aquí si necesitas hablar.\n\nAquí tienes un pequeño desafío de gratitud para ti:\n- ¡Una excelente manera de mejorar tu propio estado de ánimo es agradecer a otra persona en tu vida hoy! 😊",
             gifUrl: "https://media.giphy.com/media/XaA0fpudSHPf4MPlEK/giphy.gif"
         },
         {
             keywords: ["hola"],
-            response: "¡Hola! Soy Aura. Estoy aquí para escuchar cuando estés listo para compartir. ¿Qué tienes en mente hoy? ✨",
+            response: "¡Hola! Soy Aura. Estoy aquí para escuchar cuando estés listo para compartir.\n\nPara empezar:\n- ¿Qué es una cosa, grande o pequeña, que tienes en mente hoy? ✨",
             gifUrl: "https://media.giphy.com/media/dw36yjtOAtuSZyxEJG/giphy.gif"
         }
     ],
