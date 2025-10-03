@@ -355,4 +355,3 @@ export const localResponses = [
         gifUrl: "https://media.tenor.com/41n0a3M5n2kAAAAC/spongebob-imagination.gif"
     },
 ];
-
