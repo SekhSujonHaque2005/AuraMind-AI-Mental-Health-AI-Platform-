@@ -20,6 +20,7 @@ import {
   CheckCircle,
   BookUser,
   Send,
+  Handshake,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import React, { useState, useEffect } from 'react';
@@ -54,6 +55,14 @@ const features = [
     href: "/consultant",
     src: "https://picsum.photos/seed/feature2/1000/1000",
     category: "Virtual Support"
+  },
+  {
+    icon: Handshake,
+    title: "Counselor Connect",
+    description: "Connect with real, licensed counselors for professional support and guidance.",
+    href: "/counselor-connect",
+    src: "https://picsum.photos/seed/feature7/1000/1000",
+    category: "Professional Help"
   },
   {
     icon: Sparkles,
@@ -611,3 +620,5 @@ export default function LandingPage() {
     );
 
 }
+
+    
