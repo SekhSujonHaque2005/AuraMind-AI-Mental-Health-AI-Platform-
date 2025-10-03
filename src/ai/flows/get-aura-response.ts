@@ -34,7 +34,7 @@ export async function getAuraResponse(input: GetAuraResponseInput): Promise<GetA
   return getAuraResponseFlow(input);
 }
 
-const systemPrompt = `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
+const systemPromptTemplate = `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
 
 Your core principles are:
 1.  **Empathy and Validation:** Always validate the user's feelings. Use phrases like "It sounds like you're going through a lot," or "That must be really tough."
@@ -56,6 +56,10 @@ const getAuraResponseFlow = ai.defineFlow(
   },
   async (input) => {
     
+    const finalSystemPrompt = systemPromptTemplate
+      .replace('{{language}}', input.language || 'English')
+      .replace('{{region}}', input.region || 'your area');
+
     // Construct the prompt history for the model
     const history = input.conversationHistory.map(msg => ({
       role: msg.sender === 'user' ? 'user' : 'model',
@@ -65,9 +69,7 @@ const getAuraResponseFlow = ai.defineFlow(
     const llmResponse = await ai.generate({
       model: 'googleai/gemini-1.5-flash',
       prompt: {
-          system: systemPrompt
-                    .replace('{{language}}', input.language || 'English')
-                    .replace('{{region}}', input.region || 'your area'),
+          system: finalSystemPrompt,
           history: history,
           messages: [{ role: 'user', content: [{ text: input.message }] }],
       },
