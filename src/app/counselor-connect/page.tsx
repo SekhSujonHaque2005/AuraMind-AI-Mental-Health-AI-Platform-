@@ -4,7 +4,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { CheckCircle, ShieldCheck, Star, Users, MessageSquare, Phone, Video, PlayCircle, ArrowRight, AlertTriangle } from 'lucide-react';
+import { CheckCircle, ShieldCheck, Star, Users, MessageSquare, Phone, Video, PlayCircle, ArrowRight, AlertTriangle, Calendar, Search } from 'lucide-react';
 import TextType from '@/components/ui/text-type';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -40,6 +40,24 @@ export default function CounselorConnectPage() {
             description: 'This feature is currently under development.',
         });
     };
+    
+    const howItWorksSteps = [
+        {
+          icon: Search,
+          title: "Find Your Counselor",
+          description: "Browse our network of certified professionals. Filter by specialty, language, and availability to find the right match for you."
+        },
+        {
+          icon: Calendar,
+          title: "Book Your Session",
+          description: "Select a time that works for you and choose your preferred communication method: chat, audio, or video."
+        },
+        {
+          icon: PlayCircle,
+          title: "Begin Your Journey",
+          description: "Join your secure, private session from any device and start your conversation with a trusted professional."
+        }
+      ];
 
     return (
         <div className="min-h-screen text-white overflow-x-hidden">
@@ -77,42 +95,41 @@ export default function CounselorConnectPage() {
                 </motion.div>
             </section>
 
-            <section className="py-20 px-4">
-                <div className="max-w-6xl mx-auto">
-                    <h2 className="text-4xl font-bold text-center mb-12">How It Works</h2>
-                    <motion.div 
-                        className="grid md:grid-cols-3 gap-8"
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.5 }}
-                    >
-                        <motion.div variants={itemVariants}>
-                            <Card className="bg-white/5 border border-white/10 p-8 rounded-2xl text-center h-full">
-                                <Users className="h-12 w-12 mx-auto text-blue-400 mb-4"/>
-                                <h3 className="text-xl font-semibold mb-2">Step 1: Choose a Counselor</h3>
-                                <p className="text-gray-400">Browse our network of certified professionals or get matched based on your needs.</p>
-                            </Card>
-                        </motion.div>
-                        <motion.div variants={itemVariants}>
-                            <Card className="bg-white/5 border border-white/10 p-8 rounded-2xl text-center h-full">
-                                 <div className="flex justify-center gap-3 h-12 mb-4">
-                                    <MessageSquare className="h-10 w-10 text-blue-400"/>
-                                    <Phone className="h-10 w-10 text-blue-400"/>
-                                    <Video className="h-10 w-10 text-blue-400"/>
-                                 </div>
-                                <h3 className="text-xl font-semibold mb-2">Step 2: Select Session Type</h3>
-                                <p className="text-gray-400">Connect the way you feel most comfortable: via chat, audio, or video.</p>
-                            </Card>
-                        </motion.div>
-                        <motion.div variants={itemVariants}>
-                            <Card className="bg-white/5 border border-white/10 p-8 rounded-2xl text-center h-full">
-                                <PlayCircle className="h-12 w-12 mx-auto text-blue-400 mb-4"/>
-                                <h3 className="text-xl font-semibold mb-2">Step 3: Start Your Session</h3>
-                                <p className="text-gray-400">Begin your secure and private conversation instantly, right from your device.</p>
-                            </Card>
-                        </motion.div>
-                    </motion.div>
+             <section className="py-20 px-4">
+                <div className="max-w-5xl mx-auto">
+                    <h2 className="text-4xl font-bold text-center mb-16">How It Works</h2>
+                    <div className="relative">
+                        {/* The connecting line */}
+                        <div className="absolute left-1/2 -translate-x-1/2 top-10 h-full w-px bg-blue-500/20 hidden md:block" />
+
+                        {howItWorksSteps.map((step, index) => (
+                            <div key={index} className="relative mb-24 md:mb-12">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true, amount: 0.5 }}
+                                    transition={{ duration: 0.6, ease: 'easeOut' }}
+                                    className="md:flex items-center gap-12"
+                                >
+                                    {/* Number and Icon */}
+                                    <div className={`flex flex-col items-center md:flex-none ${index % 2 === 0 ? 'md:order-1' : 'md:order-3'}`}>
+                                        <div className="relative z-10 flex items-center justify-center w-20 h-20 rounded-full bg-gray-900 border-2 border-blue-500/30">
+                                            <div className="flex items-center justify-center w-14 h-14 rounded-full bg-blue-500/10">
+                                                <step.icon className="w-8 h-8 text-blue-300"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Text Content */}
+                                    <div className={`text-center md:text-left ${index % 2 === 0 ? 'md:order-2' : 'md:order-2 md:text-right'}`}>
+                                        <p className="text-lg font-semibold text-blue-400 mb-2">Step {index + 1}</p>
+                                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">{step.title}</h3>
+                                        <p className="text-gray-400 max-w-sm mx-auto md:mx-0">{step.description}</p>
+                                    </div>
+                                </motion.div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
 
