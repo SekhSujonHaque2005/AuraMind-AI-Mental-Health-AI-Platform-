@@ -48,12 +48,12 @@ export default function CounselorConnectPage() {
                 <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#3b82f633,transparent)]"></div>
             </div>
 
-            <section className="relative flex flex-col items-center pt-32 md:pt-48 min-h-screen text-center px-4">
+            <section className="relative flex flex-col items-center pt-32 md:pt-48 min-h-screen px-4">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: 'easeOut' }}
-                    className="z-10"
+                    className="z-10 text-center"
                 >
                     <TextType
                         as="h1"
@@ -136,67 +136,6 @@ export default function CounselorConnectPage() {
                     </motion.div>
                 </div>
             </section>
-
-            <section className="py-20 px-4">
-                <div className="max-w-6xl mx-auto">
-                    <h2 className="text-4xl font-bold text-center mb-12">Flexible Pricing Plans</h2>
-                    <motion.div 
-                        className="grid lg:grid-cols-3 gap-8"
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.3 }}
-                    >
-                        <motion.div variants={itemVariants}>
-                             <Card className="bg-white/5 border border-white/10 p-8 rounded-2xl h-full flex flex-col">
-                                <CardHeader>
-                                    <CardTitle className="text-2xl font-bold text-green-400">Free Trial</CardTitle>
-                                    <CardDescription className="text-4xl font-bold text-white">First 10 mins</CardDescription>
-                                </CardHeader>
-                                <CardContent className="flex-grow space-y-3">
-                                    <li className="flex items-center gap-2 text-gray-300">
-                                        <CheckCircle className="h-5 w-5 text-green-400"/> Chat with a counselor
-                                    </li>
-                                    <li className="flex items-center gap-2 text-gray-300">
-                                        <CheckCircle className="h-5 w-5 text-green-400"/> No commitment required
-                                    </li>
-                                </CardContent>
-                                <Button variant="outline" className="w-full mt-6 bg-transparent border-green-500 text-green-400 hover:bg-green-500/10 hover:text-green-300" onClick={handleComingSoon}>Book a Trial Session</Button>
-                            </Card>
-                        </motion.div>
-
-                        <motion.div variants={itemVariants}>
-                            <Card className="bg-blue-600/10 border-2 border-blue-500 p-8 rounded-2xl h-full flex flex-col shadow-2xl shadow-blue-500/10">
-                                <CardHeader>
-                                    <CardTitle className="text-2xl font-bold text-blue-300">On-Demand</CardTitle>
-                                    <CardDescription className="text-4xl font-bold text-white">Pay-Per-Session</CardDescription>
-                                </CardHeader>
-                                <CardContent className="flex-grow space-y-3">
-                                    <li className="flex items-center gap-2 text-gray-300"><CheckCircle className="h-5 w-5 text-blue-300"/> Chat, Audio, or Video sessions</li>
-                                    <li className="flex items-center gap-2 text-gray-300"><CheckCircle className="h-5 w-5 text-blue-300"/> Choose your counselor</li>
-                                    <li className="flex items-center gap-2 text-gray-300"><CheckCircle className="h-5 w-5 text-blue-300"/> No subscription needed</li>
-                                </CardContent>
-                                 <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-500 text-white" onClick={handleComingSoon}>Book On-Demand</Button>
-                            </Card>
-                        </motion.div>
-
-                        <motion.div variants={itemVariants}>
-                            <Card className="bg-white/5 border border-white/10 p-8 rounded-2xl h-full flex flex-col">
-                                <CardHeader>
-                                    <CardTitle className="text-2xl font-bold text-purple-400">Premium Membership</CardTitle>
-                                    <CardDescription className="text-4xl font-bold text-white">$49/month</CardDescription>
-                                </CardHeader>
-                                <CardContent className="flex-grow space-y-3">
-                                    <li className="flex items-center gap-2 text-gray-300"><CheckCircle className="h-5 w-5 text-purple-400"/> Unlimited discounted sessions</li>
-                                    <li className="flex items-center gap-2 text-gray-300"><CheckCircle className="h-5 w-5 text-purple-400"/> Full access to AI wellness tools</li>
-                                    <li className="flex items-center gap-2 text-gray-300"><CheckCircle className="h-5 w-5 text-purple-400"/> Priority booking</li>
-                                </CardContent>
-                                <Button variant="outline" className="w-full mt-6 bg-transparent border-purple-500 text-purple-400 hover:bg-purple-500/10 hover:text-purple-300" onClick={handleComingSoon}>Become a Member</Button>
-                            </Card>
-                        </motion.div>
-                    </motion.div>
-                </div>
-            </section>
             
             <section className="py-20 px-4">
                 <div className="max-w-4xl mx-auto text-center">
@@ -221,7 +160,7 @@ export default function CounselorConnectPage() {
                 <h2 className="text-4xl md:text-5xl font-bold mb-8">Ready to take the next step?</h2>
                 <div className="flex justify-center gap-4">
                      <Button size="lg" className="bg-blue-600 hover:bg-blue-500 text-white text-xl py-8 px-10 rounded-full transition-transform transform hover:scale-105" onClick={handleComingSoon}>
-                        Book a Session <ArrowRight className="ml-3 h-6 w-6"/>
+                        Schedule a Session <ArrowRight className="ml-3 h-6 w-6"/>
                     </Button>
                 </div>
             </section>
