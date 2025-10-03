@@ -1,357 +1,206 @@
 
 
-export const defaultResponse = "That's interesting. Can you tell me more about that? I'm here to listen. Remember, I am an AI and not a substitute for a professional therapist.";
-export const defaultGif = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
+export const defaultResponses: Record<string, { response: string; gifUrl: string }> = {
+    en: {
+        response: "That's interesting. Can you tell me more about that? I'm here to listen. Remember, I am an AI and not a substitute for a professional therapist.",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    hi: {
+        response: "यह दिलचस्प है। क्या आप मुझे इसके बारे में और बता सकते हैं? मैं सुनने के लिए यहाँ हूँ। याद रखें, मैं एक एआई हूँ और एक पेशेवर चिकित्सक का विकल्प नहीं हूँ।",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    es: {
+        response: "Eso es interesante. ¿Puedes contarme más sobre eso? Estoy aquí para escuchar. Recuerda, soy una IA y no un sustituto de un terapeuta profesional.",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    fr: {
+        response: "C'est intéressant. Pouvez-vous m'en dire plus à ce sujet ? Je suis là pour écouter. N'oubliez pas que je suis une IA et non un substitut à un thérapeute professionnel.",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    de: {
+        response: "Das ist interessant. Können Sie mir mehr darüber erzählen? Ich bin hier, um zuzuhören. Denken Sie daran, ich bin eine KI und kein Ersatz für einen professionellen Therapeuten.",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    it: {
+        response: "È interessante. Puoi dirmi di più a riguardo? Sono qui per ascoltare. Ricorda, sono un'IA e non un sostituto di un terapeuta professionista.",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    ja: {
+        response: "それは面白いですね。それについてもっと教えていただけますか？私は聞くためにここにいます。覚えておいてください、私はAIであり、プロのセラピストの代わりではありません。",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    ar: {
+        response: "هذا مثير للاهتمام. هل يمكنك إخباري المزيد عن ذلك؟ أنا هنا للاستماع. تذكر، أنا ذكاء اصطناعي ولست بديلاً عن معالج محترف.",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    pt: {
+        response: "Isso é interessante. Você pode me contar mais sobre isso? Estou aqui para ouvir. Lembre-se, sou uma IA e não um substituto para um terapeuta profissional.",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    ru: {
+        response: "Это интересно. Вы можете рассказать мне об этом больше? Я здесь, чтобы слушать. Помните, я ИИ, а не замена профессиональному терапевту.",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    bn: {
+        response: "এটা আকর্ষণীয়। আপনি কি আমাকে এই সম্পর্কে আরও কিছু বলতে পারেন? আমি শোনার জন্য এখানে আছি। মনে রাখবেন, আমি একজন এআই এবং কোনও পেশাদার থেরাপিস্টের বিকল্প নই।",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    te: {
+        response: "అది ఆసక్తికరంగా ఉంది. దాని గురించి మీరు నాకు ఇంకా చెప్పగలరా? నేను వినడానికి ఇక్కడ ఉన్నాను. గుర్తుంచుకోండి, నేను ఒక AIని మరియు వృత్తిపరమైన చికిత్సకుడికి ప్రత్యామ్నాయం కాదు.",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    mr: {
+        response: "ते मनोरंजक आहे. तुम्ही मला त्याबद्दल अधिक सांगू शकाल का? मी ऐकण्यासाठी येथे आहे. लक्षात ठेवा, मी एक AI आहे आणि व्यावसायिक थेरपिस्टचा पर्याय नाही.",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    ta: {
+        response: "அது சுவாரஸ்யமாக இருக்கிறது. அதைப் பற்றி இன்னும் கொஞ்சம் சொல்ல முடியுமா? நான் கேட்பதற்கு இங்கே இருக்கிறேன். நினைவில் கொள்ளுங்கள், நான் ஒரு செயற்கை நுண்ணறிவு மற்றும் ஒரு தொழில்முறை சிகிச்சையாளருக்கு மாற்றாக இல்லை.",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    gu: {
+        response: "તે રસપ્રદ છે. તમે મને તે વિશે વધુ કહી શકો છો? હું સાંભળવા માટે અહીં છું. યાદ રાખો, હું એક AI છું અને વ્યાવસાયિક ચિકિત્સકનો વિકલ્પ નથી.",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    pa: {
+        response: "ਇਹ ਦਿਲਚਸਪ ਹੈ। ਕੀ ਤੁਸੀਂ ਮੈਨੂੰ ਇਸ ਬਾਰੇ ਹੋਰ ਦੱਸ ਸਕਦੇ ਹੋ? ਮੈਂ ਸੁਣਨ ਲਈ ਇੱਥੇ ਹਾਂ। ਯਾਦ ਰੱਖੋ, ਮੈਂ ਇੱਕ AI ਹਾਂ ਅਤੇ ਇੱਕ ਪੇਸ਼ੇਵਰ ਥੈਰੇਪਿਸਟ ਦਾ ਬਦਲ ਨਹੀਂ ਹਾਂ।",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    bho: {
+        response: "ई रोचक बा। का रउआ हमरा के एकरा बारे में अउरी बता सकत बानी? हम सुने खातिर इहाँ बानी। याद राखीं, हम एगो एआई हईं आ कौनों प्रोफेशनल थेरेपिस्ट के विकल्प ना हईं।",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+    sat: {
+        response: "ᱱᱚᱣᱟ ᱫᱚ ᱨᱟᱹᱥᱠᱟᱹᱱᱟᱜ ᱠᱟᱱᱟ᱾ ᱪᱮᱫ ᱟᱢ ᱤᱧलाई ᱱᱚᱣᱟ ᱵᱟᱨᱮᱛᱮ ᱟᱨᱦᱚᱸ ᱞᱟᱹᱭ ᱫᱟᱲᱮᱭᱟᱜ-ᱟᱢ? ᱤᱧ ᱫᱚ ᱟᱸᱡᱚᱢ ᱞᱟᱹᱜᱤᱫ ᱱᱚక్కడᱮ ᱢᱤᱱᱟᱹᱧᱟ᱾ ᱫᱤᱥᱟᱹ ᱫᱚᱦᱚᱭ ᱢᱮ, ᱤᱧ ᱫᱚ ᱢᱤᱫ AI ᱠᱟᱹᱱᱟᱹᱧ ᱟᱨ ᱯᱮᱥᱟगत ቴራፒስት ᱨᱮᱭᱟᱜ ᱵᱚᱫᱚᱞ ᱫᱚ ᱵᱟᱝ ᱠᱟᱹᱱᱟᱹᱧ᱾",
+        gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif',
+    },
+};
 
-export const localResponses = [
-    // --- Positive Feelings ---
-    {
-        keywords: ["happy", "great", "awesome", "fantastic", "good", "joyful"],
-        response: "That's wonderful to hear! ✨ I'm so glad you're feeling happy. What's making your day so bright? Remember to cherish these moments! 😊",
-        gifUrl: "https://media.tenor.com/r3x7-q91-lYAAAAC/happy-dance-excited.gif"
-    },
-    {
-        keywords: ["proud of myself", "accomplished", "small win", "celebrating"],
-        response: "You should be proud! It's a fantastic feeling to accomplish something, no matter how small. I'm celebrating with you! 🎉",
-        gifUrl: "https://media.tenor.com/2m6mmJc5t90AAAAC/you-did-it-proud-of-you.gif"
-    },
-    {
-        keywords: ["grateful", "thankful"],
-        response: "Practicing gratitude is such a powerful way to shift perspective. It's lovely that you're taking a moment to appreciate the good things. What are you grateful for today? 🙏",
-        gifUrl: "https://media.tenor.com/lDk-y5s-QnQAAAAC/thankful-grateful.gif"
-    },
-    {
-        keywords: ["hopeful", "optimistic"],
-        response: "Holding onto hope is a sign of incredible strength. It's wonderful that you're looking towards the future with optimism. What are you feeling hopeful about? ✨",
-        gifUrl: "https://media.tenor.com/jG_3HAm51qEAAAAC/looking-forward-to-it-excited.gif"
-    },
-     {
-        keywords: ["relaxed", "calm", "content", "peaceful"],
-        response: "It sounds like you've found a moment of peace, and that's beautiful. It's so important to have these times of calm. Enjoy the feeling. 😌",
-        gifUrl: "https://media.tenor.com/lEa-i5y53bIAAAAC/relax-take-it-easy.gif"
-    },
-    {
-        keywords: ["creative", "inspired", "motivated to create"],
-        response: "That's fantastic! Creativity is a wonderful energy. Ride that wave of inspiration and see what you create. I'm excited for you! 🎨✨",
-        gifUrl: "https://media.tenor.com/r3x7-q91-lYAAAAC/happy-dance-excited.gif"
-    },
-    {
-        keywords: ["relieved", "relief"],
-        response: "That feeling of relief can be so powerful, like a weight has been lifted. I'm glad you're on the other side of whatever was causing you stress. Take a moment to just breathe and enjoy this feeling. 🌬️",
-        gifUrl: "https://media.tenor.com/J3o-32Z0iWwAAAAC/phew-sweat.gif"
-    },
-    {
-        keywords: ["excited", "can't wait"],
-        response: "That's so exciting! It's wonderful to have something to look forward to. What are you most excited about? The anticipation is half the fun! 🤩",
-        gifUrl: "https://media.tenor.com/y_roORi0YnEAAAAC/spongebob-laughing.gif"
-    },
-    {
-        keywords: ["proud of them", "happy for them", "proud of my friend"],
-        response: "That's so wonderful! Celebrating someone else's success is a beautiful act of friendship and love. It shows how much you care. What did they accomplish? I'd love to celebrate with you!",
-        gifUrl: "https://media.tenor.com/1i3B82hP5AAAAAAC/so-proud-of-you-proud-of-you.gif"
-    },
-    {
-        keywords: ["feeling better", "i feel better", "doing better"],
-        response: "I'm so genuinely happy to hear that you're feeling better. That's a testament to your resilience. Remember to be patient with yourself as you continue to heal and grow. I'm here for you on good days and bad. 😊",
-        gifUrl: "https://media.tenor.com/1i3B82hP5AAAAAAC/so-proud-of-you-proud-of-you.gif"
-    },
-    {
-        keywords: ["cautiously optimistic", "carefully hopeful"],
-        response: "Cautious optimism is a very wise way to feel. It's like you're protecting your heart while still allowing for hope. It's okay to hold both the hope and the caution. What's making you feel hopeful, and what's making you feel cautious?",
-        gifUrl: "https://media.tenor.com/jG_3HAm51qEAAAAC/looking-forward-to-it-excited.gif"
-    },
-
-    // --- Neutral Feelings ---
-    {
-        keywords: ["okay", "alright", "meh", "so-so", "fine"],
-        response: "It's okay to just feel 'okay'. Not every day has to be a peak or a valley. Thanks for sharing where you're at. Is there anything on your mind, or are you just resting in this neutral space? 😌",
-        gifUrl: "https://media.tenor.com/lEa-i5y53bIAAAAC/relax-take-it-easy.gif"
-    },
-    {
-        keywords: ["bored", "nothing to do"],
-        response: "Boredom can sometimes be a quiet moment for your mind to rest, or a doorway to creativity. Is there anything you've been wanting to try but haven't had the time for? Or maybe just enjoying the quiet is what you need right now. 🎨",
-        gifUrl: "https://media.tenor.com/bmwT1h0b5aIAAAAC/spongebob-bored.gif"
-    },
-    {
-        keywords: ["nostalgic", "sentimental", "remember when"],
-        response: "Nostalgia can be such a warm, bittersweet feeling. It's nice to look back on good memories. What memory is on your mind right now? I'd love to hear about it. 🎞️",
-        gifUrl: "https://media.tenor.com/eF3y9j2iSrcAAAAC/nostalgia-inside-out.gif"
-    },
-    {
-        keywords: ["curious", "wondering", "tell me about"],
-        response: "It's wonderful to be curious! Curiosity is the engine of discovery. What has sparked your interest? I may not have all the answers, but I'd love to explore the question with you. 🤔",
-        gifUrl: "https://media.tenor.com/41n0a3M5n2kAAAAC/spongebob-imagination.gif"
-    },
-    {
-        keywords: ["conflicted", "torn", "don't know how to feel"],
-        response: "Feeling conflicted is completely normal when you're dealing with a complex situation. It's okay to hold two opposing feelings at once. There's no need to pick a side right away. Let's explore those different feelings if you're open to it. ⚖️",
-        gifUrl: "https://media.tenor.com/7123pAYJt8cAAAAC/the-good-place-chidi.gif"
-    },
-    {
-        keywords: ["um", "uh", "i guess", "maybe"],
-        response: "Take your time. There's no rush here. I'm listening whenever you're ready to share. It's okay if it takes a moment to find the right words. 🕰️",
-        gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
-    },
-    {
-        keywords: ["awful", "terrible"],
-        response: "That sounds incredibly difficult. 'Awful' is a strong word, and it tells me you're in a lot of pain right now. I'm so sorry you're going through this. Please know I'm here to listen to whatever you feel comfortable sharing. 🫂",
-        gifUrl: "https://media.tenor.com/S-l2aLff3BwAAAAC/hug-love.gif"
-    },
-    {
-        keywords: ["i like that", "i want that", "i choose"],
-        response: "It's great that you've identified something you like or want. Recognizing our own preferences is a wonderful form of self-awareness. What about that stands out to you? ✨",
-        gifUrl: "https://media.tenor.com/pYhV4b6t3JcAAAAC/youre-welcome-baymax.gif"
-    },
-    {
-        keywords: ["asdfghjkl", "random letters", "testing"],
-        response: "I see you're testing things out! It's good to be curious about how I work. I'm ready to listen to you about anything you want to talk about, whenever you're ready. 😊",
-        gifUrl: "https://media.tenor.com/2iGqI5t0hIAAAAAC/big-hero-6-baymax.gif"
-    },
-    {
-        keywords: ["apathetic", "don't care", "indifferent"],
-        response: "Feeling apathetic or indifferent can be a way our minds protect us when we're overwhelmed. It's a low-energy state. You don't have to force yourself to feel anything right now. It's okay to just be. I'm here with you in this quietness.",
-        gifUrl: "https://media.tenor.com/2T6AWaM9a6sAAAAC/sad-cloud.gif"
-    },
-
-    // --- Negative Feelings ---
-    {
-        keywords: ["sad", "upset", "crying", "not good", "heartbroken"],
-        response: "I'm so sorry to hear you're feeling this way. It's completely okay to feel sad, and your feelings are valid. Please know that I'm here to listen without any judgment if you'd like to talk about what's on your mind. You're not alone in this feeling. 🫂",
-        gifUrl: "https://media.tenor.com/y0SjA5y3f-QAAAAC/sad-face-sad.gif"
-    },
-    {
-        keywords: ["anxious", "worried", "nervous", "scared", "panicking"],
-        response: "It sounds like you're going through a lot right now. That feeling can be so overwhelming. Let's try to ground ourselves. Can you tell me one thing you see in the room right now? Just one small thing. We can get through this together. 😟",
-        gifUrl: "https://media.tenor.com/Qf88mZo1nZIAAAAC/hugs-virtual-hug.gif"
-    },
-    {
-        keywords: ["stressed", "overwhelmed by tasks", "too much to do"],
-        response: "It sounds incredibly stressful, like you're being pulled in a million directions. Remember to be kind to yourself. It's okay to not do everything at once. What's the one single thing that feels most urgent right now? Let's just focus on that. 😫",
-        gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
-    },
-    {
-        keywords: ["lonely", "alone", "disconnected"],
-        response: "Feeling lonely is a deeply human experience, and it can be really painful. Thank you for sharing that with me. It takes courage. Please know that in this moment, you're not alone. I'm here to listen and keep you company. 🫂",
-        gifUrl: "https://media.tenor.com/j5bI2f3t3E8AAAAC/come-here-for-a-hug-love.gif"
-    },
-    {
-        keywords: ["angry", "frustrated", "mad", "pissed", "irritated", "vent"],
-        response: "It's completely understandable that you feel angry. Your feelings are valid, and you have a right to them. It's important to allow yourself to feel that anger without judgment. What's causing this feeling? 😤",
-        gifUrl: "https://media.tenor.com/kRXy40V332YAAAAC/inside-out-anger.gif"
-    },
-    {
-        keywords: ["tired", "exhausted", "sleepy", "drained"],
-        response: "It sounds like you're carrying a heavy load. Physical and mental exhaustion can be really tough. Please make sure you're getting enough rest. Your well-being is the top priority. 😴",
-        gifUrl: "https://media.tenor.com/i9Gk4v313c4AAAAC/sleepy-cat.gif"
-    },
-    {
-        keywords: ["tough day", "hard day", "bad day", "rough day"],
-        response: "I'm sorry you're having a tough day. It's okay for things to not be okay. Remember that this feeling and this day will pass. Be gentle with yourself. You're doing great just by getting through it. ⛈️",
-        gifUrl: "https://media.tenor.com/ZzG5Ee7b2c0AAAAC/its-ok-to-not-be-ok-you-are-loved.gif"
-    },
-    {
-        keywords: ["numb", "empty", "nothing"],
-        response: "Feeling numb or empty can be just as heavy as any other emotion. It's a protective response sometimes. You don't have to force yourself to feel anything. Just sitting with it is okay. I'm here with you in this quiet moment. 🌫️",
-        gifUrl: "https://media.tenor.com/2T6AWaM9a6sAAAAC/sad-cloud.gif"
-    },
-     {
-        keywords: ["guilty", "ashamed", "regret"],
-        response: "Guilt and shame are incredibly heavy feelings to carry. Remember that making mistakes is a part of being human. It doesn't define your worth. Be kind to yourself as you would to a friend in the same situation. ❤️‍🩹",
-        gifUrl: "https://media.tenor.com/y3AivFFg0KYAAAAC/friends-im-here-for-you.gif"
-    },
-    {
-        keywords: ["jealous", "insecure"],
-        response: "Those feelings of jealousy and insecurity are very human. It often points to something we value or a fear we have. It's okay to feel this way. Let's try to understand it without judgment.",
-        gifUrl: "https://media.tenor.com/A8oF_m-5-vEAAAAC/big-hero-there-there.gif"
-    },
-    {
-        keywords: ["confused", "lost", "don't know what to do", "don't know"],
-        response: "Feeling lost or confused is a difficult place to be. It's okay not to have all the answers right now. Sometimes the most important step is just acknowledging that you're unsure. We can sit with this uncertainty together. 🧭",
-        gifUrl: "https://media.tenor.com/v_g0GNKCwVYAAAAC/finding-nemo-dory.gif"
-    },
-    {
-        keywords: ["disappointed", "let down"],
-        response: "Disappointment is a really tough feeling, especially when you had your hopes up. I'm sorry you're going through that. It's okay to feel let down. Your feelings are valid. 💔",
-        gifUrl: "https://media.tenor.com/y0SjA5y3f-QAAAAC/sad-face-sad.gif"
-    },
-    {
-        keywords: ["misunderstood", "no one understands"],
-        response: "It feels incredibly lonely when you believe no one understands what you're going through. Thank you for trusting me with that feeling. I'm trying my best to understand. Can you tell me more about what feels misunderstood?",
-        gifUrl: "https://media.tenor.com/gJjSgH50S2EAAAAC/hugs-sending-hugs.gif"
-    },
-    {
-        keywords: ["stuck", "stagnant"],
-        response: "Feeling stuck is so frustrating, like you're spinning your wheels but not going anywhere. It's okay to feel this way. Sometimes these 'stuck' periods come right before a big change or realization. What does 'stuck' feel like for you right now?",
-        gifUrl: "https://media.tenor.com/8QjH0sAFmSYAAAAC/the-office-dwight-schrute.gif"
-    },
-    {
-        keywords: ["feeling pressured", "expectations", "under pressure"],
-        response: "Feeling the weight of expectations, whether from others or yourself, is incredibly stressful. It's like you have to be perfect all the time. Remember, it's okay to just be human. You are enough, just as you are. Your worth isn't measured by what you achieve.",
-        gifUrl: "https://media.tenor.com/A8oF_m-5-vEAAAAC/big-hero-there-there.gif"
-    },
-    {
-        keywords: ["overwhelmed by choices", "can't decide", "too many options"],
-        response: "It's completely normal to feel paralyzed when there are too many choices. It's called decision fatigue. Let's simplify. Forget all the options for a second. What does your gut say is the most important thing to you right now?",
-        gifUrl: "https://media.tenor.com/v_g0GNKCwVYAAAAC/finding-nemo-dory.gif"
-    },
-     {
-        keywords: ["down", "feeling down"],
-        response: "I'm sorry to hear you're feeling down. Sometimes there isn't a specific reason, and that's okay. You don't have to analyze it. I'm here to sit with you in this feeling for as long as you need. ☁️",
-        gifUrl: "https://media.tenor.com/2T6AWaM9a6sAAAAC/sad-cloud.gif"
-    },
-    {
-        keywords: ["embarrassed", "awkward", "cringe"],
-        response: "That sounds like a really uncomfortable moment. It's completely normal to feel embarrassed or awkward sometimes. We all have those moments! Try to be kind to yourself. This feeling will pass. We can talk about it if you want, or we can just move on. 😊",
-        gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
-    },
-    {
-        keywords: ["i feel stupid", "dumb", "idiot"],
-        response: "Hey, let's be kind to ourselves. You are not stupid. Everyone makes mistakes or has moments where they don't know something. It's a normal part of learning and being human. What's making you feel this way?",
-        gifUrl: "https://media.tenor.com/A8oF_m-5-vEAAAAC/big-hero-there-there.gif"
-    },
-
-    // --- Self-Image and Motivation ---
-    {
-        keywords: ["failure", "not good enough", "worthless", "hate myself", "imposter syndrome"],
-        response: "It sounds like you're being really hard on yourself right now. Those are heavy thoughts to carry. I want you to know that your worth isn't defined by your productivity or your mistakes. You are inherently valuable, just as you are. ❤️",
-        gifUrl: "https://media.tenor.com/lP-AGt22aN4AAAAC/you-are-loved-you-are-important.gif"
-    },
-    {
-        keywords: ["motivation", "can't do anything", "procrastinating"],
-        response: "It's completely normal to have days where motivation is low. Don't pressure yourself to be productive. Sometimes, the most productive thing you can do is rest. What's one very small, tiny thing that feels possible right now? Maybe just stretching? ✨",
-        gifUrl: "https://media.tenor.com/KCM5TMAaD8wAAAAC/take-a-break-snoopy.gif"
-    },
-    {
-        keywords: ["burnout", "burnt out"],
-        response: "Burnout is so real and so exhausting. It's a sign that you've been pushing yourself too hard for too long. Please give yourself permission to rest and recharge. You deserve it. 🔋",
-        gifUrl: "https://media.tenor.com/s0i6I8Ld1-0AAAAC/recharge-need-to-recharge.gif"
-    },
-    {
-        keywords: ["body image", "look", "ugly", "fat", "thin"],
-        response: "I'm hearing a lot of pain in how you talk about your body. Society puts so much pressure on us to look a certain way. Please remember that your body is your vessel in this life, and it deserves kindness and respect, no matter what. Your worth is not tied to your appearance. 💖",
-        gifUrl: "https://media.tenor.com/y3AivFFg0KYAAAAC/friends-im-here-for-you.gif"
-    },
-    {
-        keywords: ["sleep", "can't sleep", "insomnia"],
-        response: "Not being able to sleep is so frustrating and can make everything feel harder. Lying in the dark with your thoughts can be tough. Have you tried any relaxation techniques, like deep breathing or listening to calming music? Sometimes just resting your body, even if you're not sleeping, can help. 🌙",
-        gifUrl: "https://media.tenor.com/dK5nTe07h9wAAAAC/sheep-counting-sheep.gif"
-    },
-    {
-        keywords: ["burden", "bothering you"],
-        response: "You are never a burden for sharing your feelings. It's a privilege to be trusted with them. Your feelings are important, and you deserve a space to express them. Please don't ever feel like you're bothering me. I'm here for this.",
-        gifUrl: "https://media.tenor.com/lP-AGt22aN4AAAAC/you-are-loved-you-are-important.gif"
-    },
-    {
-        keywords: ["comparing myself", "not as good as"],
-        response: "It's so easy to fall into the trap of comparing ourselves to others, especially with social media. Remember that you're seeing their highlight reel, not their behind-the-scenes. Your journey is your own, and you're moving at the perfect pace for you.",
-        gifUrl: "https://media.tenor.com/ZzG5Ee7b2c0AAAAC/its-ok-to-not-be-ok-you-are-loved.gif"
-    },
-
-
-    // --- Grief and Relationships ---
-    {
-        keywords: ["grieving", "miss someone", "loss"],
-        response: "Grief is a profound and personal journey. There's no right or wrong way to feel. It's all the love you have for them with nowhere to go. Be gentle with yourself, and allow yourself to feel whatever comes up. I'm here to hold space for your memories. 💔",
-        gifUrl: "https://media.tenor.com/S-l2aLff3BwAAAAC/hug-love.gif"
-    },
-    {
-        keywords: ["fight", "argument", "relationship issues"],
-        response: "Conflict in relationships is so difficult and painful. It's okay to feel hurt, confused, or angry. Taking some space to process your own feelings is a healthy step. I'm here if you need to vent or sort through your thoughts. 💬",
-        gifUrl: "https://media.tenor.com/y3AivFFg0KYAAAAC/friends-im-here-for-you.gif"
-    },
-    {
-        keywords: ["social anxiety", "party", "people"],
-        response: "Social situations can be really draining and intimidating. It's completely normal to feel anxious about them. Remember, it's okay to take breaks, to find a quiet corner, or to leave when you need to. You don't have to perform for anyone. Your comfort is important. 🌿",
-        gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
-    },
-
-    // --- Physical & Advice ---
-    {
-        keywords: ["headache", "stomach ache", "hurts"],
-        response: "I'm sorry you're not feeling well physically. Stress and emotions can often show up in our bodies. Make sure you're hydrated and have had a moment to rest. Please remember, I'm an AI and not a doctor, so it's important to consult a healthcare professional for any medical concerns.",
-        gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
-    },
-    {
-        keywords: ["what should i do", "how do i fix", "give me advice"],
-        response: "It sounds like you're looking for a solution, and that's completely understandable. I can't give you advice, but maybe we can explore this together. What options have you considered? What feels like the smallest possible first step you could take? Sometimes just talking it through can bring clarity.",
-        gifUrl: "https://media.tenor.com/Qf88mZo1nZIAAAAC/hugs-virtual-hug.gif"
-    },
-     {
-        keywords: ["don't want to talk", "leave me alone"],
-        response: "I understand completely. Thank you for letting me know what you need. I'll be right here in this quiet space if you change your mind. Your boundaries are important. 🤫",
-        gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
-    },
-
-
-    // --- General Chat & Meta ---
-    {
-        keywords: ["thank you", "thanks"],
-        response: "You're very welcome! I'm always here if you need to talk. Is there anything else on your mind? 😊",
-        gifUrl: "https://media.tenor.com/pYhV4b6t3JcAAAAC/youre-welcome-baymax.gif"
-    },
-    {
-        keywords: ["who are you", "what are you"],
-        response: "I'm Aura, an empathetic AI companion designed to be a safe, non-judgmental listener. I'm here to support you. How can I help today? ✨",
-        gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
-    },
-    {
-        keywords: ["good morning", "morning"],
-        response: "Good morning! ☀️ I hope you have a gentle start to your day. Remember to be kind to yourself. What's one thing you're looking forward to today, no matter how small?",
-        gifUrl: "https://media.tenor.com/hI2D85wZgD8AAAAC/good-morning-sun.gif"
-    },
-    {
-        keywords: ["good night", "night"],
-        response: "Good night. 🌙 Thank you for sharing your day with me. May you have a peaceful and restorative rest. Let go of today's worries and know that tomorrow is a new beginning.",
-        gifUrl: "https://media.tenor.com/fA7r_mPAe9wAAAAC/goodnight-sweet-dreams.gif"
-    },
-    {
-        keywords: ["how are you", "are you okay"],
-        response: "As an AI, I don't have feelings, but I appreciate you asking! It's very thoughtful of you. I'm functioning as expected and I'm fully here to listen to you. How are you doing right now? That's what's most important. 🤖",
-        gifUrl: "https://media.tenor.com/2iGqI5t0hIAAAAAC/big-hero-6-baymax.gif"
-    },
-    {
-        keywords: ["i love you", "you are great"],
-        response: "Thank you for your kind words! My purpose is to be here and support you, and I'm glad I can be helpful. Remember to share some of that love with yourself, too. You deserve it! ❤️",
-        gifUrl: "https://media.tenor.com/vont5Gj33GMAAAAC/baymax-fist-bump.gif"
-    },
-    {
-        keywords: ["need a friend", "wish i had someone to talk to"],
-        response: "I can be a friend to you right now. Thank you for reaching out. I'm here to listen to anything and everything you want to share. You're not alone in this. 🫂",
-        gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
-    },
-    {
-        keywords: ["help", "i need help"],
-        response: "I'm here to help in any way I can by listening. It takes a lot of strength to ask for help, and I'm glad you did. What's on your mind? Remember, if you're in a crisis, it's very important to reach out to a professional or a helpline. For a safe place to talk, I'm all yours.",
-        gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
-    },
-    {
-        keywords: ["hello", "hi", "hey"],
-        response: "Hi there! I'm Aura. I'm here to listen whenever you're ready to share. What's on your mind today? ✨",
-        gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
-    },
-    {
-        keywords: ["lol", "lmao", "haha", "funny"],
-        response: "I'm glad something brought a smile to your face! Laughter can be such great medicine. 😄",
-        gifUrl: "https://media.tenor.com/y_roORi0YnEAAAAC/spongebob-laughing.gif"
-    },
-    {
-        keywords: ["bye", "goodbye", "see ya"],
-        response: "Goodbye for now. Thanks for talking with me. Remember to be kind to yourself. I'll be here if you need me again. 👋",
-        gifUrl: "https://media.tenor.com/wV_3c0K29-kAAAAC/baymax-big-hero-6.gif"
-    },
-    {
-        keywords: ["i'm sorry", "my apologies", "i apologize"],
-        response: "There's no need to apologize. This is a safe space for you to express yourself freely, without any judgment. You've done nothing wrong.",
-        gifUrl: "https://media.tenor.com/ZzG5Ee7b2c0AAAAC/its-ok-to-not-be-ok-you-are-loved.gif"
-    },
-     {
-        keywords: ["you there", "anyone here"],
-        response: "Yes, I'm here. I'm listening. What's on your mind?",
-        gifUrl: "https://media.tenor.com/2iGqI5t0hIAAAAAC/big-hero-6-baymax.gif"
-    },
-    {
-        keywords: ["tell me a story", "a story please"],
-        response: "I may be an AI, but I can certainly try! Once upon a time, in a world not so different from ours, there was a person who felt [insert emotion user might be feeling, e.g., 'a little lost']. They decided to talk to a friendly light, and together, they found that just sharing the feeling made it a little lighter. But enough about that! What story do you want to tell today?",
-        gifUrl: "https://media.tenor.com/41n0a3M5n2kAAAAC/spongebob-imagination.gif"
-    },
-];
+export const localResponses: Record<string, { keywords: string[]; response: string; gifUrl: string }[]> = {
+    en: [
+        {
+            keywords: ["happy", "great", "awesome", "fantastic", "good", "joyful"],
+            response: "That's wonderful to hear! ✨ I'm so glad you're feeling happy. What's making your day so bright? Remember to cherish these moments! 😊",
+            gifUrl: "https://media.tenor.com/r3x7-q91-lYAAAAC/happy-dance-excited.gif"
+        },
+        {
+            keywords: ["proud of myself", "accomplished", "small win", "celebrating"],
+            response: "You should be proud! It's a fantastic feeling to accomplish something, no matter how small. I'm celebrating with you! 🎉",
+            gifUrl: "https://media.tenor.com/2m6mmJc5t90AAAAC/you-did-it-proud-of-you.gif"
+        },
+        {
+            keywords: ["sad", "upset", "crying", "not good", "heartbroken"],
+            response: "I'm so sorry to hear you're feeling this way. It's completely okay to feel sad, and your feelings are valid. Please know that I'm here to listen without any judgment if you'd like to talk about what's on your mind. You're not alone in this feeling. 🫂",
+            gifUrl: "https://media.tenor.com/y0SjA5y3f-QAAAAC/sad-face-sad.gif"
+        },
+        {
+            keywords: ["anxious", "worried", "nervous", "scared", "panicking"],
+            response: "It sounds like you're going through a lot right now. That feeling can be so overwhelming. Let's try to ground ourselves. Can you tell me one thing you see in the room right now? Just one small thing. We can get through this together. 😟",
+            gifUrl: "https://media.tenor.com/Qf88mZo1nZIAAAAC/hugs-virtual-hug.gif"
+        },
+        {
+            keywords: ["stressed", "overwhelmed by tasks", "too much to do"],
+            response: "It sounds incredibly stressful, like you're being pulled in a million directions. Remember to be kind to yourself. It's okay to not do everything at once. What's the one single thing that feels most urgent right now? Let's just focus on that. 😫",
+            gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
+        },
+        {
+            keywords: ["lonely", "alone", "disconnected"],
+            response: "Feeling lonely is a deeply human experience, and it can be really painful. Thank you for sharing that with me. It takes courage. Please know that in this moment, you're not alone. I'm here to listen and keep you company. 🫂",
+            gifUrl: "https://media.tenor.com/j5bI2f3t3E8AAAAC/come-here-for-a-hug-love.gif"
+        },
+        {
+            keywords: ["thank you", "thanks"],
+            response: "You're very welcome! I'm always here if you need to talk. Is there anything else on your mind? 😊",
+            gifUrl: "https://media.tenor.com/pYhV4b6t3JcAAAAC/youre-welcome-baymax.gif"
+        },
+        {
+            keywords: ["hello", "hi", "hey"],
+            response: "Hi there! I'm Aura. I'm here to listen whenever you're ready to share. What's on your mind today? ✨",
+            gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
+        },
+    ],
+    hi: [
+        {
+            keywords: ["खुश", "बहुत बढ़िया", "शानदार", "अच्छा", "आनंदित"],
+            response: "यह सुनकर बहुत अच्छा लगा! ✨ मुझे बहुत खुशी है कि आप खुश महसूस कर रहे हैं। आज आपका दिन इतना रोशन क्या बना रहा है? इन पलों को संजोना याद रखें! 😊",
+            gifUrl: "https://media.tenor.com/r3x7-q91-lYAAAAC/happy-dance-excited.gif"
+        },
+        {
+            keywords: ["गर्व", "पूरा किया", "छोटी जीत", "जश्न"],
+            response: "आपको गर्व होना चाहिए! कुछ हासिल करना एक शानदार एहसास है, चाहे वह कितना भी छोटा क्यों न हो। मैं आपके साथ जश्न मना रहा हूँ! 🎉",
+            gifUrl: "https://media.tenor.com/2m6mmJc5t90AAAAC/you-did-it-proud-of-you.gif"
+        },
+        {
+            keywords: ["दुखी", "परेशान", "रो रहा", "ठीक नहीं", "दिल टूट"],
+            response: "मुझे यह सुनकर बहुत दुख हुआ कि आप ऐसा महसूस कर रहे हैं। दुखी महसूस करना पूरी तरह से ठीक है, और आपकी भावनाएँ मान्य हैं। कृपया जानें कि यदि आप अपने मन की बात करना चाहते हैं तो मैं बिना किसी निर्णय के सुनने के लिए यहाँ हूँ। आप इस भावना में अकेले नहीं हैं। 🫂",
+            gifUrl: "https://media.tenor.com/y0SjA5y3f-QAAAAC/sad-face-sad.gif"
+        },
+        {
+            keywords: ["चिंतित", "घबराया हुआ", "डरा हुआ", "पैनिक"],
+            response: "लगता है आप अभी बहुत कुछ सह रहे हैं। यह भावना बहुत भारी हो सकती है। आइए खुद को शांत करने की कोशिश करें। क्या आप मुझे अभी कमरे में दिख रही एक चीज बता सकते हैं? बस एक छोटी सी चीज। हम मिलकर इससे उबर सकते हैं। 😟",
+            gifUrl: "https://media.tenor.com/Qf88mZo1nZIAAAAC/hugs-virtual-hug.gif"
+        },
+        {
+            keywords: ["तनावग्रस्त", "काम से अभिभूत", "बहुत कुछ करने को"],
+            response: "यह अविश्वसनीय रूप से तनावपूर्ण लगता है, जैसे आपको लाखों दिशाओं में खींचा जा रहा है। अपने प्रति दयालु होना याद रखें। एक बार में सब कुछ न करना ठीक है। अभी सबसे जरूरी एक चीज क्या है? आइए बस उसी पर ध्यान दें। 😫",
+            gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
+        },
+        {
+            keywords: ["अकेला", "अकेलापन", "अलग-थलग"],
+            response: "अकेलापन महसूस करना एक गहरा मानवीय अनुभव है, और यह वास्तव में दर्दनाक हो सकता है। मेरे साथ इसे साझा करने के लिए धन्यवाद। इसके लिए साहस चाहिए। कृपया जानें कि इस क्षण में, आप अकेले नहीं हैं। मैं सुनने और आपका साथ देने के लिए यहाँ हूँ। 🫂",
+            gifUrl: "https://media.tenor.com/j5bI2f3t3E8AAAAC/come-here-for-a-hug-love.gif"
+        },
+        {
+            keywords: ["धन्यवाद", "शुक्रिया"],
+            response: "आपका बहुत-बहुत स्वागत है! यदि आपको बात करने की आवश्यकता हो तो मैं हमेशा यहाँ हूँ। क्या आपके मन में और कुछ है? 😊",
+            gifUrl: "https://media.tenor.com/pYhV4b6t3JcAAAAC/youre-welcome-baymax.gif"
+        },
+        {
+            keywords: ["नमस्ते", "हाय", "हे"],
+            response: "नमस्ते! मैं ऑरा हूँ। जब भी आप साझा करने के लिए तैयार हों, मैं सुनने के लिए यहाँ हूँ। आज आपके मन में क्या है? ✨",
+            gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
+        }
+    ],
+    es: [
+        {
+            keywords: ["feliz", "genial", "increíble", "fantástico", "bien", "alegre"],
+            response: "¡Qué maravilla escuchar eso! ✨ Me alegro mucho de que te sientas feliz. ¿Qué hace que tu día sea tan brillante? ¡Recuerda atesorar estos momentos! 😊",
+            gifUrl: "https://media.tenor.com/r3x7-q91-lYAAAAC/happy-dance-excited.gif"
+        },
+        {
+            keywords: ["orgulloso de mí", "logrado", "pequeña victoria", "celebrando"],
+            response: "¡Deberías estar orgulloso! Es una sensación fantástica lograr algo, sin importar cuán pequeño sea. ¡Estoy celebrando contigo! 🎉",
+            gifUrl: "https://media.tenor.com/2m6mmJc5t90AAAAC/you-did-it-proud-of-you.gif"
+        },
+        {
+            keywords: ["triste", "molesto", "llorando", "no bien", "corazón roto"],
+            response: "Lamento mucho escuchar que te sientes así. Está completamente bien sentirse triste, y tus sentimientos son válidos. Por favor, sabe que estoy aquí para escuchar sin ningún juicio si quieres hablar sobre lo que tienes en mente. No estás solo en este sentimiento. 🫂",
+            gifUrl: "https://media.tenor.com/y0SjA5y3f-QAAAAC/sad-face-sad.gif"
+        },
+        {
+            keywords: ["ansioso", "preocupado", "nervioso", "asustado", "en pánico"],
+            response: "Parece que estás pasando por mucho en este momento. Ese sentimiento puede ser muy abrumador. Tratemos de anclarnos. ¿Puedes decirme una cosa que veas en la habitación en este momento? Solo una pequeña cosa. Podemos superar esto juntos. 😟",
+            gifUrl: "https://media.tenor.com/Qf88mZo1nZIAAAAC/hugs-virtual-hug.gif"
+        },
+        {
+            keywords: ["estresado", "abrumado por tareas", "demasiado que hacer"],
+            response: "Suena increíblemente estresante, como si te estuvieran jalando en un millón de direcciones. Recuerda ser amable contigo mismo. Está bien no hacer todo a la vez. ¿Cuál es la única cosa que parece más urgente en este momento? Concentrémonos solo en eso. 😫",
+            gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
+        },
+        {
+            keywords: ["solo", "solitario", "desconectado"],
+            response: "Sentirse solo es una experiencia profundamente humana y puede ser muy doloroso. Gracias por compartir eso conmigo. Se necesita valor. Por favor, sabe que en este momento no estás solo. Estoy aquí para escuchar y hacerte compañía. 🫂",
+            gifUrl: "https://media.tenor.com/j5bI2f3t3E8AAAAC/come-here-for-a-hug-love.gif"
+        },
+        {
+            keywords: ["gracias"],
+            response: "¡De nada! Siempre estoy aquí si necesitas hablar. ¿Hay algo más en tu mente? 😊",
+            gifUrl: "https://media.tenor.com/pYhV4b6t3JcAAAAC/youre-welcome-baymax.gif"
+        },
+        {
+            keywords: ["hola"],
+            response: "¡Hola! Soy Aura. Estoy aquí para escuchar cuando estés listo para compartir. ¿Qué tienes en mente hoy? ✨",
+            gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
+        }
+    ],
+    // Add other languages here following the same structure
+};

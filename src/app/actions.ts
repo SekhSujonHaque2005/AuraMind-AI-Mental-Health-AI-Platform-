@@ -11,7 +11,7 @@ import { findMusic } from '@/ai/flows/find-music-flow';
 import { z } from 'zod';
 import { GenerateQuizInput, GenerateQuizOutput } from './quizzes/types';
 import type { FindMusicInput, FindMusicOutput } from './playlist/types';
-import { localResponses, defaultResponse, defaultGif } from '@/lib/local-chat-data';
+import { localResponses, defaultResponses } from '@/lib/local-chat-data';
 
 
 const chatActionInputSchema = z.object({
@@ -49,19 +49,23 @@ export async function getAIResponse(input: ChatActionInput) {
       return { response: safetyResult.response, gifUrl: undefined };
     }
 
-    // 2. Use local response system instead of AI flow
+    // 2. Use local response system based on language
     const lowerCaseMessage = message.toLowerCase();
+    const langCode = (language || 'en').split('-')[0];
+    const responsesForLang = localResponses[langCode] || localResponses.en;
     
     let foundResponse = null;
-    for (const item of localResponses) {
-        if (item.keywords.some(keyword => lowerCaseMessage.includes(keyword))) {
+    for (const item of responsesForLang) {
+        if (item.keywords.some(keyword => lowerCaseMessage.includes(keyword.toLowerCase()))) {
             foundResponse = item;
             break;
         }
     }
 
-    const responseText = foundResponse ? foundResponse.response : defaultResponse;
-    const gifUrl = foundResponse ? foundResponse.gifUrl : defaultGif;
+    const defaultResponseForLang = defaultResponses[langCode] || defaultResponses.en;
+
+    const responseText = foundResponse ? foundResponse.response : defaultResponseForLang.response;
+    const gifUrl = foundResponse ? foundResponse.gifUrl : defaultResponseForLang.gifUrl;
 
     return { response: responseText, gifUrl: gifUrl };
 
