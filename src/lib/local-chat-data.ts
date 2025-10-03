@@ -175,6 +175,11 @@ export const localResponses = [
         response: "That sounds like a really uncomfortable moment. It's completely normal to feel embarrassed or awkward sometimes. We all have those moments! Try to be kind to yourself. This feeling will pass. We can talk about it if you want, or we can just move on. 😊",
         gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
     },
+    {
+        keywords: ["i feel stupid", "dumb", "idiot"],
+        response: "Hey, let's be kind to ourselves. You are not stupid. Everyone makes mistakes or has moments where they don't know something. It's a normal part of learning and being human. What's making you feel this way?",
+        gifUrl: "https://media.tenor.com/A8oF_m-5-vEAAAAC/big-hero-there-there.gif"
+    },
 
     // --- Self-Image and Motivation ---
     {
@@ -201,11 +206,6 @@ export const localResponses = [
         keywords: ["sleep", "can't sleep", "insomnia"],
         response: "Not being able to sleep is so frustrating and can make everything feel harder. Lying in the dark with your thoughts can be tough. Have you tried any relaxation techniques, like deep breathing or listening to calming music? Sometimes just resting your body, even if you're not sleeping, can help. 🌙",
         gifUrl: "https://media.tenor.com/dK5nTe07h9wAAAAC/sheep-counting-sheep.gif"
-    },
-    {
-        keywords: ["i feel stupid", "dumb", "idiot"],
-        response: "Hey, let's be kind to ourselves. You are not stupid. Everyone makes mistakes or has moments where they don't know something. It's a normal part of learning and being human. What's making you feel this way?",
-        gifUrl: "https://media.tenor.com/A8oF_m-5-vEAAAAC/big-hero-there-there.gif"
     },
 
     // --- Grief and Relationships ---
