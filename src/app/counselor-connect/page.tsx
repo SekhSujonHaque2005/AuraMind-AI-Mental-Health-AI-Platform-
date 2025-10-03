@@ -158,7 +158,7 @@ export default function CounselorConnectPage() {
             </section>
 
              <section className="pb-20 px-4 bg-black/20">
-                <div className="max-w-6xl mx-auto text-center">
+                <div className="max-w-6xl mx-auto text-center py-20">
                     <h2 className="text-4xl font-bold text-center mb-12">Why Choose Our Counselors</h2>
                     <motion.div 
                         className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 group"
@@ -179,7 +179,7 @@ export default function CounselorConnectPage() {
                 </div>
             </section>
             
-            <section className="py-20 px-4">
+            <section className="py-20 px-4 bg-gray-900/40">
                 <div className="max-w-4xl mx-auto text-center">
                     <ShieldCheck className="h-16 w-16 mx-auto text-green-400 mb-6"/>
                     <h2 className="text-4xl font-bold mb-4">Your Safety and Confidentiality</h2>
