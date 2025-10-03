@@ -43,13 +43,13 @@ export const localResponses = [
         gifUrl: "https://media.tenor.com/Qf88mZo1nZIAAAAC/hugs-virtual-hug.gif"
     },
     {
-        keywords: ["stressed", "overwhelmed", "work", "school"],
+        keywords: ["stressed", "overwhelmed"],
         response: "It sounds incredibly stressful. Remember to be kind to yourself. It's important to take small breaks, even just for a minute or two. You're doing your best, and that is enough. 😫",
         gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
     },
     {
-        keywords: ["lonely", "alone"],
-        response: "Feeling lonely can be really tough. Thank you for sharing that with me. Please know that you're not alone in this conversation. I'm here with you. 🫂",
+        keywords: ["lonely", "alone", "disconnected"],
+        response: "Feeling lonely can be really tough, even if you're surrounded by people. Thank you for sharing that with me. Please know that you're not alone in this conversation. I'm here with you. 🫂",
         gifUrl: "https://media.tenor.com/j5bI2f3t3E8AAAAC/come-here-for-a-hug-love.gif"
     },
     {
@@ -83,14 +83,14 @@ export const localResponses = [
         gifUrl: "https://media.tenor.com/A8oF_m-5-vEAAAAC/big-hero-there-there.gif"
     },
     {
-        keywords: ["confused", "lost", "don't know what to do"],
+        keywords: ["confused", "lost", "don't know what to do", "don't know"],
         response: "Feeling lost or confused is a difficult place to be. It's okay not to have all the answers right now. Sometimes the most important step is just acknowledging that you're unsure. We can sit with this uncertainty together. 🧭",
         gifUrl: "https://media.tenor.com/v_g0GNKCwVYAAAAC/finding-nemo-dory.gif"
     },
 
     // --- Self-Image and Motivation ---
     {
-        keywords: ["failure", "not good enough", "worthless", "hate myself"],
+        keywords: ["failure", "not good enough", "worthless", "hate myself", "imposter syndrome"],
         response: "It sounds like you're being really hard on yourself right now. Those are heavy thoughts to carry. I want you to know that your worth isn't defined by your productivity or your mistakes. You are inherently valuable, just as you are. ❤️",
         gifUrl: "https://media.tenor.com/lP-AGt22aN4AAAAC/you-are-loved-you-are-important.gif"
     },
@@ -104,6 +104,16 @@ export const localResponses = [
         response: "Burnout is so real and so exhausting. It's a sign that you've been pushing yourself too hard for too long. Please give yourself permission to rest and recharge. You deserve it. 🔋",
         gifUrl: "https://media.tenor.com/s0i6I8Ld1-0AAAAC/recharge-need-to-recharge.gif"
     },
+    {
+        keywords: ["body image", "look", "ugly", "fat", "thin"],
+        response: "I'm hearing a lot of pain in how you talk about your body. Society puts so much pressure on us to look a certain way. Please remember that your body is your vessel in this life, and it deserves kindness and respect, no matter what. Your worth is not tied to your appearance. 💖",
+        gifUrl: "https://media.tenor.com/y3AivFFg0KYAAAAC/friends-im-here-for-you.gif"
+    },
+    {
+        keywords: ["sleep", "can't sleep", "insomnia"],
+        response: "Not being able to sleep is so frustrating and can make everything feel harder. Lying in the dark with your thoughts can be tough. Have you tried any relaxation techniques, like deep breathing or listening to calming music? Sometimes just resting your body, even if you're not sleeping, can help. 🌙",
+        gifUrl: "https://media.tenor.com/dK5nTe07h9wAAAAC/sheep-counting-sheep.gif"
+    },
 
     // --- Grief and Relationships ---
     {
@@ -115,6 +125,11 @@ export const localResponses = [
         keywords: ["fight", "argument", "relationship issues"],
         response: "Conflict in relationships is so difficult and painful. It's okay to feel hurt, confused, or angry. Taking some space to process your own feelings is a healthy step. I'm here if you need to vent or sort through your thoughts. 💬",
         gifUrl: "https://media.tenor.com/y3AivFFg0KYAAAAC/friends-im-here-for-you.gif"
+    },
+    {
+        keywords: ["social anxiety", "party", "people"],
+        response: "Social situations can be really draining and intimidating. It's completely normal to feel anxious about them. Remember, it's okay to take breaks, to find a quiet corner, or to leave when you need to. You don't have to perform for anyone. Your comfort is important. 🌿",
+        gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
     },
 
     // --- General Chat & Meta ---
