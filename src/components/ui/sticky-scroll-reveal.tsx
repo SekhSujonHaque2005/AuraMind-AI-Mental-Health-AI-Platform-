@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
@@ -74,24 +75,16 @@ export const StickyScroll = ({
             </div>
           ))}
           <div className="h-40" />
-            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-            {content.map((_, index) => (
-                <div key={`bar-${index}`} className="w-12 h-1 bg-gray-700 rounded-full overflow-hidden">
-                    {activeCard === index && (
-                        <motion.div
-                            className="h-full bg-white"
-                            initial={{ width: '0%' }}
-                            animate={{ width: '100%' }}
-                            transition={{ duration: 3, ease: 'linear' }}
-                            key={activeCard} // Re-trigger animation on active card change
-                        />
-                    )}
-                     {activeCard > index && (
-                        <div className="h-full w-full bg-white" />
-                    )}
-                </div>
-            ))}
-        </div>
+            <div className="absolute bottom-4 left-0 right-0 h-1 bg-gray-700 rounded-full overflow-hidden">
+                <motion.div
+                    className="h-full bg-white"
+                    style={{ width: `${100 / cardLength}%` }}
+                    animate={{
+                        x: `${activeCard * 100}%`,
+                    }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                />
+            </div>
         </div>
       </div>
       <motion.div
