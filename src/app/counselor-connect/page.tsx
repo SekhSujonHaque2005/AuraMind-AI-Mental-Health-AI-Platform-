@@ -71,10 +71,10 @@ export default function CounselorConnectPage() {
                     />
                     <div className="flex justify-center gap-4">
                         <Button size="lg" className="bg-blue-600 hover:bg-blue-500 text-white text-lg py-7 px-8 rounded-full transition-transform transform hover:scale-105" onClick={handleComingSoon}>
-                            Connect Now
+                            Book a Session
                         </Button>
                          <Button size="lg" variant="outline" className="bg-transparent border-2 border-gray-600 hover:border-white hover:bg-white/10 text-white text-lg py-7 px-8 rounded-full transition-transform transform hover:scale-105" onClick={handleComingSoon}>
-                            Book a Session
+                            View Pricing
                         </Button>
                     </div>
                 </motion.div>
@@ -161,7 +161,7 @@ export default function CounselorConnectPage() {
                                         <CheckCircle className="h-5 w-5 text-green-400"/> No commitment required
                                     </li>
                                 </CardContent>
-                                <Button variant="outline" className="w-full mt-6 bg-transparent border-green-500 text-green-400 hover:bg-green-500/10 hover:text-green-300" onClick={handleComingSoon}>Start Free Chat</Button>
+                                <Button variant="outline" className="w-full mt-6 bg-transparent border-green-500 text-green-400 hover:bg-green-500/10 hover:text-green-300" onClick={handleComingSoon}>Book a Trial Session</Button>
                             </Card>
                         </motion.div>
 
@@ -176,7 +176,7 @@ export default function CounselorConnectPage() {
                                     <li className="flex items-center gap-2 text-gray-300"><CheckCircle className="h-5 w-5 text-blue-300"/> Choose your counselor</li>
                                     <li className="flex items-center gap-2 text-gray-300"><CheckCircle className="h-5 w-5 text-blue-300"/> No subscription needed</li>
                                 </CardContent>
-                                 <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-500 text-white" onClick={handleComingSoon}>Choose a Session</Button>
+                                 <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-500 text-white" onClick={handleComingSoon}>Book On-Demand</Button>
                             </Card>
                         </motion.div>
 
@@ -191,7 +191,7 @@ export default function CounselorConnectPage() {
                                     <li className="flex items-center gap-2 text-gray-300"><CheckCircle className="h-5 w-5 text-purple-400"/> Full access to AI wellness tools</li>
                                     <li className="flex items-center gap-2 text-gray-300"><CheckCircle className="h-5 w-5 text-purple-400"/> Priority booking</li>
                                 </CardContent>
-                                <Button variant="outline" className="w-full mt-6 bg-transparent border-purple-500 text-purple-400 hover:bg-purple-500/10 hover:text-purple-300" onClick={handleComingSoon}>Go Premium</Button>
+                                <Button variant="outline" className="w-full mt-6 bg-transparent border-purple-500 text-purple-400 hover:bg-purple-500/10 hover:text-purple-300" onClick={handleComingSoon}>Become a Member</Button>
                             </Card>
                         </motion.div>
                     </motion.div>
@@ -221,7 +221,7 @@ export default function CounselorConnectPage() {
                 <h2 className="text-4xl md:text-5xl font-bold mb-8">Ready to take the next step?</h2>
                 <div className="flex justify-center gap-4">
                      <Button size="lg" className="bg-blue-600 hover:bg-blue-500 text-white text-xl py-8 px-10 rounded-full transition-transform transform hover:scale-105" onClick={handleComingSoon}>
-                        Start Talking Now <ArrowRight className="ml-3 h-6 w-6"/>
+                        Book a Session <ArrowRight className="ml-3 h-6 w-6"/>
                     </Button>
                 </div>
             </section>
