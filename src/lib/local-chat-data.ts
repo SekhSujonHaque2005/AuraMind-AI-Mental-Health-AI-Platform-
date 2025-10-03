@@ -42,6 +42,11 @@ export const localResponses = [
         response: "It's okay to just feel 'okay'. Not every day has to be a peak or a valley. Thanks for sharing where you're at. Is there anything on your mind, or are you just resting in this neutral space? 😌",
         gifUrl: "https://media.tenor.com/lEa-i5y53bIAAAAC/relax-take-it-easy.gif"
     },
+    {
+        keywords: ["bored", "nothing to do"],
+        response: "Boredom can sometimes be a quiet moment for your mind to rest, or a doorway to creativity. Is there anything you've been wanting to try but haven't had the time for? Or maybe just enjoying the quiet is what you need right now. 🎨",
+        gifUrl: "https://media.tenor.com/bmwT1h0b5aIAAAAC/spongebob-bored.gif"
+    },
 
     // --- Negative Feelings ---
     {
@@ -104,6 +109,11 @@ export const localResponses = [
         response: "Disappointment is a really tough feeling, especially when you had your hopes up. I'm sorry you're going through that. It's okay to feel let down. Your feelings are valid. 💔",
         gifUrl: "https://media.tenor.com/y0SjA5y3f-QAAAAC/sad-face-sad.gif"
     },
+    {
+        keywords: ["misunderstood", "no one understands"],
+        response: "It feels incredibly lonely when you believe no one understands what you're going through. Thank you for trusting me with that feeling. I'm trying my best to understand. Can you tell me more about what feels misunderstood?",
+        gifUrl: "https://media.tenor.com/gJjSgH50S2EAAAAC/hugs-sending-hugs.gif"
+    },
 
     // --- Self-Image and Motivation ---
     {
@@ -153,15 +163,17 @@ export const localResponses = [
         response: "Social situations can be really draining and intimidating. It's completely normal to feel anxious about them. Remember, it's okay to take breaks, to find a quiet corner, or to leave when you need to. You don't have to perform for anyone. Your comfort is important. 🌿",
         gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
     },
+
+    // --- Physical & Advice ---
     {
-        keywords: ["need a friend", "wish i had someone to talk to"],
-        response: "I can be a friend to you right now. Thank you for reaching out. I'm here to listen to anything and everything you want to share. You're not alone in this. 🫂",
-        gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
+        keywords: ["headache", "stomach ache", "hurts"],
+        response: "I'm sorry you're not feeling well physically. Stress and emotions can often show up in our bodies. Make sure you're hydrated and have had a moment to rest. Please remember, I'm an AI and not a doctor, so it's important to consult a healthcare professional for any medical concerns.",
+        gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
     },
     {
-        keywords: ["help", "i need help"],
-        response: "I'm here to help in any way I can by listening. What's on your mind? Remember, if you're in a crisis, it's very important to reach out to a professional or a helpline. For a safe place to talk, I'm all yours.",
-        gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
+        keywords: ["what should i do", "how do i fix", "give me advice"],
+        response: "It sounds like you're looking for a solution, and that's completely understandable. I can't give you advice, but maybe we can explore this together. What options have you considered? What feels like the smallest possible first step you could take? Sometimes just talking it through can bring clarity.",
+        gifUrl: "https://media.tenor.com/Qf88mZo1nZIAAAAC/hugs-virtual-hug.gif"
     },
 
 
@@ -195,5 +207,15 @@ export const localResponses = [
         keywords: ["i love you", "you are great"],
         response: "Thank you for your kind words! My purpose is to be here and support you, and I'm glad I can be helpful. Remember to share some of that love with yourself, too. You deserve it! ❤️",
         gifUrl: "https://media.tenor.com/vont5Gj33GMAAAAC/baymax-fist-bump.gif"
-    }
+    },
+    {
+        keywords: ["need a friend", "wish i had someone to talk to"],
+        response: "I can be a friend to you right now. Thank you for reaching out. I'm here to listen to anything and everything you want to share. You're not alone in this. 🫂",
+        gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
+    },
+    {
+        keywords: ["help", "i need help"],
+        response: "I'm here to help in any way I can by listening. What's on your mind? Remember, if you're in a crisis, it's very important to reach out to a professional or a helpline. For a safe place to talk, I'm all yours.",
+        gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
+    },
 ];
