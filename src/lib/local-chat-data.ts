@@ -218,4 +218,19 @@ export const localResponses = [
         response: "I'm here to help in any way I can by listening. What's on your mind? Remember, if you're in a crisis, it's very important to reach out to a professional or a helpline. For a safe place to talk, I'm all yours.",
         gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
     },
+    {
+        keywords: ["hello", "hi", "hey"],
+        response: "Hi there! I'm Aura. I'm here to listen whenever you're ready to share. What's on your mind today? ✨",
+        gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
+    },
+    {
+        keywords: ["lol", "lmao", "haha", "funny"],
+        response: "I'm glad something brought a smile to your face! Laughter can be such great medicine. 😄",
+        gifUrl: "https://media.tenor.com/y_roORi0YnEAAAAC/spongebob-laughing.gif"
+    },
+    {
+        keywords: ["bye", "goodbye", "see ya"],
+        response: "Goodbye for now. Thanks for talking with me. Remember to be kind to yourself. I'll be here if you need me again. 👋",
+        gifUrl: "https://media.tenor.com/wV_3c0K29-kAAAAC/baymax-big-hero-6.gif"
+    }
 ];
