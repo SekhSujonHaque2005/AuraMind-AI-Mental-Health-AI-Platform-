@@ -21,15 +21,14 @@ export const StickyScroll = ({
   const { scrollYProgress } = useScroll({
     // uncomment line 21 and comment line 22 if you DON'T want the overflow container and want to have it change on the entire page scroll
     container: ref,
-    offset: ["start start", "end start"],
+    offset: ["start start", "end end"],
   });
   const cardLength = content.length;
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const cardsPerBreakpoint = Math.ceil(cardLength / latest);
-    const newActiveCard = Math.floor(latest * cardLength);
+    const newActiveCard = Math.min(Math.floor(latest * cardLength), cardLength - 1);
     if (newActiveCard !== activeCard) {
-        setActiveCard(newActiveCard);
+      setActiveCard(newActiveCard);
     }
   });
 
