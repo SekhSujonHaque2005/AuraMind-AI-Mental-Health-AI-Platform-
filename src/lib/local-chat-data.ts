@@ -70,7 +70,7 @@ export const defaultResponses: Record<string, { response: string; gifUrl: string
         gifUrl: 'https://media.giphy.com/media/dw36yjtOAtuSZyxEJG/giphy.gif',
     },
     sat: {
-        response: "ᱱᱚᱣᱟ ᱵᱤᱥᱚᱭ ᱨᱮ ᱟᱞᱮ ᱴᱷᱮᱱ કોно ᱰੇᱴᱟ ᱵᱟᱹᱱᱩᱜ-ᱟ ᱾ ᱡᱚᱠᱷᱚᱱ ᱤᱧ ᱱᱚᱣᱟ ᱨᱮ ᱴᱮᱨᱱᱤᱝ ᱤᱧ ᱧᱟᱢᱟ, ᱩᱱ ᱡᱚᱠᱷᱚᱱ ᱟᱢलाई ޖަᱣᱟབ་ ᱮᱢ ᱞᱟᱹᱜᱤᱫ ᱤᱧ ᱠᱩᱥᱤᱭᱟᱜ-ᱟ ᱾ ᱫᱤᱥᱟᱹ ᱫᱚᱦᱚᱭ ᱢᱮ, ᱤᱧ ᱫᱚ ᱢᱤᱫ AI ᱠᱟᱹᱱᱟᱹᱧ ᱟᱨ ᱯᱮᱥᱟगत ቴራፒስት ᱨᱮᱭᱟᱜ ᱵᱚᱫᱚᱞ ᱫᱚ ᱵᱟᱝ ᱠᱟᱹᱱᱟᱹᱧ ᱾",
+        response: "ᱱᱚᱣᱟ ᱵᱤᱥᱚᱭ ᱨᱮ ᱟᱞᱮ ᱴᱷᱮᱱ કોно ᱰᱮᱴᱟ ᱵᱟᱹᱱᱩᱜ-ᱟ ᱾ ᱡᱚᱠᱷᱚᱱ ᱤᱧ ᱱᱚᱣᱟ ᱨᱮ ᱴᱮᱨᱱᱤᱝ ᱤᱧ ᱧᱟᱢᱟ, ᱩᱱ ᱡᱚᱠᱷᱚᱱ ᱟᱢलाई ޖަᱣᱟབ་ ᱮᱢ ᱞᱟᱹᱜᱤᱫ ᱤᱧ ᱠᱩᱥᱤᱭᱟᱜ-ᱟ ᱾ ᱫᱤᱥᱟᱹ ᱫᱚᱦᱚᱭ ᱢᱮ, ᱤᱧ ᱫᱚ ᱢᱤᱫ AI ᱠᱟᱹᱱᱟᱹᱧ ᱟᱨ ᱯᱮᱥᱟगत ቴራፒስት ᱨᱮᱭᱟᱜ ᱵᱚᱫᱚᱞ ᱫᱚ ᱵᱟᱝ ᱠᱟᱹᱱᱟᱹᱧ ᱾",
         gifUrl: 'https://media.giphy.com/media/dw36yjtOAtuSZyxEJG/giphy.gif',
     },
 };
@@ -150,7 +150,7 @@ export const localResponses: Record<string, { keywords: string[]; response: stri
         {
             keywords: ["angry", "mad", "frustrated", "pissed off"],
             response: "It's completely understandable to feel that way. Your feelings are valid. If you want to talk about what's making you angry, I'm here to listen.",
-            gifUrl: "https://media.giphy.com/media/VuWtVHkMjrz2w/giphy.gif"
+            gifUrl: "https://media.giphy.com/media/h36vh423PiV9K/giphy.gif"
         },
     ],
     hi: [
