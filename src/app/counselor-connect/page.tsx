@@ -96,40 +96,33 @@ export default function CounselorConnectPage() {
             </section>
 
              <section className="py-20 px-4">
-                <div className="max-w-5xl mx-auto">
-                    <h2 className="text-4xl font-bold text-center mb-16">How It Works</h2>
-                    <div className="relative">
-                        {/* The connecting line */}
-                        <div className="absolute left-1/2 -translate-x-1/2 top-10 h-full w-px bg-blue-500/20 hidden md:block" />
-
+                <div className="max-w-6xl mx-auto text-center">
+                    <h2 className="text-4xl font-bold text-center mb-4">How It Works</h2>
+                    <p className="text-lg text-gray-400 mb-16 max-w-2xl mx-auto">A simple, confidential path to professional support.</p>
+                    <motion.div 
+                        className="grid md:grid-cols-3 gap-8"
+                        variants={containerVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.3 }}
+                    >
                         {howItWorksSteps.map((step, index) => (
-                            <div key={index} className="relative mb-24 md:mb-12">
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
-                                    viewport={{ once: true, amount: 0.5 }}
-                                    transition={{ duration: 0.6, ease: 'easeOut' }}
-                                    className="md:flex items-center gap-12"
-                                >
-                                    {/* Number and Icon */}
-                                    <div className={`flex flex-col items-center md:flex-none ${index % 2 === 0 ? 'md:order-1' : 'md:order-3'}`}>
-                                        <div className="relative z-10 flex items-center justify-center w-20 h-20 rounded-full bg-gray-900 border-2 border-blue-500/30">
-                                            <div className="flex items-center justify-center w-14 h-14 rounded-full bg-blue-500/10">
-                                                <step.icon className="w-8 h-8 text-blue-300"/>
-                                            </div>
+                           <motion.div key={index} variants={itemVariants}>
+                               <Card className="relative h-full text-left bg-gray-900/50 border border-blue-500/20 rounded-2xl overflow-hidden p-8 transition-all hover:border-blue-500/50 hover:-translate-y-2">
+                                    <div className="absolute top-0 right-0 text-[8rem] font-bold text-blue-500/5 opacity-50 -translate-y-4 translate-x-4">
+                                        0{index + 1}
+                                    </div>
+                                    <div className="relative z-10">
+                                        <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 mb-6">
+                                            <step.icon className="w-8 h-8 text-blue-300"/>
                                         </div>
+                                        <h3 className="text-2xl font-bold text-white mb-3">{step.title}</h3>
+                                        <p className="text-gray-400">{step.description}</p>
                                     </div>
-                                    
-                                    {/* Text Content */}
-                                    <div className={`text-center md:text-left ${index % 2 === 0 ? 'md:order-2' : 'md:order-2 md:text-right'}`}>
-                                        <p className="text-lg font-semibold text-blue-400 mb-2">Step {index + 1}</p>
-                                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">{step.title}</h3>
-                                        <p className="text-gray-400 max-w-sm mx-auto md:mx-0">{step.description}</p>
-                                    </div>
-                                </motion.div>
-                            </div>
+                               </Card>
+                           </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
             </section>
 
