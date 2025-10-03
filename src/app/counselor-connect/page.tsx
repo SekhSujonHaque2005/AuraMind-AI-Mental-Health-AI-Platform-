@@ -8,6 +8,7 @@ import { CheckCircle, ShieldCheck, Star, Users, MessageSquare, Phone, Video, Pla
 import TextType from '@/components/ui/text-type';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import Image from 'next/image';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -126,7 +127,7 @@ export default function CounselorConnectPage() {
                 </motion.div>
             </section>
 
-             <section className="pt-0 pb-20 px-4">
+            <section className="pt-0 pb-20 px-4">
                 <div className="max-w-6xl mx-auto text-center">
                     <h2 className="text-4xl font-bold text-center mb-4">How It Works</h2>
                     <p className="text-lg text-gray-400 mb-16 max-w-2xl mx-auto">A simple, confidential path to professional support.</p>
@@ -198,12 +199,19 @@ export default function CounselorConnectPage() {
                 </div>
             </section>
 
-            <section className="py-24 px-4 text-center">
-                <h2 className="text-4xl md:text-5xl font-bold mb-8">Ready to take the next step?</h2>
-                <div className="flex justify-center gap-4">
-                     <Button size="lg" className="bg-blue-600 hover:bg-blue-500 text-white text-xl py-8 px-10 rounded-full transition-transform transform hover:scale-105" onClick={handleComingSoon}>
-                        Schedule a Session <ArrowRight className="ml-3 h-6 w-6"/>
-                    </Button>
+             <section className="py-24 px-4">
+                <div className="max-w-5xl mx-auto">
+                    <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-blue-500/20">
+                        <Image src="https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?q=80&w=2512&auto=format&fit=crop" alt="Comforting background" fill className="object-cover" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent"></div>
+                        <div className="relative z-10 p-12 md:p-20 text-white">
+                             <h2 className="text-4xl md:text-5xl font-bold mb-4">Ready to take the next step?</h2>
+                             <p className="text-lg text-gray-200 mb-8 max-w-lg">Your journey to a healthier mind starts with a single conversation. We're here to help.</p>
+                             <Button size="lg" className="bg-blue-600 hover:bg-blue-500 text-white text-xl py-8 px-10 rounded-full transition-transform transform hover:scale-105" onClick={handleComingSoon}>
+                                Schedule a Session <ArrowRight className="ml-3 h-6 w-6"/>
+                            </Button>
+                        </div>
+                    </div>
                 </div>
             </section>
 
