@@ -5,18 +5,19 @@ import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { personas } from '@/app/consultant/personas';
-import { Video, Mic, ArrowRight } from 'lucide-react';
+import { Video, Mic, ArrowRight, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useToast } from '@/hooks/use-toast';
 
 export default function PersonaSelectionPage() {
   const router = useRouter();
+  const { toast } = useToast();
 
-  const handleSelectVideo = (personaId: string) => {
-    router.push(`/consultant/call?persona=${personaId}`);
-  };
-
-  const handleSelectAudio = (personaId: string) => {
-    router.push(`/consultant/audiocall?persona=${personaId}`);
+  const handleComingSoon = () => {
+    toast({
+      title: 'Coming Soon!',
+      description: 'This feature is under development and will be available shortly.',
+    });
   };
 
   const containerVariants = {
@@ -73,20 +74,20 @@ export default function PersonaSelectionPage() {
                     <CardContent className="flex-grow"></CardContent>
                     <CardFooter className="flex flex-col gap-3 p-6 bg-black/20 mt-auto">
                     <Button
-                        className="w-full text-base py-6 bg-blue-600 hover:bg-blue-500 transition-all flex items-center justify-center gap-2 group/button"
-                        onClick={() => handleSelectVideo(persona.id)}
+                        className="w-full text-base py-6 bg-gray-700/50 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-not-allowed"
+                        onClick={handleComingSoon}
+                        disabled
                     >
-                        <Video className="h-5 w-5" />
+                        <Lock className="h-5 w-5" />
                         Start Video Session
-                        <ArrowRight className="h-5 w-5 opacity-0 -translate-x-2 group-hover/button:opacity-100 group-hover/button:translate-x-0 transition-all duration-300" />
                     </Button>
                     <Button
-                        className="w-full text-base py-6 bg-transparent border border-blue-500/40 hover:bg-blue-500/10 text-blue-300 transition-all flex items-center justify-center gap-2 group/button"
-                        onClick={() => handleSelectAudio(persona.id)}
+                        className="w-full text-base py-6 bg-gray-700/50 border border-blue-500/10 hover:bg-gray-700/80 text-gray-400 transition-all flex items-center justify-center gap-2 group/button cursor-not-allowed"
+                        onClick={handleComingSoon}
+                        disabled
                     >
-                        <Mic className="h-5 w-5" />
+                        <Lock className="h-5 w-5" />
                         Start Audio Session
-                        <ArrowRight className="h-5 w-5 opacity-0 -translate-x-2 group-hover/button:opacity-100 group-hover/button:translate-x-0 transition-all duration-300" />
                     </Button>
                     </CardFooter>
                 </Card>
