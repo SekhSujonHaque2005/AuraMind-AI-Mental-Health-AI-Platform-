@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Brain, Puzzle, Lightbulb, ArrowRight, ShieldAlert, Mountain, PlusSquare, Wand2, Loader2 } from 'lucide-react';
+import { Brain, Puzzle, Lightbulb, ArrowRight, ShieldAlert, Mountain, PlusSquare, Wand2, Loader2, Trash2, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import TextType from '@/components/ui/text-type';
 import { useState, useTransition } from 'react';
@@ -14,6 +14,8 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { getAIGeneratedQuiz } from '@/app/actions';
 import type { Question } from '@/app/quizzes/types';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface Quiz {
     id: string;
@@ -62,6 +64,11 @@ const staticQuizzes: Quiz[] = [
   },
 ];
 
+const initialManualQuizState = {
+  title: '',
+  questions: [{ question: '', options: ['', '', '', ''], answer: '' }],
+};
+
 export default function QuizzesPage() {
   const router = useRouter();
   const [isCreateQuizOpen, setIsCreateQuizOpen] = useState(false);
@@ -69,10 +76,10 @@ export default function QuizzesPage() {
   const [isGenerating, startTransition] = useTransition();
   const [allQuizzes, setAllQuizzes] = useState<Quiz[]>(staticQuizzes);
   const [creationMode, setCreationMode] = useState<'ai' | 'manual' | null>(null);
+  const [manualQuiz, setManualQuiz] = useState<{ title: string; questions: Question[] }>(initialManualQuizState);
   const { toast } = useToast();
 
   const handleStartQuiz = (quizId: string) => {
-    // Pass quiz data through state to avoid complex data serialization in URL
     const quizData = allQuizzes.find(q => q.id === quizId);
     if(quizData?.questions) {
         sessionStorage.setItem(`quiz-${quizId}`, JSON.stringify(quizData));
@@ -81,51 +88,71 @@ export default function QuizzesPage() {
   };
 
   const handleGenerateAiQuiz = () => {
-    if (!quizTopic.trim()) {
-        toast({
-            variant: "destructive",
-            title: "Topic is required",
-            description: "Please enter a topic for your quiz.",
-        });
+    toast({title: "Coming Soon!", description: "AI quiz generation will be available in a future update."});
+  }
+
+  const handleManualQuestionChange = (qIndex: number, value: string) => {
+    const newQuestions = [...manualQuiz.questions];
+    newQuestions[qIndex].question = value;
+    setManualQuiz(prev => ({ ...prev, questions: newQuestions }));
+  };
+  
+  const handleManualOptionChange = (qIndex: number, oIndex: number, value: string) => {
+    const newQuestions = [...manualQuiz.questions];
+    newQuestions[qIndex].options[oIndex] = value;
+    setManualQuiz(prev => ({ ...prev, questions: newQuestions }));
+  };
+
+  const handleManualAnswerChange = (qIndex: number, value: string) => {
+    const newQuestions = [...manualQuiz.questions];
+    newQuestions[qIndex].answer = value;
+    setManualQuiz(prev => ({ ...prev, questions: newQuestions }));
+  };
+
+  const handleAddQuestion = () => {
+    setManualQuiz(prev => ({
+        ...prev,
+        questions: [...prev.questions, { question: '', options: ['', '', '', ''], answer: '' }]
+    }));
+  };
+
+  const handleRemoveQuestion = (qIndex: number) => {
+    if (manualQuiz.questions.length > 1) {
+        const newQuestions = manualQuiz.questions.filter((_, index) => index !== qIndex);
+        setManualQuiz(prev => ({ ...prev, questions: newQuestions }));
+    }
+  };
+
+  const handleSaveManualQuiz = () => {
+    if (!manualQuiz.title.trim()) {
+        toast({ variant: 'destructive', title: 'Title is required.' });
+        return;
+    }
+    if (manualQuiz.questions.some(q => !q.question.trim() || q.options.some(o => !o.trim()) || !q.answer)) {
+        toast({ variant: 'destructive', title: 'All fields are required for each question.' });
         return;
     }
 
-    startTransition(async () => {
-        const result = await getAIGeneratedQuiz({ topic: quizTopic });
+    const newQuiz: Quiz = {
+        id: `manual-${Date.now()}`,
+        title: manualQuiz.title,
+        description: 'A custom quiz created by you.',
+        icon: Puzzle,
+        tags: ['Custom'],
+        questions: manualQuiz.questions,
+    };
+    
+    setAllQuizzes(prev => [...prev, newQuiz]);
+    resetDialog();
+    toast({ title: 'Quiz Saved!', description: `Your quiz "${newQuiz.title}" has been added.` });
+  };
 
-        if (result.error) {
-            toast({
-                variant: 'destructive',
-                title: 'AI Generation Failed',
-                description: result.error,
-            });
-        } else if (result.quiz) {
-            const newQuiz: Quiz = {
-                id: `ai-${Date.now()}`,
-                title: result.quiz.title,
-                description: `An AI-generated quiz about ${quizTopic}.`,
-                icon: Wand2,
-                tags: ['AI', 'Custom'],
-                questions: result.quiz.questions,
-            };
-
-            setAllQuizzes(prev => [...prev, newQuiz]);
-
-            toast({
-                title: 'Quiz Generated!',
-                description: `Your new quiz "${result.quiz.title}" is ready.`,
-            });
-            setIsCreateQuizOpen(false);
-            setQuizTopic('');
-            setCreationMode(null);
-        }
-    });
-  }
 
   const resetDialog = () => {
     setIsCreateQuizOpen(false);
     setCreationMode(null);
     setQuizTopic('');
+    setManualQuiz(initialManualQuizState);
   }
 
   const containerVariants = {
@@ -230,7 +257,7 @@ export default function QuizzesPage() {
     </div>
 
     <Dialog open={isCreateQuizOpen} onOpenChange={(isOpen) => !isOpen && resetDialog()}>
-        <DialogContent className="bg-gray-900 border-violet-500/40 text-white">
+        <DialogContent className="bg-gray-900 border-violet-500/40 text-white max-w-3xl">
             <DialogHeader>
                 <DialogTitle className="text-2xl text-violet-300">Create a New Quiz</DialogTitle>
                  {!creationMode && (
@@ -242,11 +269,11 @@ export default function QuizzesPage() {
             
             {!creationMode ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
-                    <Button variant="outline" className="h-auto py-6 flex flex-col gap-2" onClick={() => {toast({title: "Coming Soon!", description: "AI quiz generation will be available in a future update."})}}>
+                    <Button variant="outline" className="h-auto py-6 flex flex-col gap-2" onClick={handleGenerateAiQuiz}>
                         <Wand2 className="h-6 w-6" />
                         Generate with AI
                     </Button>
-                    <Button variant="outline" className="h-auto py-6 flex flex-col gap-2" onClick={() => {toast({title: "Coming Soon!", description: "Manual quiz creation will be available in a future update."})}}>
+                    <Button variant="outline" className="h-auto py-6 flex flex-col gap-2" onClick={() => setCreationMode('manual')}>
                         <Puzzle className="h-6 w-6" />
                         Create Manually
                     </Button>
@@ -265,24 +292,57 @@ export default function QuizzesPage() {
                             disabled={isGenerating}
                         />
                     </div>
-                    <Button onClick={handleGenerateAiQuiz} className="w-full bg-violet-600 hover:bg-violet-700 text-white" disabled={isGenerating}>
-                    {isGenerating ? (
-                        <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Generating...
-                        </>
-                    ) : (
-                        <>
-                            <Wand2 className="mr-2 h-4 w-4" />
-                            Generate with AI
-                        </>
-                    )}
+                </div>
+            ) : (
+                <div className="space-y-6">
+                    <div className="space-y-2">
+                        <Label htmlFor="manual-quiz-title" className="text-lg">Quiz Title</Label>
+                        <Input id="manual-quiz-title" value={manualQuiz.title} onChange={e => setManualQuiz(prev => ({ ...prev, title: e.target.value }))} placeholder="e.g., Weekly Mindfulness Check-in" className="bg-gray-800/60 border-violet-500/30"/>
+                    </div>
+                    <ScrollArea className="max-h-[50vh] pr-4">
+                        <div className="space-y-6">
+                        {manualQuiz.questions.map((q, qIndex) => (
+                            <div key={qIndex} className="p-4 rounded-lg border border-violet-500/20 bg-black/20 space-y-4 relative">
+                                <Label htmlFor={`q-${qIndex}`} className="text-base">Question {qIndex + 1}</Label>
+                                <Input id={`q-${qIndex}`} value={q.question} onChange={e => handleManualQuestionChange(qIndex, e.target.value)} placeholder={`Enter question ${qIndex + 1}...`} className="bg-gray-800/60 border-violet-500/30"/>
+                                <div className="space-y-3">
+                                    <Label>Options & Correct Answer</Label>
+                                    <RadioGroup value={q.answer} onValueChange={value => handleManualAnswerChange(qIndex, value)}>
+                                    {q.options.map((opt, oIndex) => (
+                                        <div key={oIndex} className="flex items-center gap-3">
+                                            <RadioGroupItem value={opt} id={`q${qIndex}-o${oIndex}`} />
+                                            <Input value={opt} onChange={e => handleManualOptionChange(qIndex, oIndex, e.target.value)} placeholder={`Option ${oIndex + 1}`} className="bg-gray-800/60 border-violet-500/30"/>
+                                        </div>
+                                    ))}
+                                    </RadioGroup>
+                                </div>
+                                {manualQuiz.questions.length > 1 && (
+                                    <Button size="icon" variant="destructive" className="absolute top-2 right-2 h-7 w-7" onClick={() => handleRemoveQuestion(qIndex)}>
+                                        <Trash2 className="h-4 w-4"/>
+                                    </Button>
+                                )}
+                            </div>
+                        ))}
+                        </div>
+                    </ScrollArea>
+                    <Button variant="outline" onClick={handleAddQuestion} className="w-full">
+                        <Plus className="mr-2 h-4 w-4" /> Add Question
                     </Button>
                 </div>
-            ) : null}
+            )}
 
             <DialogFooter>
-                <Button variant="ghost" onClick={resetDialog} disabled={isGenerating}>Cancel</Button>
+                <Button variant="ghost" onClick={resetDialog}>Cancel</Button>
+                {creationMode === 'ai' && (
+                    <Button onClick={handleGenerateAiQuiz} className="bg-violet-600 hover:bg-violet-700 text-white" disabled={isGenerating}>
+                        {isGenerating ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating...</> : <><Wand2 className="mr-2 h-4 w-4" /> Generate with AI</>}
+                    </Button>
+                )}
+                 {creationMode === 'manual' && (
+                    <Button onClick={handleSaveManualQuiz} className="bg-violet-600 hover:bg-violet-700 text-white">
+                        Save Quiz
+                    </Button>
+                )}
             </DialogFooter>
         </DialogContent>
     </Dialog>
@@ -290,5 +350,3 @@ export default function QuizzesPage() {
     </>
   );
 }
-
-    
