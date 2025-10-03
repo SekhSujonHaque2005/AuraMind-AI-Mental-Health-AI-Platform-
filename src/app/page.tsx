@@ -21,6 +21,12 @@ import {
   BookUser,
   Send,
   Handshake,
+  Headphones,
+  Sun,
+  Palette,
+  Briefcase,
+  BookOpen,
+  Zap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import React, { useState, useEffect } from 'react';
@@ -98,70 +104,106 @@ const features = [
   },
 ];
 
+const AnimatedTyping = () => {
+    const text = "Share what's on your mind...";
+    return (
+        <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(to_bottom_right,var(--cyan-500),var(--emerald-500))] text-white p-4">
+            <div className="w-full max-w-sm rounded-lg bg-black/30 p-4 font-mono text-lg text-left">
+                <TextType text={text} typingSpeed={60} loop={true} />
+            </div>
+        </div>
+    );
+};
+
+const AnimatedGrid = () => {
+    const icons = [Sparkles, ShieldCheck, FileQuestion, Music, Users, Handshake, BookUser];
+    return (
+        <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-[linear-gradient(to_bottom_right,var(--pink-500),var(--indigo-500))] text-white">
+             <div className="grid grid-cols-4 gap-4">
+                {icons.map((Icon, i) => (
+                    <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: [0, 1, 0], scale: [0.5, 1, 0.5] }}
+                        transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatType: 'loop',
+                            delay: i * 0.2,
+                        }}
+                    >
+                        <Icon className="h-10 w-10 text-white/70" />
+                    </motion.div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const AnimatedProgress = () => {
+    return (
+        <div className="flex h-full w-full flex-col items-center justify-center bg-[linear-gradient(to_bottom_right,var(--orange-500),var(--yellow-500))] p-8 text-white">
+            <div className="w-full space-y-6">
+                <div className="flex items-center gap-3">
+                    <CheckCircle className="h-6 w-6 text-green-300" />
+                    <span className="font-medium">Daily Meditation</span>
+                </div>
+                 <div className="flex items-center gap-3">
+                    <motion.div initial={{ width: 0 }} animate={{ width: '80%' }} transition={{ duration: 1.5, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }} className="h-2 rounded-full bg-green-400" />
+                </div>
+                <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="h-6 w-6 text-green-300" />
+                    <span className="font-medium">Gratitude Journal</span>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const AnimatedRipples = () => {
+    return (
+        <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-[linear-gradient(to_bottom_right,var(--cyan-500),var(--emerald-500))]">
+            {[...Array(3)].map((_, i) => (
+                <motion.div
+                    key={i}
+                    className="absolute rounded-full border border-blue-300/80"
+                    initial={{ scale: 0, opacity: 1 }}
+                    animate={{ scale: 3, opacity: 0 }}
+                    transition={{
+                        duration: 3,
+                        ease: "easeInOut",
+                        repeat: Infinity,
+                        delay: i * 1,
+                    }}
+                    style={{ width: 50, height: 50 }}
+                />
+            ))}
+            <Music className="h-10 w-10 text-white" />
+        </div>
+    );
+};
+
+
 const howItWorksSteps = [
     {
         title: "Start a Conversation",
         description: "Begin by chatting with Aura. Share what's on your mind in a safe, non-judgmental space. It's the first step to understanding your feelings.",
-        content: (
-          <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(to_bottom_right,var(--cyan-500),var(--emerald-500))] text-white">
-            <Image
-                src="https://i.pravatar.cc/300?img=1"
-                width={300}
-                height={300}
-                className="h-full w-full object-cover"
-                alt="Start a conversation"
-                data-ai-hint="woman smiling"
-            />
-          </div>
-        ),
+        content: <AnimatedTyping />,
     },
     {
         title: "Explore Wellness Tools",
         description: "Discover a suite of features designed for your well-being, including the Calm Room, AI-guided Self-Care Adventures, and curated audio Playlists.",
-        content: (
-          <div className="flex h-full w-full  items-center justify-center text-white">
-            <Image
-              src="https://miro.medium.com/v2/resize:fit:1400/1*87rtELiYihvrNL3Ew-DKSw.jpeg"
-              width={300}
-              height={300}
-              className="h-full w-full object-cover"
-              alt="Explore wellness tools"
-              data-ai-hint="nature wellness"
-            />
-          </div>
-        ),
+        content: <AnimatedGrid />,
     },
     {
         title: "Track Your Progress",
         description: "Engage with daily quests and quizzes to build healthy habits, gain self-awareness, and watch your mental wellness journey unfold.",
-        content: (
-          <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(to_bottom_right,var(--orange-500),var(--yellow-500))] text-white">
-             <Image
-              src="https://burst.shopifycdn.com/photos/person-holds-a-book-over-a-cup-of-coffee.jpg?width=1000&format=pjpg&exif=0&iptc=0"
-              width={300}
-              height={300}
-              className="h-full w-full object-cover"
-              alt="Track your progress"
-              data-ai-hint="journal progress"
-            />
-          </div>
-        ),
+        content: <AnimatedProgress />,
     },
      {
         title: "Find Your Calm",
         description: "Immerse yourself in our Calm Room with 3D scenes and soothing audio, or find the perfect track in our curated Playlists to relax and focus.",
-        content: (
-            <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(to_bottom_right,var(--cyan-500),var(--emerald-500))] text-white">
-                 <Image
-                  src="https://thumbs.dreamstime.com/b/meditation-concept-spiritual-metaphysical-meditation-woman-silhouette-lotus-pose-rays-light-chakras-spirituality-59187997.jpg"
-                  width={300}
-                  height={300}
-                  className="h-full w-full object-cover"
-                  alt="Find your calm"
-                    data-ai-hint="meditation spiritual"
-                />
-            </div>
-        ),
+        content: <AnimatedRipples />,
     }
 ];
 
@@ -620,5 +662,7 @@ export default function LandingPage() {
     );
 
 }
+
+    
 
     
