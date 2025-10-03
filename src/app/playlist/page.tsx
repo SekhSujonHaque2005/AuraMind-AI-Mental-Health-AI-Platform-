@@ -9,12 +9,12 @@ import { Slider } from '@/components/ui/slider';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
-import { findTrackWithAI } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import type { Track } from '@/app/playlist/types';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import TextType from '@/components/ui/text-type';
 import { useRouter } from 'next/navigation';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export const staticTracks: Track[] = [
   // Ambient (10 tracks)
@@ -350,7 +350,7 @@ export default function AudioPlaylistPage() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [activeFilter, setActiveFilter] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
-    const [isAiSearching, startAiSearchTransition] = useTransition();
+    const [isSearching, setIsSearching] = useState(false);
     const [aiRecommendedTrackId, setAiRecommendedTrackId] = useState<number | null>(null);
     const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_TRACKS);
 
@@ -365,7 +365,7 @@ export default function AudioPlaylistPage() {
             tracks = tracks.filter(t => t.category === activeFilter);
         }
 
-        if (searchQuery) {
+        if (searchQuery && !isSearching) {
             const lowerCaseQuery = searchQuery.toLowerCase();
             tracks = tracks.filter(t => 
                 t.title.toLowerCase().includes(lowerCaseQuery) || 
@@ -374,42 +374,44 @@ export default function AudioPlaylistPage() {
         }
         
         return tracks;
-    }, [activeFilter, searchQuery]);
+    }, [activeFilter, searchQuery, isSearching]);
 
     const handleTrackClick = (track: Track) => {
         router.push(`/playlist/${track.id}`);
     };
       
-    const handleAiSearch = () => {
+    const handleLocalSearch = () => {
+        setIsSearching(true); // Manually trigger update
         if (!searchQuery.trim()) {
             toast({ variant: 'destructive', title: 'Empty Search', description: 'Please enter what you want to search for.' });
+            setIsSearching(false);
             return;
         }
-        startAiSearchTransition(async () => {
-            const trackMetada = staticTracks.map(({ id, title, description }) => ({ id, title, description }));
-            const result = await findTrackWithAI({ query: searchQuery, tracks: trackMetada });
 
-            if (result.error) {
-                toast({ variant: 'destructive', title: 'AI Search Failed', description: result.error });
-                setAiRecommendedTrackId(null);
-            } else if (result.trackId) {
-                const recommendedTrack = staticTracks.find(t => t.id === result.trackId);
-                if (recommendedTrack) {
-                    setActiveFilter(recommendedTrack.category);
-                    setAiRecommendedTrackId(result.trackId);
-                    toast({ title: 'AI Recommendation', description: `Found "${recommendedTrack.title}" for you.` });
-                }
-            } else {
-                 toast({ title: 'No specific match found', description: 'Try refining your search query.' });
-                 setAiRecommendedTrackId(null);
-            }
-        });
+        const lowerCaseQuery = searchQuery.toLowerCase();
+        const results = staticTracks.filter(t => 
+            t.title.toLowerCase().includes(lowerCaseQuery) || 
+            t.description.toLowerCase().includes(lowerCaseQuery) ||
+            t.category.toLowerCase().includes(lowerCaseQuery) ||
+            t.artist.toLowerCase().includes(lowerCaseQuery)
+        );
+
+        if (results.length > 0) {
+            const bestMatch = results[0];
+            setActiveFilter(bestMatch.category);
+            setAiRecommendedTrackId(bestMatch.id);
+            toast({ title: 'Local Search Result', description: `Found "${bestMatch.title}" for you.` });
+        } else {
+            toast({ title: 'No match found', description: 'Try refining your search query.' });
+            setAiRecommendedTrackId(null);
+        }
+        setIsSearching(false);
     }
 
     const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            handleAiSearch();
+            handleLocalSearch();
         }
     };
     
@@ -476,20 +478,29 @@ export default function AudioPlaylistPage() {
                     <div className="relative flex items-center gap-2 bg-gray-900/60 backdrop-blur-xl border border-green-500/20 p-2 rounded-xl shadow-lg">
                         <Search className="h-5 w-5 text-gray-400 ml-2"/>
                         <Input 
-                            placeholder="Search for sounds or ask AI (e.g., 'sound for focus')..."
+                            placeholder="Search for sounds (e.g., 'focus', 'rain', 'piano')..."
                             className="bg-transparent border-none text-white focus-visible:ring-0 focus-visible:ring-offset-0"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             onKeyDown={handleSearchKeyDown}
                         />
-                        <Button
-                           onClick={handleAiSearch}
-                           className="bg-green-600 hover:bg-green-500 text-white rounded-lg flex-shrink-0"
-                           disabled={isAiSearching}
-                        >
-                            {isAiSearching ? <Loader2 className="h-5 w-5 animate-spin" /> : <Wand2 className="h-5 w-5"/>}
-                            <span className="ml-2 hidden md:inline">Search with AI</span>
-                        </Button>
+                         <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                    onClick={handleLocalSearch}
+                                    className="bg-green-600 hover:bg-green-500 text-white rounded-lg flex-shrink-0"
+                                    disabled={isSearching}
+                                    >
+                                    {isSearching ? <Loader2 className="h-5 w-5 animate-spin" /> : <Search className="h-5 w-5"/>}
+                                    <span className="ml-2 hidden md:inline">Search</span>
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Search locally across titles, descriptions, and categories.</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
                     </div>
                 </div>
 
@@ -559,4 +570,3 @@ export default function AudioPlaylistPage() {
         </>
     );
 }
-
