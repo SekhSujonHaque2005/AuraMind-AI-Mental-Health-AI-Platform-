@@ -1,6 +1,7 @@
 
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import { useMotionValueEvent, useScroll } from "framer-motion";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -15,17 +16,22 @@ export const StickyScroll = ({
   }[];
   contentClassName?: string;
 }) => {
-  const [activeCard, setActiveCard] = useState(0);
+  const [activeCard, setActiveCard] = React.useState(0);
   const ref = useRef<any>(null);
+  const { scrollYProgress } = useScroll({
+    // uncomment line 21 and comment line 22 if you DON'T want the overflow container and want to have it change on the entire page scroll
+    container: ref,
+    offset: ["start start", "end start"],
+  });
   const cardLength = content.length;
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveCard((prevActiveCard) => (prevActiveCard + 1) % cardLength);
-    }, 3000); // Change card every 3 seconds
-
-    return () => clearInterval(interval);
-  }, [cardLength]);
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const cardsPerBreakpoint = Math.ceil(cardLength / latest);
+    const newActiveCard = Math.floor(latest * cardLength);
+    if (newActiveCard !== activeCard) {
+        setActiveCard(newActiveCard);
+    }
+  });
 
   const backgroundColors = [
     "var(--slate-900)",
@@ -37,13 +43,12 @@ export const StickyScroll = ({
     "linear-gradient(to bottom right, var(--pink-500), var(--indigo-500))",
     "linear-gradient(to bottom right, var(--orange-500), var(--yellow-500))",
   ];
-
   return (
     <motion.div
       animate={{
         backgroundColor: backgroundColors[activeCard % backgroundColors.length],
       }}
-      className="relative flex h-[30rem] justify-center space-x-10 rounded-md p-10"
+      className="relative flex h-[30rem] justify-center space-x-10 overflow-y-auto rounded-md p-10 no-scrollbar"
       ref={ref}
     >
       <div className="div relative flex items-start px-4">
@@ -75,23 +80,12 @@ export const StickyScroll = ({
             </div>
           ))}
           <div className="h-40" />
-            <div className="absolute bottom-4 left-0 right-0 h-1 bg-gray-700 rounded-full overflow-hidden">
-                <motion.div
-                    className="h-full bg-white"
-                    style={{ width: `${100 / cardLength}%` }}
-                    animate={{
-                        x: `${activeCard * 100}%`,
-                    }}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                />
-            </div>
         </div>
       </div>
       <motion.div
         animate={{
           background: linearGradients[activeCard % linearGradients.length],
         }}
-        key={activeCard} // Add key to re-trigger animation
         className={cn(
           "sticky top-10 hidden h-60 w-80 overflow-hidden rounded-md bg-white lg:block",
           contentClassName
