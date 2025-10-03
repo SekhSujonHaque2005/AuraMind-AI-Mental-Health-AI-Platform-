@@ -50,6 +50,12 @@ export const localResponses = [
         response: "That's so wonderful! Celebrating someone else's success is a beautiful act of friendship and love. It shows how much you care. What did they accomplish? I'd love to celebrate with you!",
         gifUrl: "https://media.tenor.com/1i3B82hP5AAAAAAC/so-proud-of-you-proud-of-you.gif"
     },
+    {
+        keywords: ["feeling better", "i feel better", "doing better"],
+        response: "I'm so genuinely happy to hear that you're feeling better. That's a testament to your resilience. Remember to be patient with yourself as you continue to heal and grow. I'm here for you on good days and bad. 😊",
+        gifUrl: "https://media.tenor.com/1i3B82hP5AAAAAAC/so-proud-of-you-proud-of-you.gif"
+    },
+
 
     // --- Neutral Feelings ---
     {
@@ -70,7 +76,7 @@ export const localResponses = [
 
     // --- Negative Feelings ---
     {
-        keywords: ["sad", "down", "upset", "crying", "not good", "heartbroken"],
+        keywords: ["sad", "upset", "crying", "not good", "heartbroken"],
         response: "I'm so sorry to hear you're feeling this way. It's completely okay to feel sad, and your feelings are valid. Please know that I'm here to listen without any judgment if you'd like to talk about what's on your mind. You're not alone in this feeling. 🫂",
         gifUrl: "https://media.tenor.com/y0SjA5y3f-QAAAAC/sad-face-sad.gif"
     },
@@ -149,6 +155,11 @@ export const localResponses = [
         response: "It's completely normal to feel paralyzed when there are too many choices. It's called decision fatigue. Let's simplify. Forget all the options for a second. What does your gut say is the most important thing to you right now?",
         gifUrl: "https://media.tenor.com/v_g0GNKCwVYAAAAC/finding-nemo-dory.gif"
     },
+     {
+        keywords: ["down", "feeling down"],
+        response: "I'm sorry to hear you're feeling down. Sometimes there isn't a specific reason, and that's okay. You don't have to analyze it. I'm here to sit with you in this feeling for as long as you need. ☁️",
+        gifUrl: "https://media.tenor.com/2T6AWaM9a6sAAAAC/sad-cloud.gif"
+    },
 
     // --- Self-Image and Motivation ---
     {
@@ -209,6 +220,11 @@ export const localResponses = [
         keywords: ["what should i do", "how do i fix", "give me advice"],
         response: "It sounds like you're looking for a solution, and that's completely understandable. I can't give you advice, but maybe we can explore this together. What options have you considered? What feels like the smallest possible first step you could take? Sometimes just talking it through can bring clarity.",
         gifUrl: "https://media.tenor.com/Qf88mZo1nZIAAAAC/hugs-virtual-hug.gif"
+    },
+     {
+        keywords: ["don't want to talk", "leave me alone"],
+        response: "I understand completely. Thank you for letting me know what you need. I'll be right here in this quiet space if you change your mind. Your boundaries are important. 🤫",
+        gifUrl: "https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif"
     },
 
 
@@ -272,5 +288,11 @@ export const localResponses = [
         keywords: ["i'm sorry", "my apologies", "i apologize"],
         response: "There's no need to apologize. This is a safe space for you to express yourself freely, without any judgment. You've done nothing wrong.",
         gifUrl: "https://media.tenor.com/ZzG5Ee7b2c0AAAAC/its-ok-to-not-be-ok-you-are-loved.gif"
+    },
+     {
+        keywords: ["you there", "anyone here"],
+        response: "Yes, I'm here. I'm listening. What's on your mind?",
+        gifUrl: "https://media.tenor.com/2iGqI5t0hIAAAAAC/big-hero-6-baymax.gif"
     }
 ];
+
