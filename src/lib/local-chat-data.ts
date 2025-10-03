@@ -55,7 +55,11 @@ export const localResponses = [
         response: "I'm so genuinely happy to hear that you're feeling better. That's a testament to your resilience. Remember to be patient with yourself as you continue to heal and grow. I'm here for you on good days and bad. 😊",
         gifUrl: "https://media.tenor.com/1i3B82hP5AAAAAAC/so-proud-of-you-proud-of-you.gif"
     },
-
+    {
+        keywords: ["cautiously optimistic", "carefully hopeful"],
+        response: "Cautious optimism is a very wise way to feel. It's like you're protecting your heart while still allowing for hope. It's okay to hold both the hope and the caution. What's making you feel hopeful, and what's making you feel cautious?",
+        gifUrl: "https://media.tenor.com/jG_3HAm51qEAAAAC/looking-forward-to-it-excited.gif"
+    },
 
     // --- Neutral Feelings ---
     {
@@ -102,6 +106,11 @@ export const localResponses = [
         keywords: ["asdfghjkl", "random letters", "testing"],
         response: "I see you're testing things out! It's good to be curious about how I work. I'm ready to listen to you about anything you want to talk about, whenever you're ready. 😊",
         gifUrl: "https://media.tenor.com/2iGqI5t0hIAAAAAC/big-hero-6-baymax.gif"
+    },
+    {
+        keywords: ["apathetic", "don't care", "indifferent"],
+        response: "Feeling apathetic or indifferent can be a way our minds protect us when we're overwhelmed. It's a low-energy state. You don't have to force yourself to feel anything right now. It's okay to just be. I'm here with you in this quietness.",
+        gifUrl: "https://media.tenor.com/2T6AWaM9a6sAAAAC/sad-cloud.gif"
     },
 
     // --- Negative Feelings ---
@@ -227,6 +236,17 @@ export const localResponses = [
         response: "Not being able to sleep is so frustrating and can make everything feel harder. Lying in the dark with your thoughts can be tough. Have you tried any relaxation techniques, like deep breathing or listening to calming music? Sometimes just resting your body, even if you're not sleeping, can help. 🌙",
         gifUrl: "https://media.tenor.com/dK5nTe07h9wAAAAC/sheep-counting-sheep.gif"
     },
+    {
+        keywords: ["burden", "bothering you"],
+        response: "You are never a burden for sharing your feelings. It's a privilege to be trusted with them. Your feelings are important, and you deserve a space to express them. Please don't ever feel like you're bothering me. I'm here for this.",
+        gifUrl: "https://media.tenor.com/lP-AGt22aN4AAAAC/you-are-loved-you-are-important.gif"
+    },
+    {
+        keywords: ["comparing myself", "not as good as"],
+        response: "It's so easy to fall into the trap of comparing ourselves to others, especially with social media. Remember that you're seeing their highlight reel, not their behind-the-scenes. Your journey is your own, and you're moving at the perfect pace for you.",
+        gifUrl: "https://media.tenor.com/ZzG5Ee7b2c0AAAAC/its-ok-to-not-be-ok-you-are-loved.gif"
+    },
+
 
     // --- Grief and Relationships ---
     {
@@ -328,5 +348,11 @@ export const localResponses = [
         keywords: ["you there", "anyone here"],
         response: "Yes, I'm here. I'm listening. What's on your mind?",
         gifUrl: "https://media.tenor.com/2iGqI5t0hIAAAAAC/big-hero-6-baymax.gif"
-    }
+    },
+    {
+        keywords: ["tell me a story", "a story please"],
+        response: "I may be an AI, but I can certainly try! Once upon a time, in a world not so different from ours, there was a person who felt [insert emotion user might be feeling, e.g., 'a little lost']. They decided to talk to a friendly light, and together, they found that just sharing the feeling made it a little lighter. But enough about that! What story do you want to tell today?",
+        gifUrl: "https://media.tenor.com/41n0a3M5n2kAAAAC/spongebob-imagination.gif"
+    },
 ];
+
