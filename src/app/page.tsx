@@ -340,56 +340,50 @@ export default function LandingPage() {
         link: "/resources",
         dropdownContent: (
           <div className="grid grid-cols-3 gap-x-8 gap-y-6 p-8 w-[600px]">
-             <div>
-                 <h3 className="text-sm font-semibold text-neutral-400 mb-4">CRISIS SUPPORT</h3>
-                 <div className="flex flex-col gap-4">
-                    <a href="/resources" className="group flex items-start gap-3">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-800/80 border border-neutral-700 transition-colors duration-200 group-hover:bg-red-500/20 group-hover:border-red-500/50">
-                            <LifeBuoy className="h-4 w-4 text-red-400" />
-                        </div>
-                        <div>
-                            <h4 className="text-sm font-semibold text-white">Emergency Hotlines</h4>
-                            <p className="text-xs text-neutral-400 mt-0.5">Immediate help for crisis situations.</p>
-                        </div>
-                    </a>
-                 </div>
+             <div className="flex flex-col gap-y-4">
+                 <h3 className="text-sm font-semibold text-neutral-400">CRISIS SUPPORT</h3>
+                 <a href="/resources" className="group flex items-start gap-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-800/80 border border-neutral-700 transition-colors duration-200 group-hover:bg-red-500/20 group-hover:border-red-500/50">
+                        <LifeBuoy className="h-4 w-4 text-red-400" />
+                    </div>
+                    <div>
+                        <h4 className="text-sm font-semibold text-white">Emergency Hotlines</h4>
+                        <p className="text-xs text-neutral-400 mt-0.5">Immediate help for crisis situations.</p>
+                    </div>
+                </a>
              </div>
-             <div>
-                 <h3 className="text-sm font-semibold text-neutral-400 mb-4">PSYCHOEDUCATION</h3>
-                 <div className="flex flex-col gap-4">
-                    <a href="/resources" className="group flex items-start gap-3">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-800/80 border border-neutral-700 transition-colors duration-200 group-hover:bg-blue-500/20 group-hover:border-blue-500/50">
-                           <Clapperboard className="h-4 w-4 text-blue-400" />
-                        </div>
-                        <div>
-                            <h4 className="text-sm font-semibold text-white">Educational Videos</h4>
-                            <p className="text-xs text-neutral-400 mt-0.5">Learn about mental wellness topics.</p>
-                        </div>
-                    </a>
-                    <a href="/playlist" className="group flex items-start gap-3">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-800/80 border border-neutral-700 transition-colors duration-200 group-hover:bg-green-500/20 group-hover:border-green-500/50">
-                           <Music className="h-4 w-4 text-green-400" />
-                        </div>
-                        <div>
-                            <h4 className="text-sm font-semibold text-white">Relaxation Audio</h4>
-                            <p className="text-xs text-neutral-400 mt-0.5">Calming sounds and guided meditations.</p>
-                        </div>
-                    </a>
-                 </div>
+             <div className="flex flex-col gap-y-4">
+                 <h3 className="text-sm font-semibold text-neutral-400">PSYCHOEDUCATION</h3>
+                  <a href="/resources" className="group flex items-start gap-3">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-800/80 border border-neutral-700 transition-colors duration-200 group-hover:bg-blue-500/20 group-hover:border-blue-500/50">
+                         <Clapperboard className="h-4 w-4 text-blue-400" />
+                      </div>
+                      <div>
+                          <h4 className="text-sm font-semibold text-white">Educational Videos</h4>
+                          <p className="text-xs text-neutral-400 mt-0.5">Learn about mental wellness topics.</p>
+                      </div>
+                  </a>
+                  <a href="/playlist" className="group flex items-start gap-3">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-800/80 border border-neutral-700 transition-colors duration-200 group-hover:bg-green-500/20 group-hover:border-green-500/50">
+                         <Music className="h-4 w-4 text-green-400" />
+                      </div>
+                      <div>
+                          <h4 className="text-sm font-semibold text-white">Relaxation Audio</h4>
+                          <p className="text-xs text-neutral-400 mt-0.5">Calming sounds and guided meditations.</p>
+                      </div>
+                  </a>
              </div>
-             <div>
-                 <h3 className="text-sm font-semibold text-neutral-400 mb-4">COMMUNITY</h3>
-                 <div className="flex flex-col gap-4">
-                    <a href="/counselor-connect" className="group flex items-start gap-3">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-800/80 border border-neutral-700 transition-colors duration-200 group-hover:bg-purple-500/20 group-hover:border-purple-500/50">
-                           <HeartHandshake className="h-4 w-4 text-purple-400" />
-                        </div>
-                        <div>
-                            <h4 className="text-sm font-semibold text-white">Counselor Connect</h4>
-                            <p className="text-xs text-neutral-400 mt-0.5">Talk to licensed professionals.</p>
-                        </div>
-                    </a>
-                 </div>
+             <div className="flex flex-col gap-y-4">
+                 <h3 className="text-sm font-semibold text-neutral-400">COMMUNITY</h3>
+                  <a href="/counselor-connect" className="group flex items-start gap-3">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-800/80 border border-neutral-700 transition-colors duration-200 group-hover:bg-purple-500/20 group-hover:border-purple-500/50">
+                         <HeartHandshake className="h-4 w-4 text-purple-400" />
+                      </div>
+                      <div>
+                          <h4 className="text-sm font-semibold text-white">Counselor Connect</h4>
+                          <p className="text-xs text-neutral-400 mt-0.5">Talk to licensed professionals.</p>
+                      </div>
+                  </a>
              </div>
           </div>
         )
