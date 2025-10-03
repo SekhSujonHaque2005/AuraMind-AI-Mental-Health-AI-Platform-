@@ -140,9 +140,11 @@ export default function ChatInterface() {
               className="flex-1"
             />
           </motion.div>
-          <p className="text-xs text-center text-gray-400 mt-3">
-            Due to API server issues, we are currently using our local model.
-          </p>
+          <div className="mt-3 text-center">
+            <p className="inline-block bg-black/40 text-gray-300 text-xs px-2 py-1 rounded-md">
+              Due to API server issues, we are currently using our local model.
+            </p>
+          </div>
         </div>
       </div>
     </div>
