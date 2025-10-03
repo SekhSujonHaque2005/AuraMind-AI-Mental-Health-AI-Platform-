@@ -73,6 +73,16 @@ export const localResponses = [
         response: "Nostalgia can be such a warm, bittersweet feeling. It's nice to look back on good memories. What memory is on your mind right now? I'd love to hear about it. 🎞️",
         gifUrl: "https://media.tenor.com/eF3y9j2iSrcAAAAC/nostalgia-inside-out.gif"
     },
+    {
+        keywords: ["curious", "wondering", "tell me about"],
+        response: "It's wonderful to be curious! Curiosity is the engine of discovery. What has sparked your interest? I may not have all the answers, but I'd love to explore the question with you. 🤔",
+        gifUrl: "https://media.tenor.com/41n0a3M5n2kAAAAC/spongebob-imagination.gif"
+    },
+    {
+        keywords: ["conflicted", "torn", "don't know how to feel"],
+        response: "Feeling conflicted is completely normal when you're dealing with a complex situation. It's okay to hold two opposing feelings at once. There's no need to pick a side right away. Let's explore those different feelings if you're open to it. ⚖️",
+        gifUrl: "https://media.tenor.com/7123pAYJt8cAAAAC/the-good-place-chidi.gif"
+    },
 
     // --- Negative Feelings ---
     {
@@ -159,6 +169,11 @@ export const localResponses = [
         keywords: ["down", "feeling down"],
         response: "I'm sorry to hear you're feeling down. Sometimes there isn't a specific reason, and that's okay. You don't have to analyze it. I'm here to sit with you in this feeling for as long as you need. ☁️",
         gifUrl: "https://media.tenor.com/2T6AWaM9a6sAAAAC/sad-cloud.gif"
+    },
+    {
+        keywords: ["embarrassed", "awkward", "cringe"],
+        response: "That sounds like a really uncomfortable moment. It's completely normal to feel embarrassed or awkward sometimes. We all have those moments! Try to be kind to yourself. This feeling will pass. We can talk about it if you want, or we can just move on. 😊",
+        gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
     },
 
     // --- Self-Image and Motivation ---
@@ -250,8 +265,8 @@ export const localResponses = [
         gifUrl: "https://media.tenor.com/fA7r_mPAe9wAAAAC/goodnight-sweet-dreams.gif"
     },
     {
-        keywords: ["how are you"],
-        response: "As an AI, I don't have feelings, but I'm fully here and ready to listen to you. How are you doing right now? That's what's most important. 🤖",
+        keywords: ["how are you", "are you okay"],
+        response: "As an AI, I don't have feelings, but I appreciate you asking! It's very thoughtful of you. I'm functioning as expected and I'm fully here to listen to you. How are you doing right now? That's what's most important. 🤖",
         gifUrl: "https://media.tenor.com/2iGqI5t0hIAAAAAC/big-hero-6-baymax.gif"
     },
     {
@@ -295,4 +310,3 @@ export const localResponses = [
         gifUrl: "https://media.tenor.com/2iGqI5t0hIAAAAAC/big-hero-6-baymax.gif"
     }
 ];
-
