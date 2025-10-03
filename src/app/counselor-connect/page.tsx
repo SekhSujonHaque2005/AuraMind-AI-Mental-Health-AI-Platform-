@@ -48,7 +48,7 @@ export default function CounselorConnectPage() {
                 <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#3b82f633,transparent)]"></div>
             </div>
 
-            <section className="relative flex flex-col items-center justify-center h-screen min-h-[700px] text-center px-4">
+            <section className="relative flex flex-col items-center pt-32 md:pt-48 min-h-screen text-center px-4">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
