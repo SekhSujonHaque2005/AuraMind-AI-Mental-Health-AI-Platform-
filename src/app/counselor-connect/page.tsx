@@ -57,13 +57,13 @@ export default function CounselorConnectPage() {
                 >
                     <TextType
                         as="h1"
-                        text="Talk to a Counselor Anytime, Anywhere."
+                        text="Connect with a Real Counselor, Anonymously."
                         typingSpeed={50}
                         loop={false}
                         className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-300 mb-6"
                     />
                     <TextType
-                        text="Get instant access to certified mental health professionals through secure chat, audio, or video sessions."
+                        text="Schedule secure and private sessions with licensed therapists via chat, audio, or video. You're not alone."
                         typingSpeed={20}
                         initialDelay={2500}
                         loop={false}
