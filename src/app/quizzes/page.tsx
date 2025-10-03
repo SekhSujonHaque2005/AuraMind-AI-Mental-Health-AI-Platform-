@@ -68,6 +68,7 @@ export default function QuizzesPage() {
   const [quizTopic, setQuizTopic] = useState('');
   const [isGenerating, startTransition] = useTransition();
   const [allQuizzes, setAllQuizzes] = useState<Quiz[]>(staticQuizzes);
+  const [creationMode, setCreationMode] = useState<'ai' | 'manual' | null>(null);
   const { toast } = useToast();
 
   const handleStartQuiz = (quizId: string) => {
@@ -116,8 +117,15 @@ export default function QuizzesPage() {
             });
             setIsCreateQuizOpen(false);
             setQuizTopic('');
+            setCreationMode(null);
         }
     });
+  }
+
+  const resetDialog = () => {
+    setIsCreateQuizOpen(false);
+    setCreationMode(null);
+    setQuizTopic('');
   }
 
   const containerVariants = {
@@ -221,43 +229,60 @@ export default function QuizzesPage() {
       </motion.div>
     </div>
 
-    <Dialog open={isCreateQuizOpen} onOpenChange={setIsCreateQuizOpen}>
+    <Dialog open={isCreateQuizOpen} onOpenChange={(isOpen) => !isOpen && resetDialog()}>
         <DialogContent className="bg-gray-900 border-violet-500/40 text-white">
             <DialogHeader>
                 <DialogTitle className="text-2xl text-violet-300">Create a New Quiz</DialogTitle>
-                <DialogDescription>
-                    Generate a new quiz using AI. Just provide a topic to get started.
-                </DialogDescription>
+                 {!creationMode && (
+                    <DialogDescription>
+                        How would you like to create your quiz?
+                    </DialogDescription>
+                 )}
             </DialogHeader>
-            <div className="py-4 space-y-4">
-                <div className="space-y-2">
-                     <Label htmlFor="quiz-topic" className="text-gray-400">Quiz Topic</Label>
-                     <Input 
-                        id="quiz-topic"
-                        placeholder="e.g., 'The basics of stoicism' or 'Identifying cognitive biases'"
-                        className="bg-gray-800/60 border-violet-500/30 text-gray-200 focus:ring-violet-500"
-                        value={quizTopic}
-                        onChange={(e) => setQuizTopic(e.target.value)}
-                        disabled={isGenerating}
-                     />
+            
+            {!creationMode ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+                    <Button variant="outline" className="h-auto py-6 flex flex-col gap-2" onClick={() => setCreationMode('ai')}>
+                        <Wand2 className="h-6 w-6" />
+                        Generate with AI
+                    </Button>
+                    <Button variant="outline" className="h-auto py-6 flex flex-col gap-2" onClick={() => {toast({title: "Coming Soon!", description: "Manual quiz creation will be available in a future update."})}}>
+                        <Puzzle className="h-6 w-6" />
+                        Create Manually
+                    </Button>
                 </div>
-                <Button onClick={handleGenerateAiQuiz} className="w-full bg-violet-600 hover:bg-violet-700 text-white" disabled={isGenerating}>
-                   {isGenerating ? (
-                       <>
-                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                           Generating...
-                       </>
-                   ) : (
-                       <>
-                           <Wand2 className="mr-2 h-4 w-4" />
-                           Generate with AI
-                       </>
-                   )}
-                 </Button>
-                 {/* Manual creation UI could go here in the future */}
-            </div>
+            ) : creationMode === 'ai' ? (
+                <div className="py-4 space-y-4">
+                    <DialogDescription>Just provide a topic and our AI will generate a 5-question quiz for you.</DialogDescription>
+                    <div className="space-y-2">
+                        <Label htmlFor="quiz-topic" className="text-gray-400">Quiz Topic</Label>
+                        <Input 
+                            id="quiz-topic"
+                            placeholder="e.g., 'The basics of stoicism'"
+                            className="bg-gray-800/60 border-violet-500/30 text-gray-200 focus:ring-violet-500"
+                            value={quizTopic}
+                            onChange={(e) => setQuizTopic(e.target.value)}
+                            disabled={isGenerating}
+                        />
+                    </div>
+                    <Button onClick={handleGenerateAiQuiz} className="w-full bg-violet-600 hover:bg-violet-700 text-white" disabled={isGenerating}>
+                    {isGenerating ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Generating...
+                        </>
+                    ) : (
+                        <>
+                            <Wand2 className="mr-2 h-4 w-4" />
+                            Generate with AI
+                        </>
+                    )}
+                    </Button>
+                </div>
+            ) : null}
+
             <DialogFooter>
-                <Button variant="ghost" onClick={() => setIsCreateQuizOpen(false)} disabled={isGenerating}>Cancel</Button>
+                <Button variant="ghost" onClick={resetDialog} disabled={isGenerating}>Cancel</Button>
             </DialogFooter>
         </DialogContent>
     </Dialog>
