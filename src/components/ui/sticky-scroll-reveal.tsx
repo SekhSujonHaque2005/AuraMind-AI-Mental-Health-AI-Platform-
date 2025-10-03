@@ -83,6 +83,7 @@ export const StickyScroll = ({
                             initial={{ width: '0%' }}
                             animate={{ width: '100%' }}
                             transition={{ duration: 3, ease: 'linear' }}
+                            key={activeCard} // Re-trigger animation on active card change
                         />
                     )}
                      {activeCard > index && (
@@ -97,6 +98,7 @@ export const StickyScroll = ({
         animate={{
           background: linearGradients[activeCard % linearGradients.length],
         }}
+        key={activeCard} // Add key to re-trigger animation
         className={cn(
           "sticky top-10 hidden h-60 w-80 overflow-hidden rounded-md bg-white lg:block",
           contentClassName
