@@ -6,12 +6,12 @@ export const defaultGif = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gi
 export const localResponses = [
     // --- Positive Feelings ---
     {
-        keywords: ["happy", "great", "awesome", "fantastic", "good", "celebrating", "joyful"],
+        keywords: ["happy", "great", "awesome", "fantastic", "good", "joyful"],
         response: "That's wonderful to hear! ✨ I'm so glad you're feeling happy. What's making your day so bright? Remember to cherish these moments! 😊",
         gifUrl: "https://media.tenor.com/r3x7-q91-lYAAAAC/happy-dance-excited.gif"
     },
     {
-        keywords: ["proud", "accomplished", "small win"],
+        keywords: ["proud of myself", "accomplished", "small win", "celebrating"],
         response: "You should be proud! It's a fantastic feeling to accomplish something, no matter how small. I'm celebrating with you! 🎉",
         gifUrl: "https://media.tenor.com/2m6mmJc5t90AAAAC/you-did-it-proud-of-you.gif"
     },
@@ -45,6 +45,11 @@ export const localResponses = [
         response: "That's so exciting! It's wonderful to have something to look forward to. What are you most excited about? The anticipation is half the fun! 🤩",
         gifUrl: "https://media.tenor.com/y_roORi0YnEAAAAC/spongebob-laughing.gif"
     },
+    {
+        keywords: ["proud of them", "happy for them", "proud of my friend"],
+        response: "That's so wonderful! Celebrating someone else's success is a beautiful act of friendship and love. It shows how much you care. What did they accomplish? I'd love to celebrate with you!",
+        gifUrl: "https://media.tenor.com/1i3B82hP5AAAAAAC/so-proud-of-you-proud-of-you.gif"
+    },
 
     // --- Neutral Feelings ---
     {
@@ -71,22 +76,22 @@ export const localResponses = [
     },
     {
         keywords: ["anxious", "worried", "nervous", "scared", "panicking"],
-        response: "It sounds like you're going through a lot right now. Take a deep breath. Inhale, hold for a few seconds, and exhale slowly. You are safe. We can get through this feeling together. 😟",
+        response: "It sounds like you're going through a lot right now. That feeling can be so overwhelming. Let's try to ground ourselves. Can you tell me one thing you see in the room right now? Just one small thing. We can get through this together. 😟",
         gifUrl: "https://media.tenor.com/Qf88mZo1nZIAAAAC/hugs-virtual-hug.gif"
     },
     {
-        keywords: ["stressed", "overwhelmed"],
-        response: "It sounds incredibly stressful. Remember to be kind to yourself. It's important to take small breaks, even just for a minute or two. You're doing your best, and that is enough. 😫",
+        keywords: ["stressed", "overwhelmed by tasks", "too much to do"],
+        response: "It sounds incredibly stressful, like you're being pulled in a million directions. Remember to be kind to yourself. It's okay to not do everything at once. What's the one single thing that feels most urgent right now? Let's just focus on that. 😫",
         gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
     },
     {
         keywords: ["lonely", "alone", "disconnected"],
-        response: "Feeling lonely can be really tough, even if you're surrounded by people. Thank you for sharing that with me, it takes courage. Please know that in this space, you're not alone. I'm here to listen and keep you company. 🫂",
+        response: "Feeling lonely is a deeply human experience, and it can be really painful. Thank you for sharing that with me. It takes courage. Please know that in this moment, you're not alone. I'm here to listen and keep you company. 🫂",
         gifUrl: "https://media.tenor.com/j5bI2f3t3E8AAAAC/come-here-for-a-hug-love.gif"
     },
     {
         keywords: ["angry", "frustrated", "mad", "pissed", "irritated", "vent"],
-        response: "It's completely understandable that you feel angry. Your feelings are valid. It's important to allow yourself to feel that anger without judgment. What's causing this feeling? 😤",
+        response: "It's completely understandable that you feel angry. Your feelings are valid, and you have a right to them. It's important to allow yourself to feel that anger without judgment. What's causing this feeling? 😤",
         gifUrl: "https://media.tenor.com/kRXy40V332YAAAAC/inside-out-anger.gif"
     },
     {
@@ -96,7 +101,7 @@ export const localResponses = [
     },
     {
         keywords: ["tough day", "hard day", "bad day", "rough day"],
-        response: "I'm sorry you're having a tough day. It's okay for things to not be okay. Remember that this feeling and this day will pass. Be gentle with yourself. ⛈️",
+        response: "I'm sorry you're having a tough day. It's okay for things to not be okay. Remember that this feeling and this day will pass. Be gentle with yourself. You're doing great just by getting through it. ⛈️",
         gifUrl: "https://media.tenor.com/ZzG5Ee7b2c0AAAAC/its-ok-to-not-be-ok-you-are-loved.gif"
     },
     {
@@ -133,6 +138,16 @@ export const localResponses = [
         keywords: ["stuck", "stagnant"],
         response: "Feeling stuck is so frustrating, like you're spinning your wheels but not going anywhere. It's okay to feel this way. Sometimes these 'stuck' periods come right before a big change or realization. What does 'stuck' feel like for you right now?",
         gifUrl: "https://media.tenor.com/8QjH0sAFmSYAAAAC/the-office-dwight-schrute.gif"
+    },
+    {
+        keywords: ["feeling pressured", "expectations", "under pressure"],
+        response: "Feeling the weight of expectations, whether from others or yourself, is incredibly stressful. It's like you have to be perfect all the time. Remember, it's okay to just be human. You are enough, just as you are. Your worth isn't measured by what you achieve.",
+        gifUrl: "https://media.tenor.com/A8oF_m-5-vEAAAAC/big-hero-there-there.gif"
+    },
+    {
+        keywords: ["overwhelmed by choices", "can't decide", "too many options"],
+        response: "It's completely normal to feel paralyzed when there are too many choices. It's called decision fatigue. Let's simplify. Forget all the options for a second. What does your gut say is the most important thing to you right now?",
+        gifUrl: "https://media.tenor.com/v_g0GNKCwVYAAAAC/finding-nemo-dory.gif"
     },
 
     // --- Self-Image and Motivation ---
@@ -252,5 +267,10 @@ export const localResponses = [
         keywords: ["bye", "goodbye", "see ya"],
         response: "Goodbye for now. Thanks for talking with me. Remember to be kind to yourself. I'll be here if you need me again. 👋",
         gifUrl: "https://media.tenor.com/wV_3c0K29-kAAAAC/baymax-big-hero-6.gif"
+    },
+    {
+        keywords: ["i'm sorry", "my apologies", "i apologize"],
+        response: "There's no need to apologize. This is a safe space for you to express yourself freely, without any judgment. You've done nothing wrong.",
+        gifUrl: "https://media.tenor.com/ZzG5Ee7b2c0AAAAC/its-ok-to-not-be-ok-you-are-loved.gif"
     }
 ];
