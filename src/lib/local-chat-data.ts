@@ -66,7 +66,7 @@ export const localResponses = [
     // --- Negative Feelings ---
     {
         keywords: ["sad", "down", "upset", "crying", "not good", "heartbroken"],
-        response: "I'm so sorry you're feeling this way. It's okay to feel sad sometimes. Please know that your feelings are valid. I'm here to listen if you want to talk about it. 🫂",
+        response: "I'm so sorry to hear you're feeling this way. It's completely okay to feel sad, and your feelings are valid. Please know that I'm here to listen without any judgment if you'd like to talk about what's on your mind. You're not alone in this feeling. 🫂",
         gifUrl: "https://media.tenor.com/y0SjA5y3f-QAAAAC/sad-face-sad.gif"
     },
     {
@@ -81,7 +81,7 @@ export const localResponses = [
     },
     {
         keywords: ["lonely", "alone", "disconnected"],
-        response: "Feeling lonely can be really tough, even if you're surrounded by people. Thank you for sharing that with me. Please know that you're not alone in this conversation. I'm here with you. 🫂",
+        response: "Feeling lonely can be really tough, even if you're surrounded by people. Thank you for sharing that with me, it takes courage. Please know that in this space, you're not alone. I'm here to listen and keep you company. 🫂",
         gifUrl: "https://media.tenor.com/j5bI2f3t3E8AAAAC/come-here-for-a-hug-love.gif"
     },
     {
@@ -235,7 +235,7 @@ export const localResponses = [
     },
     {
         keywords: ["help", "i need help"],
-        response: "I'm here to help in any way I can by listening. What's on your mind? Remember, if you're in a crisis, it's very important to reach out to a professional or a helpline. For a safe place to talk, I'm all yours.",
+        response: "I'm here to help in any way I can by listening. It takes a lot of strength to ask for help, and I'm glad you did. What's on your mind? Remember, if you're in a crisis, it's very important to reach out to a professional or a helpline. For a safe place to talk, I'm all yours.",
         gifUrl: "https://media.tenor.com/hYm5lD-3s-wAAAAC/big-hero6-baymax.gif"
     },
     {
