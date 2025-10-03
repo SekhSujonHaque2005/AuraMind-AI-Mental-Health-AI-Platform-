@@ -393,20 +393,6 @@ export default function AdventuresPage() {
                                 className="bg-gray-800/60 border-amber-500/30 text-gray-200 focus:ring-amber-500"
                              />
                         </div>
-                        <div className="text-center text-gray-500 my-4">OR</div>
-                         <Button onClick={handleGenerateAiQuest} className="w-full bg-transparent border border-amber-500/40 hover:bg-amber-500/10 text-amber-300" disabled={isGeneratingAi}>
-                           {isGeneratingAi ? (
-                                <>
-                                    <BrainCircuit className="mr-2 h-4 w-4 animate-spin" />
-                                    Generating...
-                                </>
-                           ) : (
-                                <>
-                                    <BrainCircuit className="mr-2 h-4 w-4" />
-                                    Generate with AI
-                                </>
-                           )}
-                         </Button>
                     </div>
                     <DialogFooter>
                         <Button variant="ghost" onClick={() => setIsAddQuestOpen(false)}>Cancel</Button>
