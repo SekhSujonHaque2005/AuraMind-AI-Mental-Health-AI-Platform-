@@ -4,7 +4,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { CheckCircle, ShieldCheck, Star, Users, MessageSquare, Phone, Video, PlayCircle, ArrowRight, AlertTriangle, Calendar, Search } from 'lucide-react';
+import { CheckCircle, ShieldCheck, Star, Users, MessageSquare, Phone, Video, PlayCircle, ArrowRight, AlertTriangle, Calendar, Search, Globe, DollarSign } from 'lucide-react';
 import TextType from '@/components/ui/text-type';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -23,10 +23,18 @@ const itemVariants = {
 };
 
 
-const FeaturePill = ({ icon: Icon, text }: { icon: React.ElementType, text: string }) => (
-    <motion.div variants={itemVariants} className="flex items-center gap-3 p-4 rounded-lg bg-white/5 border border-white/10">
-        <Icon className="h-6 w-6 text-green-300" />
-        <span className="text-gray-200">{text}</span>
+const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementType, title: string, description: string }) => (
+    <motion.div variants={itemVariants}>
+        <div className="relative h-full p-6 rounded-2xl bg-gray-900/50 border border-blue-500/20 overflow-hidden">
+             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+             <div className="relative z-10 flex flex-col h-full">
+                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-4">
+                    <Icon className="h-6 w-6 text-blue-300" />
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
+                <p className="text-gray-400 text-sm">{description}</p>
+             </div>
+        </div>
     </motion.div>
 );
 
@@ -59,6 +67,29 @@ export default function CounselorConnectPage() {
         }
       ];
 
+      const whyChooseUsFeatures = [
+        {
+          icon: CheckCircle,
+          title: "Certified Professionals",
+          description: "Every counselor is licensed, accredited, and rigorously vetted to ensure you receive the highest quality of care."
+        },
+        {
+          icon: ShieldCheck,
+          title: "100% Private & Encrypted",
+          description: "Your conversations are protected with end-to-end encryption, ensuring your privacy is always maintained."
+        },
+        {
+          icon: DollarSign,
+          title: "Affordable & Flexible",
+          description: "Access professional support without the high costs of traditional therapy. Choose a plan that fits your budget."
+        },
+        {
+          icon: Globe,
+          title: "Available Globally, 24/7",
+          description: "Connect with a counselor from anywhere in the world, at any time that suits your schedule."
+        }
+    ];
+
     return (
         <div className="min-h-screen text-white overflow-x-hidden">
              <div className="absolute inset-0 -z-10 h-full w-full">
@@ -83,7 +114,7 @@ export default function CounselorConnectPage() {
                     <TextType
                         text="Schedule secure and private sessions with licensed therapists via chat, audio, or video. You're not alone."
                         typingSpeed={20}
-                        initialDelay={2500}
+                        initialDelay={3500}
                         loop={false}
                         className="max-w-3xl mx-auto text-lg md:text-xl text-gray-400 mb-10"
                     />
@@ -127,19 +158,23 @@ export default function CounselorConnectPage() {
             </section>
 
              <section className="py-20 px-4 bg-black/20">
-                <div className="max-w-6xl mx-auto">
+                <div className="max-w-6xl mx-auto text-center">
                     <h2 className="text-4xl font-bold text-center mb-12">Why Choose Our Counselors</h2>
                     <motion.div 
-                        className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+                        className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 group"
                          variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.3 }}
                     >
-                       <FeaturePill icon={CheckCircle} text="Certified & Verified Professionals" />
-                       <FeaturePill icon={ShieldCheck} text="100% Private & Encrypted" />
-                       <FeaturePill icon={Star} text="Affordable & Flexible Pricing" />
-                       <FeaturePill icon={Users} text="Available 24/7, Globally" />
+                        {whyChooseUsFeatures.map((feature, index) => (
+                            <FeatureCard 
+                                key={index}
+                                icon={feature.icon}
+                                title={feature.title}
+                                description={feature.description}
+                            />
+                        ))}
                     </motion.div>
                 </div>
             </section>
