@@ -299,7 +299,7 @@ export default function QuizzesPage() {
                         <Label htmlFor="manual-quiz-title" className="text-lg">Quiz Title</Label>
                         <Input id="manual-quiz-title" value={manualQuiz.title} onChange={e => setManualQuiz(prev => ({ ...prev, title: e.target.value }))} placeholder="e.g., Weekly Mindfulness Check-in" className="bg-gray-800/60 border-violet-500/30"/>
                     </div>
-                    <ScrollArea className="max-h-[50vh] pr-4">
+                    <ScrollArea className="h-[40vh] pr-4">
                         <div className="space-y-6">
                         {manualQuiz.questions.map((q, qIndex) => (
                             <div key={qIndex} className="p-4 rounded-lg border border-violet-500/20 bg-black/20 space-y-4 relative">
