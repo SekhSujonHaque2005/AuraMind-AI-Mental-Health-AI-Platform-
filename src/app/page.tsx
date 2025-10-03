@@ -316,7 +316,7 @@ export default function LandingPage() {
         name: "Features",
         link: "#features",
         dropdownContent: (
-          <div className="grid grid-cols-2 gap-x-8 gap-y-6 p-8">
+          <div className="w-max grid grid-cols-2 gap-x-8 gap-y-6 p-8">
             {features.map((feature) => (
               <a
                 key={feature.title}
