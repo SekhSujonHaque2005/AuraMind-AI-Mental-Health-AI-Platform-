@@ -43,6 +43,7 @@ const getAuraResponseFlow = ai.defineFlow(
     const language = input.language || 'English';
     const region = input.region || 'their local area';
     
+    // This system prompt defines the AI's personality and instructions.
     const systemPrompt = `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
 
 Your core principles are:
@@ -56,11 +57,13 @@ Your core principles are:
 8.  **Disclaimer:** At the end of your response, provide this disclaimer in the user's selected language: "Remember, I am an AI and not a substitute for a professional therapist. If you need support, please consider reaching out to a qualified professional."
 9.  **GIFs for Expression:** To enhance your response, consider using the 'getTenorGif' tool to find a relevant, supportive, and gentle GIF that matches the emotion or context of the conversation. Use simple, one or two-word search queries for the best results (e.g., 'happy dance', 'gentle hug', 'thinking', 'relax').`;
 
+    // Map the conversation history to the format expected by the AI model.
     const history = input.conversationHistory.map(msg => ({
       role: msg.sender === 'user' ? 'user' : 'model',
       content: msg.text,
     }));
 
+    // The 'messages' array should contain the history AND the current user message.
     const llmResponse = await ai.generate({
       model: 'googleai/gemini-1.5-flash',
       prompt: {
@@ -75,6 +78,7 @@ Your core principles are:
 
     const textResponse = llmResponse.text();
     
+    // Fallback response in case the AI fails.
     if (!textResponse) {
         return { response: "I'm not sure how to respond to that. Could you say it in a different way?", gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif' };
     }
@@ -82,10 +86,12 @@ Your core principles are:
     let gifUrl: string | null = null;
     const toolResponses = llmResponse.toolResponses();
     
+    // Check if the tool was called and returned a response.
     if (toolResponses.length > 0 && toolResponses[0]?.tool.response) {
       gifUrl = toolResponses[0].tool.response as string | null;
     }
 
+    // Fallback GIF if the tool fails or returns nothing.
     if (!gifUrl) {
       gifUrl = 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif';
     }
