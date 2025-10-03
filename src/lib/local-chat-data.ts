@@ -79,88 +79,93 @@ export const localResponses: Record<string, { keywords: string[]; response: stri
     en: [
         {
             keywords: ["love you"],
-            response: "That's so kind of you to say. I appreciate you sharing that with me. Sending warmth and positivity your way! ❤️\n\nHere's a little tip for you:\n- Remember to share that same love with yourself, too. You deserve it!",
-            gifUrl: "https://media.giphy.com/media/AJIsPfsKr3QO16KagW/giphy.gif"
+            response: "That's so kind of you to say. I appreciate you sharing that with me. Sending warmth and positivity your way! ❤️\n\nHere's a little tip for you:\n\n- Remember to share that same love with yourself, too. You deserve it!",
+            gifUrl: "https://media.giphy.com/embed/AJIsPfsKr3QO16KagW"
         },
         {
             keywords: ["hate you"],
-            response: "I hear that you're feeling a lot of anger and frustration right now, and it's directed at me. It's okay to feel that way. I'm here to listen if you want to talk about what's causing these strong feelings.\n\nHere’s something that might help:\n- When you feel anger rising, try taking three deep breaths. It can help create a small space between the feeling and your reaction.",
-            gifUrl: "https://media.giphy.com/media/h36vh423PiV9K/giphy.gif"
+            response: "I hear that you're feeling a lot of anger and frustration right now, and it's directed at me. It's okay to feel that way. I'm here to listen if you want to talk about what's causing these strong feelings.\n\nHere’s something that might help:\n\n- When you feel anger rising, try taking three deep breaths. It can help create a small space between the feeling and your reaction.",
+            gifUrl: "https://media.giphy.com/embed/h36vh423PiV9K"
         },
         {
             keywords: ["happy", "great", "awesome", "fantastic", "good", "joyful"],
-            response: "That's wonderful to hear! ✨ I'm so glad you're feeling happy. What's making your day so bright?\n\nHere’s a great way to hold onto this feeling:\n- Take a moment to write down what's making you happy. It can be a great reminder on tougher days! 😊",
-            gifUrl: "https://media.giphy.com/media/wORSHzN5sGpRS/giphy.gif"
+            response: "That's wonderful to hear! ✨ I'm so glad you're feeling happy. What's making your day so bright?\n\nHere’s a great way to hold onto this feeling:\n\n- Take a moment to write down what's making you happy. It can be a great reminder on tougher days! 😊",
+            gifUrl: "https://media.giphy.com/embed/wORSHzN5sGpRS"
         },
         {
             keywords: ["proud of myself", "accomplished", "small win", "celebrating"],
-            response: "You should be proud! It's a fantastic feeling to accomplish something, no matter how small. I'm celebrating with you! 🎉\n\nTo keep the momentum going, you could:\n- Keep a 'small wins' jar. Every time you achieve something, write it down and put it in. Open it when you need a boost.",
-            gifUrl: "https://media.giphy.com/media/OR1aQzSbvf4DrgX22C/giphy.gif"
+            response: "You should be proud! It's a fantastic feeling to accomplish something, no matter how small. I'm celebrating with you! 🎉\n\nTo keep the momentum going, you could:\n\n- Keep a 'small wins' jar. Every time you achieve something, write it down and put it in. Open it when you need a boost.",
+            gifUrl: "https://media.giphy.com/embed/OR1aQzSbvf4DrgX22C"
         },
         {
             keywords: ["sad", "upset", "crying", "not good", "heartbroken"],
-            response: "I'm so sorry to hear you're feeling this way. It's completely okay to feel sad, and your feelings are valid. Please know that I'm here to listen.\n\nHere's a small comfort tip:\n- Try listening to a favorite comforting song or watching a comfort movie. Sometimes a little bit of familiar comfort can help ease the sadness. 🫂",
-            gifUrl: "https://media.giphy.com/media/X7K4AzJUz2gOQBiySM/giphy.gif"
+            response: "I'm so sorry to hear you're feeling this way. It's completely okay to feel sad, and your feelings are valid. Please know that I'm here to listen.\n\nHere's a small comfort tip:\n\n- Try listening to a favorite comforting song or watching a comfort movie. Sometimes a little bit of familiar comfort can help ease the sadness. 🫂",
+            gifUrl: "https://media.giphy.com/embed/X7K4AzJUz2gOQBiySM"
         },
         {
             keywords: ["anxious", "worried", "nervous", "scared", "panicking"],
-            response: "It sounds like you're going through a lot right now. That feeling can be so overwhelming.\n\nHere's a grounding technique you can try:\n- Name 5 things you can see.\n- Name 4 things you can feel.\n- Name 3 things you can hear.\n- Name 2 things you can smell.\n- Name 1 thing you can taste.",
-            gifUrl: "https://media.giphy.com/media/3kHz1oN8NfxJJgVgvL/giphy.gif"
+            response: "It sounds like you're going through a lot right now. That feeling can be so overwhelming.\n\nHere's a grounding technique you can try:\n\n- Name 5 things you can see.\n- Name 4 things you can feel.\n- Name 3 things you can hear.\n- Name 2 things you can smell.\n- Name 1 thing you can taste.",
+            gifUrl: "https://media.giphy.com/embed/3kHz1oN8NfxJJgVgvL"
         },
         {
             keywords: ["stressed", "overwhelmed by tasks", "too much to do", "overwhelmed"],
-            response: "It sounds incredibly stressful, like you're being pulled in a million directions. Remember to be kind to yourself.\n\nHere's a way to make things feel more manageable:\n- Try breaking down one large task into the smallest possible first step. Just focus on that one tiny action.",
-            gifUrl: "https://media.giphy.com/media/XBRFAzaelJo0jaOsvR/giphy.gif"
+            response: "It sounds incredibly stressful, like you're being pulled in a million directions. Remember to be kind to yourself.\n\nHere's a way to make things feel more manageable:\n\n- Try breaking down one large task into the smallest possible first step. Just focus on that one tiny action.",
+            gifUrl: "https://media.giphy.com/embed/XBRFAzaelJo0jaOsvR"
         },
         {
             keywords: ["lonely", "alone", "disconnected"],
-            response: "Feeling lonely is a deeply human experience, and it can be really painful. Thank you for sharing that with me. It takes courage.\n\nA small step you could take:\n- Try reaching out to one person today, even with just a simple 'hello'. Connection, even in small doses, can make a difference. I'm here for you. 🫂",
-            gifUrl: "https://media.giphy.com/media/2ytlbPlOr6c028biPK/giphy.gif"
+            response: "Feeling lonely is a deeply human experience, and it can be really painful. Thank you for sharing that with me. It takes courage.\n\nA small step you could take:\n\n- Try reaching out to one person today, even with just a simple 'hello'. Connection, even in small doses, can make a difference. I'm here for you. 🫂",
+            gifUrl: "https://media.giphy.com/embed/2ytlbPlOr6c028biPK"
         },
         {
             keywords: ["thank you", "thanks"],
-            response: "You're very welcome! I'm always here if you need to talk.\n\nHere's a little gratitude challenge for you:\n- A great way to boost your own mood is to thank someone else in your life today! 😊",
-            gifUrl: "https://media.giphy.com/media/XaA0fpudSHPf4MPlEK/giphy.gif"
+            response: "You're very welcome! I'm always here if you need to talk.\n\nHere's a little gratitude challenge for you:\n\n- A great way to boost your own mood is to thank someone else in your life today! 😊",
+            gifUrl: "https://media.giphy.com/embed/XaA0fpudSHPf4MPlEK"
         },
         {
             keywords: ["hello", "hi", "hey"],
-            response: "Hi there! I'm Aura. I'm here to listen whenever you're ready to share.\n\nTo get us started:\n- What's one thing, big or small, that's on your mind today? ✨",
-            gifUrl: "https://media.giphy.com/media/dw36yjtOAtuSZyxEJG/giphy.gif"
+            response: "Hi there! I'm Aura. I'm here to listen whenever you're ready to share.\n\nTo get us started:\n\n- What's one thing, big or small, that's on your mind today? ✨",
+            gifUrl: "https://media.giphy.com/embed/dw36yjtOAtuSZyxEJG"
         },
         {
             keywords: ["tired", "exhausted", "sleepy", "drained"],
-            response: "It sounds like you've had a long day. Rest is so important.\n\nHere's a tip for winding down:\n- Try putting on some calming music or nature sounds for a few minutes to help your mind and body unwind.",
+            response: "It sounds like you've had a long day. Rest is so important.\n\nHere's a tip for winding down:\n\n- Try putting on some calming music or nature sounds for a few minutes to help your mind and body unwind.",
             gifUrl: "https://media.giphy.com/media/9V59ZMtP6UqBOf25Vq/giphy.gif"
         },
         {
             keywords: ["excited", "pumped", "can't wait"],
-            response: "That's amazing! I'm excited for you!\n\nHere's how you can make the most of this energy:\n- Channel that amazing energy into something creative, or share your excitement with someone else to spread the good vibes!",
+            response: "That's amazing! I'm excited for you!\n\nHere's how you can make the most of this energy:\n\n- Channel that amazing energy into something creative, or share your excitement with someone else to spread the good vibes!",
             gifUrl: "https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif"
         },
         {
             keywords: ["confused", "don't understand", "huh?"],
-            response: "It sounds a bit confusing. It's okay to not have all the answers.\n\nHere’s a technique to find clarity:\n- Try explaining the situation to me like I'm five years old. Sometimes, simplifying it can bring a new perspective.",
+            response: "It sounds a bit confusing. It's okay to not have all the answers.\n\nHere’s a technique to find clarity:\n\n- Try explaining the situation to me like I'm five years old. Sometimes, simplifying it can bring a new perspective.",
             gifUrl: "https://media.giphy.com/media/ji6zzUZwNIuLS/giphy.gif"
         },
         {
             keywords: ["lol", "funny", "haha", "laughing"],
-            response: "Haha, that's a good one! 😄 It's great to share a laugh.\n\nKeep the good feelings going:\n- Laughter is a powerful stress-reliever. Think of another funny memory and enjoy the feeling!",
+            response: "Haha, that's a good one! 😄 It's great to share a laugh.\n\nKeep the good feelings going:\n\n- Laughter is a powerful stress-reliever. Think of another funny memory and enjoy the feeling!",
             gifUrl: "https://media.giphy.com/media/7J4Lvpz55rocVYccdH/giphy.gif"
         },
         {
             keywords: ["agree", "yes", "nodding", "true", "exactly"],
-            response: "I completely agree. It's great that we're on the same page.\n\nTo build on this feeling of connection:\n- Feeling understood is a wonderful feeling. Is there anyone else you can share this with who might feel the same?",
+            response: "I completely agree. It's great that we're on the same page.\n\nTo build on this feeling of connection:\n\n- Feeling understood is a wonderful feeling. Is there anyone else you can share this with who might feel the same?",
             gifUrl: "https://media.giphy.com/media/bv7I7BKRBYOJLWoSlz/giphy.gif"
         },
         {
             keywords: ["thinking", "hmm", "let me think"],
-            response: "Take your time. It's good to think things through.\n\nIf you get stuck, try this:\n- Step away for five minutes. A short break can often lead to a new perspective. I'm here when you're ready.",
+            response: "Take your time. It's good to think things through.\n\nIf you get stuck, try this:\n\n- Step away for five minutes. A short break can often lead to a new perspective. I'm here when you're ready.",
             gifUrl: "https://media.giphy.com/media/DfSXiR60W9MVq/giphy.gif"
         },
         {
             keywords: ["angry", "mad", "frustrated", "pissed off"],
-            response: "It's completely understandable to feel that way. Your feelings are valid. If you want to talk about what's making you angry, I'm here to listen.\n\nHere's a healthy way to release that energy:\n- Physical activity, even a quick walk, can be a great way to channel and release feelings of anger.",
+            response: "It's completely understandable to feel that way. Your feelings are valid. If you want to talk about what's making you angry, I'm here to listen.\n\nHere's a healthy way to release that energy:\n\n- Physical activity, even a quick walk, can be a great way to channel and release feelings of anger.",
             gifUrl: "https://media.giphy.com/media/h36vh423PiV9K/giphy.gif"
+        },
+        {
+            keywords: ["tough day"],
+            response: "It sounds like you're going through a lot. Remember that it's okay to not be okay. Your feelings are valid, and I'm here to listen.\n\nHere’s a small act of self-kindness you can try:\n\n- Do one small thing that usually brings you a bit of comfort, like making a cup of tea or listening to a favorite song. You deserve that moment of peace.",
+            gifUrl: "https://media.giphy.com/media/3oEdv4hwWTzBhWvaU0/giphy.gif"
         },
     ],
     hi: [
