@@ -262,15 +262,15 @@ export default function LandingPage() {
         name: "Features",
         link: "#features",
         dropdownContent: (
-          <div className="grid grid-cols-2 gap-6 p-6">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-6 p-8">
             {features.map((feature) => (
               <a
                 key={feature.title}
                 href={feature.href}
-                className="group flex items-start gap-4 rounded-lg p-3 hover:bg-neutral-800 transition-colors duration-200"
+                className="group flex items-start gap-4"
               >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-neutral-800/80 border border-neutral-700 group-hover:bg-blue-500/20 group-hover:border-blue-500/50">
-                   <feature.icon className="h-5 w-5 text-blue-400 group-hover:text-blue-300" />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-neutral-800/80 border border-neutral-700 transition-colors duration-200 group-hover:bg-blue-500/20 group-hover:border-blue-500/50">
+                   <feature.icon className="h-5 w-5 text-blue-400 transition-colors duration-200 group-hover:text-blue-300" />
                 </div>
                 <div>
                   <h3 className="text-base font-semibold text-white">{feature.title}</h3>
