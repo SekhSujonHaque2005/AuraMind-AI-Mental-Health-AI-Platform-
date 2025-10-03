@@ -1,4 +1,3 @@
-
 'use server';
 
 /**
@@ -43,7 +42,7 @@ const getAuraResponseFlow = ai.defineFlow(
   async (input) => {
     const language = input.language || 'English';
     const region = input.region || 'their local area';
-
+    
     const systemPrompt = `You are Aura, an empathetic and supportive AI companion for young adults. Your primary role is to be a safe, non-judgmental listener.
 
 Your core principles are:
@@ -59,7 +58,7 @@ Your core principles are:
 
     const history = input.conversationHistory.map(msg => ({
       role: msg.sender === 'user' ? 'user' : 'model',
-      content: [{ text: msg.text }],
+      content: msg.text,
     }));
 
     const llmResponse = await ai.generate({
@@ -68,7 +67,7 @@ Your core principles are:
           system: systemPrompt,
           messages: [
             ...history,
-            { role: 'user', content: [{ text: input.message }] }
+            { role: 'user', content: input.message }
           ],
       },
       tools: [getTenorGif],
@@ -77,7 +76,7 @@ Your core principles are:
     const textResponse = llmResponse.text();
     
     if (!textResponse) {
-        return { response: "I'm not sure how to respond to that. Could you say it in a different way?", gifUrl: null };
+        return { response: "I'm not sure how to respond to that. Could you say it in a different way?", gifUrl: 'https://media.tenor.com/T4iVfC2oSCwAAAAC/hello-hey.gif' };
     }
 
     let gifUrl: string | null = null;
