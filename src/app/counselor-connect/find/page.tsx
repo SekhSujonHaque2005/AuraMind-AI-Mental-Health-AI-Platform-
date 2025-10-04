@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Check, Star, Languages, MessageSquare, Phone, Video, MapPin, Mail, PhoneCall } from 'lucide-react';
+import { Check, Star, Languages, MessageSquare, Phone, Video, MapPin, Mail, PhoneCall, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
 
@@ -133,7 +133,17 @@ export default function FindCounselorPage() {
       </div>
 
       <aside className="w-full md:w-[350px] lg:w-[450px] border-r border-blue-500/10 p-6 flex flex-col">
-        <h2 className="text-2xl font-bold text-white mb-6">Find a Counselor</h2>
+        <div className="flex items-center gap-4 mb-6">
+            <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => router.back()}
+                className="text-blue-300 hover:bg-blue-500/10 hover:text-blue-200 rounded-full"
+            >
+                <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <h2 className="text-2xl font-bold text-white">Find a Counselor</h2>
+        </div>
         <div className="overflow-y-auto pr-3 -mr-3 flex-grow no-scrollbar">
           <motion.div 
             className="space-y-6"
