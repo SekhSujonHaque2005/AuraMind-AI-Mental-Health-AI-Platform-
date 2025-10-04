@@ -9,6 +9,8 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Check, Star, Languages, MessageSquare, Phone, Video, MapPin, Mail, PhoneCall, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
+import BookingConfirmation from './booking-confirmation';
+
 
 const counselorsByRegion = {
   "Maharashtra": [
@@ -106,14 +108,15 @@ const allCounselors = Object.values(counselorsByRegion).flat();
 export default function FindCounselorPage() {
   const router = useRouter();
   const [selectedCounselor, setSelectedCounselor] = useState(allCounselors[0]);
-  const { toast } = useToast();
+  const [isBookingConfirmed, setIsBookingConfirmed] = useState(false);
   
   const handleBooking = () => {
-    toast({
-      title: "Booking Confirmed!",
-      description: "Your booking has been confirmed, we will be connecting shortly.",
-    });
+    setIsBookingConfirmed(true);
   };
+  
+  const closeConfirmation = () => {
+    setIsBookingConfirmed(false);
+  }
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -126,6 +129,7 @@ export default function FindCounselorPage() {
   };
 
   return (
+    <>
     <div className="relative flex flex-col md:flex-row min-h-screen">
       <div className="absolute inset-0 -z-10 h-full w-full">
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
@@ -268,5 +272,9 @@ export default function FindCounselorPage() {
         )}
       </main>
     </div>
+
+    <BookingConfirmation isOpen={isBookingConfirmed} onClose={closeConfirmation} />
+    </>
   );
 }
+
