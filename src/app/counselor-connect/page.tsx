@@ -4,7 +4,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { CheckCircle, ShieldCheck, Star, Users, MessageSquare, Phone, Video, PlayCircle, ArrowRight, AlertTriangle, Calendar, Search, Globe, DollarSign } from 'lucide-react';
+import { CheckCircle, ShieldCheck, Star, Users, MessageSquare, Phone, Video, PlayCircle, ArrowRight, AlertTriangle, Calendar, Search, Globe, DollarSign, ExternalLink, School } from 'lucide-react';
 import TextType from '@/components/ui/text-type';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -81,6 +81,18 @@ export default function CounselorConnectPage() {
           description: "Connect with a counselor from anywhere in the world, at any time that suits your schedule."
         }
     ];
+
+    const universityResources = [
+        { name: 'Indian Institute of Technology Bombay', link: '#' },
+        { name: 'University of Delhi', link: '#' },
+        { name: 'Indian Institute of Science Bangalore', link: '#' },
+        { name: 'Jawaharlal Nehru University', link: '#' },
+        { name: 'Anna University', link: '#' },
+        { name: 'Vellore Institute of Technology', link: '#' },
+        { name: 'University of Hyderabad', link: '#' },
+        { name: 'Manipal Academy of Higher Education', link: '#' },
+    ];
+
 
     return (
         <div className="min-h-screen text-white overflow-x-hidden">
@@ -171,6 +183,45 @@ export default function CounselorConnectPage() {
                 </div>
             </section>
             
+            <section className="pb-20 px-4">
+                <div className="max-w-5xl mx-auto text-center">
+                    <h2 className="text-4xl font-bold text-center mb-4">University & College Resources</h2>
+                    <p className="text-lg text-gray-400 mb-16 max-w-3xl mx-auto">
+                        Many universities offer free and confidential counseling services to their students. Check out the resources at your institution.
+                    </p>
+                    <motion.div
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                        variants={containerVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.3 }}
+                    >
+                        {universityResources.map((resource, index) => (
+                            <motion.a 
+                                key={index} 
+                                href={resource.link} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                variants={itemVariants}
+                                className="block"
+                            >
+                                <Card className="h-full text-left bg-gray-900/50 border border-blue-500/20 rounded-2xl p-6 transition-all hover:border-blue-500/50 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10">
+                                    <div className="flex justify-between items-start">
+                                        <div className="flex items-center gap-4">
+                                            <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                                                <School className="w-6 h-6 text-blue-300"/>
+                                            </div>
+                                            <h3 className="text-lg font-bold text-white">{resource.name}</h3>
+                                        </div>
+                                        <ExternalLink className="h-5 w-5 text-gray-500 group-hover:text-blue-300 transition-colors"/>
+                                    </div>
+                                </Card>
+                            </motion.a>
+                        ))}
+                    </motion.div>
+                </div>
+            </section>
+
             <section className="py-20 px-4 bg-gray-900/40">
                 <div className="max-w-4xl mx-auto text-center">
                     <ShieldCheck className="h-16 w-16 mx-auto text-green-400 mb-6"/>
