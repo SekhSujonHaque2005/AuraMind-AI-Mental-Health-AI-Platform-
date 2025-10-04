@@ -643,6 +643,9 @@ export default function FindCounselorPage() {
                     </motion.div>
                   ))}
                 </div>
+                <p className="text-center text-gray-500 mt-6 text-sm">
+                  More counselors from {region} will be added soon.
+                </p>
               </div>
             ))}
           </motion.div>
@@ -660,5 +663,3 @@ export default function FindCounselorPage() {
     </>
   );
 }
-
-
