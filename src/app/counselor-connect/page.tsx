@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import axios from 'axios';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -72,8 +71,6 @@ const UniversitySubmissionForm = () => {
             ...formData,
         };
 
-        const json = JSON.stringify(submissionData);
-
         try {
             const res = await fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
@@ -81,7 +78,7 @@ const UniversitySubmissionForm = () => {
                   'Content-Type': 'application/json',
                   'Accept': 'application/json'
                 },
-                body: json
+                body: JSON.stringify(submissionData)
               });
 
             const result = await res.json();
@@ -414,5 +411,3 @@ export default function CounselorConnectPage() {
         </div>
     );
 }
-
-    
