@@ -83,14 +83,28 @@ export default function CounselorConnectPage() {
     ];
 
     const universityResources = [
-        { name: 'Indian Institute of Technology Bombay', link: '#' },
-        { name: 'University of Delhi', link: '#' },
-        { name: 'Indian Institute of Science Bangalore', link: '#' },
-        { name: 'Jawaharlal Nehru University', link: '#' },
-        { name: 'Anna University', link: '#' },
-        { name: 'Vellore Institute of Technology', link: '#' },
-        { name: 'University of Hyderabad', link: '#' },
-        { name: 'Manipal Academy of Higher Education', link: '#' },
+        { name: 'Lovely Professional University (LPU), Punjab', link: 'https://www.lpu.in/inst-performance/counselling-and-happiness-department.php' },
+        { name: 'Punjab Engineering College (PEC), Chandigarh', link: 'https://pec.ac.in/student-counselling-cell' },
+        { name: 'Central University of Punjab (CUP), Bathinda', link: 'https://www.cup.edu.in/students_counselling_cell.php' },
+        { name: 'Panjab University (PU), Chandigarh', link: 'https://archive.iqac.puchd.ac.in/docs/2014/20141005100701-06-pu-ssr-ii.pdf' },
+        { name: 'IIT Delhi', link: 'https://bsw.iitd.ac.in/mental_health.php' },
+        { name: 'IIT Kanpur', link: 'https://iitk.ac.in/counsel/' },
+        { name: 'IIT Bombay', link: 'https://www.iitb.ac.in/swc/en/online-counselling' },
+        { name: 'IIT Guwahati', link: 'https://www.indiatoday.in/education-today/news/story/saathi-counselling-club-iit-guwahatis-commitment-to-student-mental-health-2445414-2023-10-06' },
+        { name: 'IIT Kharagpur', link: 'https://timesofindia.indiatimes.com/city/kolkata/in-a-first-among-iits-kgp-campus-gets-dean-of-well-being-to-take-care-of-students-wellness/articleshow/123195624.cms' },
+        { name: 'IIT Madras', link: 'https://www.iitm.ac.in/counselling-centre' },
+        { name: 'IIT (BHU) Varanasi', link: 'https://iitbhu.ac.in/contents/institute/admin/doc/admin_mental_support.pdf' },
+        { name: 'Banaras Hindu University (BHU), Varanasi', link: 'https://www.iitbhu.ac.in/contents/institute/admin/doc/admin_mental_support.pdf' },
+        { name: 'Delhi University (DU)', link: 'http://www.du.ac.in/uploads/COVID-19/27042020_DU_CARE.pdf' },
+        { name: 'Gargi College (DU)', link: 'https://www.gargi.du.ac.in/mental-health-and-counselling/' },
+        { name: 'Shri Ram College of Commerce (SRCC, DU)', link: 'https://manodarpan.education.gov.in/' },
+        { name: 'Jawaharlal Nehru University (JNU), Delhi', link: 'https://www.jnu.ac.in/healthcentre' },
+        { name: 'Amity University, Mumbai', link: 'https://www.amity.edu/mumbai/' },
+        { name: 'University of Mumbai', link: 'https://www.indiatoday.in/education-today/news/story/mumbai-university-launched-helpline-number-for-counselling-agitated-students-1677457-2020-05-13' },
+        { name: 'Manonmaniam Sundaranar University, Tamil Nadu', link: 'https://www.msuniv.ac.in/' },
+        { name: 'Vidyashilp University, Karnataka', link: 'https://www.vidyashilp.edu.in/' },
+        { name: 'IIHMR Delhi', link: 'https://www.iihmrdelhi.edu.in/about-us/facilities/counselling' },
+        { name: 'Lucknow University', link: 'https://www.lkouniv.ac.in/' },
     ];
 
 
