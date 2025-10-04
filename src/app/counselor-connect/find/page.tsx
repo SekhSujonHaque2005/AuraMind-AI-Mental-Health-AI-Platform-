@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Check, Star, Languages, MessageSquare, Phone, Video, MapPin, Mail, PhoneCall } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useToast } from '@/hooks/use-toast';
 
 const counselorsByRegion = {
   "Maharashtra": [
@@ -105,7 +106,15 @@ const allCounselors = Object.values(counselorsByRegion).flat();
 export default function FindCounselorPage() {
   const router = useRouter();
   const [selectedCounselor, setSelectedCounselor] = useState(allCounselors[0]);
+  const { toast } = useToast();
   
+  const handleBooking = () => {
+    toast({
+      title: "Booking Confirmed!",
+      description: "Your booking has been confirmed, we will be connecting shortly.",
+    });
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
@@ -239,7 +248,7 @@ export default function FindCounselorPage() {
 
               </CardContent>
               <CardFooter className="p-8 flex flex-col gap-3">
-                 <Button size="lg" className="w-full text-lg py-7 bg-blue-600 hover:bg-blue-500" onClick={() => { /* Implement scheduling logic */ }}>
+                 <Button size="lg" className="w-full text-lg py-7 bg-blue-600 hover:bg-blue-500" onClick={handleBooking}>
                     Book a Session
                  </Button>
                  <p className="text-xs text-gray-500 text-center">You will be taken to a secure portal to schedule and pay for your session.</p>
@@ -251,5 +260,3 @@ export default function FindCounselorPage() {
     </div>
   );
 }
-
-    
