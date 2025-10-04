@@ -4,10 +4,16 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { CheckCircle, ShieldCheck, Star, Users, MessageSquare, Phone, Video, PlayCircle, ArrowRight, AlertTriangle, Calendar, Search, Globe, DollarSign, ExternalLink, School } from 'lucide-react';
+import { CheckCircle, ShieldCheck, Star, Users, MessageSquare, Phone, Video, PlayCircle, ArrowRight, AlertTriangle, Calendar, Search, Globe, DollarSign, ExternalLink, School, Send } from 'lucide-react';
 import TextType from '@/components/ui/text-type';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import axios from 'axios';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -37,6 +43,117 @@ const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementTy
         </div>
     </motion.div>
 );
+
+const UniversitySubmissionForm = () => {
+    const { toast } = useToast();
+    const [formData, setFormData] = useState({ universityName: '', universityLink: '', email: '' });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!formData.universityName || !formData.universityLink) {
+            toast({
+                variant: 'destructive',
+                title: 'Missing Information',
+                description: 'Please provide both the university name and the link.',
+            });
+            return;
+        }
+
+        setIsSubmitting(true);
+        const submissionData = {
+            access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
+            subject: "New University Resource Submission from AuraMind",
+            ...formData,
+        };
+
+        try {
+            const res = await axios.post("https://api.web3forms.com/submit", submissionData);
+            if (res.data.success) {
+                toast({
+                    title: 'Submission Received!',
+                    description: "Thank you for helping us grow our resource library.",
+                });
+                setFormData({ universityName: '', universityLink: '', email: '' });
+            } else {
+                toast({
+                    variant: 'destructive',
+                    title: 'Submission Failed',
+                    description: res.data.message || 'There was an error sending your submission.',
+                });
+            }
+        } catch (error) {
+            toast({
+                variant: 'destructive',
+                title: 'Submission Error',
+                description: 'An unexpected error occurred. Please try again later.',
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    return (
+        <Card className="w-full max-w-2xl bg-gray-900/50 border border-blue-500/20 shadow-2xl shadow-blue-500/10">
+            <CardHeader>
+                <CardTitle className="text-2xl text-blue-300">Suggest a University</CardTitle>
+                <CardDescription className="text-gray-400">If your university isn't listed, please share the link to its counseling service portal. We'll review it and add it to our resources.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="universityName" className="text-gray-300">University Name</Label>
+                        <Input
+                            id="universityName"
+                            name="universityName"
+                            type="text"
+                            placeholder="e.g., University of Delhi"
+                            value={formData.universityName}
+                            onChange={handleChange}
+                            className="bg-gray-800/60 border-blue-500/30"
+                            required
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="universityLink" className="text-gray-300">Counseling Portal Link</Label>
+                        <Input
+                            id="universityLink"
+                            name="universityLink"
+                            type="url"
+                            placeholder="https://example.edu/counseling"
+                            value={formData.universityLink}
+                            onChange={handleChange}
+                            className="bg-gray-800/60 border-blue-500/30"
+                            required
+                        />
+                    </div>
+                     <div className="space-y-2">
+                        <Label htmlFor="email" className="text-gray-300">Your Email (Optional)</Label>
+                        <Input
+                            id="email"
+                            name="email"
+                            type="email"
+                            placeholder="So we can thank you!"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="bg-gray-800/60 border-blue-500/30"
+                        />
+                    </div>
+                    <Button type="submit" disabled={isSubmitting} className="mt-4 bg-blue-600 hover:bg-blue-500 text-white w-full py-3 text-base">
+                        {isSubmitting ? 'Submitting...' : 'Submit Resource'}
+                        {!isSubmitting && <Send className="ml-2 h-4 w-4" />}
+                    </Button>
+                </form>
+            </CardContent>
+        </Card>
+    );
+};
+
 
 export default function CounselorConnectPage() {
     const router = useRouter();
@@ -233,6 +350,16 @@ export default function CounselorConnectPage() {
                             </motion.a>
                         ))}
                     </motion.div>
+                </div>
+            </section>
+            
+            <section className="pb-20 px-4">
+                <div className="max-w-2xl mx-auto text-center flex flex-col items-center">
+                    <h2 className="text-3xl font-bold text-center mb-4">Is Your University Missing?</h2>
+                    <p className="text-lg text-gray-400 mb-8">
+                        We're always expanding our list. If your university's counseling portal isn't here, please let us know by filling out the form below. We'll cover more universities soon!
+                    </p>
+                    <UniversitySubmissionForm />
                 </div>
             </section>
 
