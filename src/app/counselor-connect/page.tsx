@@ -72,19 +72,31 @@ const UniversitySubmissionForm = () => {
             ...formData,
         };
 
+        const json = JSON.stringify(submissionData);
+
         try {
-            const res = await axios.post("https://api.web3forms.com/submit", submissionData);
-            if (res.data.success) {
+            const res = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+                },
+                body: json
+              });
+
+            const result = await res.json();
+            if (result.success) {
                 toast({
                     title: 'Submission Received!',
                     description: "Thank you for helping us grow our resource library.",
                 });
                 setFormData({ universityName: '', universityLink: '', email: '' });
             } else {
+                console.error("Web3Forms submission error:", result.message);
                 toast({
                     variant: 'destructive',
                     title: 'Submission Failed',
-                    description: res.data.message || 'There was an error sending your submission.',
+                    description: result.message || 'There was an error sending your submission.',
                 });
             }
         } catch (error) {
@@ -402,3 +414,5 @@ export default function CounselorConnectPage() {
         </div>
     );
 }
+
+    
