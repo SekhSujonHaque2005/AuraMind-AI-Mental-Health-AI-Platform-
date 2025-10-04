@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Check, Star, Languages, MessageSquare, Phone, Video } from 'lucide-react';
+import { Check, Star, Languages, MessageSquare, Phone, Video, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import TextType from '@/components/ui/text-type';
 import Image from 'next/image';
@@ -14,43 +14,47 @@ import Image from 'next/image';
 const counselors = [
   {
     id: '1',
-    name: 'Dr. Emily Carter',
-    avatar: 'https://i.pravatar.cc/150?img=1',
+    name: 'Dr. Priya Sharma',
+    avatar: 'https://i.pravatar.cc/150?img=11',
     specialties: ['Anxiety', 'Depression', 'CBT'],
     description: 'A compassionate therapist with 10+ years of experience helping adults navigate life\'s challenges.',
     rating: 4.9,
-    reviews: 124,
+    reviews: 142,
     verified: true,
+    region: 'Mumbai, Maharashtra',
   },
   {
     id: '2',
-    name: 'Michael Chen',
-    avatar: 'https://i.pravatar.cc/150?img=2',
+    name: 'Rohan Mehta',
+    avatar: 'https://i.pravatar.cc/150?img=12',
     specialties: ['Stress Management', 'Relationships', 'Mindfulness'],
     description: 'Specializes in helping clients develop coping strategies for stress and improve communication.',
     rating: 4.8,
-    reviews: 98,
+    reviews: 112,
     verified: true,
+    region: 'Delhi, NCR',
   },
   {
     id: '3',
-    name: 'Dr. Sofia Garcia',
-    avatar: 'https://i.pravatar.cc/150?img=3',
+    name: 'Dr. Ananya Reddy',
+    avatar: 'https://i.pravatar.cc/150?img=13',
     specialties: ['Trauma', 'PTSD', 'Family Therapy'],
     description: 'An expert in trauma-informed care, providing a safe space for healing and growth.',
     rating: 5.0,
-    reviews: 150,
+    reviews: 180,
     verified: true,
+    region: 'Bangalore, Karnataka',
   },
     {
     id: '4',
-    name: 'David Lee',
-    avatar: 'https://i.pravatar.cc/150?img=4',
+    name: 'Sameer Gupta',
+    avatar: 'https://i.pravatar.cc/150?img=14',
     specialties: ['Career Counseling', 'Life Transitions'],
     description: 'Helps clients navigate career changes and major life decisions with clarity and confidence.',
     rating: 4.7,
-    reviews: 75,
+    reviews: 85,
     verified: false,
+    region: 'Pune, Maharashtra',
   },
   {
     id: '5',
@@ -59,18 +63,20 @@ const counselors = [
     specialties: ['Cultural Identity', 'Mindfulness', 'Anxiety'],
     description: 'Focuses on culturally sensitive therapy, helping clients explore identity and belonging.',
     rating: 4.9,
-    reviews: 110,
+    reviews: 130,
     verified: true,
+    region: 'Hyderabad, Telangana',
   },
   {
     id: '6',
-    name: 'Chris Taylor',
-    avatar: 'https://i.pravatar.cc/150?img=6',
+    name: 'Vikram Singh',
+    avatar: 'https://i.pravatar.cc/150?img=16',
     specialties: ['Grief & Loss', 'Depression'],
     description: 'Provides gentle and supportive guidance for individuals navigating grief and loss.',
     rating: 4.8,
-    reviews: 88,
+    reviews: 95,
     verified: true,
+    region: 'Chennai, Tamil Nadu',
   },
 ];
 
@@ -159,7 +165,11 @@ export default function FindCounselorPage() {
                         </div>
                     )}
                 </div>
-                <div className="flex items-center gap-2 text-lg text-yellow-400 mt-2">
+                 <div className="flex items-center gap-2 text-gray-400 mt-2">
+                    <MapPin className="h-5 w-5"/>
+                    <span>{selectedCounselor.region}</span>
+                </div>
+                <div className="flex items-center gap-2 text-lg text-yellow-400 mt-1">
                     <Star className="h-5 w-5 fill-current" />
                     <span>{selectedCounselor.rating} ({selectedCounselor.reviews} reviews)</span>
                 </div>
@@ -180,6 +190,7 @@ export default function FindCounselorPage() {
                   <h4 className="font-semibold text-white mb-3 text-lg">Languages</h4>
                   <div className="flex flex-wrap gap-2">
                     <span className="px-3 py-1 text-sm rounded-full bg-gray-700/50 text-gray-300 border border-gray-600/50 flex items-center gap-2"><Languages className="h-4 w-4"/> English</span>
+                     <span className="px-3 py-1 text-sm rounded-full bg-gray-700/50 text-gray-300 border border-gray-600/50 flex items-center gap-2"><Languages className="h-4 w-4"/> Hindi</span>
                   </div>
                 </div>
 
