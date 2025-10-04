@@ -88,6 +88,7 @@ const UniversitySubmissionForm = () => {
                 });
             }
         } catch (error) {
+            console.error("Error submitting feedback:", error);
             toast({
                 variant: 'destructive',
                 title: 'Submission Error',
