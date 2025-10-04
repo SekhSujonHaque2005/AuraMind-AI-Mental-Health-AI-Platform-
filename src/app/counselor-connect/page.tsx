@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { CheckCircle, ShieldCheck, Star, Users, MessageSquare, Phone, Video, PlayCircle, ArrowRight, AlertTriangle, Calendar, Search, Globe, DollarSign } from 'lucide-react';
 import TextType from '@/components/ui/text-type';
 import { useRouter } from 'next/navigation';
-import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 
 const containerVariants = {
@@ -41,14 +40,6 @@ const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementTy
 
 export default function CounselorConnectPage() {
     const router = useRouter();
-    const { toast } = useToast();
-
-    const handleComingSoon = () => {
-        toast({
-            title: 'Coming Soon!',
-            description: 'This feature is currently under development.',
-        });
-    };
     
     const howItWorksSteps = [
         {
@@ -120,7 +111,7 @@ export default function CounselorConnectPage() {
                         className="max-w-3xl mx-auto text-lg md:text-xl text-gray-400 mb-10"
                     />
                     <div className="flex justify-center gap-4">
-                        <Button size="lg" className="bg-blue-600 hover:bg-blue-500 text-white text-lg py-7 px-8 rounded-full transition-transform transform hover:scale-105" onClick={handleComingSoon}>
+                        <Button size="lg" className="bg-blue-600 hover:bg-blue-500 text-white text-lg py-7 px-8 rounded-full transition-transform transform hover:scale-105" onClick={() => router.push('/counselor-connect/find')}>
                             Book a Session
                         </Button>
                     </div>
@@ -207,7 +198,7 @@ export default function CounselorConnectPage() {
                         <div className="relative z-10 p-12 md:p-20 text-white">
                              <h2 className="text-4xl md:text-5xl font-bold mb-4">Ready to take the next step?</h2>
                              <p className="text-lg text-gray-200 mb-8 max-w-lg">Your journey to a healthier mind starts with a single conversation. We're here to help.</p>
-                             <Button size="lg" className="bg-blue-600 hover:bg-blue-500 text-white text-xl py-8 px-10 rounded-full transition-transform transform hover:scale-105" onClick={handleComingSoon}>
+                             <Button size="lg" className="bg-blue-600 hover:bg-blue-500 text-white text-xl py-8 px-10 rounded-full transition-transform transform hover:scale-105" onClick={() => router.push('/counselor-connect/find')}>
                                 Schedule a Session <ArrowRight className="ml-3 h-6 w-6"/>
                             </Button>
                         </div>
