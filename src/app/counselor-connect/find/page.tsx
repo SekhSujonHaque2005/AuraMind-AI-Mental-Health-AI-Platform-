@@ -9,7 +9,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Check, Star, Languages, Mail, PhoneCall, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import BookingConfirmation from './booking-confirmation';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle as RadixDialogTitle } from '@/components/ui/dialog';
 
 
 const counselorsByRegion = {
@@ -483,72 +483,75 @@ const CounselorDetailModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl w-full bg-black/20 backdrop-blur-lg border border-blue-500/20 rounded-2xl shadow-2xl shadow-blue-500/10">
-        <motion.div
-          key={counselor.id}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-        >
-          <CardHeader className="text-center items-center p-8">
-            <Avatar className="h-32 w-32 mb-4 border-4 border-blue-500/30">
-              <AvatarImage src={counselor.avatar} alt={counselor.name} />
-              <AvatarFallback className="text-4xl">{counselor.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <div className="flex items-center gap-3">
-              <CardTitle className="text-3xl font-bold text-white">{counselor.name}</CardTitle>
-              {counselor.verified && (
-                <div className="flex items-center gap-1.5 text-green-400">
-                  <Check className="h-6 w-6" />
-                  <span className="font-semibold">Verified</span>
+        <DialogHeader>
+          <RadixDialogTitle className="sr-only">{counselor.name}</RadixDialogTitle>
+          <motion.div
+            key={counselor.id}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
+            <CardHeader className="text-center items-center p-8">
+              <Avatar className="h-32 w-32 mb-4 border-4 border-blue-500/30">
+                <AvatarImage src={counselor.avatar} alt={counselor.name} />
+                <AvatarFallback className="text-4xl">{counselor.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div className="flex items-center gap-3">
+                <CardTitle className="text-3xl font-bold text-white">{counselor.name}</CardTitle>
+                {counselor.verified && (
+                  <div className="flex items-center gap-1.5 text-green-400">
+                    <Check className="h-6 w-6" />
+                    <span className="font-semibold">Verified</span>
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center gap-2 text-gray-400 mt-1">
+                <span>{counselor.region}</span>
+              </div>
+              <div className="flex items-center gap-2 text-lg text-yellow-400 mt-1">
+                <Star className="h-5 w-5 fill-current" />
+                <span>{counselor.rating} ({counselor.reviews} reviews)</span>
+              </div>
+            </CardHeader>
+            <CardContent className="px-8 space-y-6">
+              <p className="text-center text-gray-300 text-base">{counselor.description}</p>
+              <div>
+                <h4 className="font-semibold text-white mb-3 text-lg">Specialties</h4>
+                <div className="flex flex-wrap gap-2">
+                  {counselor.specialties.map(spec => (
+                    <span key={spec} className="px-3 py-1 text-sm rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20">{spec}</span>
+                  ))}
                 </div>
-              )}
-            </div>
-            <div className="flex items-center gap-2 text-gray-400 mt-1">
-              <span>{counselor.region}</span>
-            </div>
-            <div className="flex items-center gap-2 text-lg text-yellow-400 mt-1">
-              <Star className="h-5 w-5 fill-current" />
-              <span>{counselor.rating} ({counselor.reviews} reviews)</span>
-            </div>
-          </CardHeader>
-          <CardContent className="px-8 space-y-6">
-            <p className="text-center text-gray-300 text-base">{counselor.description}</p>
-            <div>
-              <h4 className="font-semibold text-white mb-3 text-lg">Specialties</h4>
-              <div className="flex flex-wrap gap-2">
-                {counselor.specialties.map(spec => (
-                  <span key={spec} className="px-3 py-1 text-sm rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20">{spec}</span>
-                ))}
               </div>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white mb-3 text-lg">Languages</h4>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 text-sm rounded-full bg-gray-700/50 text-gray-300 border border-gray-600/50 flex items-center gap-2"><Languages className="h-4 w-4" /> English</span>
-                <span className="px-3 py-1 text-sm rounded-full bg-gray-700/50 text-gray-300 border border-gray-600/50 flex items-center gap-2"><Languages className="h-4 w-4" /> Hindi</span>
+              <div>
+                <h4 className="font-semibold text-white mb-3 text-lg">Languages</h4>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-3 py-1 text-sm rounded-full bg-gray-700/50 text-gray-300 border border-gray-600/50 flex items-center gap-2"><Languages className="h-4 w-4" /> English</span>
+                  <span className="px-3 py-1 text-sm rounded-full bg-gray-700/50 text-gray-300 border border-gray-600/50 flex items-center gap-2"><Languages className="h-4 w-4" /> Hindi</span>
+                </div>
               </div>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white mb-3 text-lg">Contact Information</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <a href={`mailto:${'${'}counselor.email}`} className="flex items-center gap-3 p-3 rounded-lg bg-gray-700/30 hover:bg-gray-700/60 transition-colors border border-gray-600/50">
-                  <Mail className="h-5 w-5 text-blue-300" />
-                  <span className="text-gray-300">{counselor.email}</span>
-                </a>
-                <a href={`tel:${'${'}counselor.phone}`} className="flex items-center gap-3 p-3 rounded-lg bg-gray-700/30 hover:bg-gray-700/60 transition-colors border border-gray-600/50">
-                  <PhoneCall className="h-5 w-5 text-blue-300" />
-                  <span className="text-gray-300">{counselor.phone}</span>
-                </a>
+              <div>
+                <h4 className="font-semibold text-white mb-3 text-lg">Contact Information</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <a href={`mailto:${'${'}counselor.email}`} className="flex items-center gap-3 p-3 rounded-lg bg-gray-700/30 hover:bg-gray-700/60 transition-colors border border-gray-600/50">
+                    <Mail className="h-5 w-5 text-blue-300" />
+                    <span className="text-gray-300">{counselor.email}</span>
+                  </a>
+                  <a href={`tel:${'${'}counselor.phone}`} className="flex items-center gap-3 p-3 rounded-lg bg-gray-700/30 hover:bg-gray-700/60 transition-colors border border-gray-600/50">
+                    <PhoneCall className="h-5 w-5 text-blue-300" />
+                    <span className="text-gray-300">{counselor.phone}</span>
+                  </a>
+                </div>
               </div>
-            </div>
-          </CardContent>
-          <CardFooter className="p-8 flex flex-col gap-3">
-            <Button size="lg" className="w-full text-lg py-7 bg-blue-600 hover:bg-blue-500" onClick={onBook}>
-              Book a Session
-            </Button>
-            <p className="text-xs text-gray-500 text-center">You will be taken to a secure portal to schedule and pay for your session.</p>
-          </CardFooter>
-        </motion.div>
+            </CardContent>
+            <CardFooter className="p-8 flex flex-col gap-3">
+              <Button size="lg" className="w-full text-lg py-7 bg-blue-600 hover:bg-blue-500" onClick={onBook}>
+                Book a Session
+              </Button>
+              <p className="text-xs text-gray-500 text-center">You will be taken to a secure portal to schedule and pay for your session.</p>
+            </CardFooter>
+          </motion.div>
+        </DialogHeader>
       </DialogContent>
     </Dialog>
   );
@@ -657,4 +660,5 @@ export default function FindCounselorPage() {
     </>
   );
 }
+
 
