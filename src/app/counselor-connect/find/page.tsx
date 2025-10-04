@@ -531,11 +531,11 @@ const CounselorDetailModal = ({
             <div>
               <h4 className="font-semibold text-white mb-3 text-lg">Contact Information</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <a href={`mailto:${counselor.email}`} className="flex items-center gap-3 p-3 rounded-lg bg-gray-700/30 hover:bg-gray-700/60 transition-colors border border-gray-600/50">
+                <a href={`mailto:${'${'}counselor.email}`} className="flex items-center gap-3 p-3 rounded-lg bg-gray-700/30 hover:bg-gray-700/60 transition-colors border border-gray-600/50">
                   <Mail className="h-5 w-5 text-blue-300" />
                   <span className="text-gray-300">{counselor.email}</span>
                 </a>
-                <a href={`tel:${counselor.phone}`} className="flex items-center gap-3 p-3 rounded-lg bg-gray-700/30 hover:bg-gray-700/60 transition-colors border border-gray-600/50">
+                <a href={`tel:${'${'}counselor.phone}`} className="flex items-center gap-3 p-3 rounded-lg bg-gray-700/30 hover:bg-gray-700/60 transition-colors border border-gray-600/50">
                   <PhoneCall className="h-5 w-5 text-blue-300" />
                   <span className="text-gray-300">{counselor.phone}</span>
                 </a>
@@ -581,14 +581,14 @@ export default function FindCounselorPage() {
 
   return (
     <>
-      <div className="relative min-h-screen">
+      <div className="relative min-h-screen w-full">
         <div className="absolute inset-0 -z-10 h-full w-full">
           <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
           <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#3b82f633,transparent)]"></div>
         </div>
 
-        <div className="p-6">
-          <div className="flex items-center gap-4 mb-6">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex items-center gap-4 mb-8">
             <Button
               variant="ghost"
               size="icon"
@@ -597,51 +597,52 @@ export default function FindCounselorPage() {
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <h2 className="text-2xl font-bold text-white">Find a Counselor</h2>
+            <h2 className="text-3xl font-bold text-white">Find a Counselor</h2>
           </div>
-          <div className="overflow-y-auto pr-3 -mr-3 flex-grow no-scrollbar">
-            <motion.div
-              className="space-y-6"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {Object.entries(counselorsByRegion).map(([region, counselors]) => (
-                <div key={region}>
-                  <h3 className="text-lg font-semibold text-blue-300 mb-3 px-2">{region}</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {counselors.map((counselor) => (
-                      <motion.div key={counselor.id} variants={itemVariants}>
-                        <Card
-                          onClick={() => setSelectedCounselor(counselor)}
-                          className='cursor-pointer transition-all duration-300 bg-gray-900/50 border border-blue-500/20 hover:border-blue-500/70 hover:bg-gray-800/60'
-                        >
-                          <CardContent className="p-4 flex items-center gap-4">
-                            <Avatar className="h-16 w-16 border-2 border-blue-500/30">
-                              <AvatarImage src={counselor.avatar} alt={counselor.name} />
-                              <AvatarFallback>{counselor.name.charAt(0)}</AvatarFallback>
-                            </Avatar>
-                            <div className="flex-grow overflow-hidden">
-                              <h3 className="text-lg font-bold text-white truncate">{counselor.name}</h3>
-                              <div className="flex items-center gap-2 text-sm text-yellow-400">
-                                <Star className="h-4 w-4 fill-current" />
-                                <span>{counselor.rating} ({counselor.reviews} reviews)</span>
-                              </div>
-                              <div className="flex flex-wrap gap-1 mt-2">
-                                {counselor.specialties.slice(0, 2).map(spec => (
-                                  <span key={spec} className="px-2 py-0.5 text-xs rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20">{spec}</span>
-                                ))}
-                              </div>
+          
+          <motion.div
+            className="space-y-12"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {Object.entries(counselorsByRegion).map(([region, counselors]) => (
+              <div key={region}>
+                <h3 className="text-2xl font-semibold text-blue-300 mb-6 px-2">{region}</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {counselors.map((counselor) => (
+                    <motion.div key={counselor.id} variants={itemVariants}>
+                      <Card
+                        onClick={() => setSelectedCounselor(counselor)}
+                        className='cursor-pointer transition-all duration-300 bg-gray-900/50 border border-blue-500/20 hover:border-blue-500/70 hover:bg-gray-800/60 rounded-xl overflow-hidden group h-full flex flex-col'
+                      >
+                        <CardContent className="p-4 flex items-center gap-4">
+                          <Avatar className="h-20 w-20 border-2 border-blue-500/30 flex-shrink-0">
+                            <AvatarImage src={counselor.avatar} alt={counselor.name} />
+                            <AvatarFallback>{counselor.name.charAt(0)}</AvatarFallback>
+                          </Avatar>
+                          <div className="flex-grow overflow-hidden">
+                            <h3 className="text-lg font-bold text-white truncate group-hover:text-blue-300 transition-colors">{counselor.name}</h3>
+                            <div className="flex items-center gap-2 text-sm text-yellow-400 mt-1">
+                              <Star className="h-4 w-4 fill-current" />
+                              <span>{counselor.rating} ({counselor.reviews} reviews)</span>
                             </div>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </div>
+                          </div>
+                        </CardContent>
+                        <CardFooter className="p-4 pt-0 mt-auto">
+                            <div className="flex flex-wrap gap-1 w-full">
+                            {counselor.specialties.slice(0, 2).map(spec => (
+                                <span key={spec} className="px-2 py-0.5 text-xs rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20">{spec}</span>
+                            ))}
+                            </div>
+                        </CardFooter>
+                      </Card>
+                    </motion.div>
+                  ))}
                 </div>
-              ))}
-            </motion.div>
-          </div>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </div>
 
@@ -656,3 +657,4 @@ export default function FindCounselorPage() {
     </>
   );
 }
+
